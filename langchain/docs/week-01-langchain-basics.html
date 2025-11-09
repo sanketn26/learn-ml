@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,444 +7714,1014 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langchain/index.html">← Back to LangChain Mastery</a>
-        <span>•</span>
-        <span>Week 1 of 6</span>
-    </div>
-    
-    <h1>Week 1 — LangChain Mastery</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-01-langchain-basics.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langchain openai python-dotenv</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langchain/notebooks/week-01*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=29c28e86">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Week-1-%E2%80%94-LangChain-Fundamentals-&amp;-Basic-Chains">Week 1 — LangChain Fundamentals &amp; Basic Chains<a class="anchor-link" href="#Week-1-%E2%80%94-LangChain-Fundamentals-&amp;-Basic-Chains">¶</a></h1><p><strong>Course:</strong> LangChain for AI Applications<br/>
-<strong>Week Focus:</strong> Understand LLMs, prompts, chains, and how to build your first AI applications.</p>
+<strong>Week Focus:</strong> Master LLM fundamentals, prompt engineering, and chain composition to build production-ready AI applications.</p>
 <hr/>
 <h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Understand LLM fundamentals and API interactions</li>
-<li>Build prompt templates for consistent outputs</li>
-<li>Create simple and sequential chains</li>
-<li>Handle LLM responses and parse outputs</li>
-<li>Build your first customer support chatbot</li>
-<li>Deploy a basic LangChain application</li>
+<li>Understand the architecture of modern LLM applications</li>
+<li>Build reusable prompt templates with variable injection</li>
+<li>Compose simple and sequential chains using LCEL (LangChain Expression Language)</li>
+<li>Parse and validate LLM outputs with structured schemas</li>
+<li>Handle errors gracefully and implement retry logic</li>
+<li>Build a real-world customer support automation system</li>
 </ul>
-<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p>LangChain lets you build AI applications that:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Your SaaS company handles 500+ support tickets daily:</p>
 <ul>
-<li><strong>Automate tasks</strong>: Customer support, data processing, content generation</li>
-<li><strong>Augment workflows</strong>: Combine LLMs with your tools and data</li>
-<li><strong>Scale reasoning</strong>: Chain multiple LLM calls for complex problems</li>
-<li><strong>Maintain context</strong>: Track conversation history and state</li>
+<li>40% are common questions (password resets, billing inquiries)</li>
+<li>30% are bug reports requiring technical triage</li>
+<li>20% are feature requests needing product team routing</li>
+<li>10% are complex issues requiring human escalation</li>
 </ul>
-<p>Companies use LangChain to:</p>
-<ul>
-<li>Build AI customer service agents (Intercom, Zendesk integration)</li>
-<li>Automate document processing (PDFs → insights)</li>
-<li>Generate personalized content (emails, recommendations)</li>
-<li>Create code assistants and debugging tools</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7c7ec818">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Build-an-AI-Customer-Support-Assistant">🏢 Scenario — Build an AI Customer Support Assistant<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Build-an-AI-Customer-Support-Assistant">¶</a></h2><p>Your SaaS company receives 500+ support tickets daily. Your goal:</p>
+<p><strong>The Solution:</strong> An intelligent triage system that:</p>
 <ol>
-<li>Analyze customer issues automatically</li>
-<li>Draft responses using LLMs</li>
-<li>Route complex issues to humans</li>
-<li>Track conversation context</li>
+<li><strong>Classifies</strong> incoming tickets automatically (bug/feature/question/urgent)</li>
+<li><strong>Generates</strong> initial responses for common issues</li>
+<li><strong>Extracts</strong> key information (error messages, account IDs, reproduction steps)</li>
+<li><strong>Routes</strong> complex cases to appropriate teams</li>
+<li><strong>Learns</strong> from human feedback to improve over time</li>
 </ol>
-<p>We'll build this step-by-step using LangChain.</p>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>⏱️ Reduce avg response time from 4 hours → 5 minutes</li>
+<li>💰 Save $120K/year in support costs</li>
+<li>😊 Increase customer satisfaction by 35%</li>
+<li>📈 Scale support without linear headcount growth</li>
+</ul>
+<p>Companies like <strong>Intercom, Zendesk, and Notion</strong> use similar LangChain-powered systems in production.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.jp-RenderedHTMLCommon h2 {</span>
+<span class="s1">    color: #2c3e50;</span>
+<span class="s1">    border-bottom: 2px solid #3498db;</span>
+<span class="s1">    padding-bottom: 10px;</span>
+<span class="s1">    margin-top: 30px;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon h3 {</span>
+<span class="s1">    color: #34495e;</span>
+<span class="s1">    margin-top: 20px;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon code {</span>
+<span class="s1">    background-color: #f8f9fa;</span>
+<span class="s1">    padding: 2px 6px;</span>
+<span class="s1">    border-radius: 3px;</span>
+<span class="s1">    font-family: 'Courier New', monospace;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon pre {</span>
+<span class="s1">    background-color: #f8f9fa;</span>
+<span class="s1">    border-left: 4px solid #3498db;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.scenario-box {</span>
+<span class="s1">    background-color: #d1ecf1;</span>
+<span class="s1">    border-left: 5px solid #17a2b8;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a64bd003">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Why-LangChain?">📚 Key Concepts — Why LangChain?<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Why-LangChain?">¶</a></h2><h3 id="The-Problem-Without-LangChain">The Problem Without LangChain<a class="anchor-link" href="#The-Problem-Without-LangChain">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># Raw OpenAI API (verbose, error-prone)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">openai</span>
+<h2 id="%F0%9F%94%8D-Part-1:-The-Problem-%E2%80%94-Why-LangChain?">🔍 Part 1: The Problem — Why LangChain?<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-The-Problem-%E2%80%94-Why-LangChain?">¶</a></h2><h3 id="Working-Directly-with-LLM-APIs-(The-Hard-Way)">Working Directly with LLM APIs (The Hard Way)<a class="anchor-link" href="#Working-Directly-with-LLM-APIs-(The-Hard-Way)">¶</a></h3><p>Let's see what building an AI application looks like <em>without</em> LangChain:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Example: Raw OpenAI API call (DON'T DO THIS IN PRODUCTION!)</span>
+<span class="c1"># This is verbose, error-prone, and hard to maintain</span>
 
-<span class="n">response</span> <span class="o">=</span> <span class="n">openai</span><span class="o">.</span><span class="n">ChatCompletion</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span>
-    <span class="n">messages</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"system"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"You are a support agent"</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"My app is crashing"</span><span class="p">}</span>
-    <span class="p">],</span>
-    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">answer</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s1">'choices'</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s1">'message'</span><span class="p">][</span><span class="s1">'content'</span><span class="p">]</span>
-</pre></div>
-<h3 id="The-Solution-With-LangChain">The Solution With LangChain<a class="anchor-link" href="#The-Solution-With-LangChain">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># LangChain (clean, composable, extensible)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="c1"># Uncomment to use (requires OpenAI API key)</span>
+<span class="c1"># import openai</span>
 
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">)</span>
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-    <span class="s2">"You are a support agent. Help: </span><span class="si">{user_issue}</span><span class="s2">"</span>
-<span class="p">)</span>
-<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
-<span class="n">answer</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"user_issue"</span><span class="p">:</span> <span class="s2">"My app is crashing"</span><span class="p">})</span>
+<span class="c1"># Problems with this approach:</span>
+<span class="n">raw_code_example</span> <span class="o">=</span> <span class="s1">'''</span>
+<span class="s1"># ❌ Problem 1: Hardcoded prompts (no reusability)</span>
+<span class="s1">response = openai.ChatCompletion.create(</span>
+<span class="s1">    model="gpt-4",</span>
+<span class="s1">    messages=[</span>
+<span class="s1">        {"role": "system", "content": "You are a support agent for CloudWave SaaS"},</span>
+<span class="s1">        {"role": "user", "content": "My dashboard is loading slowly"}</span>
+<span class="s1">    ],</span>
+<span class="s1">    temperature=0.7,</span>
+<span class="s1">)</span>
+
+<span class="s1"># ❌ Problem 2: Deep nested JSON access</span>
+<span class="s1">answer = response['choices'][0]['message']['content']</span>
+
+<span class="s1"># ❌ Problem 3: No output validation</span>
+<span class="s1"># What if the LLM returns invalid JSON? What if it hallucinates?</span>
+
+<span class="s1"># ❌ Problem 4: No error handling</span>
+<span class="s1"># What if API times out? Rate limits? Network errors?</span>
+
+<span class="s1"># ❌ Problem 5: No composability</span>
+<span class="s1"># How do you chain multiple LLM calls? Add memory? Use tools?</span>
+<span class="s1">'''</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🚨 Challenges with raw LLM APIs:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"1. Verbose boilerplate code"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"2. No type safety or validation"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"3. Hard to test and debug"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"4. Difficult to chain operations"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"5. No standardization across providers (OpenAI vs Anthropic vs Llama)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">💡 Solution: LangChain abstracts these complexities!"</span><span class="p">)</span>
 </pre></div>
-<h3 id="LangChain's-Core-Concepts">LangChain's Core Concepts<a class="anchor-link" href="#LangChain's-Core-Concepts">¶</a></h3><ol>
-<li><strong>LLMs</strong>: Language models (OpenAI, Anthropic, Llama, etc.)</li>
-<li><strong>Prompts</strong>: Templates for consistent instructions</li>
-<li><strong>Chains</strong>: Sequences of operations (prompt → LLM → parser)</li>
-<li><strong>Memory</strong>: Tracking conversation history</li>
-<li><strong>Tools</strong>: Integrations (databases, APIs, files)</li>
-<li><strong>Agents</strong>: AI making decisions about which tools to use</li>
-</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7f08a104">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><h3 id="Exercise-1:-Prompt-Templates">Exercise 1: Prompt Templates<a class="anchor-link" href="#Exercise-1:-Prompt-Templates">¶</a></h3><p>Create a prompt template for support tickets:</p>
-<ul>
-<li>Input: customer_name, issue_type, issue_description</li>
-<li>Output: helpful support response</li>
-<li>Test with multiple customer scenarios</li>
-</ul>
-<h3 id="Exercise-2:-Simple-Chain">Exercise 2: Simple Chain<a class="anchor-link" href="#Exercise-2:-Simple-Chain">¶</a></h3><p>Build a chain: Prompt → LLM → Output Parser</p>
-<ul>
-<li>Use ChatOpenAI model</li>
-<li>Parse structured output (JSON)</li>
-<li>Handle multiple issue types</li>
-</ul>
-<h3 id="Exercise-3:-Chain-Pipeline">Exercise 3: Chain Pipeline<a class="anchor-link" href="#Exercise-3:-Chain-Pipeline">¶</a></h3><p>Chain multiple operations:</p>
+<h3 id="The-LangChain-Way-(Clean,-Composable,-Production-Ready)">The LangChain Way (Clean, Composable, Production-Ready)<a class="anchor-link" href="#The-LangChain-Way-(Clean,-Composable,-Production-Ready)">¶</a></h3><p>LangChain provides:</p>
 <ol>
-<li>Analyze issue (classify as bug/feature/question)</li>
-<li>Generate response based on type</li>
-<li>Rate urgency (1-5)</li>
-<li>Return structured result</li>
+<li><strong>Abstraction</strong>: Unified interface for all LLM providers</li>
+<li><strong>Composability</strong>: Build complex workflows from simple components</li>
+<li><strong>Type Safety</strong>: Pydantic models for input/output validation</li>
+<li><strong>Observability</strong>: Built-in logging, tracing, and debugging</li>
+<li><strong>Ecosystem</strong>: 100+ integrations (databases, APIs, tools)</li>
 </ol>
+<p>Let's see the same example, done properly:</p>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7634321c">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>💡 Hint — Building Your First Chain</summary>
-<p><strong>Step 1: Install LangChain</strong></p>
-<div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>langchain<span class="w"> </span>langchain-openai<span class="w"> </span>python-dotenv
-</pre></div>
-<p><strong>Step 2: Set up environment</strong></p>
-<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Installation (uncomment to run):</span>
+<span class="c1"># !pip install langchain langchain-openai python-dotenv</span>
 
-<span class="n">load_dotenv</span><span class="p">()</span>  <span class="c1"># Load OPENAI_API_KEY from .env</span>
-</pre></div>
-<p><strong>Step 3: Create LLM</strong></p>
-<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-</pre></div>
-<p><strong>Step 4: Build prompt + chain</strong></p>
-<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
-
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-    <span class="s2">"You are a support agent. </span><span class="si">{input}</span><span class="s2">"</span>
-<span class="p">)</span>
-<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"...user question..."</span><span class="p">})</span>
-</pre></div>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc192c72">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution — Customer Support Chain</summary>
-<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="c1"># For this demo, we'll use a fake LLM to avoid needing API keys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonOutputParser</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
 
-<span class="c1"># Define expected output structure</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">SupportResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">issue_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"bug, feature, or question"</span><span class="p">)</span>
-    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"helpful support message"</span><span class="p">)</span>
-    <span class="n">urgency</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"1-5 scale"</span><span class="p">)</span>
-    <span class="n">escalate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"needs human review?"</span><span class="p">)</span>
+<span class="c1"># ✅ Clean, reusable code with LangChain</span>
 
-<span class="c1"># Create LLM and parser</span>
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">JsonOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">SupportResponse</span><span class="p">)</span>
-
-<span class="c1"># Build prompt with format instructions</span>
+<span class="c1"># 1. Create a prompt template (reusable across all tickets)</span>
 <span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-<span class="w">    </span><span class="sd">"""You are a SaaS support agent. Analyze this customer issue:</span>
+<span class="w">    </span><span class="sd">"""You are a helpful support agent for CloudWave SaaS.</span>
 <span class="sd">    </span>
-<span class="sd">    Customer: {customer_name}</span>
-<span class="sd">    Issue: {issue_description}</span>
-<span class="sd">    </span>
-<span class="sd">    Provide a response with:</span>
-<span class="sd">    - Issue classification (bug/feature/question)</span>
-<span class="sd">    - Helpful response text</span>
-<span class="sd">    - Urgency level (1-5)</span>
-<span class="sd">    - Whether to escalate to human</span>
-<span class="sd">    </span>
-<span class="sd">    {format_instructions}"""</span>
+<span class="sd">Customer Issue: {user_issue}</span>
+<span class="sd">Customer Tier: {tier}</span>
+
+<span class="sd">Provide a helpful, professional response."""</span>
 <span class="p">)</span>
 
-<span class="c1"># Add format instructions</span>
-<span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">format_instructions</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">())</span>
+<span class="c1"># 2. Create LLM (swap providers easily: OpenAI, Anthropic, Llama, etc.)</span>
+<span class="c1"># For demo purposes, using a fake LLM with predefined responses</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"Thank you for reporting this issue. Slow dashboard loading can be caused by browser cache. Try clearing your cache (Ctrl+Shift+Del) and reload. If the issue persists, please share your browser version and we'll investigate further."</span>
+<span class="p">])</span>
 
-<span class="c1"># Build chain</span>
+<span class="c1"># 3. Create output parser</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="c1"># 4. Compose chain using LCEL (LangChain Expression Language)</span>
 <span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
 
-<span class="c1"># Test</span>
+<span class="c1"># 5. Invoke with inputs</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
-    <span class="s2">"customer_name"</span><span class="p">:</span> <span class="s2">"Alice"</span><span class="p">,</span>
-    <span class="s2">"issue_description"</span><span class="p">:</span> <span class="s2">"The export button doesn't work"</span>
+    <span class="s2">"user_issue"</span><span class="p">:</span> <span class="s2">"My dashboard is loading slowly"</span><span class="p">,</span>
+    <span class="s2">"tier"</span><span class="p">:</span> <span class="s2">"Enterprise"</span>
 <span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Type: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'issue_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Response: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'response'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Urgency: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'urgency'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🤖 AI Response:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Benefits: Readable, testable, swappable components!"</span><span class="p">)</span>
 </pre></div>
-<p><strong>Why this works:</strong></p>
-<ul>
-<li><code>ChatPromptTemplate</code>: Structured prompts with variable injection</li>
-<li><code>JsonOutputParser</code>: Automatic JSON parsing with validation</li>
-<li>Pipe operator <code>|</code>: Clean chain composition (prompt → LLM → parser)</li>
-<li><code>pydantic</code>: Type-safe output validation</li>
-</ul>
-</details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=00225397">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> When should you use temperature=0.7 vs 0 vs 1?</p>
+<h2 id="%F0%9F%93%9A-Part-2:-Core-Concepts-Deep-Dive">📚 Part 2: Core Concepts Deep Dive<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Core-Concepts-Deep-Dive">¶</a></h2><h3 id="2.1-Prompt-Templates-%E2%80%94-Consistency-at-Scale">2.1 Prompt Templates — Consistency at Scale<a class="anchor-link" href="#2.1-Prompt-Templates-%E2%80%94-Consistency-at-Scale">¶</a></h3><p><strong>Why Templates Matter:</strong></p>
 <ul>
-<li>temperature=0: Deterministic, best for classification and extraction</li>
-<li>temperature=0.7: Balanced creativity and consistency (default good choice)</li>
-<li>temperature=1.0: Creative, good for brainstorming and content generation</li>
+<li>Reusability: Write once, use 10,000 times</li>
+<li>Consistency: Same quality across all interactions</li>
+<li>Version Control: Track prompt improvements</li>
+<li>A/B Testing: Compare prompt variations</li>
 </ul>
-<p><strong>Question 2:</strong> How do you prevent hallucinations?</p>
+<p><strong>Real-World Example:</strong> GitHub Copilot uses prompt templates to generate code consistently for millions of developers.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">PromptTemplate</span><span class="p">,</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">MessagesPlaceholder</span>
+
+<span class="c1"># 🔹 Example 1: Simple String Template</span>
+<span class="n">simple_template</span> <span class="o">=</span> <span class="n">PromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">"Translate this to </span><span class="si">{language}</span><span class="s2">: </span><span class="si">{text}</span><span class="s2">"</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📝 Simple Template:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">simple_template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="s2">"Spanish"</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">"Hello, world!"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 🔹 Example 2: Chat Template with System Message</span>
+<span class="n">chat_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="s2">"You are an expert </span><span class="si">{role}</span><span class="s2">. Be </span><span class="si">{tone}</span><span class="s2">."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"</span><span class="si">{user_input}</span><span class="s2">"</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="n">messages</span> <span class="o">=</span> <span class="n">chat_template</span><span class="o">.</span><span class="n">format_messages</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s2">"Python developer"</span><span class="p">,</span>
+    <span class="n">tone</span><span class="o">=</span><span class="s2">"concise and practical"</span><span class="p">,</span>
+    <span class="n">user_input</span><span class="o">=</span><span class="s2">"How do I read a CSV file?"</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"💬 Chat Template:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 🔹 Example 3: Few-Shot Learning Template</span>
+<span class="n">few_shot_template</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="s2">"Classify customer sentiment as positive, neutral, or negative."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"This product is amazing!"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"positive"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"It's okay, nothing special."</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"neutral"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"Worst purchase ever!"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"assistant"</span><span class="p">,</span> <span class="s2">"negative"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"</span><span class="si">{new_review}</span><span class="s2">"</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Few-Shot Template (with examples):"</span><span class="p">)</span>
+<span class="n">messages</span> <span class="o">=</span> <span class="n">few_shot_template</span><span class="o">.</span><span class="n">format_messages</span><span class="p">(</span>
+    <span class="n">new_review</span><span class="o">=</span><span class="s2">"The interface is intuitive and fast!"</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User review: </span><span class="si">{</span><span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ LLM will learn from examples and classify correctly"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.2-Chains-%E2%80%94-Composing-Complex-Workflows">2.2 Chains — Composing Complex Workflows<a class="anchor-link" href="#2.2-Chains-%E2%80%94-Composing-Complex-Workflows">¶</a></h3><p><strong>LCEL (LangChain Expression Language)</strong> uses the <code>|</code> pipe operator:</p>
+<div class="highlight"><pre><span></span><span class="n">chain</span> <span class="o">=</span> <span class="n">component1</span> <span class="o">|</span> <span class="n">component2</span> <span class="o">|</span> <span class="n">component3</span>
+</pre></div>
+<p>Think of it like Unix pipes: <code>cat file.txt | grep "error" | wc -l</code></p>
+<p><strong>Benefits:</strong></p>
 <ul>
-<li>Use structured outputs (JSON parsing)</li>
-<li>Add "Answer only based on provided information"</li>
-<li>Use few-shot examples in prompts</li>
-<li>Verify against ground truth</li>
+<li>Readable: Left-to-right data flow</li>
+<li>Composable: Mix and match components</li>
+<li>Async-ready: Automatic parallelization</li>
+<li>Streaming: Real-time token generation</li>
 </ul>
-<p><strong>Question 3:</strong> When is a chain not enough?</p>
-<ul>
-<li>When you need to make decisions (use agents)</li>
-<li>When you need to retry/recover (add error handling)</li>
-<li>When you need tool access (use agents with tools)</li>
-</ul>
-<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Build:</strong> An automated email classification system</p>
-<p>Requirements:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span><span class="p">,</span> <span class="n">JsonOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+<span class="c1"># 🔹 Example 1: Simple Linear Chain</span>
+<span class="c1"># Flow: Prompt → LLM → String Output</span>
+
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+    <span class="s2">"Explain </span><span class="si">{concept}</span><span class="s2"> in one sentence for a </span><span class="si">{audience}</span><span class="s2">."</span>
+<span class="p">)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"Machine learning is teaching computers to learn from data instead of explicit programming."</span>
+<span class="p">])</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="n">simple_chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">simple_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"concept"</span><span class="p">:</span> <span class="s2">"machine learning"</span><span class="p">,</span>
+    <span class="s2">"audience"</span><span class="p">:</span> <span class="s2">"5-year-old"</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🔗 Simple Chain Output:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 🔹 Example 2: Structured Output Chain</span>
+<span class="c1"># Flow: Prompt → LLM → JSON Parser → Validated Object</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TicketAnalysis</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Structured analysis of a support ticket."""</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"bug, feature, question, or urgent"</span><span class="p">)</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"1-5, where 5 is highest"</span><span class="p">)</span>
+    <span class="n">sentiment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"positive, neutral, or negative"</span><span class="p">)</span>
+    <span class="n">key_points</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"main issues mentioned"</span><span class="p">)</span>
+    <span class="n">suggested_response</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"draft response"</span><span class="p">)</span>
+
+<span class="n">structured_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">"""Analyze this support ticket:</span>
+
+<span class="sd">Ticket: {ticket_text}</span>
+
+<span class="sd">Provide analysis in JSON format:</span>
+<span class="sd">{{"category": "...", "priority": ..., "sentiment": "...", "key_points": [...], "suggested_response": "..."}}</span>
+<span class="sd">"""</span>
+<span class="p">)</span>
+
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s1">'{"category": "bug", "priority": 4, "sentiment": "negative", "key_points": ["export button broken", "happens on Chrome"], "suggested_response": "Thank you for reporting this. We are investigating the export issue on Chrome browsers and will update you within 24 hours."}'</span>
+<span class="p">])</span>
+
+<span class="n">json_parser</span> <span class="o">=</span> <span class="n">JsonOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">TicketAnalysis</span><span class="p">)</span>
+
+<span class="n">structured_chain</span> <span class="o">=</span> <span class="n">structured_prompt</span> <span class="o">|</span> <span class="n">structured_llm</span> <span class="o">|</span> <span class="n">json_parser</span>
+
+<span class="n">analysis</span> <span class="o">=</span> <span class="n">structured_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"ticket_text"</span><span class="p">:</span> <span class="s2">"The export button doesn't work! I've tried 5 times on Chrome. This is blocking my work."</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 Structured Analysis:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Category: </span><span class="si">{</span><span class="n">analysis</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Priority: </span><span class="si">{</span><span class="n">analysis</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="si">}</span><span class="s2">/5"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sentiment: </span><span class="si">{</span><span class="n">analysis</span><span class="p">[</span><span class="s1">'sentiment'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key Points: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">analysis</span><span class="p">[</span><span class="s1">'key_points'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Response: </span><span class="si">{</span><span class="n">analysis</span><span class="p">[</span><span class="s1">'suggested_response'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Real-Support-Triage-System">🛠️ Part 3: Building a Real Support Triage System<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Real-Support-Triage-System">¶</a></h2><div class="scenario-box">
+<strong>📌 Scenario:</strong> You're building an intelligent ticket triage system that:
 <ol>
-<li>Take email subject + body as input</li>
-<li>Classify: spam, urgent, normal, followup</li>
-<li>Extract action items (if any)</li>
-<li>Generate brief summary</li>
-<li>Test with 5 different emails</li>
+<li>Accepts raw support tickets (email, chat, or web form)</li>
+<li>Classifies tickets by type and urgency</li>
+<li>Extracts key information (error codes, user IDs, steps to reproduce)</li>
+<li>Generates draft responses for common issues</li>
+<li>Routes complex cases to appropriate teams</li>
 </ol>
-<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 2, we'll add <strong>memory</strong> to track conversations and build <strong>agents</strong> that can use tools autonomously.</p>
+</div>
+<h3 id="Step-1:-Define-the-Data-Model">Step 1: Define the Data Model<a class="anchor-link" href="#Step-1:-Define-the-Data-Model">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TicketCategory</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">BUG</span> <span class="o">=</span> <span class="s2">"bug"</span>
+    <span class="n">FEATURE</span> <span class="o">=</span> <span class="s2">"feature_request"</span>
+    <span class="n">QUESTION</span> <span class="o">=</span> <span class="s2">"question"</span>
+    <span class="n">BILLING</span> <span class="o">=</span> <span class="s2">"billing"</span>
+    <span class="n">URGENT</span> <span class="o">=</span> <span class="s2">"urgent"</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TicketPriority</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">LOW</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">MEDIUM</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HIGH</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">CRITICAL</span> <span class="o">=</span> <span class="mi">4</span>
+    <span class="n">EMERGENCY</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SupportTicketTriage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Complete triage analysis of a support ticket."""</span>
+    <span class="n">category</span><span class="p">:</span> <span class="n">TicketCategory</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Ticket classification"</span><span class="p">)</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="n">TicketPriority</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Urgency level (1-5)"</span><span class="p">)</span>
+    <span class="n">sentiment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Customer sentiment: positive, neutral, frustrated, or angry"</span><span class="p">)</span>
+    
+    <span class="c1"># Extracted Information</span>
+    <span class="n">error_code</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Error code if mentioned"</span><span class="p">)</span>
+    <span class="n">affected_feature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Product feature mentioned"</span><span class="p">)</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"User ID if mentioned"</span><span class="p">)</span>
+    
+    <span class="c1"># Analysis</span>
+    <span class="n">key_issues</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Main problems mentioned"</span><span class="p">)</span>
+    <span class="n">reproduction_steps</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"Steps to reproduce (if bug)"</span><span class="p">)</span>
+    
+    <span class="c1"># Recommendations</span>
+    <span class="n">suggested_response</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Draft response to customer"</span><span class="p">)</span>
+    <span class="n">assign_to_team</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"engineering, product, billing, or support"</span><span class="p">)</span>
+    <span class="n">escalate_to_human</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Needs immediate human attention?"</span><span class="p">)</span>
+    
+    <span class="c1"># SLA</span>
+    <span class="n">estimated_resolution_hours</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Expected time to resolve"</span><span class="p">)</span>
+
+<span class="c1"># Test the model</span>
+<span class="n">sample_triage</span> <span class="o">=</span> <span class="n">SupportTicketTriage</span><span class="p">(</span>
+    <span class="n">category</span><span class="o">=</span><span class="n">TicketCategory</span><span class="o">.</span><span class="n">BUG</span><span class="p">,</span>
+    <span class="n">priority</span><span class="o">=</span><span class="n">TicketPriority</span><span class="o">.</span><span class="n">HIGH</span><span class="p">,</span>
+    <span class="n">sentiment</span><span class="o">=</span><span class="s2">"frustrated"</span><span class="p">,</span>
+    <span class="n">error_code</span><span class="o">=</span><span class="s2">"ERR_500"</span><span class="p">,</span>
+    <span class="n">affected_feature</span><span class="o">=</span><span class="s2">"export"</span><span class="p">,</span>
+    <span class="n">user_id</span><span class="o">=</span><span class="s2">"user_12345"</span><span class="p">,</span>
+    <span class="n">key_issues</span><span class="o">=</span><span class="p">[</span><span class="s2">"export fails"</span><span class="p">,</span> <span class="s2">"timeout error"</span><span class="p">],</span>
+    <span class="n">reproduction_steps</span><span class="o">=</span><span class="p">[</span><span class="s2">"Click export button"</span><span class="p">,</span> <span class="s2">"Select CSV format"</span><span class="p">,</span> <span class="s2">"Error appears"</span><span class="p">],</span>
+    <span class="n">suggested_response</span><span class="o">=</span><span class="s2">"We've identified the export timeout issue..."</span><span class="p">,</span>
+    <span class="n">assign_to_team</span><span class="o">=</span><span class="s2">"engineering"</span><span class="p">,</span>
+    <span class="n">escalate_to_human</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">estimated_resolution_hours</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📋 Triage Data Model:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sample_triage</span><span class="o">.</span><span class="n">model_dump_json</span><span class="p">(</span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-2:-Build-the-Triage-Chain">Step 2: Build the Triage Chain<a class="anchor-link" href="#Step-2:-Build-the-Triage-Chain">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonOutputParser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
+
+<span class="c1"># Create sophisticated prompt for ticket analysis</span>
+<span class="n">triage_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
+<span class="w">    </span><span class="sd">"""You are an expert support ticket triage AI for CloudWave SaaS.</span>
+
+<span class="sd">Analyze this support ticket and provide a comprehensive triage assessment.</span>
+
+<span class="sd">TICKET INFORMATION:</span>
+<span class="sd">From: {customer_email}</span>
+<span class="sd">Subject: {subject}</span>
+<span class="sd">Message:</span>
+<span class="sd">{message}</span>
+
+<span class="sd">CUSTOMER CONTEXT:</span>
+<span class="sd">- Plan: {customer_plan}</span>
+<span class="sd">- Account Age: {account_age_days} days</span>
+<span class="sd">- Previous Tickets: {previous_ticket_count}</span>
+
+<span class="sd">INSTRUCTIONS:</span>
+<span class="sd">1. Classify the ticket (bug/feature_request/question/billing/urgent)</span>
+<span class="sd">2. Assign priority (1=low to 5=emergency)</span>
+<span class="sd">3. Assess customer sentiment</span>
+<span class="sd">4. Extract: error codes, affected features, user IDs</span>
+<span class="sd">5. List key issues and reproduction steps (if applicable)</span>
+<span class="sd">6. Draft a professional, helpful response</span>
+<span class="sd">7. Recommend team assignment (engineering/product/billing/support)</span>
+<span class="sd">8. Determine if human escalation is needed</span>
+<span class="sd">9. Estimate resolution time in hours</span>
+
+<span class="sd">RESPONSE FORMAT:</span>
+<span class="sd">{format_instructions}</span>
+
+<span class="sd">Analyze now:"""</span>
+<span class="p">)</span>
+
+<span class="c1"># Create parser with schema</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">JsonOutputParser</span><span class="p">(</span><span class="n">pydantic_object</span><span class="o">=</span><span class="n">SupportTicketTriage</span><span class="p">)</span>
+
+<span class="c1"># Add format instructions to prompt</span>
+<span class="n">triage_prompt</span> <span class="o">=</span> <span class="n">triage_prompt</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+    <span class="n">format_instructions</span><span class="o">=</span><span class="n">parser</span><span class="o">.</span><span class="n">get_format_instructions</span><span class="p">()</span>
+<span class="p">)</span>
+
+<span class="c1"># Create LLM (using fake for demo - replace with real LLM)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+<span class="w">    </span><span class="sd">'''{</span>
+<span class="sd">        "category": "bug",</span>
+<span class="sd">        "priority": 4,</span>
+<span class="sd">        "sentiment": "frustrated",</span>
+<span class="sd">        "error_code": "ERR_TIMEOUT_500",</span>
+<span class="sd">        "affected_feature": "data export",</span>
+<span class="sd">        "user_id": "alice@example.com",</span>
+<span class="sd">        "key_issues": ["export times out after 30 seconds", "affects large datasets", "blocking critical workflow"],</span>
+<span class="sd">        "reproduction_steps": ["Navigate to Analytics dashboard", "Select 'Export to CSV'", "Choose date range &gt; 6 months", "Click Export button", "Wait 30 seconds - timeout occurs"],</span>
+<span class="sd">        "suggested_response": "Thank you for reporting this, Alice. I see you're experiencing timeout issues when exporting large datasets. This is a known issue affecting datasets over 100K rows. Our engineering team is implementing a fix with chunked exports. As a temporary workaround, try exporting smaller date ranges (1-3 months). We'll update you within 24 hours with the permanent fix timeline. We apologize for the disruption to your workflow.",</span>
+<span class="sd">        "assign_to_team": "engineering",</span>
+<span class="sd">        "escalate_to_human": true,</span>
+<span class="sd">        "estimated_resolution_hours": 24</span>
+<span class="sd">    }'''</span>
+<span class="p">])</span>
+
+<span class="c1"># Build the triage chain</span>
+<span class="n">triage_chain</span> <span class="o">=</span> <span class="n">triage_prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Triage chain created!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Components: Prompt → LLM → JSON Parser → Validated Triage Object"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-3:-Test-with-Real-World-Tickets">Step 3: Test with Real-World Tickets<a class="anchor-link" href="#Step-3:-Test-with-Real-World-Tickets">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Simulate a real support ticket</span>
+<span class="n">ticket_input</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"customer_email"</span><span class="p">:</span> <span class="s2">"alice@techcorp.com"</span><span class="p">,</span>
+    <span class="s2">"subject"</span><span class="p">:</span> <span class="s2">"Urgent: Export feature broken for large datasets"</span><span class="p">,</span>
+    <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"""Hi support team,</span>
+<span class="s2">    </span>
+<span class="s2">    I'm trying to export our Q4 analytics data (about 150K rows) and the export keeps timing out after 30 seconds with error ERR_TIMEOUT_500.</span>
+<span class="s2">    </span>
+<span class="s2">    Steps I've tried:</span>
+<span class="s2">    1. Go to Analytics &gt; Data Export</span>
+<span class="s2">    2. Select date range: Oct 1 - Dec 31</span>
+<span class="s2">    3. Choose CSV format</span>
+<span class="s2">    4. Click Export</span>
+<span class="s2">    5. Wait... then timeout error</span>
+<span class="s2">    </span>
+<span class="s2">    This is blocking our quarterly board presentation tomorrow. Please help ASAP!</span>
+<span class="s2">    </span>
+<span class="s2">    Thanks,</span>
+<span class="s2">    Alice</span>
+<span class="s2">    """</span><span class="p">,</span>
+    <span class="s2">"customer_plan"</span><span class="p">:</span> <span class="s2">"Enterprise"</span><span class="p">,</span>
+    <span class="s2">"account_age_days"</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span>
+    <span class="s2">"previous_ticket_count"</span><span class="p">:</span> <span class="mi">2</span>
+<span class="p">}</span>
+
+<span class="c1"># Run triage</span>
+<span class="n">triage_result</span> <span class="o">=</span> <span class="n">triage_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">ticket_input</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎫 TICKET TRIAGE ANALYSIS"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📧 From: </span><span class="si">{</span><span class="n">ticket_input</span><span class="p">[</span><span class="s1">'customer_email'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📌 Subject: </span><span class="si">{</span><span class="n">ticket_input</span><span class="p">[</span><span class="s1">'subject'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 CLASSIFICATION:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Category: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'category'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Priority: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="si">}</span><span class="s2">/5 (</span><span class="si">{</span><span class="s1">'🔴 HIGH'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'🟡 MEDIUM'</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Sentiment: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'sentiment'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🔍 EXTRACTED INFO:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Error Code: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'error_code'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Feature: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'affected_feature'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  User: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🐛 KEY ISSUES:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">issue</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'key_issues'</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">issue</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🔄 REPRODUCTION STEPS:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'reproduction_steps'</span><span class="p">],</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"💬 SUGGESTED RESPONSE:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'suggested_response'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📋 ROUTING:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Assign to: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'assign_to_team'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> team"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Escalate: </span><span class="si">{</span><span class="s1">'🚨 YES - Human review needed'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'escalate_to_human'</span><span class="p">]</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'✅ No'</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ETA: </span><span class="si">{</span><span class="n">triage_result</span><span class="p">[</span><span class="s1">'estimated_resolution_hours'</span><span class="p">]</span><span class="si">}</span><span class="s2"> hours"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Build a Custom Triage Chain</strong>
+<br/><br/>
+Create a triage system for a <strong>different domain</strong>:
+<ul>
+<li><strong>Healthcare:</strong> Triage patient symptoms (urgent/non-urgent)</li>
+<li><strong>E-commerce:</strong> Classify product reviews (return/refund/praise)</li>
+<li><strong>HR:</strong> Screen job applications (qualified/interview/reject)</li>
+</ul>
+<br/>
+<strong>Requirements:</strong>
+<ol>
+<li>Define a Pydantic model for your domain</li>
+<li>Create a prompt template with domain-specific instructions</li>
+<li>Build a chain: Prompt → LLM → Parser</li>
+<li>Test with 3 different inputs</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+<span class="c1"># Hint: Start by defining your Pydantic model</span>
+
+<span class="c1"># class YourTriageModel(BaseModel):</span>
+<span class="c1">#     category: str = Field(...)</span>
+<span class="c1">#     priority: int = Field(...)</span>
+<span class="c1">#     # ... add more fields</span>
+
+<span class="c1"># Then create your prompt, LLM, and chain</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Error Handling and Retries</strong>
+<br/><br/>
+Real LLM APIs can fail. Enhance the triage chain with:
+<ul>
+<li>Try/except error handling</li>
+<li>Retry logic (max 3 attempts)</li>
+<li>Fallback responses when LLM fails</li>
+<li>Logging for debugging</li>
+</ul>
+<br/>
+<strong>Hint:</strong> Use <code>try/except</code> and <code>time.sleep()</code> for exponential backoff.
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># def triage_with_retry(ticket_input, max_retries=3):</span>
+<span class="c1">#     for attempt in range(max_retries):</span>
+<span class="c1">#         try:</span>
+<span class="c1">#             result = triage_chain.invoke(ticket_input)</span>
+<span class="c1">#             return result</span>
+<span class="c1">#         except Exception as e:</span>
+<span class="c1">#             # Log error, wait, retry</span>
+<span class="c1">#             pass</span>
+<span class="c1">#     # Return fallback</span>
+<span class="c1">#     return {"category": "unknown", "escalate_to_human": True}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 3: Multi-Step Chain</strong>
+<br/><br/>
+Build a 2-step workflow:
+<ol>
+<li><strong>Step 1:</strong> Classify ticket (bug/feature/question)</li>
+<li><strong>Step 2:</strong> Based on classification, generate specialized response:
+  <ul>
+<li>Bug → Technical troubleshooting steps</li>
+<li>Feature → Product roadmap information</li>
+<li>Question → Knowledge base article</li>
+</ul>
+</li>
+</ol>
+<br/>
+<strong>Hint:</strong> Use <code>RunnableBranch</code> or conditional logic to route based on step 1 output.
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+<span class="c1"># Step 1: Classify</span>
+<span class="c1"># Step 2: Route to specialized chain based on category</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%A4%94-Reflection-Questions">🤔 Reflection Questions<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-Questions">¶</a></h2><p><strong>Q1: When should you use temperature=0 vs 0.7 vs 1.0?</strong></p>
+<details>
+<summary>Click for answer</summary>
+<ul>
+<li><strong>temperature=0:</strong> Deterministic, best for classification, extraction, structured tasks (e.g., ticket triage)</li>
+<li><strong>temperature=0.7:</strong> Balanced creativity/consistency, good for drafting responses, general Q&amp;A</li>
+<li><strong>temperature=1.0+:</strong> Creative, good for brainstorming, content generation, multiple variations</li>
+</ul>
+<strong>Rule of thumb:</strong> Start at 0.7, lower for precision tasks, raise for creative tasks.
+</details>
+<p><strong>Q2: How do you prevent LLM hallucinations in production?</strong></p>
+<details>
+<summary>Click for answer</summary>
+<ol>
+<li><strong>Structured Outputs:</strong> Use Pydantic models + JSON parsing (constrains format)</li>
+<li><strong>Explicit Instructions:</strong> "Only use information provided. Say 'I don't know' if uncertain."</li>
+<li><strong>Few-Shot Examples:</strong> Show correct behavior in prompts</li>
+<li><strong>Retrieval:</strong> Ground responses in actual data (we'll cover RAG in Week 4)</li>
+<li><strong>Human Review:</strong> For high-stakes decisions, always require human approval</li>
+</ol>
+</details>
+<p><strong>Q3: When should you use Agents instead of Chains?</strong></p>
+<details>
+<summary>Click for answer</summary>
+<strong>Use Chains when:</strong>
+<ul>
+<li>Workflow is predictable (always same steps)</li>
+<li>You want full control over execution</li>
+<li>Performance/cost is critical (chains are faster/cheaper)</li>
+</ul>
+<strong>Use Agents when:</strong>
+<ul>
+<li>LLM needs to decide which tools to use</li>
+<li>Number of steps varies based on input</li>
+<li>Problem requires reasoning and planning</li>
+</ul>
+Example: Ticket triage = Chain (fixed steps). Research task = Agent (dynamic tool use).
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-1-Project:-Email-Triage-System">📝 Week 1 Project: Email Triage System<a class="anchor-link" href="#%F0%9F%93%9D-Week-1-Project:-Email-Triage-System">¶</a></h2><p><strong>Build a complete email triage system that:</strong></p>
+<ol>
+<li><strong>Accepts emails</strong> with subject + body</li>
+<li><strong>Classifies</strong> into categories:<ul>
+<li>Spam (promotional, unsolicited)</li>
+<li>Urgent (requires immediate action)</li>
+<li>Normal (standard priority)</li>
+<li>Follow-up (needs response)</li>
+</ul>
+</li>
+<li><strong>Extracts</strong> action items (deadlines, tasks, requests)</li>
+<li><strong>Generates</strong> brief summary (1-2 sentences)</li>
+<li><strong>Suggests</strong> response (if applicable)</li>
+</ol>
+<p><strong>Deliverables:</strong></p>
+<ul>
+<li>Pydantic model for email analysis</li>
+<li>Triage chain with prompt template</li>
+<li>Test with 5 different emails (include spam, urgent, normal)</li>
+<li>Bonus: Add sentiment analysis</li>
+</ul>
+<p><strong>Evaluation Criteria:</strong></p>
+<ul>
+<li>✅ Correct classification (compare to ground truth)</li>
+<li>✅ Action items extracted accurately</li>
+<li>✅ Summary is concise and relevant</li>
+<li>✅ Code is clean and uses LCEL properly</li>
+</ul>
+<p><strong>Starter Code:</strong></p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Email triage project starter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">EmailTriage</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Complete email analysis."""</span>
+    <span class="n">category</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"spam, urgent, normal, or follow_up"</span><span class="p">)</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"1-5"</span><span class="p">)</span>
+    <span class="c1"># TODO: Add more fields (action_items, summary, sentiment, etc.)</span>
+
+<span class="c1"># TODO: Create prompt template</span>
+<span class="c1"># TODO: Create LLM and parser</span>
+<span class="c1"># TODO: Build chain</span>
+<span class="c1"># TODO: Test with sample emails</span>
+
+<span class="c1"># Sample test emails:</span>
+<span class="n">test_emails</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"boss@company.com"</span><span class="p">,</span>
+        <span class="s2">"subject"</span><span class="p">:</span> <span class="s2">"URGENT: Client demo tomorrow at 9am"</span><span class="p">,</span>
+        <span class="s2">"body"</span><span class="p">:</span> <span class="s2">"We need the slides ready by tonight. Can you send them by 8pm?"</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">"from"</span><span class="p">:</span> <span class="s2">"marketing@spam.com"</span><span class="p">,</span>
+        <span class="s2">"subject"</span><span class="p">:</span> <span class="s2">"🎉 50% OFF - Limited Time Offer!!!"</span><span class="p">,</span>
+        <span class="s2">"body"</span><span class="p">:</span> <span class="s2">"Buy now! Amazing deals! Click here!"</span>
+    <span class="p">},</span>
+    <span class="c1"># Add 3 more diverse examples</span>
+<span class="p">]</span>
+
+<span class="c1"># Your implementation here!</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>LangChain fundamentals:</strong></p>
+<ul>
+<li>Why LangChain &gt; raw LLM APIs (composability, type safety, ecosystem)</li>
+<li>LCEL pipe syntax: <code>prompt | llm | parser</code></li>
+<li>Prompt templates for consistency and reusability</li>
+</ul>
+<p>✅ <strong>Structured outputs:</strong></p>
+<ul>
+<li>Pydantic models for type-safe LLM responses</li>
+<li>JsonOutputParser for automatic validation</li>
+<li>Handling complex nested data structures</li>
+</ul>
+<p>✅ <strong>Real-world application:</strong></p>
+<ul>
+<li>Built production-grade support ticket triage system</li>
+<li>Extracted structured information from unstructured text</li>
+<li>Implemented routing logic and escalation rules</li>
+</ul>
+<p>✅ <strong>Best practices:</strong></p>
+<ul>
+<li>Temperature settings for different use cases</li>
+<li>Preventing hallucinations with constraints</li>
+<li>When to use chains vs agents</li>
+</ul>
+<h2 id="%F0%9F%94%9C-Next-Week:-Memory-&amp;-Conversation">🔜 Next Week: Memory &amp; Conversation<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Memory-&amp;-Conversation">¶</a></h2><p>In Week 2, we'll add <strong>memory</strong> to our chains:</p>
+<ul>
+<li>Conversation history tracking</li>
+<li>Context window management</li>
+<li>Multi-turn dialogues</li>
+<li>Building stateful chatbots</li>
+</ul>
+<p><strong>Preview question:</strong> How would you modify the ticket triage system to remember previous customer interactions?</p>
+<h2 id="%F0%9F%93%9A-Additional-Resources">📚 Additional Resources<a class="anchor-link" href="#%F0%9F%93%9A-Additional-Resources">¶</a></h2><ul>
+<li><a href="https://python.langchain.com/">LangChain Documentation</a></li>
+<li><a href="https://python.langchain.com/docs/expression_language/">LCEL Guide</a></li>
+<li><a href="https://docs.pydantic.dev/">Pydantic Documentation</a></li>
+<li><a href="https://www.promptingguide.ai/">Prompt Engineering Guide</a></li>
+</ul>
+<hr/>
+<p><strong>🎉 Congratulations on completing Week 1!</strong> You're now equipped to build LLM-powered applications with LangChain. See you next week! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    <div></div>
-    <a href="../../langchain/index.html" class="nav-link">Back to LangChain Mastery</a>
-    
-        <a href="week-02-langchain-basics.html" class="nav-link next-link">Next Week →</a>
-        
-</div>
 
 <div class="navigation-footer">
     <div></div>

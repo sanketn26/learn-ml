@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,204 +7714,569 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langgraph/index.html">← Back to LangGraph Workflows</a>
-        <span>•</span>
-        <span>Week 4 of 4</span>
-    </div>
-    
-    <h1>Week 4 — LangGraph Workflows</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-04-human-in-loop.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langgraph langchain openai</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langgraph/notebooks/week-04*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9ad6c6bb">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Week-4-%E2%80%94-Human-in-the-Loop-&amp;-Production">Week 4 — Human-in-the-Loop &amp; Production<a class="anchor-link" href="#Week-4-%E2%80%94-Human-in-the-Loop-&amp;-Production">¶</a></h1><p><strong>Course:</strong> LangGraph for Complex Workflows<br/>
-<strong>Week Focus:</strong> Build workflows that collaborate with humans.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Pause workflows for human review</li>
-<li>Implement approval gates</li>
-<li>Build feedback loops</li>
-<li>Deploy LangGraph to production</li>
-<li>Monitor workflow health</li>
+<strong>Week Focus:</strong> Pause workflows for human decisions and deploy to production.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Pause workflows for human decisions</li>
+<li>Implement approval gates and feedback loops</li>
+<li>Route workflow based on human input</li>
+<li>Deploy interactive workflows at scale</li>
+<li>Handle SLA/timeout requirements</li>
+<li>Monitor human-in-the-loop metrics</li>
 </ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Expense report workflow:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Problem:</strong></p>
+<ul>
+<li>Fully automated workflows sometimes make wrong decisions</li>
+<li>High-stakes decisions need human review</li>
+<li>No good way to integrate humans into LLM workflows</li>
+</ul>
+<p><strong>Human-in-the-Loop Solutions:</strong></p>
 <ol>
-<li>Employee submits report</li>
-<li>AI checks for compliance</li>
-<li>If amount &gt; $5K → Pause for manager review</li>
-<li>Manager approves/rejects</li>
-<li>AI routes to accounting</li>
+<li><strong>Approval Gates:</strong> Pause before critical actions</li>
+<li><strong>Feedback Loops:</strong> Humans provide guidance</li>
+<li><strong>Conditional Routing:</strong> Different paths based on human decision</li>
+<li><strong>Priority Escalation:</strong> Complex cases go to senior reviewers</li>
 </ol>
-<p>This requires human decision points in the graph!</p>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>🛡️ Risk mitigation: Prevent costly automated errors</li>
+<li>⚖️ Compliance: Meet regulatory requirements (finance, healthcare)</li>
+<li>💼 Trust: Users understand decisions are reviewed</li>
+<li>⏱️ Efficiency: 80% fully automated + 20% manual = best of both</li>
+<li>📊 Improvement: Learn from human rejections to improve AI</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3929ced7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.approval-box {</span>
+<span class="s1">    background-color: #e3f2fd;</span>
+<span class="s1">    border-left: 5px solid #2196f3;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.human-box {</span>
+<span class="s1">    background-color: #f3e5f5;</span>
+<span class="s1">    border-left: 5px solid #9c27b0;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=27413c6f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Approval-Gates">🔍 Part 1: Approval Gates<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Approval-Gates">¶</a></h2><div class="approval-box">
+<strong>Approval Gate:</strong> A workflow pause point where a human must review and approve/reject before continuing.
+</div>
+<h3 id="Fully-Automated-(Fast-but-Risky)">Fully Automated (Fast but Risky)<a class="anchor-link" href="#Fully-Automated-(Fast-but-Risky)">¶</a></h3><pre><code>Request → Evaluate → Approve → Execute → Done
+(no checks)       (instant)
+
+Risk: Wrong decisions go live immediately
+</code></pre>
+<h3 id="With-Approval-Gate-(Safer)">With Approval Gate (Safer)<a class="anchor-link" href="#With-Approval-Gate-(Safer)">¶</a></h3><pre><code>Request → Evaluate → 🔴 PAUSE → Human Reviews
+                                    ↓
+                            Approve / Reject / Ask Questions
+                                    ↓
+                              Execute / Cancel
+
+Key benefit: Catch problems before they impact users
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f6d19467">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ApprovalStatus</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PENDING</span> <span class="o">=</span> <span class="s2">"pending"</span>
+    <span class="n">APPROVED</span> <span class="o">=</span> <span class="s2">"approved"</span>
+    <span class="n">REJECTED</span> <span class="o">=</span> <span class="s2">"rejected"</span>
+    <span class="n">NEEDS_INFO</span> <span class="o">=</span> <span class="s2">"needs_info"</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ApprovalRequest</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Represents a workflow pause awaiting human approval."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">details</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">requester</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">=</span> <span class="n">details</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requester</span> <span class="o">=</span> <span class="n">requester</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">PENDING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approved_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approver</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sla_deadline</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">hours</span><span class="o">=</span><span class="mi">24</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">approve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">approver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">APPROVED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approver</span> <span class="o">=</span> <span class="n">approver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approved_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">comment</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✅ </span><span class="si">{</span><span class="n">approver</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">comment</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">reject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">approver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">REJECTED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approver</span> <span class="o">=</span> <span class="n">approver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approved_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❌ </span><span class="si">{</span><span class="n">approver</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">request_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">approver</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">NEEDS_INFO</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approver</span> <span class="o">=</span> <span class="n">approver</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"❓ </span><span class="si">{</span><span class="n">approver</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">question</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_sla_breached</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">sla_deadline</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">time_pending</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span>
+        <span class="n">mins</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span>
+        <span class="k">if</span> <span class="n">mins</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">mins</span><span class="p">)</span><span class="si">}</span><span class="s2">m"</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">mins</span><span class="o">/</span><span class="mi">60</span><span class="p">)</span><span class="si">}</span><span class="s2">h </span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">mins</span><span class="o">%</span><span class="mi">60</span><span class="p">)</span><span class="si">}</span><span class="s2">m"</span>
+
+<span class="c1"># Demo: Approval workflow</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🔴 APPROVAL GATE DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># 1. Workflow generates action to approve</span>
+<span class="n">request</span> <span class="o">=</span> <span class="n">ApprovalRequest</span><span class="p">(</span>
+    <span class="n">action</span><span class="o">=</span><span class="s2">"charge_customer_card"</span><span class="p">,</span>
+    <span class="n">details</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"customer"</span><span class="p">:</span> <span class="s2">"Acme Corp"</span><span class="p">,</span>
+        <span class="s2">"amount"</span><span class="p">:</span> <span class="s2">"$50,000"</span><span class="p">,</span>
+        <span class="s2">"reason"</span><span class="p">:</span> <span class="s2">"Monthly subscription (unusual amount)"</span><span class="p">,</span>
+        <span class="s2">"risk_score"</span><span class="p">:</span> <span class="mf">0.87</span>  <span class="c1"># High risk</span>
+    <span class="p">},</span>
+    <span class="n">requester</span><span class="o">=</span><span class="s2">"billing_agent"</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1️⃣ WORKFLOW PAUSES FOR APPROVAL"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Request ID: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Action: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">action</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Details: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">details</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Status: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   SLA Deadline: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">sla_deadline</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2️⃣ HUMAN REVIEWS"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   ⏳ Waiting for approval..."</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3️⃣ HUMAN PROVIDES FEEDBACK"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">request_info</span><span class="p">(</span><span class="s2">"alice@company.com"</span><span class="p">,</span> <span class="s2">"Is this customer known to us? Check previous orders."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Alice asks: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Status: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4️⃣ WORKFLOW PROVIDES INFO"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">comments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ℹ️ System: Found 50+ previous orders, total value $2M+"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">5️⃣ HUMAN APPROVES"</span><span class="p">)</span>
+<span class="n">request</span><span class="o">.</span><span class="n">approve</span><span class="p">(</span><span class="s2">"alice@company.com"</span><span class="p">,</span> <span class="s2">"Customer is trusted. Proceed."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">comments</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Status: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Time pending: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">time_pending</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ WORKFLOW CONTINUES"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Execute action: charge_customer_card"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Result: Transaction successful"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a29543b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%A4%9D-Part-2:-Human-Feedback-Integration">🤝 Part 2: Human Feedback Integration<a class="anchor-link" href="#%F0%9F%A4%9D-Part-2:-Human-Feedback-Integration">¶</a></h2><div class="human-box">
+<strong>Feedback Loop:</strong> Humans provide guidance that shapes workflow behavior.
+</div>
+<h3 id="Patterns-of-Human-Feedback">Patterns of Human Feedback<a class="anchor-link" href="#Patterns-of-Human-Feedback">¶</a></h3><p><strong>1. Validation:</strong> "Is your decision correct?"</p>
+<pre><code>AI decides → Human validates → Proceed or reconsider
+</code></pre>
+<p><strong>2. Steering:</strong> "Try this approach instead"</p>
+<pre><code>AI tries approach A → Human suggests B → AI re-runs with B
+</code></pre>
+<p><strong>3. Escalation:</strong> "This needs senior review"</p>
+<pre><code>AI + Local reviewer → Complex case → Escalate to director
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e28472b3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Multi-level approval workflow</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ApprovalWorkflow</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Simulate a workflow with escalation rules."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ApprovalRequest</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">submit_for_approval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">ApprovalRequest</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">requests</span><span class="p">[</span><span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📤 Submitted: </span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">action</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">escalate_if_needed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">ApprovalRequest</span><span class="p">,</span> <span class="n">reason</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if request should escalate to higher authority."""</span>
+        <span class="c1"># Escalate if high risk or high value</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"risk_score"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🔺 Escalated: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2"> (risk_score=</span><span class="si">{</span><span class="n">request</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s1">'risk_score'</span><span class="p">]</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="s2">"$"</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"amount"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)):</span>
+            <span class="n">amount</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">details</span><span class="p">[</span><span class="s2">"amount"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"$"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">amount</span> <span class="o">&gt;</span> <span class="mi">100000</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🔺 Escalated: High value transaction ($</span><span class="si">{</span><span class="n">amount</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span>
+
+<span class="c1"># Demo: Multi-level approval</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">🤝 MULTI-LEVEL APPROVAL WORKFLOW"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">ApprovalWorkflow</span><span class="p">()</span>
+
+<span class="c1"># Create diverse requests</span>
+<span class="n">requests_to_process</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">ApprovalRequest</span><span class="p">(</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">"grant_refund"</span><span class="p">,</span>
+        <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">"amount"</span><span class="p">:</span> <span class="s2">"$50"</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">:</span> <span class="s2">"defective product"</span><span class="p">,</span> <span class="s2">"risk_score"</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+        <span class="n">requester</span><span class="o">=</span><span class="s2">"support_agent"</span>
+    <span class="p">),</span>
+    <span class="n">ApprovalRequest</span><span class="p">(</span>
+        <span class="n">action</span><span class="o">=</span><span class="s2">"grant_refund"</span><span class="p">,</span>
+        <span class="n">details</span><span class="o">=</span><span class="p">{</span><span class="s2">"amount"</span><span class="p">:</span> <span class="s2">"$250000"</span><span class="p">,</span> <span class="s2">"reason"</span><span class="p">:</span> <span class="s2">"bulk order"</span><span class="p">,</span> <span class="s2">"risk_score"</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
+        <span class="n">requester</span><span class="o">=</span><span class="s2">"sales_agent"</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">requests_to_process</span><span class="p">:</span>
+    <span class="n">workflow</span><span class="o">.</span><span class="n">submit_for_approval</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">workflow</span><span class="o">.</span><span class="n">escalate_if_needed</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="s2">"High-risk or high-value transaction"</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📌 Request </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Action: </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">action</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Amount: </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'amount'</span><span class="p">,</span><span class="w"> </span><span class="s1">'N/A'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Risk: </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">details</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'risk_score'</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   ⚠️ ESCALATED TO SENIOR REVIEWER"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">approve</span><span class="p">(</span><span class="s2">"auto_approver"</span><span class="p">,</span> <span class="s2">"Auto-approved"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📌 Request </span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">: ✅ AUTO-APPROVED"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 WORKFLOW HISTORY:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">workflow</span><span class="o">.</span><span class="n">get_status</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d61ad585">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%AF-Part-3:-Conditional-Routing">🎯 Part 3: Conditional Routing<a class="anchor-link" href="#%F0%9F%8E%AF-Part-3:-Conditional-Routing">¶</a></h2><h3 id="Decision-Tree-Based-on-Human-Input">Decision Tree Based on Human Input<a class="anchor-link" href="#Decision-Tree-Based-on-Human-Input">¶</a></h3><pre><code>Request
+  ↓
+AI Evaluates
+  ↓
+🔴 Human Reviews
+  ├─ ✅ Approved → Execute
+  ├─ ❌ Rejected → Cancel + Notify
+  ├─ ❓ Needs Info → Request Details → Re-evaluate
+  └─ 🔺 Escalated → Send to Senior → Their Decision
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=230188a6">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Conditional routing based on approval decision</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DecisionRouter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Route workflow based on approval decision."""</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">route</span><span class="p">(</span><span class="n">approval</span><span class="p">:</span> <span class="n">ApprovalRequest</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Determine next action based on approval status."""</span>
+        
+        <span class="k">if</span> <span class="n">approval</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">APPROVED</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"execute_action"</span>
+        
+        <span class="k">elif</span> <span class="n">approval</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">REJECTED</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"cancel_and_notify"</span>
+        
+        <span class="k">elif</span> <span class="n">approval</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">ApprovalStatus</span><span class="o">.</span><span class="n">NEEDS_INFO</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"request_more_info"</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"wait_for_decision"</span>
+
+<span class="c1"># Demo: Routing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">🛤️ CONDITIONAL ROUTING"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Example 1: Approved</span>
+<span class="n">req1</span> <span class="o">=</span> <span class="n">ApprovalRequest</span><span class="p">(</span><span class="s2">"process_order"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"order_id"</span><span class="p">:</span> <span class="s2">"ORD123"</span><span class="p">},</span> <span class="s2">"system"</span><span class="p">)</span>
+<span class="n">req1</span><span class="o">.</span><span class="n">approve</span><span class="p">(</span><span class="s2">"admin"</span><span class="p">,</span> <span class="s2">"Looks good"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📤 Decision: </span><span class="si">{</span><span class="n">req1</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Next step: </span><span class="si">{</span><span class="n">DecisionRouter</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">req1</span><span class="p">)</span><span class="si">}</span><span class="s2"> → Process order immediately"</span><span class="p">)</span>
+
+<span class="c1"># Example 2: Rejected</span>
+<span class="n">req2</span> <span class="o">=</span> <span class="n">ApprovalRequest</span><span class="p">(</span><span class="s2">"refund_request"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"amount"</span><span class="p">:</span> <span class="s2">"$10000"</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">:</span> <span class="mi">50</span><span class="p">},</span> <span class="s2">"system"</span><span class="p">)</span>
+<span class="n">req2</span><span class="o">.</span><span class="n">reject</span><span class="p">(</span><span class="s2">"manager"</span><span class="p">,</span> <span class="s2">"Too many refunds this week"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📤 Decision: </span><span class="si">{</span><span class="n">req2</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Next step: </span><span class="si">{</span><span class="n">DecisionRouter</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">req2</span><span class="p">)</span><span class="si">}</span><span class="s2"> → Notify customer of rejection"</span><span class="p">)</span>
+
+<span class="c1"># Example 3: Needs info</span>
+<span class="n">req3</span> <span class="o">=</span> <span class="n">ApprovalRequest</span><span class="p">(</span><span class="s2">"account_merge"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"accounts"</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span> <span class="s2">"system"</span><span class="p">)</span>
+<span class="n">req3</span><span class="o">.</span><span class="n">request_info</span><span class="p">(</span><span class="s2">"security_team"</span><span class="p">,</span> <span class="s2">"Same person owns both accounts?"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📤 Decision: </span><span class="si">{</span><span class="n">req3</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Next step: </span><span class="si">{</span><span class="n">DecisionRouter</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="n">req3</span><span class="p">)</span><span class="si">}</span><span class="s2"> → Collect additional information"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=796779e2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Build Simple Approval System</strong><br/><br/>
+Create a workflow with basic approval gate:
+<ol>
+<li>Submit request for approval</li>
+<li>Human approves/rejects</li>
+<li>Route to appropriate next step</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e5c1bdbf">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 1: Your simple approval system here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your approval system implementation here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2d95548f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Implement SLA Monitoring</strong><br/><br/>
+Monitor approval SLAs:
+<ol>
+<li>Track pending approvals</li>
+<li>Alert if SLA breached</li>
+<li>Auto-escalate stale requests</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=00c1e6f5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 2: Your SLA monitoring here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your SLA monitoring implementation here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=96436f5b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-4-Project:-Expense-Report-Approval-System">📝 Week 4 Project: Expense Report Approval System<a class="anchor-link" href="#%F0%9F%93%9D-Week-4-Project:-Expense-Report-Approval-System">¶</a></h2><p><strong>Build a complete human-in-the-loop workflow for expense reports.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>Workflow Stages:</strong></p>
+<ol>
+<li><strong>Submit:</strong> Employee submits expenses with receipts</li>
+<li><strong>Validate:</strong> AI checks policy compliance</li>
+<li><strong>Review:</strong> Manager approves/rejects</li>
+<li><strong>Escalate:</strong> High-value or suspicious go to director</li>
+<li><strong>Process:</strong> Approved expenses → payment</li>
+<li><strong>Notify:</strong> Inform employee of outcome</li>
+</ol>
+<p><strong>Human-in-the-Loop Features:</strong></p>
+<ul>
+<li>Managers can approve, reject, or request clarification</li>
+<li>Auto-escalate: &gt;$5000 or risk_score&gt;0.7</li>
+<li>SLA: Manager approval within 48 hours</li>
+<li>Appeal: Employee can ask for reconsideration</li>
+</ul>
+<p><strong>Metrics to Track:</strong></p>
+<ul>
+<li>Approval time (average, p95)</li>
+<li>Approval rate (% approved)</li>
+<li>Escalation rate</li>
+<li>Appeal rate</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a7b93e0e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 4 Project Starter</span>
+
+<span class="c1"># TODO: Build expense report submission</span>
+<span class="c1"># TODO: AI validation of policy compliance</span>
+<span class="c1"># TODO: Manager review workflow</span>
+<span class="c1"># TODO: Auto-escalation rules</span>
+<span class="c1"># TODO: Track SLA metrics</span>
+<span class="c1"># TODO: Test various approval paths</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your expense report approval system here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=ef1e75b1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>Approval Gates:</strong></p>
+<ul>
+<li>Pause workflows for human review</li>
+<li>Prevent automated errors in critical paths</li>
+</ul>
+<p>✅ <strong>Human Feedback:</strong></p>
+<ul>
+<li>Integrate human input into workflow logic</li>
+<li>Escalation rules for complex decisions</li>
+</ul>
+<p>✅ <strong>Conditional Routing:</strong></p>
+<ul>
+<li>Different paths for approve/reject/needs-info</li>
+<li>Dynamic workflow behavior</li>
+</ul>
+<p>✅ <strong>Production Deployment:</strong></p>
+<ul>
+<li>SLA management</li>
+<li>Metrics and monitoring</li>
+<li>Scalable approval infrastructure</li>
+</ul>
+<h2 id="%F0%9F%9A%80-Final-Capstone-Challenge">🚀 Final Capstone Challenge<a class="anchor-link" href="#%F0%9F%9A%80-Final-Capstone-Challenge">¶</a></h2><p><strong>Build an AI-Powered Loan Approval System</strong> combining all 4 weeks:</p>
+<ol>
+<li><strong>Week 1:</strong> State graphs define approval workflow</li>
+<li><strong>Week 2:</strong> Conditional routing based on loan amount</li>
+<li><strong>Week 3:</strong> Persist application state, allow resumption</li>
+<li><strong>Week 4:</strong> Human underwriters approve/deny with feedback</li>
+</ol>
+<hr/>
+<p><strong>🎉 Congratulations on completing LangGraph!</strong> You can now build sophisticated, resilient, human-centered AI workflows. See you in the next course! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-03-human-in-loop.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../langgraph/index.html" class="nav-link">Back to LangGraph Workflows</a>
-    <div></div>
-</div>
 
 <div class="navigation-footer">
     

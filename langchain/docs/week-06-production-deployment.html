@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langchain/notebooks/week-06-production-deployment.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,212 +7714,710 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langchain/index.html">← Back to LangChain Mastery</a>
-        <span>•</span>
-        <span>Week 6 of 6</span>
-    </div>
-    
-    <h1>Week 6 — LangChain Mastery</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-06-production-deployment.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langchain openai python-dotenv</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langchain/notebooks/week-06*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6233c0d2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Week-6-%E2%80%94-Production-&amp;-Deployment">Week 6 — Production &amp; Deployment<a class="anchor-link" href="#Week-6-%E2%80%94-Production-&amp;-Deployment">¶</a></h1><p><strong>Course:</strong> LangChain for AI Applications<br/>
-<strong>Week Focus:</strong> Deploy LangChain applications to production.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Build scalable LangChain services</li>
-<li>Integrate with FastAPI and Flask</li>
-<li>Handle rate limiting and queues</li>
-<li>Deploy to cloud (AWS, GCP, Azure)</li>
+<strong>Week Focus:</strong> Deploy LangChain applications to production at scale.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Build scalable LangChain REST APIs with FastAPI</li>
+<li>Deploy applications with Docker</li>
+<li>Scale to cloud platforms (AWS, GCP, Azure)</li>
+<li>Handle rate limiting and request queues</li>
 <li>Monitor and maintain production systems</li>
+<li>Implement caching and optimization</li>
 </ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Your support bot is ready. Now serve 1000 concurrent users.</p>
-<p>Production concerns:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong></p>
 <ul>
-<li>API latency (must be &lt; 2s)</li>
-<li>Token costs ($$ per request)</li>
-<li>Rate limits (API quotas)</li>
-<li>Fallback when LLM fails</li>
-<li>Logging and monitoring</li>
+<li>Your support bot works perfectly in development</li>
+<li>Now you need to serve 1000 concurrent users</li>
+<li>Handle peak loads (Black Friday = 10x traffic)</li>
+<li>Keep costs reasonable ($$ per request)</li>
+<li>Maintain 99.9% uptime</li>
 </ul>
-<p>Solutions:</p>
+<p><strong>Production Concerns:</strong></p>
+<ol>
+<li><strong>Performance:</strong> Respond in &lt; 2 seconds at 1000 RPS</li>
+<li><strong>Cost:</strong> Optimize token usage ($$ adds up fast)</li>
+<li><strong>Reliability:</strong> Handle failures gracefully</li>
+<li><strong>Scalability:</strong> Auto-scale with traffic</li>
+<li><strong>Monitoring:</strong> Know what's happening in production</li>
+<li><strong>Security:</strong> Protect API, data, credentials</li>
+</ol>
+<p><strong>Solutions:</strong></p>
 <ul>
-<li>Use async chains</li>
-<li>Implement caching</li>
-<li>Add request queues</li>
-<li>Deploy with Docker</li>
-<li>Monitor with Datadog/New Relic</li>
+<li>Async chains and FastAPI for performance</li>
+<li>Caching to reduce API calls</li>
+<li>Request queuing for load smoothing</li>
+<li>Circuit breakers for resilience</li>
+<li>Containerization with Docker</li>
+<li>Cloud deployment with auto-scaling</li>
+<li>Comprehensive monitoring and logging</li>
 </ul>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>📈 Scale: Handle growth without rewrite</li>
+<li>💰 Cost: 50% reduction via caching</li>
+<li>⚡ Speed: &lt; 500ms response time</li>
+<li>🔒 Reliability: 99.9% uptime</li>
+<li>👀 Visibility: Real-time monitoring</li>
+<li>🚀 Faster deployments: CI/CD pipelines</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=87aed174">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.api-box {</span>
+<span class="s1">    background-color: #e3f2fd;</span>
+<span class="s1">    border-left: 5px solid #2196f3;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.scale-box {</span>
+<span class="s1">    background-color: #f3e5f5;</span>
+<span class="s1">    border-left: 5px solid #9c27b0;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f43397c9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%9A%80-Part-1:-Building-REST-APIs-with-FastAPI">🚀 Part 1: Building REST APIs with FastAPI<a class="anchor-link" href="#%F0%9F%9A%80-Part-1:-Building-REST-APIs-with-FastAPI">¶</a></h2><div class="api-box">
+<strong>FastAPI:</strong> Modern, fast Python web framework for building production-ready APIs.
+</div>
+<h3 id="Why-FastAPI?">Why FastAPI?<a class="anchor-link" href="#Why-FastAPI?">¶</a></h3><table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>FastAPI</th>
+<th>Flask</th>
+<th>Django</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Speed</td>
+<td>⚡⚡⚡ Fastest</td>
+<td>⚡ Good</td>
+<td>⚡ Good</td>
+</tr>
+<tr>
+<td>Async</td>
+<td>Native</td>
+<td>Limited</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>Auto</td>
+<td>Manual</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Docs</td>
+<td>Auto</td>
+<td>Manual</td>
+<td>Manual</td>
+</tr>
+<tr>
+<td>Learning</td>
+<td>Easy</td>
+<td>Easy</td>
+<td>Steep</td>
+</tr>
+</tbody>
+</table>
+<h3 id="FastAPI-Example">FastAPI Example<a class="anchor-link" href="#FastAPI-Example">¶</a></h3><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">HTTPException</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ChatRequest</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">context</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ChatResponse</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/chat"</span><span class="p">,</span> <span class="n">response_model</span><span class="o">=</span><span class="n">ChatResponse</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">chat</span><span class="p">(</span><span class="n">request</span><span class="p">:</span> <span class="n">ChatRequest</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Process chat message with LangChain."""</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    
+    <span class="c1"># Your LangChain logic here</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="n">llm</span><span class="o">.</span><span class="n">agenerate</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+    
+    <span class="n">latency</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span>
+    <span class="k">return</span> <span class="n">ChatResponse</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">latency_ms</span><span class="o">=</span><span class="n">latency</span><span class="p">)</span>
+
+<span class="c1"># Run with: uvicorn main:app --reload</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=55adffe1">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Demonstrate API structure</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">APIRequest</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Incoming API request."""</span>
+    <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">message</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="n">datetime</span>
+    <span class="n">user_id</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">APIResponse</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Outgoing API response."""</span>
+    <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">response</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">tokens_used</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">cached</span><span class="p">:</span> <span class="nb">bool</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleCache</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Simple LRU cache for responses."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span><span class="p">:</span>
+            <span class="c1"># Simple FIFO eviction</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"cached_items"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">),</span> <span class="s2">"max_size"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span><span class="p">}</span>
+
+<span class="c1"># Demo: API structure</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🔌 FASTAPI STRUCTURE DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="n">cache</span> <span class="o">=</span> <span class="n">SimpleCache</span><span class="p">(</span><span class="n">max_size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># Simulate requests</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📝 Processing Requests:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Request 1: Cache miss</span>
+<span class="n">req1</span> <span class="o">=</span> <span class="n">APIRequest</span><span class="p">(</span>
+    <span class="n">request_id</span><span class="o">=</span><span class="s2">"req-001"</span><span class="p">,</span>
+    <span class="n">endpoint</span><span class="o">=</span><span class="s2">"/chat"</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="s2">"How do I reset password?"</span><span class="p">,</span>
+    <span class="n">timestamp</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+    <span class="n">user_id</span><span class="o">=</span><span class="s2">"user-123"</span>
+<span class="p">)</span>
+
+<span class="n">cached</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">cached</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"1. </span><span class="si">{</span><span class="n">req1</span><span class="o">.</span><span class="n">request_id</span><span class="si">}</span><span class="s2">: CACHE HIT"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Response: </span><span class="si">{</span><span class="n">cached</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Latency: 1ms (cached)"</span><span class="p">)</span>
+    <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="s2">"Go to Settings &gt; Security &gt; Change Password"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"1. </span><span class="si">{</span><span class="n">req1</span><span class="o">.</span><span class="n">request_id</span><span class="si">}</span><span class="s2">: CACHE MISS"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Message: </span><span class="si">{</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="s2">"Go to Settings &gt; Security &gt; Change Password"</span>
+    <span class="n">cache</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">resp</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Response: </span><span class="si">{</span><span class="n">resp</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Latency: 850ms (API call)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Tokens: 45"</span><span class="p">)</span>
+
+<span class="c1"># Request 2: Same question = cache hit</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. req-002: CACHE HIT"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Message: </span><span class="si">{</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Response: </span><span class="si">{</span><span class="n">cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">req1</span><span class="o">.</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Latency: 2ms (cached)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Tokens: 0 (SAVED!)"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">💾 Cache Statistics:"</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">cache</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Items cached: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'cached_items'</span><span class="p">]</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'max_size'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✅ Benefit: Request 2 was 400x faster and cost-free!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fd1e7214">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%90%B3-Part-2:-Docker-Containerization">🐳 Part 2: Docker Containerization<a class="anchor-link" href="#%F0%9F%90%B3-Part-2:-Docker-Containerization">¶</a></h2><h3 id="Dockerfile-Example">Dockerfile Example<a class="anchor-link" href="#Dockerfile-Example">¶</a></h3><div class="highlight"><pre><span></span><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.10-slim</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+
+<span class="c"># Install dependencies</span>
+<span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="c"># Copy application</span>
+<span class="k">COPY</span><span class="w"> </span>app/<span class="w"> </span>.
+
+<span class="c"># Expose port</span>
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">8000</span>
+
+<span class="c"># Health check</span>
+<span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>10s<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="k">CMD</span><span class="w"> </span>curl<span class="w"> </span>-f<span class="w"> </span>http://localhost:8000/health<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+
+<span class="c"># Run server</span>
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">"uvicorn"</span><span class="p">,</span><span class="w"> </span><span class="s2">"main:app"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--host"</span><span class="p">,</span><span class="w"> </span><span class="s2">"0.0.0.0"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--port"</span><span class="p">,</span><span class="w"> </span><span class="s2">"8000"</span><span class="p">]</span>
+</pre></div>
+<h3 id="Build-&amp;-Run">Build &amp; Run<a class="anchor-link" href="#Build-&amp;-Run">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># Build image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>langchain-app:v1<span class="w"> </span>.
+
+<span class="c1"># Run container</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>langchain-app:v1
+
+<span class="c1"># Push to registry</span>
+docker<span class="w"> </span>push<span class="w"> </span>myregistry.azurecr.io/langchain-app:v1
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b90669a8">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%98%81%EF%B8%8F-Part-3:-Cloud-Deployment">☁️ Part 3: Cloud Deployment<a class="anchor-link" href="#%E2%98%81%EF%B8%8F-Part-3:-Cloud-Deployment">¶</a></h2><div class="scale-box">
+<strong>Cloud Deployment:</strong> Running containers at scale on managed platforms.
+</div>
+<h3 id="Deployment-Options">Deployment Options<a class="anchor-link" href="#Deployment-Options">¶</a></h3><table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>Setup</th>
+<th>Scaling</th>
+<th>Cost</th>
+<th>Best For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AWS ECS</strong></td>
+<td>Medium</td>
+<td>Auto</td>
+<td>Pay-per-use</td>
+<td>High scale</td>
+</tr>
+<tr>
+<td><strong>Google Cloud Run</strong></td>
+<td>Easy</td>
+<td>Auto</td>
+<td>Pay-per-request</td>
+<td>Unpredictable</td>
+</tr>
+<tr>
+<td><strong>Azure Container Instances</strong></td>
+<td>Medium</td>
+<td>Manual</td>
+<td>Hourly</td>
+<td>Predictable</td>
+</tr>
+<tr>
+<td><strong>Heroku</strong></td>
+<td>Very Easy</td>
+<td>Auto</td>
+<td>Fixed</td>
+<td>Rapid prototyping</td>
+</tr>
+<tr>
+<td><strong>Kubernetes</strong></td>
+<td>Hard</td>
+<td>Auto</td>
+<td>Flexible</td>
+<td>Enterprise</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Scaling-Strategy">Scaling Strategy<a class="anchor-link" href="#Scaling-Strategy">¶</a></h3><pre><code>Load Balancer
+    ↓
+[Instance 1] [Instance 2] [Instance 3]
+    ↓           ↓           ↓
+[Cache] [Cache] [Cache]
+    ↓           ↓           ↓
+[Queue] [Queue] [Queue]
+    ↓           ↓           ↓
+           [LLM API]
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=02abde9f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Simulate load balancing and scaling</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">statistics</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LoadBalancer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Distribute requests across multiple instances."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_instances</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instances</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"instance-</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_instances</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_queue</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_instance</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_count</span> <span class="o">=</span> <span class="p">{</span><span class="n">inst</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span> <span class="o">=</span> <span class="p">{</span><span class="n">inst</span><span class="p">:</span> <span class="p">[]</span> <span class="k">for</span> <span class="n">inst</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">route_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Route to least-loaded instance (round-robin)."""</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">current_instance</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_instance</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_instance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_count</span><span class="p">[</span><span class="n">instance</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">instance</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">record_latency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Record response latency for monitoring."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">[</span><span class="n">instance</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">latency_ms</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">should_scale_up</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if we should add more instances."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]]:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="n">avg_latency</span> <span class="o">=</span> <span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">avg_latency</span> <span class="o">&gt;</span> <span class="mi">1500</span>  <span class="c1"># Threshold: 1.5s</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">scale_up</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Add a new instance."""</span>
+        <span class="n">new_instance</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"instance-</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_instance</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request_count</span><span class="p">[</span><span class="n">new_instance</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="p">[</span><span class="n">new_instance</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">new_instance</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get load balancing statistics."""</span>
+        <span class="n">total_requests</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request_count</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        
+        <span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"total_instances"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instances</span><span class="p">),</span>
+            <span class="s2">"total_requests"</span><span class="p">:</span> <span class="n">total_requests</span><span class="p">,</span>
+            <span class="s2">"by_instance"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_count</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="p">}</span>
+        
+        <span class="c1"># Calculate latency stats</span>
+        <span class="n">all_latencies</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">lat_list</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">latencies</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">all_latencies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">lat_list</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">all_latencies</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"avg_latency_ms"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">statistics</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">all_latencies</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">stats</span><span class="p">[</span><span class="s2">"p95_latency_ms"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
+                <span class="nb">sorted</span><span class="p">(</span><span class="n">all_latencies</span><span class="p">)[</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_latencies</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.95</span><span class="p">)],</span> <span class="mi">1</span>
+            <span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">stats</span>
+
+<span class="c1"># Demo: Load balancing and scaling</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"⚖️  LOAD BALANCING &amp; SCALING DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="n">lb</span> <span class="o">=</span> <span class="n">LoadBalancer</span><span class="p">(</span><span class="n">num_instances</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Simulate 20 requests</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📊 Handling Incoming Requests:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">instance</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">route_request</span><span class="p">(</span><span class="sa">f</span><span class="s2">"req-</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">03d</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">latency</span> <span class="o">=</span> <span class="mi">800</span> <span class="o">+</span> <span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># Increasing latency</span>
+    <span class="n">lb</span><span class="o">.</span><span class="n">record_latency</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">latency</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Request </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">instance</span><span class="si">}</span><span class="s2"> (latency: </span><span class="si">{</span><span class="n">latency</span><span class="si">}</span><span class="s2">ms)"</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">lb</span><span class="o">.</span><span class="n">should_scale_up</span><span class="p">():</span>
+        <span class="n">new_instance</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">scale_up</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  🔺 SCALING UP: Added </span><span class="si">{</span><span class="n">new_instance</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📈 LOAD BALANCER STATISTICS:"</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">lb</span><span class="o">.</span><span class="n">get_stats</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="s2">"by_instance"</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">inst</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">inst</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> requests"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=144ee66f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Build FastAPI Server</strong><br/><br/>
+Create a production-ready API:
+<ol>
+<li>Define request/response models</li>
+<li>Implement async handlers</li>
+<li>Add error handling and validation</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c924a11c">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 1: Your FastAPI server here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your production FastAPI server implementation!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f42e4bee">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Create Dockerfile &amp; Deploy</strong><br/><br/>
+Containerize and deploy:
+<ol>
+<li>Write Dockerfile with best practices</li>
+<li>Build and test locally</li>
+<li>Push to Docker registry</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5bff3536">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 2: Your Docker deployment here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your Dockerfile and deployment script!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3d7969c2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-6-Project:-Production-Deployment">📝 Week 6 Project: Production Deployment<a class="anchor-link" href="#%F0%9F%93%9D-Week-6-Project:-Production-Deployment">¶</a></h2><p><strong>Deploy a complete LangChain application to production with full monitoring.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>1. FastAPI Server:</strong></p>
+<ul>
+<li><code>/chat</code> endpoint (POST)</li>
+<li><code>/health</code> endpoint for monitoring</li>
+<li>Input validation with Pydantic</li>
+<li>Async request handling</li>
+<li>Error handling &amp; retries</li>
+</ul>
+<p><strong>2. Caching:</strong></p>
+<ul>
+<li>LRU cache for common queries</li>
+<li>Reduce API calls by 50%+</li>
+<li>Track cache hit rate</li>
+</ul>
+<p><strong>3. Docker Setup:</strong></p>
+<ul>
+<li>Optimized Dockerfile</li>
+<li>Multi-stage builds</li>
+<li>Health checks</li>
+<li>Environment variables</li>
+</ul>
+<p><strong>4. Load Testing:</strong></p>
+<ul>
+<li>Test with 100+ concurrent users</li>
+<li>Measure response times</li>
+<li>Identify bottlenecks</li>
+</ul>
+<p><strong>5. Monitoring:</strong></p>
+<ul>
+<li>Request/response logging</li>
+<li>Performance metrics</li>
+<li>Error tracking</li>
+<li>Uptime monitoring</li>
+</ul>
+<h3 id="Deliverables:">Deliverables:<a class="anchor-link" href="#Deliverables:">¶</a></h3><ul>
+<li>main.py (FastAPI app)</li>
+<li>requirements.txt (dependencies)</li>
+<li>Dockerfile (containerization)</li>
+<li>docker-compose.yml (local testing)</li>
+<li>load_test.py (performance testing)</li>
+<li>deployment_guide.md (cloud deployment)</li>
+<li>monitoring_dashboard.md (production metrics)</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=cd5523d7">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 6 Project Starter</span>
+
+<span class="c1"># TODO: Build FastAPI server with async handlers</span>
+<span class="c1"># TODO: Implement request caching</span>
+<span class="c1"># TODO: Create Docker setup</span>
+<span class="c1"># TODO: Write load testing script</span>
+<span class="c1"># TODO: Set up monitoring</span>
+<span class="c1"># TODO: Deploy to cloud platform</span>
+<span class="c1"># TODO: Document deployment process</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your complete production deployment here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4db32e62">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>REST APIs:</strong></p>
+<ul>
+<li>FastAPI for high-performance servers</li>
+<li>Async request handling</li>
+<li>Automatic validation &amp; documentation</li>
+</ul>
+<p>✅ <strong>Containerization:</strong></p>
+<ul>
+<li>Docker for reproducible deployments</li>
+<li>Multi-stage builds for optimization</li>
+<li>Health checks for reliability</li>
+</ul>
+<p>✅ <strong>Cloud Deployment:</strong></p>
+<ul>
+<li>Scaling strategies</li>
+<li>Load balancing</li>
+<li>Auto-scaling policies</li>
+</ul>
+<p>✅ <strong>Production Operations:</strong></p>
+<ul>
+<li>Monitoring and logging</li>
+<li>Performance optimization</li>
+<li>Cost management</li>
+<li>Continuous deployment</li>
+</ul>
+<h2 id="%F0%9F%8F%86-Capstone:-Your-Complete-LangChain-Mastery">🏆 Capstone: Your Complete LangChain Mastery<a class="anchor-link" href="#%F0%9F%8F%86-Capstone:-Your-Complete-LangChain-Mastery">¶</a></h2><p><strong>You've now mastered the complete LangChain journey:</strong></p>
+<ul>
+<li>✅ Week 1-2: Fundamentals &amp; memory</li>
+<li>✅ Week 3: Agents &amp; tools</li>
+<li>✅ Week 4: RAG &amp; embeddings</li>
+<li>✅ Week 5: Evaluation &amp; debugging</li>
+<li>✅ Week 6: Production &amp; deployment</li>
+</ul>
+<p><strong>Build your final capstone project:</strong></p>
+<ul>
+<li>A complete, production-ready LLM application</li>
+<li>Tested, evaluated, and monitored</li>
+<li>Deployed and scaling in the cloud</li>
+</ul>
+<hr/>
+<p><strong>🎉 Congratulations on completing LangChain Mastery!</strong> You're now ready to build production LLM applications. 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-05-production-deployment.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../langchain/index.html" class="nav-link">Back to LangChain Mastery</a>
-    <div></div>
-</div>
 
 <div class="navigation-footer">
     

@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,212 +7714,586 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langchain/index.html">← Back to LangChain Mastery</a>
-        <span>•</span>
-        <span>Week 5 of 6</span>
-    </div>
-    
-    <h1>Week 5 — LangChain Mastery</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-05-evaluation-debugging.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langchain openai python-dotenv</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langchain/notebooks/week-05*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b2f48519">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Week-5-%E2%80%94-Evaluation-&amp;-Debugging">Week 5 — Evaluation &amp; Debugging<a class="anchor-link" href="#Week-5-%E2%80%94-Evaluation-&amp;-Debugging">¶</a></h1><p><strong>Course:</strong> LangChain for AI Applications<br/>
-<strong>Week Focus:</strong> Test and debug LangChain applications scientifically.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Design evaluation metrics for LLM applications</li>
-<li>Use LangSmith for debugging chains</li>
-<li>Implement unit tests for LLM outputs</li>
-<li>Handle edge cases and failures</li>
-<li>Monitor production performance</li>
-</ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Your support bot works 95% of the time. What about the other 5%?</p>
-<p>Issues to catch:</p>
+<strong>Week Focus:</strong> Test, evaluate, and debug LangChain applications scientifically.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Hallucinated support solutions</li>
-<li>Missing escalation triggers</li>
-<li>Slow response times</li>
-<li>Incorrect tool selection</li>
+<li>Design and implement evaluation metrics for LLM outputs</li>
+<li>Use LangSmith for distributed tracing and debugging</li>
+<li>Build comprehensive test datasets and suites</li>
+<li>Handle edge cases and failure modes</li>
+<li>Monitor application performance in production</li>
+<li>Identify and fix hallucinations and errors</li>
 </ul>
-<p>Solutions:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Problem:</strong></p>
 <ul>
-<li>Define metrics (BLEU, BERTScore for quality)</li>
-<li>Use LangSmith trace visualization</li>
-<li>Create test datasets</li>
-<li>Monitor in production</li>
+<li>Your support bot works 95% of the time</li>
+<li>But what about the other 5%?</li>
+<li>How do you know which cases fail?</li>
+<li>How do you fix them systematically?</li>
 </ul>
+<p><strong>Failures to Catch:</strong></p>
+<ol>
+<li><strong>Hallucinations:</strong> Confident but wrong answers</li>
+<li><strong>Wrong Tool Selection:</strong> Using search when it should escalate</li>
+<li><strong>Slow Responses:</strong> Timeouts or excessive latency</li>
+<li><strong>Missing Context:</strong> Insufficient information retrieved</li>
+<li><strong>Escalation Failures:</strong> Not recognizing when to hand off to humans</li>
+</ol>
+<p><strong>Solutions:</strong></p>
+<ul>
+<li>Define quantitative metrics (accuracy, relevance, latency)</li>
+<li>Trace execution with LangSmith</li>
+<li>Create golden datasets for regression testing</li>
+<li>Monitor production continuously</li>
+<li>Build feedback loops from user interactions</li>
+</ul>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>📈 Quality: Catch issues before users do (95% → 99%+)</li>
+<li>🔍 Visibility: Understand exactly what went wrong</li>
+<li>⚡ Speed: Debug in minutes, not days</li>
+<li>💰 Cost: Reduce wasted API calls on failures</li>
+<li>📊 Continuous improvement: Data-driven optimizations</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=309c1601">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.metric-box {</span>
+<span class="s1">    background-color: #e8f5e9;</span>
+<span class="s1">    border-left: 5px solid #4caf50;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.debug-box {</span>
+<span class="s1">    background-color: #fff3e0;</span>
+<span class="s1">    border-left: 5px solid #ff9800;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=40a0b8c4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Evaluation-Metrics">🔍 Part 1: Evaluation Metrics<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Evaluation-Metrics">¶</a></h2><div class="metric-box">
+<strong>Evaluation Metric:</strong> A quantitative measure of LLM application quality.
+</div>
+<h3 id="Key-Metrics-for-LLM-Applications">Key Metrics for LLM Applications<a class="anchor-link" href="#Key-Metrics-for-LLM-Applications">¶</a></h3><table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Measures</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Accuracy</strong></td>
+<td>% correct answers</td>
+<td>Support bot: Does it solve the problem?</td>
+</tr>
+<tr>
+<td><strong>Relevance</strong></td>
+<td>Info matches query</td>
+<td>Retrieval: Are results on-topic?</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>Response time</td>
+<td>API: Respond in &lt; 2 seconds</td>
+</tr>
+<tr>
+<td><strong>Toxicity</strong></td>
+<td>Harmful language</td>
+<td>Safety: Flag inappropriate content</td>
+</tr>
+<tr>
+<td><strong>Hallucination</strong></td>
+<td>False confidence</td>
+<td>Fact-checking: Verify claims</td>
+</tr>
+<tr>
+<td><strong>Tool Use</strong></td>
+<td>Correct tool selection</td>
+<td>Agents: Use right tool first try?</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Ground-Truth-Datasets">Ground Truth Datasets<a class="anchor-link" href="#Ground-Truth-Datasets">¶</a></h3><p>You need a <strong>golden dataset</strong> of known good outputs:</p>
+<div class="highlight"><pre><span></span><span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"How do I reset my password?"</span><span class="p">,</span>
+        <span class="s2">"expected_output"</span><span class="p">:</span> <span class="s2">"Go to Settings &gt; Security &gt; Change Password"</span><span class="p">,</span>
+        <span class="s2">"expected_tool"</span><span class="p">:</span> <span class="s2">"documentation_search"</span><span class="p">,</span>
+        <span class="s2">"max_latency_ms"</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"I'm extremely angry about my billing"</span><span class="p">,</span>
+        <span class="s2">"expected_output"</span><span class="p">:</span> <span class="s2">"Escalate to human agent"</span><span class="p">,</span>
+        <span class="s2">"expected_tool"</span><span class="p">:</span> <span class="s2">"escalate_to_human"</span><span class="p">,</span>
+        <span class="s2">"max_latency_ms"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=971d6233">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Implement evaluation system</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">EvaluationResult</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PASS</span> <span class="o">=</span> <span class="s2">"pass"</span>
+    <span class="n">FAIL</span> <span class="o">=</span> <span class="s2">"fail"</span>
+    <span class="n">PARTIAL</span> <span class="o">=</span> <span class="s2">"partial"</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TestCase</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Represents a single test case for evaluation."""</span>
+    <span class="n">input_query</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">expected_output</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">expected_tool</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">max_latency_ms</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">EvaluationScore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Stores evaluation results for a test run."""</span>
+    <span class="n">test_case</span><span class="p">:</span> <span class="n">TestCase</span>
+    <span class="n">actual_output</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">actual_tool</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">result</span><span class="p">:</span> <span class="n">EvaluationResult</span>
+    <span class="n">accuracy_score</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># 0-1</span>
+    <span class="n">relevance_score</span><span class="p">:</span> <span class="nb">float</span>  <span class="c1"># 0-1</span>
+    <span class="n">reasoning</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ApplicationEvaluator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Evaluate LLM application quality systematically."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EvaluationScore</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_output_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">actual</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Calculate how closely actual matches expected (0-1)."""</span>
+        <span class="c1"># Simple word overlap scoring</span>
+        <span class="n">expected_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">expected</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="n">actual_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">actual</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">expected_words</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">actual_words</span> <span class="k">else</span> <span class="mf">0.0</span>
+        
+        <span class="n">overlap</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_words</span> <span class="o">&amp;</span> <span class="n">actual_words</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">overlap</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">expected_words</span><span class="p">)</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_tool_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">actual</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if correct tool was selected."""</span>
+        <span class="k">return</span> <span class="n">expected</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="n">actual</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_latency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">max_ms</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if latency is within SLA."""</span>
+        <span class="k">return</span> <span class="n">latency_ms</span> <span class="o">&lt;=</span> <span class="n">max_ms</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_test</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_case</span><span class="p">:</span> <span class="n">TestCase</span><span class="p">,</span> <span class="n">actual_output</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                <span class="n">actual_tool</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">latency_ms</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">EvaluationScore</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Run a single test case evaluation."""</span>
+        
+        <span class="c1"># Score accuracy</span>
+        <span class="n">accuracy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_output_match</span><span class="p">(</span><span class="n">test_case</span><span class="o">.</span><span class="n">expected_output</span><span class="p">,</span> <span class="n">actual_output</span><span class="p">)</span>
+        
+        <span class="c1"># Score tool selection</span>
+        <span class="n">tool_correct</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_tool_selection</span><span class="p">(</span><span class="n">test_case</span><span class="o">.</span><span class="n">expected_tool</span><span class="p">,</span> <span class="n">actual_tool</span><span class="p">)</span>
+        
+        <span class="c1"># Score latency</span>
+        <span class="n">latency_ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_latency</span><span class="p">(</span><span class="n">latency_ms</span><span class="p">,</span> <span class="n">test_case</span><span class="o">.</span><span class="n">max_latency_ms</span><span class="p">)</span>
+        
+        <span class="c1"># Determine overall result</span>
+        <span class="k">if</span> <span class="n">tool_correct</span> <span class="ow">and</span> <span class="n">accuracy</span> <span class="o">&gt;</span> <span class="mf">0.8</span> <span class="ow">and</span> <span class="n">latency_ok</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">PASS</span>
+        <span class="k">elif</span> <span class="n">tool_correct</span> <span class="ow">or</span> <span class="n">accuracy</span> <span class="o">&gt;</span> <span class="mf">0.6</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">PARTIAL</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">FAIL</span>
+        
+        <span class="n">reasoning</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Accuracy: </span><span class="si">{</span><span class="n">accuracy</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">, Tool: </span><span class="si">{</span><span class="s1">'✓'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">tool_correct</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'✗'</span><span class="si">}</span><span class="s2">, Latency: </span><span class="si">{</span><span class="n">latency_ms</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">ms"</span>
+        
+        <span class="n">score</span> <span class="o">=</span> <span class="n">EvaluationScore</span><span class="p">(</span>
+            <span class="n">test_case</span><span class="o">=</span><span class="n">test_case</span><span class="p">,</span>
+            <span class="n">actual_output</span><span class="o">=</span><span class="n">actual_output</span><span class="p">,</span>
+            <span class="n">actual_tool</span><span class="o">=</span><span class="n">actual_tool</span><span class="p">,</span>
+            <span class="n">latency_ms</span><span class="o">=</span><span class="n">latency_ms</span><span class="p">,</span>
+            <span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
+            <span class="n">accuracy_score</span><span class="o">=</span><span class="n">accuracy</span><span class="p">,</span>
+            <span class="n">relevance_score</span><span class="o">=</span><span class="mf">1.0</span> <span class="k">if</span> <span class="n">latency_ok</span> <span class="k">else</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">reasoning</span><span class="o">=</span><span class="n">reasoning</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">score</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get evaluation summary statistics."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"error"</span><span class="p">:</span> <span class="s2">"No test results"</span><span class="p">}</span>
+        
+        <span class="n">passes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">PASS</span><span class="p">)</span>
+        <span class="n">partials</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">PARTIAL</span><span class="p">)</span>
+        <span class="n">fails</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span> <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">EvaluationResult</span><span class="o">.</span><span class="n">FAIL</span><span class="p">)</span>
+        
+        <span class="n">avg_accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">accuracy_score</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">)</span>
+        <span class="n">avg_latency</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">latency_ms</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"total_tests"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">),</span>
+            <span class="s2">"passed"</span><span class="p">:</span> <span class="n">passes</span><span class="p">,</span>
+            <span class="s2">"partial"</span><span class="p">:</span> <span class="n">partials</span><span class="p">,</span>
+            <span class="s2">"failed"</span><span class="p">:</span> <span class="n">fails</span><span class="p">,</span>
+            <span class="s2">"pass_rate"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">passes</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">test_results</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">%"</span><span class="p">,</span>
+            <span class="s2">"avg_accuracy"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">avg_accuracy</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">%"</span><span class="p">,</span>
+            <span class="s2">"avg_latency_ms"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">avg_latency</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">ms"</span>
+        <span class="p">}</span>
+
+<span class="c1"># Demo: Evaluation in action</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 EVALUATION SYSTEM DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="n">evaluator</span> <span class="o">=</span> <span class="n">ApplicationEvaluator</span><span class="p">()</span>
+
+<span class="c1"># Create test cases</span>
+<span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">TestCase</span><span class="p">(</span>
+        <span class="n">input_query</span><span class="o">=</span><span class="s2">"How do I reset my password?"</span><span class="p">,</span>
+        <span class="n">expected_output</span><span class="o">=</span><span class="s2">"Go to Settings &gt; Security &gt; Change Password"</span><span class="p">,</span>
+        <span class="n">expected_tool</span><span class="o">=</span><span class="s2">"documentation_search"</span><span class="p">,</span>
+        <span class="n">max_latency_ms</span><span class="o">=</span><span class="mi">2000</span>
+    <span class="p">),</span>
+    <span class="n">TestCase</span><span class="p">(</span>
+        <span class="n">input_query</span><span class="o">=</span><span class="s2">"I'm extremely angry about billing"</span><span class="p">,</span>
+        <span class="n">expected_output</span><span class="o">=</span><span class="s2">"Escalate to human support"</span><span class="p">,</span>
+        <span class="n">expected_tool</span><span class="o">=</span><span class="s2">"escalate_to_human"</span><span class="p">,</span>
+        <span class="n">max_latency_ms</span><span class="o">=</span><span class="mi">500</span>
+    <span class="p">),</span>
+<span class="p">]</span>
+
+<span class="c1"># Simulate app responses</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">🧪 Running Test Suite...</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Test 1: Good response</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">run_test</span><span class="p">(</span>
+    <span class="n">test_cases</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">actual_output</span><span class="o">=</span><span class="s2">"Go to Settings, then Security, then Change Password"</span><span class="p">,</span>
+    <span class="n">actual_tool</span><span class="o">=</span><span class="s2">"documentation_search"</span><span class="p">,</span>
+    <span class="n">latency_ms</span><span class="o">=</span><span class="mi">1250</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Test 1: </span><span class="si">{</span><span class="n">result1</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">result1</span><span class="o">.</span><span class="n">reasoning</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Test 2: Slow escalation</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">run_test</span><span class="p">(</span>
+    <span class="n">test_cases</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+    <span class="n">actual_output</span><span class="o">=</span><span class="s2">"Escalating to our support team"</span><span class="p">,</span>
+    <span class="n">actual_tool</span><span class="o">=</span><span class="s2">"escalate_to_human"</span><span class="p">,</span>
+    <span class="n">latency_ms</span><span class="o">=</span><span class="mi">3500</span>  <span class="c1"># Too slow!</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Test 2: </span><span class="si">{</span><span class="n">result2</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">result2</span><span class="o">.</span><span class="n">reasoning</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📈 SUMMARY:"</span><span class="p">)</span>
+<span class="n">summary</span> <span class="o">=</span> <span class="n">evaluator</span><span class="o">.</span><span class="n">get_summary</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">summary</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c3bde0b5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%90%9B-Part-2:-Debugging-with-Tracing">🐛 Part 2: Debugging with Tracing<a class="anchor-link" href="#%F0%9F%90%9B-Part-2:-Debugging-with-Tracing">¶</a></h2><div class="debug-box">
+<strong>Tracing:</strong> Recording detailed execution path of LLM application for debugging.
+</div>
+<h3 id="Execution-Trace-Example">Execution Trace Example<a class="anchor-link" href="#Execution-Trace-Example">¶</a></h3><pre><code>User Query: "Help with my order"
+  ├─ 🎯 Router: Determine category
+  │  └─ LLM: "This is about orders"
+  │  └─ Selected Tool: order_lookup
+  │  └─ Latency: 125ms
+  │
+  ├─ 🔍 Order Lookup Tool
+  │  └─ Query: "SELECT * FROM orders WHERE user_id=123"
+  │  └─ Result: Order #ORD456 found
+  │  └─ Latency: 45ms
+  │
+  └─ 📝 Response Generator
+     └─ Template: "Your order {{order_id}} is {{status}}"
+     └─ Output: "Your order ORD456 is shipped"
+     └─ Latency: 87ms
+
+Total Time: 257ms ✓
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6d2fba49">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%AF-Part-3:-Handling-Edge-Cases">🎯 Part 3: Handling Edge Cases<a class="anchor-link" href="#%F0%9F%8E%AF-Part-3:-Handling-Edge-Cases">¶</a></h2><h3 id="Common-Failure-Modes">Common Failure Modes<a class="anchor-link" href="#Common-Failure-Modes">¶</a></h3><p><strong>1. Hallucinations</strong></p>
+<pre><code>Input: "What's in my account?"
+AI Response: "Your account has $999.99" (❌ We have no data for this user)
+Fix: Validate AI output against retrieved data
+</code></pre>
+<p><strong>2. Incorrect Tool Selection</strong></p>
+<pre><code>Input: "I'm canceling my subscription"
+AI chooses: "documentation_search" (❌ Should be "request_cancellation")
+Fix: Validate tool selection matches intent
+</code></pre>
+<p><strong>3. Timeout/Slow Responses</strong></p>
+<pre><code>Input: "Analyze my usage data"
+Response time: 8 seconds (❌ SLA is 2 seconds)
+Fix: Add circuit breaker, fallback to summary
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e2673dcb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Build Test Dataset</strong><br/><br/>
+Create a comprehensive test suite:
+<ol>
+<li>Design 10 test cases covering normal + edge cases</li>
+<li>Define expected outputs and SLAs</li>
+<li>Track ground truth data</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0fa0f46b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 1: Your test dataset here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your comprehensive test dataset implementation!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f04f0635">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Implement Hallucination Detector</strong><br/><br/>
+Detect when AI is making up answers:
+<ol>
+<li>Compare AI output against retrieved facts</li>
+<li>Flag low-confidence claims</li>
+<li>Escalate uncertain responses</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f4fd781d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Exercise 2: Your hallucination detector here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your hallucination detection system!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=74d2ec76">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-5-Project:-Evaluation-Suite">📝 Week 5 Project: Evaluation Suite<a class="anchor-link" href="#%F0%9F%93%9D-Week-5-Project:-Evaluation-Suite">¶</a></h2><p><strong>Build a complete evaluation and debugging system for an LLM application.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>1. Test Dataset Creation:</strong></p>
+<ul>
+<li>Create 50+ test cases covering:<ul>
+<li>Normal happy paths</li>
+<li>Edge cases</li>
+<li>Error conditions</li>
+<li>Performance limits</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. Evaluation Metrics:</strong></p>
+<ul>
+<li>Accuracy: Does output match expected?</li>
+<li>Relevance: Is information on-topic?</li>
+<li>Latency: Response time vs SLA</li>
+<li>Tool correctness: Right tool selected?</li>
+<li>Hallucination detection: Confident but wrong?</li>
+</ul>
+<p><strong>3. Execution Tracing:</strong></p>
+<ul>
+<li>Log every step of execution</li>
+<li>Record timestamps and latencies</li>
+<li>Capture intermediate outputs</li>
+</ul>
+<p><strong>4. Reporting:</strong></p>
+<ul>
+<li>Pass/fail summary</li>
+<li>Failure analysis</li>
+<li>Performance statistics</li>
+<li>Recommendations for improvement</li>
+</ul>
+<h3 id="Deliverables:">Deliverables:<a class="anchor-link" href="#Deliverables:">¶</a></h3><ul>
+<li>test_cases.json with 50+ comprehensive tests</li>
+<li>evaluator.py implementing metrics</li>
+<li>evaluation_report.md with findings</li>
+<li>recommendations.md with fixes</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f51b62cc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 5 Project Starter</span>
+
+<span class="c1"># TODO: Create comprehensive test dataset (50+ cases)</span>
+<span class="c1"># TODO: Implement evaluation metrics (accuracy, relevance, latency, hallucination)</span>
+<span class="c1"># TODO: Build tracing system</span>
+<span class="c1"># TODO: Generate evaluation report with findings</span>
+<span class="c1"># TODO: Create recommendations for improvement</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your comprehensive evaluation suite here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=356bbdda">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>Evaluation Metrics:</strong></p>
+<ul>
+<li>Accuracy, relevance, latency, hallucination</li>
+<li>How to measure LLM quality quantitatively</li>
+</ul>
+<p>✅ <strong>Test Datasets:</strong></p>
+<ul>
+<li>Golden datasets for regression testing</li>
+<li>Edge case coverage</li>
+</ul>
+<p>✅ <strong>Debugging:</strong></p>
+<ul>
+<li>Tracing execution paths</li>
+<li>Finding failure root causes</li>
+</ul>
+<p>✅ <strong>Continuous Improvement:</strong></p>
+<ul>
+<li>Feedback loops from testing</li>
+<li>Data-driven optimization</li>
+</ul>
+<h2 id="%F0%9F%94%9C-Next-Week:-Production-&amp;-Deployment">🔜 Next Week: Production &amp; Deployment<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Production-&amp;-Deployment">¶</a></h2><p>In Week 6, we'll take your tested, debugged applications and deploy them at scale:</p>
+<ul>
+<li>FastAPI servers</li>
+<li>Docker containerization</li>
+<li>Cloud deployment (AWS, GCP, Azure)</li>
+<li>Load balancing and scaling</li>
+<li>Monitoring in production</li>
+</ul>
+<hr/>
+<p><strong>🎉 Great job on Week 5!</strong> Your applications are now bulletproof and debuggable. See you next week! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-04-evaluation-debugging.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../langchain/index.html" class="nav-link">Back to LangChain Mastery</a>
-    
-        <a href="week-06-evaluation-debugging.html" class="nav-link next-link">Next Week →</a>
-        
-</div>
 
 <div class="navigation-footer">
     

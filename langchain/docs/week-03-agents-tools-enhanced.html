@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>week-02-memory-conversation</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>week-03-agents-tools-enhanced</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7680,16 +7680,16 @@ a.anchor-link {
     <div class="breadcrumbs">
         <a href="../../langchain/index.html">← Back to LangChain Mastery</a>
         <span>•</span>
-        <span>Week 2 of 6</span>
+        <span>Week 3 of 6</span>
     </div>
     
-    <h1>Week 2 — LangChain Mastery</h1>
+    <h1>Week 3 — LangChain Mastery</h1>
     
     <div class="header-links">
-        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langchain/notebooks/week-02-memory-conversation.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//home/sanket/workspaces/learn-ml/langchain/notebooks/week-02-memory-conversation.ipynb" class="header-link vscode">Open in VS Code</a>
-        <a href="jupyter://relative-path:langchain/notebooks/week-02-memory-conversation.ipynb" class="header-link jupyter">Open in Jupyter</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-02-memory-conversation.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
+        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langchain/notebooks/week-03-agents-tools-enhanced.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langchain/notebooks/week-03-agents-tools-enhanced.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="jupyter://relative-path:langchain/notebooks/week-03-agents-tools-enhanced.ipynb" class="header-link jupyter">Open in Jupyter</a>
+        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langchain/notebooks/week-03-agents-tools-enhanced.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
 </div>
 
@@ -7710,62 +7710,63 @@ a.anchor-link {
     </p>
     <p>
         <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langchain/notebooks/week-02*.ipynb</code>
+        <code>jupyter notebook langchain/notebooks/week-03*.ipynb</code>
     </p>
 </div>
 
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f394d222">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-2-%E2%80%94-Memory-&amp;-Conversation-Management">Week 2 — Memory &amp; Conversation Management<a class="anchor-link" href="#Week-2-%E2%80%94-Memory-&amp;-Conversation-Management">¶</a></h1><p><strong>Course:</strong> LangChain for AI Applications<br/>
-<strong>Week Focus:</strong> Build stateful conversational AI that remembers context, manages long dialogues, and provides personalized experiences.</p>
+<h1 id="Week-3-%E2%80%94-Agents-&amp;-Tools">Week 3 — Agents &amp; Tools<a class="anchor-link" href="#Week-3-%E2%80%94-Agents-&amp;-Tools">¶</a></h1><p><strong>Course:</strong> LangChain for AI Applications<br/>
+<strong>Week Focus:</strong> Build autonomous agents that can use tools, make decisions, and solve complex multi-step problems.</p>
 <hr/>
 <h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Understand different memory types and their trade-offs</li>
-<li>Implement conversation buffers, windows, and summaries</li>
-<li>Build multi-turn dialogue systems with context retention</li>
-<li>Handle long conversations without hitting token limits</li>
-<li>Manage multiple user sessions simultaneously</li>
-<li>Create personalized shopping assistants that remember preferences</li>
+<li>Understand the ReAct (Reasoning + Acting) framework</li>
+<li>Build custom tools for calculations, searches, and queries</li>
+<li>Create agent executors that autonomously choose tools</li>
+<li>Handle errors and edge cases gracefully</li>
+<li>Implement retry logic and fallback strategies</li>
+<li>Build a research assistant that answers complex questions</li>
 </ul>
-<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Your e-commerce platform processes 50,000 customer conversations daily:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Your data analytics team receives 200+ ad-hoc requests daily:</p>
 <ul>
-<li>60% are product discovery ("show me blue dresses under $100")</li>
-<li>25% are order tracking and modifications</li>
-<li>10% are returns and complaints</li>
-<li>5% are complex multi-step purchases</li>
+<li>45% require database queries ("What were Q3 sales?")</li>
+<li>30% need calculations ("Growth rate vs last year?")</li>
+<li>15% require web research ("Latest industry trends?")</li>
+<li>10% combine multiple sources (SQL + calculations + reports)</li>
 </ul>
-<p><strong>Problems with stateless chatbots:</strong></p>
+<p><strong>Problems with static chains:</strong></p>
 <ul>
-<li>❌ Customer: "Show me laptops" → Bot: "Here are 10 laptops"</li>
-<li>❌ Customer: "The second one looks good" → Bot: "I don't know what you're referring to"</li>
-<li>❌ Customer gets frustrated and abandons cart</li>
+<li>❌ Fixed workflows can't adapt to different questions</li>
+<li>❌ Can't decide which tools to use</li>
+<li>❌ Fail on unexpected inputs</li>
+<li>❌ Require manual intervention</li>
 </ul>
-<p><strong>The Solution:</strong> A shopping assistant with memory that:</p>
+<p><strong>The Solution:</strong> An autonomous research agent that:</p>
 <ol>
-<li><strong>Remembers</strong> previous messages and product views</li>
-<li><strong>Tracks</strong> user preferences (size, color, budget)</li>
-<li><strong>Maintains</strong> shopping cart context</li>
-<li><strong>Personalizes</strong> recommendations based on conversation history</li>
-<li><strong>Summarizes</strong> long conversations to save tokens</li>
+<li><strong>Analyzes</strong> the question and determines required tools</li>
+<li><strong>Executes</strong> tools in the right sequence</li>
+<li><strong>Combines</strong> results from multiple sources</li>
+<li><strong>Handles</strong> errors and tries alternative approaches</li>
+<li><strong>Delivers</strong> comprehensive, accurate answers</li>
 </ol>
 <p><strong>Business Impact:</strong></p>
 <ul>
-<li>🛒 Increase conversion rate from 2.3% → 6.8% (3x improvement)</li>
-<li>💰 Add $2.4M in annual revenue</li>
-<li>⏱️ Reduce avg conversation time from 8 min → 4 min</li>
-<li>😊 Increase CSAT score from 3.2 → 4.5/5</li>
+<li>⏱️ Reduce avg response time from 2 hours → 30 seconds</li>
+<li>💰 Save $180K/year in analyst time</li>
+<li>📊 Answer 10x more queries with same team</li>
+<li>🎯 95% accuracy on routine questions</li>
 </ul>
-<p>Companies like <strong>Amazon, Shopify, and Zalando</strong> use conversational AI with memory to drive billions in sales.</p>
+<p>Companies like <strong>GitHub Copilot, Perplexity, and Replit</strong> use autonomous agents to assist millions of users.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8289b529">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7773,7 +7774,7 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
 <span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
 <span class="s1">&lt;style&gt;</span>
 <span class="s1">.jp-RenderedHTMLCommon h2 {</span>
@@ -7812,6 +7813,20 @@ a.anchor-link {
 <span class="s1">    margin: 20px 0;</span>
 <span class="s1">    border-radius: 5px;</span>
 <span class="s1">}</span>
+<span class="s1">.agent-box {</span>
+<span class="s1">    background-color: #e8f5e9;</span>
+<span class="s1">    border-left: 5px solid #4caf50;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.tool-box {</span>
+<span class="s1">    background-color: #f3e5f5;</span>
+<span class="s1">    border-left: 5px solid #9c27b0;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
 <span class="s1">&lt;/style&gt;</span>
 <span class="s1">'''</span><span class="p">)</span>
 </pre></div>
@@ -7820,190 +7835,129 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=79c213cf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%94%8D-Part-1:-The-Problem-%E2%80%94-Why-Memory-Matters">🔍 Part 1: The Problem — Why Memory Matters<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-The-Problem-%E2%80%94-Why-Memory-Matters">¶</a></h2><h3 id="Stateless-vs-Stateful-Conversations">Stateless vs Stateful Conversations<a class="anchor-link" href="#Stateless-vs-Stateful-Conversations">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+<h2 id="%F0%9F%94%8D-Part-1:-Understanding-the-ReAct-Framework">🔍 Part 1: Understanding the ReAct Framework<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Understanding-the-ReAct-Framework">¶</a></h2><h3 id="The-ReAct-Pattern-(Reasoning-+-Acting)">The ReAct Pattern (Reasoning + Acting)<a class="anchor-link" href="#The-ReAct-Pattern-(Reasoning-+-Acting)">¶</a></h3><p>ReAct is an iterative loop where the agent:</p>
+<ol>
+<li><strong>Thinks</strong> (Reasoning): Analyzes the problem and decides which tool to use</li>
+<li><strong>Acts</strong>: Calls the tool</li>
+<li><strong>Observes</strong>: Sees the result</li>
+<li><strong>Repeats</strong>: Uses the observation to decide next steps</li>
+</ol>
+<p>This cycle continues until the agent reaches a final answer.</p>
+<p><strong>Example ReAct Loop:</strong></p>
+<pre><code>User: "What's the product launch date of the top AI startup funded in 2024?"
 
-<span class="c1"># ❌ Problem: Stateless chatbot (no memory)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ STATELESS CHATBOT (No Memory)</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
+Agent Thinks: "I need to:
+  1. Find the top AI startup funded in 2024
+  2. Get their product launch date
+  Let me search for this information."
 
-<span class="n">stateless_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-    <span class="s2">"You are a shopping assistant. User says: </span><span class="si">{input}</span><span class="s2">"</span>
-<span class="p">)</span>
+Agent Acts: Uses search_web tool
+  Query: "top AI startup funded 2024"
 
-<span class="n">stateless_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">"Here are our top laptops: 1) Dell XPS 13 ($999), 2) MacBook Air ($1099), 3) ThinkPad X1 ($1299)"</span><span class="p">,</span>
-    <span class="s2">"I don't have context about which laptop you're referring to. Could you please specify?"</span><span class="p">,</span>
-    <span class="s2">"I don't see any cart information. What would you like to add?"</span>
-<span class="p">])</span>
+Agent Observes: Gets results about Anthropic Series D, OpenAI funding, etc.
 
-<span class="n">stateless_chain</span> <span class="o">=</span> <span class="n">stateless_prompt</span> <span class="o">|</span> <span class="n">stateless_llm</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+Agent Thinks: "OpenAI's Series D was the largest AI funding round in 2024 ($6.6B).
+  Now I need their product launch date. But they're already established.
+  Let me search for 2024 new AI startups instead."
 
-<span class="c1"># Simulate conversation</span>
-<span class="n">msg1</span> <span class="o">=</span> <span class="n">stateless_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Show me laptops under $1000"</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Show me laptops under $1000"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg1</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+Agent Acts: Uses search_web again
+  Query: "new AI startup 2024 highest funding"
 
-<span class="n">msg2</span> <span class="o">=</span> <span class="n">stateless_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Tell me more about the first one"</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Tell me more about the first one"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg2</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+Agent Observes: Gets results about Mistral AI, Anthropic updates, etc.
 
-<span class="n">msg3</span> <span class="o">=</span> <span class="n">stateless_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Add it to my cart"</span><span class="p">})</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Add it to my cart"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg3</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+Agent Thinks: "I found good information. Mistral AI raised $415M in 2024.
+  They launched their API service in June 2024.
+  This appears to be the most recent top AI startup launch."
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"⚠️ Problem: Bot has no context! Every message is treated independently."</span><span class="p">)</span>
-</pre></div>
+Agent Final Answer: "Mistral AI, funded $415M in 2024, launched their API service in June 2024."
+</code></pre>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1e9f2387">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="The-Solution:-Conversation-Memory">The Solution: Conversation Memory<a class="anchor-link" href="#The-Solution:-Conversation-Memory">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">MessagesPlaceholder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnablePassthrough</span>
-
-<span class="c1"># ✅ Solution: Stateful chatbot (with memory)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ STATEFUL CHATBOT (With Memory)</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span><span class="p">)</span>
-
-<span class="c1"># Create memory</span>
-<span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span><span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">memory_key</span><span class="o">=</span><span class="s2">"history"</span><span class="p">)</span>
-
-<span class="c1"># Create prompt with memory placeholder</span>
-<span class="n">stateful_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
-    <span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="s2">"You are a helpful shopping assistant. Remember the conversation context."</span><span class="p">),</span>
-    <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="s2">"history"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"</span><span class="si">{input}</span><span class="s2">"</span><span class="p">)</span>
-<span class="p">])</span>
-
-<span class="n">stateful_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">"Here are our top laptops under $1000: 1) Dell XPS 13 ($999) - 13.3 inch, 16GB RAM, perfect for travel, 2) HP Pavilion ($849) - 15.6 inch, gaming capable, 3) Lenovo IdeaPad ($749) - budget-friendly, great battery life"</span><span class="p">,</span>
-    <span class="s2">"The Dell XPS 13 ($999) is an excellent choice! It features: Intel i7 processor, 16GB RAM, 512GB SSD, 13.3-inch 4K display, weighs only 2.6 lbs, 12-hour battery life. It's perfect for professionals and students. Would you like to add it to your cart?"</span><span class="p">,</span>
-    <span class="s2">"Great! I've added the Dell XPS 13 ($999) to your cart. Your cart total is $999. Would you like to continue shopping or proceed to checkout?"</span>
-<span class="p">])</span>
-
-<span class="n">stateful_chain</span> <span class="o">=</span> <span class="n">stateful_prompt</span> <span class="o">|</span> <span class="n">stateful_llm</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
-
-<span class="c1"># Helper function to run chain with memory</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">chat_with_memory</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">chain</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
-    <span class="c1"># Load conversation history</span>
-    <span class="n">history</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({})[</span><span class="s2">"history"</span><span class="p">]</span>
-    
-    <span class="c1"># Invoke chain</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
-        <span class="s2">"input"</span><span class="p">:</span> <span class="n">user_input</span><span class="p">,</span>
-        <span class="s2">"history"</span><span class="p">:</span> <span class="n">history</span>
-    <span class="p">})</span>
-    
-    <span class="c1"># Save to memory</span>
-    <span class="n">memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="n">user_input</span><span class="p">},</span> <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response</span><span class="p">})</span>
-    
-    <span class="k">return</span> <span class="n">response</span>
-
-<span class="c1"># Simulate conversation</span>
-<span class="n">msg1</span> <span class="o">=</span> <span class="n">chat_with_memory</span><span class="p">(</span><span class="s2">"Show me laptops under $1000"</span><span class="p">,</span> <span class="n">stateful_chain</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Show me laptops under $1000"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg1</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">msg2</span> <span class="o">=</span> <span class="n">chat_with_memory</span><span class="p">(</span><span class="s2">"Tell me more about the first one"</span><span class="p">,</span> <span class="n">stateful_chain</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Tell me more about the first one"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg2</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">msg3</span> <span class="o">=</span> <span class="n">chat_with_memory</span><span class="p">(</span><span class="s2">"Add it to my cart"</span><span class="p">,</span> <span class="n">stateful_chain</span><span class="p">,</span> <span class="n">memory</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"User: Add it to my cart"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Bot: </span><span class="si">{</span><span class="n">msg3</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Success: Bot maintains context throughout the conversation!"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%93%9A-Part-2:-Memory-Types-Deep-Dive">📚 Part 2: Memory Types Deep Dive<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Memory-Types-Deep-Dive">¶</a></h2><p>LangChain provides multiple memory types, each with different trade-offs:</p>
-<table>
+<h3 id="Why-Agents-Are-More-Powerful-Than-Chains">Why Agents Are More Powerful Than Chains<a class="anchor-link" href="#Why-Agents-Are-More-Powerful-Than-Chains">¶</a></h3><table>
 <thead>
 <tr>
-<th>Memory Type</th>
-<th>Stores</th>
-<th>Token Usage</th>
-<th>Best For</th>
+<th>Aspect</th>
+<th>Chains</th>
+<th>Agents</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>ConversationBufferMemory</strong></td>
-<td>All messages</td>
-<td>High</td>
-<td>Short conversations</td>
+<td><strong>Workflow</strong></td>
+<td>Fixed, predetermined</td>
+<td>Dynamic, adaptive</td>
 </tr>
 <tr>
-<td><strong>ConversationBufferWindowMemory</strong></td>
-<td>Last N messages</td>
-<td>Medium</td>
-<td>Fixed-length dialogues</td>
+<td><strong>Tool Selection</strong></td>
+<td>Predefined order</td>
+<td>LLM decides based on input</td>
 </tr>
 <tr>
-<td><strong>ConversationSummaryMemory</strong></td>
-<td>Summary of conversation</td>
-<td>Low</td>
-<td>Long conversations</td>
+<td><strong>Error Handling</strong></td>
+<td>Fails on unexpected input</td>
+<td>Can reason and retry</td>
 </tr>
 <tr>
-<td><strong>ConversationSummaryBufferMemory</strong></td>
-<td>Summary + recent messages</td>
-<td>Medium</td>
-<td>Hybrid approach</td>
+<td><strong>Complexity</strong></td>
+<td>Simple tasks (2-3 steps)</td>
+<td>Complex multi-step reasoning</td>
+</tr>
+<tr>
+<td><strong>Decision Making</strong></td>
+<td>Manual routing</td>
+<td>Automated decision logic</td>
+</tr>
+<tr>
+<td><strong>Flexibility</strong></td>
+<td>Low - need new chain for variations</td>
+<td>High - same agent handles variations</td>
 </tr>
 </tbody>
 </table>
-<h3 id="2.1-ConversationBufferMemory-%E2%80%94-Store-Everything">2.1 ConversationBufferMemory — Store Everything<a class="anchor-link" href="#2.1-ConversationBufferMemory-%E2%80%94-Store-Everything">¶</a></h3>
+<p><strong>Real-world example:</strong></p>
+<ul>
+<li><strong>Chain approach:</strong> "If customer asks about returns, run returns_chain. If about shipping, run shipping_chain."</li>
+<li><strong>Agent approach:</strong> "Agent analyzes question and decides - does it need product lookup? Customer history? Shipping data? Acts accordingly."</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=bfa3b450">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Part-2:-Building-Tools">📚 Part 2: Building Tools<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Building-Tools">¶</a></h2><div class="tool-box">
+<strong>🛠️ What Are Tools?</strong><br/><br/>
+Tools are functions that agents can call to:
+<ul>
+<li><strong>Query databases:</strong> "SELECT * FROM sales WHERE quarter='Q3'"</li>
+<li><strong>Perform calculations:</strong> Compute growth rates, projections</li>
+<li><strong>Search information:</strong> Web search, document lookup</li>
+<li><strong>Interact with APIs:</strong> Get weather, stock prices, user data</li>
+<li><strong>Retrieve data:</strong> From files, databases, knowledge bases</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e0669682">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8011,47 +7965,122 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Building Custom Tools</span>
 
-<span class="c1"># Stores complete conversation history</span>
-<span class="n">buffer_memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">()</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">tool</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Simulate conversation</span>
-<span class="n">buffer_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"I'm looking for running shoes"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Great! What's your budget and preferred brand?"</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">buffer_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Under $150, prefer Nike or Adidas"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Perfect! Here are 3 options: Nike Pegasus ($140), Adidas Ultraboost ($145), Nike React ($130)"</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">buffer_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Tell me about the Pegasus"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Nike Pegasus ($140) is our bestseller: cushioned sole, breathable mesh, 300-mile durability. Available in sizes 7-13. Popular for daily training and races."</span><span class="p">}</span>
-<span class="p">)</span>
+<span class="c1"># Simulated sales database</span>
+<span class="n">SALES_DATA</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">'region'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'North'</span><span class="p">,</span> <span class="s1">'South'</span><span class="p">,</span> <span class="s1">'East'</span><span class="p">,</span> <span class="s1">'West'</span><span class="p">,</span> <span class="s1">'North'</span><span class="p">,</span> <span class="s1">'South'</span><span class="p">,</span> <span class="s1">'East'</span><span class="p">,</span> <span class="s1">'West'</span><span class="p">],</span>
+    <span class="s1">'quarter'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'Q3'</span><span class="p">,</span> <span class="s1">'Q3'</span><span class="p">,</span> <span class="s1">'Q3'</span><span class="p">,</span> <span class="s1">'Q3'</span><span class="p">,</span> <span class="s1">'Q4'</span><span class="p">,</span> <span class="s1">'Q4'</span><span class="p">,</span> <span class="s1">'Q4'</span><span class="p">,</span> <span class="s1">'Q4'</span><span class="p">],</span>
+    <span class="s1">'revenue'</span><span class="p">:</span> <span class="p">[</span><span class="mi">250000</span><span class="p">,</span> <span class="mi">180000</span><span class="p">,</span> <span class="mi">320000</span><span class="p">,</span> <span class="mi">200000</span><span class="p">,</span> <span class="mi">280000</span><span class="p">,</span> <span class="mi">195000</span><span class="p">,</span> <span class="mi">350000</span><span class="p">,</span> <span class="mi">220000</span><span class="p">],</span>
+    <span class="s1">'deals'</span><span class="p">:</span> <span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">16</span><span class="p">]</span>
+<span class="p">})</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🗄️ ConversationBufferMemory — Stores ALL messages</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">buffer_memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({}))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Pros: Perfect recall, no information loss"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Cons: Token usage grows linearly, expensive for long conversations"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"💡 Use case: Short conversations (&lt; 20 messages), customer support chats"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 Sample Sales Database:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">SALES_DATA</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 🔧 Tool 1: Query Sales Data</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">query_sales_data</span><span class="p">(</span><span class="n">region</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">quarter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Query sales data by region and/or quarter.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        region: Region name (North, South, East, West) or None for all</span>
+<span class="sd">        quarter: Quarter (Q3, Q4, etc.) or None for all</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Formatted sales data matching criteria</span>
+<span class="sd">    """</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">SALES_DATA</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="n">region</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">'region'</span><span class="p">]</span> <span class="o">==</span> <span class="n">region</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">quarter</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s1">'quarter'</span><span class="p">]</span> <span class="o">==</span> <span class="n">quarter</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"No data found for region=</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2">, quarter=</span><span class="si">{</span><span class="n">quarter</span><span class="si">}</span><span class="s2">"</span>
+    
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+
+<span class="c1"># 🔧 Tool 2: Calculate Growth Rate</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_growth_rate</span><span class="p">(</span><span class="n">current_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">previous_value</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Calculate growth rate percentage.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        current_value: Current period value</span>
+<span class="sd">        previous_value: Previous period value</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Growth rate as percentage</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">previous_value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"Cannot calculate growth from zero baseline"</span>
+    
+    <span class="n">growth</span> <span class="o">=</span> <span class="p">((</span><span class="n">current_value</span> <span class="o">-</span> <span class="n">previous_value</span><span class="p">)</span> <span class="o">/</span> <span class="n">previous_value</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"Growth rate: </span><span class="si">{</span><span class="n">growth</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span>
+
+<span class="c1"># 🔧 Tool 3: Aggregate Region Performance</span>
+<span class="nd">@tool</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">aggregate_regional_performance</span><span class="p">(</span><span class="n">quarter</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Get performance summary for all regions in a quarter.</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        quarter: Quarter to analyze (Q3, Q4, etc.)</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Regional performance rankings</span>
+<span class="sd">    """</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">SALES_DATA</span><span class="p">[</span><span class="n">SALES_DATA</span><span class="p">[</span><span class="s1">'quarter'</span><span class="p">]</span> <span class="o">==</span> <span class="n">quarter</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"No data for quarter </span><span class="si">{</span><span class="n">quarter</span><span class="si">}</span><span class="s2">"</span>
+    
+    <span class="n">summary</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'revenue'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">quarter</span><span class="si">}</span><span class="s2"> Regional Performance:</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">summary</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'region'</span><span class="p">]</span><span class="si">:</span><span class="s2">10</span><span class="si">}</span><span class="s2"> | Revenue: $</span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'revenue'</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;10,.0f</span><span class="si">}</span><span class="s2"> | Deals: </span><span class="si">{</span><span class="n">row</span><span class="p">[</span><span class="s1">'deals'</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;3</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+    
+    <span class="n">total_revenue</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'revenue'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">total_deals</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">'deals'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">50</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span>
+    <span class="n">result</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'TOTAL'</span><span class="si">:</span><span class="s2">10</span><span class="si">}</span><span class="s2"> | Revenue: $</span><span class="si">{</span><span class="n">total_revenue</span><span class="si">:</span><span class="s2">&gt;10,.0f</span><span class="si">}</span><span class="s2"> | Deals: </span><span class="si">{</span><span class="n">total_deals</span><span class="si">:</span><span class="s2">&gt;3</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+    
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Tool 1: Query Sales Data"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">query_sales_data</span><span class="p">(</span><span class="n">region</span><span class="o">=</span><span class="s2">"North"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Tool 2: Calculate Growth"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calculate_growth_rate</span><span class="p">(</span><span class="n">current_value</span><span class="o">=</span><span class="mi">280000</span><span class="p">,</span> <span class="n">previous_value</span><span class="o">=</span><span class="mi">250000</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Tool 3: Aggregate Regional Performance"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">aggregate_regional_performance</span><span class="p">(</span><span class="s2">"Q4"</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a3b097e4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="2.2-ConversationBufferWindowMemory-%E2%80%94-Keep-Last-N-Messages">2.2 ConversationBufferWindowMemory — Keep Last N Messages<a class="anchor-link" href="#2.2-ConversationBufferWindowMemory-%E2%80%94-Keep-Last-N-Messages">¶</a></h3>
+<h2 id="%F0%9F%9B%A0%EF%B8%8F-Part-3:-Creating-the-Research-Agent">🛠️ Part 3: Creating the Research Agent<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Part-3:-Creating-the-Research-Agent">¶</a></h2><h3 id="Step-1:-Define-Tools-for-the-Agent">Step 1: Define Tools for the Agent<a class="anchor-link" href="#Step-1:-Define-Tools-for-the-Agent">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3a68cca6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8059,51 +8088,36 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferWindowMemory</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Create a list of tools the agent can use</span>
+<span class="n">tools</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">query_sales_data</span><span class="p">,</span>
+    <span class="n">calculate_growth_rate</span><span class="p">,</span>
+    <span class="n">aggregate_regional_performance</span>
+<span class="p">]</span>
 
-<span class="c1"># Only keeps last 2 interactions (4 messages: 2 human + 2 AI)</span>
-<span class="n">window_memory</span> <span class="o">=</span> <span class="n">ConversationBufferWindowMemory</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="c1"># Add 4 interactions</span>
-<span class="n">window_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Show me laptops"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Here are 5 laptops..."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">window_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Under $1000 please"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Filtered to 3 laptops under $1000..."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">window_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Do you have any in blue?"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Yes! The Dell XPS comes in blue..."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">window_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Add it to cart"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Added Dell XPS (blue) to your cart!"</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🪟 ConversationBufferWindowMemory — Keeps last K=2 interactions</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">window_memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({}))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Pros: Fixed token usage, prevents context overflow"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Cons: Forgets older context (e.g., forgot 'laptops under $1000')"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"💡 Use case: Chatbots with turn-based context (games, forms)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📋 Available Tools:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tool_func</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">🔧 </span><span class="si">{</span><span class="n">tool_func</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Description: </span><span class="si">{</span><span class="n">tool_func</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">tool_func</span><span class="p">,</span> <span class="s1">'args_schema'</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Arguments: </span><span class="si">{</span><span class="n">tool_func</span><span class="o">.</span><span class="n">args_schema</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c8baa14f">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="2.3-ConversationSummaryMemory-%E2%80%94-Summarize-History">2.3 ConversationSummaryMemory — Summarize History<a class="anchor-link" href="#2.3-ConversationSummaryMemory-%E2%80%94-Summarize-History">¶</a></h3>
+<h3 id="Step-2:-Create-the-Agent">Step 2: Create the Agent<a class="anchor-link" href="#Step-2:-Create-the-Agent">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=82058e74">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8111,236 +8125,73 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationSummaryMemory</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">MessagesPlaceholder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.agents</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_react_agent</span><span class="p">,</span> <span class="n">AgentExecutor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
 
-<span class="c1"># Uses LLM to create a running summary of the conversation</span>
-<span class="n">summary_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">"User is shopping for laptops under $1000."</span><span class="p">,</span>
-    <span class="s2">"User is shopping for laptops under $1000. User prefers Dell brand and blue color."</span><span class="p">,</span>
-    <span class="s2">"User is shopping for laptops under $1000. User prefers Dell brand and blue color. User added Dell XPS (blue, $999) to cart."</span>
-<span class="p">])</span>
-
-<span class="n">summary_memory</span> <span class="o">=</span> <span class="n">ConversationSummaryMemory</span><span class="p">(</span><span class="n">llm</span><span class="o">=</span><span class="n">summary_llm</span><span class="p">)</span>
-
-<span class="c1"># Add interactions</span>
-<span class="n">summary_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Show me laptops under $1000"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Here are 3 laptops: Dell XPS ($999), HP Pavilion ($849), Lenovo IdeaPad ($749)"</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">summary_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Do you have the Dell in blue?"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Yes! The Dell XPS is available in blue for $999."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">summary_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Add it to my cart"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Added Dell XPS (blue, $999) to your cart!"</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"📝 ConversationSummaryMemory — Summarizes conversation</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">summary_memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({}))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Pros: Constant token usage, scales to very long conversations"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Cons: Information loss, extra LLM call for summarization"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"💡 Use case: Long support sessions, therapy chatbots, multi-day conversations"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="2.4-ConversationSummaryBufferMemory-%E2%80%94-Best-of-Both-Worlds">2.4 ConversationSummaryBufferMemory — Best of Both Worlds<a class="anchor-link" href="#2.4-ConversationSummaryBufferMemory-%E2%80%94-Best-of-Both-Worlds">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationSummaryBufferMemory</span>
-
-<span class="c1"># Keeps summary + recent messages (when total tokens &lt; max_token_limit)</span>
-<span class="n">hybrid_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">"User requested laptops under $1000. Showed Dell XPS ($999), HP Pavilion ($849), Lenovo IdeaPad ($749)."</span>
-<span class="p">])</span>
-
-<span class="n">hybrid_memory</span> <span class="o">=</span> <span class="n">ConversationSummaryBufferMemory</span><span class="p">(</span>
-    <span class="n">llm</span><span class="o">=</span><span class="n">hybrid_llm</span><span class="p">,</span>
-    <span class="n">max_token_limit</span><span class="o">=</span><span class="mi">100</span>  <span class="c1"># When exceeded, older messages get summarized</span>
-<span class="p">)</span>
-
-<span class="c1"># Add messages</span>
-<span class="n">hybrid_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Show me laptops under $1000"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Here are 3 options: Dell XPS ($999), HP Pavilion ($849), Lenovo IdeaPad ($749)"</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">hybrid_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"What's the battery life on the Dell?"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"The Dell XPS has 12-hour battery life."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">hybrid_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Perfect, add it to cart"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Added Dell XPS ($999) to cart. Total: $999"</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🔀 ConversationSummaryBufferMemory — Hybrid approach</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">hybrid_memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({}))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Pros: Balanced token usage, retains recent context + summary of old"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ Cons: More complex, requires tuning max_token_limit"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"💡 Use case: Production chatbots, default choice for most applications"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Shopping-Assistant">🛠️ Part 3: Building a Shopping Assistant<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Shopping-Assistant">¶</a></h2><div class="scenario-box">
-<strong>📌 Scenario:</strong> Build an e-commerce shopping assistant that:
-<ol>
-<li>Remembers user preferences (size, color, budget)</li>
-<li>Tracks products viewed and added to cart</li>
-<li>Provides personalized recommendations</li>
-<li>Handles multi-step checkout process</li>
-<li>Manages conversations across sessions</li>
-</ol>
-</div>
-<h3 id="Step-1:-Define-Product-Catalog">Step 1: Define Product Catalog<a class="anchor-link" href="#Step-1:-Define-Product-Catalog">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Product database</span>
-<span class="n">PRODUCTS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"laptops"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"L001"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Dell XPS 13"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">999</span><span class="p">,</span> <span class="s2">"specs"</span><span class="p">:</span> <span class="s2">"13.3in, i7, 16GB RAM, 512GB SSD"</span><span class="p">,</span> <span class="s2">"colors"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"silver"</span><span class="p">,</span> <span class="s2">"black"</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"L002"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"MacBook Air"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">1099</span><span class="p">,</span> <span class="s2">"specs"</span><span class="p">:</span> <span class="s2">"13.6in, M2, 8GB RAM, 256GB SSD"</span><span class="p">,</span> <span class="s2">"colors"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"silver"</span><span class="p">,</span> <span class="s2">"gold"</span><span class="p">,</span> <span class="s2">"space gray"</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"L003"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"ThinkPad X1"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">1299</span><span class="p">,</span> <span class="s2">"specs"</span><span class="p">:</span> <span class="s2">"14in, i7, 16GB RAM, 1TB SSD"</span><span class="p">,</span> <span class="s2">"colors"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"black"</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"L004"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"HP Pavilion"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">849</span><span class="p">,</span> <span class="s2">"specs"</span><span class="p">:</span> <span class="s2">"15.6in, i5, 8GB RAM, 512GB SSD"</span><span class="p">,</span> <span class="s2">"colors"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"silver"</span><span class="p">,</span> <span class="s2">"blue"</span><span class="p">]},</span>
-    <span class="p">],</span>
-    <span class="s2">"shoes"</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"S001"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Nike Pegasus"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">140</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"running"</span><span class="p">,</span> <span class="s2">"sizes"</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"S002"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Adidas Ultraboost"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">145</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"running"</span><span class="p">,</span> <span class="s2">"sizes"</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">]},</span>
-        <span class="p">{</span><span class="s2">"id"</span><span class="p">:</span> <span class="s2">"S003"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Nike React"</span><span class="p">,</span> <span class="s2">"price"</span><span class="p">:</span> <span class="mi">130</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"training"</span><span class="p">,</span> <span class="s2">"sizes"</span><span class="p">:</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">]},</span>
-    <span class="p">]</span>
-<span class="p">}</span>
-
-<span class="c1"># Shopping cart</span>
-<span class="n">cart</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"📦 Product Catalog Loaded"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Laptops: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="s1">'laptops'</span><span class="p">])</span><span class="si">}</span><span class="s2"> models"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Shoes: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">PRODUCTS</span><span class="p">[</span><span class="s1">'shoes'</span><span class="p">])</span><span class="si">}</span><span class="s2"> models"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-2:-Build-Shopping-Assistant-with-Memory">Step 2: Build Shopping Assistant with Memory<a class="anchor-link" href="#Step-2:-Build-Shopping-Assistant-with-Memory">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">MessagesPlaceholder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
-
-<span class="c1"># Create memory for shopping session</span>
-<span class="n">shopping_memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span><span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">memory_key</span><span class="o">=</span><span class="s2">"chat_history"</span><span class="p">)</span>
-
-<span class="c1"># Create prompt with conversation history</span>
-<span class="n">shopping_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
-    <span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="s2">"""You are a helpful e-commerce shopping assistant.</span>
+<span class="c1"># Create agent prompt</span>
+<span class="n">agent_prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"system"</span><span class="p">,</span> <span class="s2">"""</span>
+<span class="s2">    You are an expert sales analyst assistant for a SaaS company.</span>
 <span class="s2">    </span>
-<span class="s2">    Available products:</span>
-<span class="s2">    LAPTOPS: Dell XPS 13 ($999), MacBook Air ($1099), ThinkPad X1 ($1299), HP Pavilion ($849)</span>
-<span class="s2">    SHOES: Nike Pegasus ($140), Adidas Ultraboost ($145), Nike React ($130)</span>
+<span class="s2">    Your capabilities:</span>
+<span class="s2">    - Query sales data by region and quarter</span>
+<span class="s2">    - Calculate growth rates and trends</span>
+<span class="s2">    - Provide regional performance analysis</span>
 <span class="s2">    </span>
-<span class="s2">    Remember user preferences and provide personalized recommendations.</span>
-<span class="s2">    Keep track of items in cart and help with checkout."""</span><span class="p">),</span>
+<span class="s2">    When answering questions:</span>
+<span class="s2">    1. Use the tools to gather data</span>
+<span class="s2">    2. Analyze the results</span>
+<span class="s2">    3. Provide clear, actionable insights</span>
+<span class="s2">    4. Always cite specific numbers</span>
+<span class="s2">    </span>
+<span class="s2">    Answer with confidence but admit when you don't have data.</span>
+<span class="s2">    """</span><span class="p">),</span>
     <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="s2">"chat_history"</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"</span><span class="si">{input}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="p">(</span><span class="s2">"human"</span><span class="p">,</span> <span class="s2">"</span><span class="si">{input}</span><span class="s2">"</span><span class="p">),</span>
+    <span class="n">MessagesPlaceholder</span><span class="p">(</span><span class="n">variable_name</span><span class="o">=</span><span class="s2">"agent_scratchpad"</span><span class="p">)</span>
 <span class="p">])</span>
 
-<span class="c1"># Create LLM with realistic responses</span>
-<span class="n">shopping_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
-    <span class="s2">"Great! I can help you find the perfect laptop. What's your budget and main use case (work, gaming, student, etc.)?"</span><span class="p">,</span>
-    <span class="s2">"For work under $1000, I recommend the Dell XPS 13 ($999) - it's our bestseller! It has a 13.3-inch display, Intel i7 processor, 16GB RAM, and 512GB SSD. Perfect for multitasking and productivity. Available in silver or black. Would you like to see detailed specs?"</span><span class="p">,</span>
-    <span class="s2">"The Dell XPS 13 comes in silver and black. Which color do you prefer?"</span><span class="p">,</span>
-    <span class="s2">"Excellent choice! I've added the Dell XPS 13 (silver, $999) to your cart. Your cart total is $999. Would you like to continue shopping or proceed to checkout?"</span><span class="p">,</span>
-    <span class="s2">"Perfect timing! We also have running shoes on sale. The Nike Pegasus ($140) would pair great with your new laptop for staying active. Would you like to see our shoe collection?"</span><span class="p">,</span>
-    <span class="s2">"Here are our top running shoes:</span><span class="se">\n</span><span class="s2">1. Nike Pegasus ($140) - Cushioned, 300-mile durability, sizes 7-12</span><span class="se">\n</span><span class="s2">2. Adidas Ultraboost ($145) - Premium comfort, energy return, sizes 7-13</span><span class="se">\n</span><span class="s2">3. Nike React ($130) - Responsive, training-focused, sizes 8-11</span><span class="se">\n\n</span><span class="s2">What's your shoe size?"</span><span class="p">,</span>
-    <span class="s2">"Great! The Nike Pegasus is available in size 10. I've added it to your cart. Your cart now has:</span><span class="se">\n</span><span class="s2">1. Dell XPS 13 (silver) - $999</span><span class="se">\n</span><span class="s2">2. Nike Pegasus (size 10) - $140</span><span class="se">\n\n</span><span class="s2">Cart total: $1,139. Ready to checkout?"</span><span class="p">,</span>
-    <span class="s2">"Wonderful! Proceeding to checkout with 2 items totaling $1,139. You'll receive free shipping on orders over $1000. Would you like me to apply any promo codes or gift cards?"</span>
+<span class="c1"># Create fake LLM for demo (in production, use OpenAI, Claude, etc.)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"I'll analyze the Q4 performance data for you."</span><span class="p">,</span>
+    <span class="s2">"Let me calculate the growth rate from Q3 to Q4."</span><span class="p">,</span>
+    <span class="s2">"Based on the analysis, the East region showed the strongest performance with $350,000 in Q4 revenue."</span>
 <span class="p">])</span>
 
-<span class="n">shopping_chain</span> <span class="o">=</span> <span class="n">shopping_prompt</span> <span class="o">|</span> <span class="n">shopping_llm</span> <span class="o">|</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+<span class="c1"># Create the agent</span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">create_react_agent</span><span class="p">(</span><span class="n">llm</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">agent_prompt</span><span class="p">)</span>
 
-<span class="c1"># Helper function for shopping conversation</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">shop</span><span class="p">(</span><span class="n">user_input</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Process user input and return assistant response."""</span>
-    <span class="n">history</span> <span class="o">=</span> <span class="n">shopping_memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({})[</span><span class="s2">"chat_history"</span><span class="p">]</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">shopping_chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
-        <span class="s2">"input"</span><span class="p">:</span> <span class="n">user_input</span><span class="p">,</span>
-        <span class="s2">"chat_history"</span><span class="p">:</span> <span class="n">history</span>
-    <span class="p">})</span>
-    <span class="n">shopping_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="n">user_input</span><span class="p">},</span> <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response</span><span class="p">})</span>
-    <span class="k">return</span> <span class="n">response</span>
+<span class="c1"># Create agent executor (handles tool calls and loops)</span>
+<span class="n">agent_executor</span> <span class="o">=</span> <span class="n">AgentExecutor</span><span class="p">(</span>
+    <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span>
+    <span class="n">tools</span><span class="o">=</span><span class="n">tools</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">handle_parsing_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">max_iterations</span><span class="o">=</span><span class="mi">5</span>
+<span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🛒 Shopping Assistant Ready!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Research Agent Created!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Agent type: ReAct (Reasoning + Acting)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Tools available: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">tools</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Max iterations: 5"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d58aee90">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="Step-3:-Interactive-Shopping-Session">Step 3: Interactive Shopping Session<a class="anchor-link" href="#Step-3:-Interactive-Shopping-Session">¶</a></h3>
+<h3 id="Step-3:-Test-the-Agent-with-Real-Queries">Step 3: Test the Agent with Real Queries<a class="anchor-link" href="#Step-3:-Test-the-Agent-with-Real-Queries">¶</a></h3>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0fda2835">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8348,303 +8199,69 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Simulate a complete shopping session</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🛍️ SHOPPING SESSION</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Test Query 1: Simple data lookup</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 QUERY 1: Simple Data Lookup"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"User: What were the Q3 sales for the North region?"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
 
-<span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"I need a laptop for work"</span><span class="p">,</span>
-    <span class="s2">"Under $1000, mainly for emails and video calls"</span><span class="p">,</span>
-    <span class="s2">"What colors does it come in?"</span><span class="p">,</span>
-    <span class="s2">"I'll take the silver one"</span><span class="p">,</span>
-    <span class="s2">"What else do you recommend?"</span><span class="p">,</span>
-    <span class="s2">"Show me running shoes"</span><span class="p">,</span>
-    <span class="s2">"Size 10, I'll take the Pegasus"</span><span class="p">,</span>
-    <span class="s2">"Let's checkout"</span>
-<span class="p">]</span>
+<span class="n">response1</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"What were the Q3 sales for the North region?"</span><span class="p">,</span>
+    <span class="s2">"chat_history"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">"agent_scratchpad"</span><span class="p">:</span> <span class="s2">""</span>
+<span class="p">})</span>
 
-<span class="k">for</span> <span class="n">user_msg</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">👤 Customer: </span><span class="si">{</span><span class="n">user_msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">bot_response</span> <span class="o">=</span> <span class="n">shop</span><span class="p">(</span><span class="n">user_msg</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🤖 Assistant: </span><span class="si">{</span><span class="n">bot_response</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Agent Response: </span><span class="si">{</span><span class="n">response1</span><span class="p">[</span><span class="s1">'output'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">()</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Shopping session completed successfully!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📊 CONVERSATION ANALYSIS:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Total interactions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">conversation</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Products discussed: Laptops, Running shoes"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Items in cart: 2 (Dell XPS 13, Nike Pegasus)"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Cart total: $1,139"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Memory preserved: ✅ Bot remembered context throughout"</span><span class="p">)</span>
+<span class="c1"># Test Query 2: Multi-step analysis</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 QUERY 2: Multi-Step Analysis"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"User: Which region had the best Q4 performance and how much did it grow from Q3?"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">response2</span> <span class="o">=</span> <span class="n">agent_executor</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span>
+    <span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Which region had the best Q4 performance and how much did it grow from Q3?"</span><span class="p">,</span>
+    <span class="s2">"chat_history"</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">"agent_scratchpad"</span><span class="p">:</span> <span class="s2">""</span>
+<span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Agent Response: </span><span class="si">{</span><span class="n">response2</span><span class="p">[</span><span class="s1">'output'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%94%A7-Part-4:-Advanced-Memory-Patterns">🔧 Part 4: Advanced Memory Patterns<a class="anchor-link" href="#%F0%9F%94%A7-Part-4:-Advanced-Memory-Patterns">¶</a></h2><h3 id="4.1-Multi-User-Session-Management">4.1 Multi-User Session Management<a class="anchor-link" href="#4.1-Multi-User-Session-Management">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
-
-<span class="c1"># Store separate memory for each user</span>
-<span class="n">user_sessions</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">get_user_memory</span><span class="p">(</span><span class="n">user_id</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Get or create memory for a specific user."""</span>
-    <span class="k">if</span> <span class="n">user_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">user_sessions</span><span class="p">:</span>
-        <span class="n">user_sessions</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span>
-            <span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">memory_key</span><span class="o">=</span><span class="s2">"history"</span>
-        <span class="p">)</span>
-    <span class="k">return</span> <span class="n">user_sessions</span><span class="p">[</span><span class="n">user_id</span><span class="p">]</span>
-
-<span class="c1"># Simulate multiple users shopping simultaneously</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"👥 MULTI-USER SESSION MANAGEMENT</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-
-<span class="c1"># User A: Shopping for laptops</span>
-<span class="n">memory_a</span> <span class="o">=</span> <span class="n">get_user_memory</span><span class="p">(</span><span class="s2">"user_alice"</span><span class="p">)</span>
-<span class="n">memory_a</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Show me gaming laptops"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Here are top gaming laptops: HP Pavilion ($849) with dedicated GPU..."</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># User B: Shopping for shoes</span>
-<span class="n">memory_b</span> <span class="o">=</span> <span class="n">get_user_memory</span><span class="p">(</span><span class="s2">"user_bob"</span><span class="p">)</span>
-<span class="n">memory_b</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"I need running shoes size 11"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Perfect! Here are size 11 running shoes: Nike Pegasus ($140), Adidas Ultraboost ($145)..."</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># User A continues (context preserved)</span>
-<span class="n">memory_a</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"What's the graphics card on that HP?"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"The HP Pavilion has NVIDIA GTX 1650 graphics card, perfect for gaming and video editing."</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"👤 User Alice's conversation:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">memory_a</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({})[</span><span class="s1">'history'</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">👤 User Bob's conversation:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">memory_b</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({})[</span><span class="s1">'history'</span><span class="p">])</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Each user has isolated conversation history!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Active sessions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_sessions</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="4.2-Persistent-Memory-(Save/Load-Sessions)">4.2 Persistent Memory (Save/Load Sessions)<a class="anchor-link" href="#4.2-Persistent-Memory-(Save/Load-Sessions)">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span><span class="p">,</span> <span class="n">AIMessage</span>
-
-<span class="c1"># Save conversation to disk</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">save_conversation</span><span class="p">(</span><span class="n">memory</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Save conversation history to JSON file."""</span>
-    <span class="n">messages</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">load_memory_variables</span><span class="p">({})[</span><span class="s2">"history"</span><span class="p">]</span>
-    
-    <span class="c1"># Convert messages to serializable format</span>
-    <span class="n">serialized</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages</span><span class="p">:</span>
-        <span class="n">serialized</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
-            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"human"</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">HumanMessage</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"ai"</span><span class="p">,</span>
-            <span class="s2">"content"</span><span class="p">:</span> <span class="n">msg</span><span class="o">.</span><span class="n">content</span>
-        <span class="p">})</span>
-    
-    <span class="n">conversation_data</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"user_id"</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
-        <span class="s2">"messages"</span><span class="p">:</span> <span class="n">serialized</span><span class="p">,</span>
-        <span class="s2">"timestamp"</span><span class="p">:</span> <span class="s2">"2025-11-09T10:30:00"</span>
-    <span class="p">}</span>
-    
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"💾 Saving conversation for </span><span class="si">{</span><span class="n">user_id</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">conversation_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">conversation_data</span>
-
-<span class="c1"># Load conversation from disk</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_conversation</span><span class="p">(</span><span class="n">conversation_data</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Load conversation history from JSON."""</span>
-    <span class="n">memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span><span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">memory_key</span><span class="o">=</span><span class="s2">"history"</span><span class="p">)</span>
-    
-    <span class="n">messages</span> <span class="o">=</span> <span class="n">conversation_data</span><span class="p">[</span><span class="s2">"messages"</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">),</span> <span class="mi">2</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
-            <span class="n">human_msg</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
-            <span class="n">ai_msg</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
-            <span class="n">memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">({</span><span class="s2">"input"</span><span class="p">:</span> <span class="n">human_msg</span><span class="p">},</span> <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">ai_msg</span><span class="p">})</span>
-    
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📂 Loaded conversation for </span><span class="si">{</span><span class="n">conversation_data</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">memory</span>
-
-<span class="c1"># Demo: Save and restore session</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"💾 PERSISTENT MEMORY DEMO</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-
-<span class="c1"># Create a conversation</span>
-<span class="n">session_memory</span> <span class="o">=</span> <span class="n">ConversationBufferMemory</span><span class="p">(</span><span class="n">return_messages</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">memory_key</span><span class="o">=</span><span class="s2">"history"</span><span class="p">)</span>
-<span class="n">session_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"I want a laptop under $1000"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Great! I recommend the Dell XPS 13 ($999) or HP Pavilion ($849)."</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">session_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"Tell me about the Dell"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"The Dell XPS 13 features: 13.3in display, i7 processor, 16GB RAM, 512GB SSD. Excellent for work!"</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="c1"># Save to "disk"</span>
-<span class="n">saved_data</span> <span class="o">=</span> <span class="n">save_conversation</span><span class="p">(</span><span class="n">session_memory</span><span class="p">,</span> <span class="s2">"user_charlie"</span><span class="p">)</span>
-
-<span class="c1"># Later: Restore from "disk"</span>
-<span class="n">restored_memory</span> <span class="o">=</span> <span class="n">load_conversation</span><span class="p">(</span><span class="n">saved_data</span><span class="p">)</span>
-
-<span class="c1"># Continue conversation</span>
-<span class="n">restored_memory</span><span class="o">.</span><span class="n">save_context</span><span class="p">(</span>
-    <span class="p">{</span><span class="s2">"input"</span><span class="p">:</span> <span class="s2">"I'll take the Dell!"</span><span class="p">},</span>
-    <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="s2">"Excellent choice! Added Dell XPS 13 to your cart."</span><span class="p">}</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Conversation restored and continued successfully!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">💡 Use case: Resume conversations across sessions, store in database"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h3 id="4.3-Selective-Memory-%E2%80%94-Remember-Important-Facts">4.3 Selective Memory — Remember Important Facts<a class="anchor-link" href="#4.3-Selective-Memory-%E2%80%94-Remember-Important-Facts">¶</a></h3>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferMemory</span>
-
-<span class="c1"># Store user preferences separately from conversation</span>
-<span class="k">class</span><span class="w"> </span><span class="nc">ShoppingPreferences</span><span class="p">:</span>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">preferred_brands</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">categories</span> <span class="o">=</span> <span class="p">[]</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">"budget"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span>
-            <span class="s2">"preferred_brands"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">preferred_brands</span><span class="p">,</span>
-            <span class="s2">"sizes"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span><span class="p">,</span>
-            <span class="s2">"colors"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">,</span>
-            <span class="s2">"categories"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">categories</span>
-        <span class="p">}</span>
-
-<span class="c1"># Demo: Extract and remember preferences</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 SELECTIVE MEMORY — User Preferences</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-
-<span class="n">prefs</span> <span class="o">=</span> <span class="n">ShoppingPreferences</span><span class="p">()</span>
-
-<span class="c1"># Simulate conversation and extract preferences</span>
-<span class="n">conversation</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">(</span><span class="s2">"I'm looking for laptops under $1200"</span><span class="p">,</span> <span class="s2">"budget"</span><span class="p">,</span> <span class="mi">1200</span><span class="p">),</span>
-    <span class="p">(</span><span class="s2">"I prefer Dell or Apple"</span><span class="p">,</span> <span class="s2">"preferred_brands"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"Dell"</span><span class="p">,</span> <span class="s2">"Apple"</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">"I like silver or space gray"</span><span class="p">,</span> <span class="s2">"colors"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"silver"</span><span class="p">,</span> <span class="s2">"space gray"</span><span class="p">]),</span>
-    <span class="p">(</span><span class="s2">"I wear size 10 shoes"</span><span class="p">,</span> <span class="s2">"sizes"</span><span class="p">,</span> <span class="p">{</span><span class="s2">"shoes"</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span>
-<span class="p">]</span>
-
-<span class="k">for</span> <span class="n">msg</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">conversation</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">👤 Customer: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-    <span class="n">prefs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   🧠 Remembered: </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 USER PREFERENCE PROFILE:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">prefs</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(),</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">💡 Benefits:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"  ✅ Personalized recommendations"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"  ✅ Auto-filter products by preferences"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"  ✅ Reduce repetitive questions"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"  ✅ Improve conversion rates"</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=df3a7c5e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
-<strong>🎯 Exercise 1: Build a Customer Support Bot</strong>
-<br/><br/>
-Create a customer support chatbot that:
-<ul>
-<li>Remembers the customer's issue throughout the conversation</li>
-<li>Tracks troubleshooting steps already tried</li>
-<li>Escalates to human if issue not resolved after 5 turns</li>
-<li>Uses ConversationBufferWindowMemory (k=5)</li>
-</ul>
-<br/>
-<strong>Test scenarios:</strong>
+<strong>🎯 Exercise 1: Build a Customer Support Agent</strong><br/><br/>
+Create an agent that handles customer support queries by:
 <ol>
-<li>Password reset request</li>
-<li>Bug report (export not working)</li>
-<li>Billing question</li>
+<li>Looking up customer account info (account status, plan, usage)</li>
+<li>Checking for known issues related to their problem</li>
+<li>Generating personalized troubleshooting steps</li>
+<li>Recommending upgrades if appropriate</li>
 </ol>
+<br/>
+<strong>Requirements:</strong>
+<ul>
+<li>Create at least 3 tools (lookup_customer, check_issues, generate_solution)</li>
+<li>Create a ReAct agent with these tools</li>
+<li>Test with 3 different support scenarios</li>
+<li>Handle the case where the agent doesn't have enough information</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f07e9f2c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8652,62 +8269,50 @@ Create a customer support chatbot that:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConversationBufferWindowMemory</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="c1"># Step 1: Define customer data (simulated database)</span>
+<span class="n">CUSTOMER_DATA</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># "cust_001": {"name": "...", "plan": "...", "status": "..."},</span>
+    <span class="c1"># Add more customers</span>
+<span class="p">}</span>
 
-<span class="c1"># TODO:</span>
-<span class="c1"># 1. Create memory with k=5</span>
-<span class="c1"># 2. Build support prompt with troubleshooting steps</span>
-<span class="c1"># 3. Track turn count</span>
-<span class="c1"># 4. Escalate if turn_count &gt; 5</span>
+<span class="c1"># Step 2: Create tools for lookup_customer, check_issues, generate_solution</span>
+<span class="c1"># @tool</span>
+<span class="c1"># def lookup_customer(customer_id: str) -&gt; str:</span>
+<span class="c1">#     ...</span>
 
-<span class="c1"># support_memory = ConversationBufferWindowMemory(k=5, return_messages=True)</span>
-<span class="c1"># turn_count = 0</span>
+<span class="c1"># Step 3: Create agent and test</span>
+<span class="c1"># tools = [lookup_customer, check_issues, generate_solution]</span>
+<span class="c1"># agent = create_react_agent(llm, tools, prompt)</span>
+<span class="c1"># agent_executor = AgentExecutor(agent=agent, tools=tools, ...)</span>
 
-<span class="c1"># def support_chat(user_input):</span>
-<span class="c1">#     global turn_count</span>
-<span class="c1">#     turn_count += 1</span>
-<span class="c1">#     </span>
-<span class="c1">#     if turn_count &gt; 5:</span>
-<span class="c1">#         return "I'm escalating this to our specialist team. You'll hear from us within 1 hour."</span>
-<span class="c1">#     </span>
-<span class="c1">#     # Your chain logic here</span>
-<span class="c1">#     pass</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your solution here!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2f71ce0a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <div class="exercise-box">
-<strong>🎯 Exercise 2: Compare Memory Types</strong>
-<br/><br/>
-Test the same 10-turn conversation with different memory types:
+<strong>🎯 Exercise 2: Error Handling &amp; Fallbacks</strong><br/><br/>
+Enhance an agent with:
 <ol>
-<li>ConversationBufferMemory</li>
-<li>ConversationBufferWindowMemory (k=3)</li>
-<li>ConversationSummaryMemory</li>
+<li>Error handling when tools fail</li>
+<li>Fallback tools when primary tools don't work</li>
+<li>Maximum iterations to prevent infinite loops</li>
+<li>Clear error messages to the user</li>
 </ol>
-<br/>
-<strong>Compare:</strong>
-<ul>
-<li>Token usage (approximate by character count)</li>
-<li>Context retention (does it remember turn 1 at turn 10?)</li>
-<li>Response quality</li>
-</ul>
-<br/>
-<strong>Conversation topic:</strong> Planning a vacation (destination, dates, activities, budget)
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3369cf48">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8715,57 +8320,36 @@ Test the same 10-turn conversation with different memory types:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="c1"># def create_agent_with_error_handling(llm, tools, max_retries=3):</span>
+<span class="c1">#     ...</span>
 
-<span class="c1"># Test conversation:</span>
-<span class="n">vacation_conversation</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">"I want to plan a vacation"</span><span class="p">,</span>
-    <span class="s2">"Somewhere tropical with beaches"</span><span class="p">,</span>
-    <span class="s2">"Budget is around $3000"</span><span class="p">,</span>
-    <span class="s2">"I like snorkeling and hiking"</span><span class="p">,</span>
-    <span class="s2">"Prefer July or August"</span><span class="p">,</span>
-    <span class="s2">"How's the weather in Bali during July?"</span><span class="p">,</span>
-    <span class="s2">"What about Maldives?"</span><span class="p">,</span>
-    <span class="s2">"I need a good hotel recommendation"</span><span class="p">,</span>
-    <span class="s2">"Remember, I said I like snorkeling"</span><span class="p">,</span>
-    <span class="s2">"And my budget was $3000 - does this fit?"</span>
-<span class="p">]</span>
-
-<span class="c1"># TODO: Test with each memory type and compare results</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your solution here!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=89568806">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <div class="exercise-box">
-<strong>🎯 Exercise 3: Multi-User Chat Room</strong>
-<br/><br/>
-Build a simple chat room where:
-<ul>
-<li>3 users can chat simultaneously</li>
-<li>Each user has their own conversation memory</li>
-<li>Assistant responds contextually to each user</li>
-<li>Simulate 5 turns per user (15 total messages)</li>
-</ul>
-<br/>
-<strong>Users:</strong>
+<strong>🎯 Exercise 3: Multi-Tool Agent</strong><br/><br/>
+Build an agent with at least 5 different tools that can:
 <ol>
-<li>Alice: Shopping for laptops</li>
-<li>Bob: Looking for running shoes</li>
-<li>Charlie: Asking about return policy</li>
+<li>Query from different data sources</li>
+<li>Combine results intelligently</li>
+<li>Make decisions based on combined data</li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=ab8aa7ba">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8773,157 +8357,106 @@ Build a simple chat room where:
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
-
-<span class="c1"># users = {</span>
-<span class="c1">#     "alice": {"memory": ConversationBufferMemory(return_messages=True)},</span>
-<span class="c1">#     "bob": {"memory": ConversationBufferMemory(return_messages=True)},</span>
-<span class="c1">#     "charlie": {"memory": ConversationBufferMemory(return_messages=True)}</span>
-<span class="c1"># }</span>
-
-<span class="c1"># def chat_room(user_id, message):</span>
-<span class="c1">#     memory = users[user_id]["memory"]</span>
-<span class="c1">#     # Process message with user's memory</span>
-<span class="c1">#     pass</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your solution here!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dda809aa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%A4%94-Reflection-Questions">🤔 Reflection Questions<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-Questions">¶</a></h2><p><strong>Q1: When should you use ConversationSummaryMemory vs ConversationBufferWindowMemory?</strong></p>
+<h2 id="%F0%9F%A4%94-Reflection-Questions">🤔 Reflection Questions<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-Questions">¶</a></h2><p><strong>Q1: When should you use an Agent vs a Chain?</strong></p>
 <details>
 <summary>Click for answer</summary>
-<strong>Use ConversationSummaryMemory when:</strong>
+<strong>Use Chains when:</strong>
 <ul>
-<li>Conversations are very long (50+ turns)</li>
-<li>You need to remember the gist but not exact wording</li>
-<li>Token costs are a concern</li>
-<li>Examples: Therapy chatbots, long support sessions</li>
+<li>Workflow is deterministic (same steps every time)</li>
+<li>You need guaranteed execution order</li>
+<li>Performance/cost is critical</li>
+<li>Examples: Ticket triage, data extraction</li>
 </ul>
-<strong>Use ConversationBufferWindowMemory when:</strong>
+<strong>Use Agents when:</strong>
 <ul>
-<li>Only recent context matters (e.g., form filling)</li>
-<li>Exact wording is important</li>
-<li>Conversations have natural "chapters" or topics</li>
-<li>Examples: Multi-step forms, technical troubleshooting</li>
+<li>Problem requires reasoning and decision-making</li>
+<li>Different inputs need different workflows</li>
+<li>Agent needs to use different tools dynamically</li>
+<li>Examples: Research assistant, customer support, analysis</li>
 </ul>
-<strong>Best practice:</strong> Start with ConversationSummaryBufferMemory (hybrid) for most production use cases.
 </details>
-<p><strong>Q2: How do you handle memory for anonymous users who later log in?</strong></p>
+<p><strong>Q2: How do you prevent agent loops/infinite execution?</strong></p>
 <details>
 <summary>Click for answer</summary>
-<strong>Pattern: Session Migration</strong>
 <ol>
-<li><strong>Anonymous:</strong> Store memory with session_id (e.g., UUID)</li>
-<li><strong>Login:</strong> Migrate session_id memory to user_id</li>
-<li><strong>Merge:</strong> If user has existing history, append new conversation</li>
+<li><strong>max_iterations:</strong> Set hard limit on iteration count</li>
+<li><strong>timeout:</strong> Set time limits on tool execution</li>
+<li><strong>stopping conditions:</strong> Define when agent should stop</li>
+<li><strong>memory:</strong> Track what the agent has already tried</li>
+<li><strong>clear tool outputs:</strong> When tools return "done", agent should stop</li>
 </ol>
-<br/>
-<strong>Example:</strong>
-<pre>
-# Anonymous user browses
-session_123: "Looking for laptops" -&gt; "Showed Dell XPS"
-
-<h1 id="User-logs-in-as-user_456">User logs in as user_456<a class="anchor-link" href="#User-logs-in-as-user_456">¶</a></h1><p>user_456: {previous history} + session_123 messages</p>
-<h1 id="Continue-with-personalized-context">Continue with personalized context<a class="anchor-link" href="#Continue-with-personalized-context">¶</a></h1></pre>
-<strong>Implementation:</strong> Use database with session_id and user_id columns, migrate on auth.
 </details>
-<p><strong>Q3: What are the privacy and security concerns with conversation memory?</strong></p>
+<p><strong>Q3: How do you make agents more reliable?</strong></p>
 <details>
 <summary>Click for answer</summary>
-<strong>Key Concerns:</strong>
 <ol>
-<li><strong>PII Storage:</strong> Conversation may contain names, emails, credit cards</li>
-<li><strong>Data Retention:</strong> How long to keep conversation history?</li>
-<li><strong>Cross-User Leaks:</strong> Ensure user A cannot access user B's memory</li>
-<li><strong>LLM Provider Access:</strong> Third-party LLMs see all memory</li>
+<li><strong>Better prompts:</strong> Clear instructions with examples</li>
+<li><strong>Better tools:</strong> Tools that return clear, unambiguous results</li>
+<li><strong>Error handling:</strong> Graceful failures with recovery options</li>
+<li><strong>Tool validation:</strong> Validate tool inputs before calling</li>
+<li><strong>Fallbacks:</strong> Alternative tools if primary fails</li>
+<li><strong>Few-shot examples:</strong> Show agent examples of good behavior</li>
 </ol>
-<strong>Best Practices:</strong>
-<ul>
-<li>✅ Encrypt memory at rest and in transit</li>
-<li>✅ Implement data retention policies (delete after 30 days)</li>
-<li>✅ Use user_id scoped memory (never global memory)</li>
-<li>✅ Redact PII before storing ("John Smith" → "[NAME]")</li>
-<li>✅ Allow users to delete conversation history (GDPR right to erasure)</li>
-<li>✅ Use self-hosted LLMs for sensitive data</li>
-</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4c5e8108">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%93%9D-Week-2-Project:-Restaurant-Reservation-Chatbot">📝 Week 2 Project: Restaurant Reservation Chatbot<a class="anchor-link" href="#%F0%9F%93%9D-Week-2-Project:-Restaurant-Reservation-Chatbot">¶</a></h2><p><strong>Build a complete restaurant reservation system that:</strong></p>
+<h2 id="%F0%9F%93%9D-Week-3-Project:-Sales-Analysis-Agent">📝 Week 3 Project: Sales Analysis Agent<a class="anchor-link" href="#%F0%9F%93%9D-Week-3-Project:-Sales-Analysis-Agent">¶</a></h2><p><strong>Build a complete sales analysis agent that handles ad-hoc analyst queries.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>At least 6 Tools:</strong></p>
 <ol>
-<li><p><strong>Collects Information</strong> (multi-turn):</p>
-<ul>
-<li>Party size (2-10 people)</li>
-<li>Date and time</li>
-<li>Dietary restrictions</li>
-<li>Special occasions (birthday, anniversary)</li>
-</ul>
-</li>
-<li><p><strong>Remembers Context:</strong></p>
-<ul>
-<li>Previous visits and favorite dishes</li>
-<li>Seating preferences (indoor/outdoor, booth/table)</li>
-<li>Allergies</li>
-</ul>
-</li>
-<li><p><strong>Handles Modifications:</strong></p>
-<ul>
-<li>"Actually, make it 6 people instead of 4"</li>
-<li>"Change the time to 7pm"</li>
-<li>"Add a high chair for a baby"</li>
-</ul>
-</li>
-<li><p><strong>Confirms and Summarizes:</strong></p>
-<ul>
-<li>Repeat all details before confirming</li>
-<li>Send confirmation with reservation ID</li>
-<li>Provide cancellation instructions</li>
-</ul>
-</li>
+<li>Query sales by region</li>
+<li>Query sales by product</li>
+<li>Calculate growth rates</li>
+<li>Get top performers</li>
+<li>Forecast trends</li>
+<li>Generate insights</li>
 </ol>
-<p><strong>Required Features:</strong></p>
+<p><strong>Agent Capabilities:</strong></p>
 <ul>
-<li>Use ConversationSummaryBufferMemory</li>
-<li>Track form completion progress</li>
-<li>Handle ambiguous inputs gracefully</li>
-<li>Multi-user session support</li>
+<li>Handle complex multi-step queries</li>
+<li>Combine data from different sources</li>
+<li>Make intelligent recommendations</li>
+<li>Handle edge cases gracefully</li>
 </ul>
-<p><strong>Deliverables:</strong></p>
-<ul>
-<li>Working chatbot with memory</li>
-<li>Test with 3 different reservation scenarios</li>
-<li>Handle at least one modification per reservation</li>
-<li>Bonus: Add user preference storage ("Remember I'm vegetarian")</li>
+<p><strong>Test Queries:</strong></p>
+<ol>
+<li>Simple: "What were the Q3 South region sales?"</li>
+<li>Multi-step: "Which region grew the most from Q3 to Q4 and why?"</li>
+<li>Predictive: "Based on trends, project Q1 sales by region"</li>
+<li>Edge case: "Compare sales for invalid region X"</li>
+</ol>
+<h3 id="Deliverables:">Deliverables:<a class="anchor-link" href="#Deliverables:">¶</a></h3><ul>
+<li>6+ well-documented tools</li>
+<li>ReAct agent with clear system prompt</li>
+<li>Test cases demonstrating agent reasoning</li>
+<li>Error handling and fallbacks</li>
+<li>Analysis of agent's reasoning process</li>
 </ul>
-<p><strong>Evaluation Criteria:</strong></p>
-<ul>
-<li>✅ Collects all required information</li>
-<li>✅ Remembers context across turns</li>
-<li>✅ Handles modifications correctly</li>
-<li>✅ Provides clear confirmation summary</li>
-<li>✅ Code uses proper memory management</li>
-</ul>
-<p><strong>Starter Code:</strong></p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6c584bd8">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -8931,152 +8464,67 @@ session_123: "Looking for laptops" -&gt; "Showed Dell XPS"
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Restaurant reservation chatbot starter</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 3 Project Starter</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="c1"># TODO: Create 6+ tools for sales analysis</span>
+<span class="c1"># TODO: Create ReAct agent</span>
+<span class="c1"># TODO: Test with 4+ queries</span>
+<span class="c1"># TODO: Implement error handling</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">Reservation</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Restaurant reservation details."""</span>
-    <span class="n">party_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># YYYY-MM-DD</span>
-    <span class="n">time</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># HH:MM</span>
-    <span class="n">dietary_restrictions</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">special_occasion</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">seating_preference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># indoor/outdoor</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">is_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Check if all required fields are filled."""</span>
-        <span class="k">return</span> <span class="nb">all</span><span class="p">([</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">party_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-        <span class="p">])</span>
-    
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Generate confirmation summary."""</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s2">"""</span>
-<span class="s2">        📋 RESERVATION SUMMARY</span>
-<span class="s2">        Party Size: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">party_size</span><span class="si">}</span><span class="s2"> guests</span>
-<span class="s2">        Date: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="si">}</span>
-<span class="s2">        Time: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="si">}</span>
-<span class="s2">        Dietary Restrictions: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dietary_restrictions</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span>
-<span class="s2">        Special Occasion: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">special_occasion</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'None'</span><span class="si">}</span>
-<span class="s2">        Seating: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">seating_preference</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">'No preference'</span><span class="si">}</span>
-<span class="s2">        """</span>
-
-<span class="c1"># TODO: Build chatbot</span>
-<span class="c1"># 1. Create memory (ConversationSummaryBufferMemory)</span>
-<span class="c1"># 2. Create prompt that guides user through reservation</span>
-<span class="c1"># 3. Build chain</span>
-<span class="c1"># 4. Track reservation state</span>
-<span class="c1"># 5. Handle modifications</span>
-<span class="c1"># 6. Confirm when complete</span>
-
-<span class="c1"># Test scenarios:</span>
-<span class="n">test_conversations</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="c1"># Scenario 1: Simple reservation</span>
-    <span class="p">[</span>
-        <span class="s2">"I'd like to make a reservation"</span><span class="p">,</span>
-        <span class="s2">"For 4 people"</span><span class="p">,</span>
-        <span class="s2">"This Friday at 7pm"</span><span class="p">,</span>
-        <span class="s2">"No dietary restrictions"</span><span class="p">,</span>
-        <span class="s2">"Confirm"</span>
-    <span class="p">],</span>
-    
-    <span class="c1"># Scenario 2: With modifications</span>
-    <span class="p">[</span>
-        <span class="s2">"Table for 2 on Saturday at 6pm"</span><span class="p">,</span>
-        <span class="s2">"Actually, make it 3 people"</span><span class="p">,</span>
-        <span class="s2">"And change time to 7:30pm"</span><span class="p">,</span>
-        <span class="s2">"One person is vegetarian"</span><span class="p">,</span>
-        <span class="s2">"It's our anniversary"</span><span class="p">,</span>
-        <span class="s2">"Confirm"</span>
-    <span class="p">],</span>
-    
-    <span class="c1"># Scenario 3: Complex with preferences</span>
-    <span class="p">[</span>
-        <span class="s2">"Need a table for 6"</span><span class="p">,</span>
-        <span class="s2">"Next Tuesday at 8pm"</span><span class="p">,</span>
-        <span class="s2">"We need outdoor seating if possible"</span><span class="p">,</span>
-        <span class="s2">"Two people have nut allergies"</span><span class="p">,</span>
-        <span class="s2">"One is gluten-free"</span><span class="p">,</span>
-        <span class="s2">"It's a birthday party"</span><span class="p">,</span>
-        <span class="s2">"Confirm"</span>
-    <span class="p">]</span>
-<span class="p">]</span>
-
-<span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your sales analysis agent implementation here!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2a69918c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
-<p>✅ <strong>Memory fundamentals:</strong></p>
+<p>✅ <strong>ReAct Framework:</strong></p>
 <ul>
-<li>Why stateful conversations matter for user experience</li>
-<li>Four main memory types and their trade-offs</li>
-<li>Token usage vs context retention balance</li>
+<li>Think → Act → Observe → Repeat cycle</li>
+<li>Enables dynamic, adaptive agent behavior</li>
+<li>Superior to fixed chains for complex problems</li>
 </ul>
-<p>✅ <strong>Conversation patterns:</strong></p>
+<p>✅ <strong>Building Tools:</strong></p>
 <ul>
-<li>Multi-turn dialogues with context</li>
-<li>Session management for multiple users</li>
-<li>Persistent memory across sessions</li>
+<li>Use @tool decorator for clean tool definitions</li>
+<li>Clear descriptions and arguments</li>
+<li>Proper error handling in tool implementations</li>
 </ul>
-<p>✅ <strong>Real-world application:</strong></p>
+<p>✅ <strong>Agent Executors:</strong></p>
 <ul>
-<li>Built e-commerce shopping assistant</li>
-<li>Implemented preference tracking</li>
-<li>Handled cart management</li>
+<li>Handles tool selection and calling</li>
+<li>Manages iteration loop</li>
+<li>Collects agent reasoning for debugging</li>
 </ul>
-<p>✅ <strong>Best practices:</strong></p>
+<p>✅ <strong>Real-world applications:</strong></p>
 <ul>
-<li>Choose memory type based on use case</li>
-<li>Isolate user sessions properly</li>
-<li>Handle PII and security concerns</li>
-<li>Optimize for token efficiency</li>
+<li>Sales analysis assistants</li>
+<li>Customer support automation</li>
+<li>Research assistants</li>
+<li>Data analytics chatbots</li>
 </ul>
-<h2 id="%F0%9F%94%9C-Next-Week:-Agents-&amp;-Tools">🔜 Next Week: Agents &amp; Tools<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Agents-&amp;-Tools">¶</a></h2><p>In Week 3, we'll build <strong>agents</strong> that can use tools:</p>
+<h2 id="%F0%9F%94%9C-Next-Week:-RAG-&amp;-Embeddings">🔜 Next Week: RAG &amp; Embeddings<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-RAG-&amp;-Embeddings">¶</a></h2><p>In Week 4, we'll ground agents in your own data:</p>
 <ul>
-<li>ReAct (Reasoning + Acting) framework</li>
-<li>Tool creation (search, calculate, query)</li>
-<li>Agent executors and error handling</li>
-<li>Building autonomous research assistants</li>
+<li>Embeddings and vector stores</li>
+<li>Document retrieval (RAG)</li>
+<li>Building knowledge-grounded agents</li>
+<li>Combining agents with vector search</li>
 </ul>
-<p><strong>Preview question:</strong> How would you give the shopping assistant the ability to check real-time inventory and process payments?</p>
+<p><strong>Preview question:</strong> How would you modify the sales agent to use company documents (guides, procedures) to inform its responses?</p>
 <h2 id="%F0%9F%93%9A-Additional-Resources">📚 Additional Resources<a class="anchor-link" href="#%F0%9F%93%9A-Additional-Resources">¶</a></h2><ul>
-<li><a href="https://python.langchain.com/docs/modules/memory/">LangChain Memory Documentation</a></li>
-<li><a href="https://python.langchain.com/docs/use_cases/chatbots/">Conversation Patterns Guide</a></li>
-<li><a href="https://platform.openai.com/docs/guides/prompt-engineering">Token Optimization Strategies</a></li>
-</ul>
-<h2 id="%F0%9F%92%A1-Troubleshooting-Tips">💡 Troubleshooting Tips<a class="anchor-link" href="#%F0%9F%92%A1-Troubleshooting-Tips">¶</a></h2><p><strong>Issue:</strong> Bot forgets context after a few turns</p>
-<ul>
-<li><strong>Solution:</strong> Check memory type - you might be using WindowMemory with k too small</li>
-</ul>
-<p><strong>Issue:</strong> Token limit exceeded errors</p>
-<ul>
-<li><strong>Solution:</strong> Switch from BufferMemory to SummaryMemory or reduce max_token_limit</li>
-</ul>
-<p><strong>Issue:</strong> Responses are slow</p>
-<ul>
-<li><strong>Solution:</strong> SummaryMemory makes extra LLM calls - use BufferMemory for short conversations</li>
-</ul>
-<p><strong>Issue:</strong> User A sees User B's conversation</p>
-<ul>
-<li><strong>Solution:</strong> Ensure you're using user_id scoped memory, not global memory instance</li>
+<li><a href="https://python.langchain.com/docs/modules/agents/">LangChain Agents Documentation</a></li>
+<li><a href="https://arxiv.org/abs/2210.03629">ReAct Paper</a></li>
+<li><a href="https://python.langchain.com/docs/modules/tools/">Tool Use Best Practices</a></li>
 </ul>
 <hr/>
-<p><strong>🎉 Congratulations on completing Week 2!</strong> You can now build stateful conversational AI that provides personalized, context-aware experiences. See you next week! 🚀</p>
+<p><strong>🎉 Congratulations on completing Week 3!</strong> You can now build autonomous agents that reason and act. See you next week! 🚀</p>
 </div>
 </div>
 </div>
@@ -9085,11 +8533,11 @@ session_123: "Looking for laptops" -&gt; "Showed Dell XPS"
 
 <div class="navigation-footer">
     
-        <a href="week-01-memory-conversation.html" class="nav-link prev-link">← Previous Week</a>
+        <a href="week-02-agents-tools-enhanced.html" class="nav-link prev-link">← Previous Week</a>
         
     <a href="../../langchain/index.html" class="nav-link">Back to LangChain Mastery</a>
     
-        <a href="week-03-memory-conversation.html" class="nav-link next-link">Next Week →</a>
+        <a href="week-04-agents-tools-enhanced.html" class="nav-link next-link">Next Week →</a>
         
 </div>
 </body>

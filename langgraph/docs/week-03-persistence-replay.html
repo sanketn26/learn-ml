@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,213 +7714,508 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langgraph/index.html">← Back to LangGraph Workflows</a>
-        <span>•</span>
-        <span>Week 3 of 4</span>
-    </div>
-    
-    <h1>Week 3 — LangGraph Workflows</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-03-persistence-replay.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langgraph langchain openai</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langgraph/notebooks/week-03*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6fee36a9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <h1 id="Week-3-%E2%80%94-Persistence-&amp;-Replay">Week 3 — Persistence &amp; Replay<a class="anchor-link" href="#Week-3-%E2%80%94-Persistence-&amp;-Replay">¶</a></h1><p><strong>Course:</strong> LangGraph for Complex Workflows<br/>
-<strong>Week Focus:</strong> Save, resume, and replay workflow executions.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Implement persistence stores</li>
-<li>Save and resume from checkpoints</li>
-<li>Replay and debug workflows</li>
-<li>Handle long-running workflows</li>
-<li>Monitor execution history</li>
-</ul>
-<h2 id="%F0%9F%93%8A-Use-Cases">📊 Use Cases<a class="anchor-link" href="#%F0%9F%93%8A-Use-Cases">¶</a></h2><p><strong>Long-running tasks:</strong> Report generation takes 10 minutes</p>
+<strong>Week Focus:</strong> Save, resume, and replay workflow executions for reliability and debugging.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Save state at each step</li>
-<li>Resume if interrupted</li>
+<li>Understand state persistence and checkpointing</li>
+<li>Implement workflow save/resume mechanisms</li>
+<li>Replay workflows for debugging</li>
+<li>Handle long-running workflows (hours/days)</li>
+<li>Audit and trace workflow execution</li>
+<li>Build fault-tolerant systems</li>
 </ul>
-<p><strong>Debugging:</strong> Why did this workflow fail?</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Problem:</strong></p>
 <ul>
-<li>Replay from saved checkpoints</li>
-<li>Change logic and re-run</li>
+<li>Workflow runs for 30 minutes, fails at step 27</li>
+<li>Restart from beginning = waste 27 minutes</li>
+<li>What if intermediate results were saved?</li>
 </ul>
-<p><strong>Auditing:</strong> What happened in this workflow?</p>
+<p><strong>Persistence Solutions:</strong></p>
+<ol>
+<li><strong>Checkpointing:</strong> Save state every step</li>
+<li><strong>Resume:</strong> Start from last checkpoint, not beginning</li>
+<li><strong>Replay:</strong> Re-run from any checkpoint for testing</li>
+<li><strong>History:</strong> See what happened at each step</li>
+</ol>
+<p><strong>Business Impact:</strong></p>
 <ul>
-<li>Full execution history</li>
-<li>All state changes</li>
-<li>All decisions made</li>
+<li>⏱️ Long-running workflows: 10 min → 1 min recovery</li>
+<li>🐛 Debugging: Replay specific scenarios instantly</li>
+<li>📊 Audit: Full execution trail for compliance</li>
+<li>🔄 Resilience: Survive infrastructure failures</li>
+<li>💰 Save millions in compute costs (no repeated work)</li>
 </ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=940f3bca">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.checkpoint-box {</span>
+<span class="s1">    background-color: #e8f5e9;</span>
+<span class="s1">    border-left: 5px solid #4caf50;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.replay-box {</span>
+<span class="s1">    background-color: #fff3e0;</span>
+<span class="s1">    border-left: 5px solid #ff9800;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5c1e1bef">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Understanding-Checkpointing">🔍 Part 1: Understanding Checkpointing<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Understanding-Checkpointing">¶</a></h2><div class="checkpoint-box">
+<strong>Checkpoint:</strong> A saved snapshot of workflow state at a specific point.
+</div>
+<h3 id="Without-Checkpointing-(Naive)">Without Checkpointing (Naive)<a class="anchor-link" href="#Without-Checkpointing-(Naive)">¶</a></h3><pre><code>Node A (30s) → Node B (20s) → Node C (25s) → Node D (fail)
+│              │              │              │
+done           done           done           ERROR!
+│              │              │              │
+Restart ───────────────────────────────────→ 
+75 seconds wasted!
+</code></pre>
+<h3 id="With-Checkpointing-(Smart)">With Checkpointing (Smart)<a class="anchor-link" href="#With-Checkpointing-(Smart)">¶</a></h3><pre><code>Node A (30s) → ✓ Checkpoint A
+Node B (20s) → ✓ Checkpoint B  
+Node C (25s) → ✓ Checkpoint C
+Node D (fail) → ✗ ERROR
+
+Resume from Checkpoint C → 
+Node D (retry) → Success!
+
+Only 25 seconds of recomputation!
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b3bf7a5b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Part-2:-Implementing-Persistence">📚 Part 2: Implementing Persistence<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Implementing-Persistence">¶</a></h2><h3 id="Checkpoint-Storage-Options">Checkpoint Storage Options<a class="anchor-link" href="#Checkpoint-Storage-Options">¶</a></h3><table>
+<thead>
+<tr>
+<th>Store</th>
+<th>Cost</th>
+<th>Speed</th>
+<th>Scale</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>In-Memory</td>
+<td>Free</td>
+<td>Fastest</td>
+<td>1 machine</td>
+<td>Development</td>
+</tr>
+<tr>
+<td>Database</td>
+<td>Low</td>
+<td>Fast</td>
+<td>Any</td>
+<td>Production</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>Low</td>
+<td>Very fast</td>
+<td>Millions</td>
+<td>High-throughput</td>
+</tr>
+<tr>
+<td>S3/GCS</td>
+<td>Very low</td>
+<td>Slower</td>
+<td>Unlimited</td>
+<td>Long-term archive</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Best Practice:</strong> Use database for production (durable, queryable, scalable)</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=8b0a6d8e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Implement a simple checkpoint system</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Checkpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Represents a saved workflow state."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_name</span> <span class="o">=</span> <span class="n">node_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">"Checkpoint(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">node_name</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%H:%M:%S'</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PersistenceStore</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Store checkpoints in memory (demo) or database (production)."""</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Checkpoint</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Save a checkpoint."""</span>
+        <span class="k">if</span> <span class="n">workflow_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">workflow_id</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">workflow_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">checkpoint</span><span class="o">.</span><span class="n">id</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_latest_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Checkpoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get the most recent checkpoint."""</span>
+        <span class="k">if</span> <span class="n">workflow_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">workflow_id</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">workflow_id</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_checkpoint_at_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">node_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Checkpoint</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get checkpoint for a specific node."""</span>
+        <span class="k">if</span> <span class="n">workflow_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cp</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="p">[</span><span class="n">workflow_id</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">cp</span><span class="o">.</span><span class="n">node_name</span> <span class="o">==</span> <span class="n">node_name</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">cp</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">list_checkpoints</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">workflow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""List all checkpoints for a workflow."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">checkpoints</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="p">[])</span>
+
+<span class="c1"># Demo: Creating checkpoints</span>
+<span class="n">store</span> <span class="o">=</span> <span class="n">PersistenceStore</span><span class="p">()</span>
+<span class="n">workflow_id</span> <span class="o">=</span> <span class="s2">"report-2024-001"</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"💾 Creating Checkpoints"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Simulate workflow progression</span>
+<span class="n">state</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"data"</span><span class="p">:</span> <span class="p">[],</span> <span class="s2">"status"</span><span class="p">:</span> <span class="s2">"starting"</span><span class="p">}</span>
+
+<span class="c1"># Node 1: Extract Data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">→ Node 1: Extracting data..."</span><span class="p">)</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"record1"</span><span class="p">,</span> <span class="s2">"record2"</span><span class="p">,</span> <span class="s2">"record3"</span><span class="p">]</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"extracted"</span>
+<span class="n">cp1</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="s2">"extract_data"</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="n">cp1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✓ Saved checkpoint: </span><span class="si">{</span><span class="n">cp1</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Node 2: Clean Data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">→ Node 2: Cleaning data..."</span><span class="p">)</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]]</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"cleaned"</span>
+<span class="n">cp2</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="s2">"clean_data"</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="n">cp2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✓ Saved checkpoint: </span><span class="si">{</span><span class="n">cp2</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Node 3: Analyze Data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">→ Node 3: Analyzing data..."</span><span class="p">)</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"statistics"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"count"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]),</span> <span class="s2">"sample"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s2">"data"</span><span class="p">][</span><span class="mi">0</span><span class="p">]}</span>
+<span class="n">state</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"analyzed"</span>
+<span class="n">cp3</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="s2">"analyze_data"</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+<span class="n">store</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="n">cp3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✓ Saved checkpoint: </span><span class="si">{</span><span class="n">cp3</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📊 Checkpoint History:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">cp</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">list_checkpoints</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">),</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">cp</span><span class="o">.</span><span class="n">node_name</span><span class="si">:</span><span class="s2">20</span><span class="si">}</span><span class="s2"> | State keys: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">cp</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Latest checkpoint: </span><span class="si">{</span><span class="n">store</span><span class="o">.</span><span class="n">get_latest_checkpoint</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=abd8b345">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%84-Part-3:-Replay-&amp;-Debugging">🔄 Part 3: Replay &amp; Debugging<a class="anchor-link" href="#%F0%9F%94%84-Part-3:-Replay-&amp;-Debugging">¶</a></h2><div class="replay-box">
+<strong>Replay:</strong> Re-run workflow from a saved checkpoint (with possibly different logic).
+</div>
+<h3 id="Use-Cases-for-Replay">Use Cases for Replay<a class="anchor-link" href="#Use-Cases-for-Replay">¶</a></h3><p><strong>1. Debugging:</strong> "Why did Node D fail?"</p>
+<pre><code>Original run: A → B → C → D ✗
+
+Debug run: Resume from C, trace D execution step-by-step
+</code></pre>
+<p><strong>2. Testing Changes:</strong> "Will the fix work?"</p>
+<pre><code>Original run: A → B → C → D ✗
+Replay: Resume from C with fixed Node D code
+</code></pre>
+<p><strong>3. What-If Analysis:</strong> "What if we changed Node B?"</p>
+<pre><code>Original run: A → B (variant 1) → C → D
+What-if run: Resume from A, use B (variant 2) → C → D
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=e9f3b45f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Demonstrate replay capability</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">🔄 Replay: Resume from Checkpoint"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Get checkpoint to resume from</span>
+<span class="n">resume_checkpoint</span> <span class="o">=</span> <span class="n">store</span><span class="o">.</span><span class="n">get_checkpoint_at_node</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="s2">"clean_data"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">resume_checkpoint</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✓ Resuming from checkpoint: </span><span class="si">{</span><span class="n">resume_checkpoint</span><span class="o">.</span><span class="n">node_name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Timestamp: </span><span class="si">{</span><span class="n">resume_checkpoint</span><span class="o">.</span><span class="n">timestamp</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">'%H:%M:%S'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  State: </span><span class="si">{</span><span class="n">resume_checkpoint</span><span class="o">.</span><span class="n">state</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="c1"># Continue from this state</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">resume_checkpoint</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">→ Continuing from here..."</span><span class="p">)</span>
+    
+    <span class="c1"># Skip Node 3 (already done), go to Node 4</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Node 3: Skipped (already completed)"</span><span class="p">)</span>
+    
+    <span class="c1"># Node 4: Generate Report (NEW)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Node 4: Generating report..."</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"report"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Analysis of </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">'data'</span><span class="p">])</span><span class="si">}</span><span class="s2"> records"</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"completed"</span>
+    <span class="n">cp_final</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="p">(</span><span class="s2">"generate_report"</span><span class="p">,</span> <span class="n">state</span><span class="p">)</span>
+    <span class="n">store</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">workflow_id</span><span class="p">,</span> <span class="n">cp_final</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✓ Saved checkpoint: </span><span class="si">{</span><span class="n">cp_final</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Workflow completed!"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Final state: </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=58cf8e59">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Implement Persistent Workflow</strong><br/><br/>
+Build a workflow with automatic checkpointing:
+<ol>
+<li>Save state after each node completes</li>
+<li>Resume from latest checkpoint on restart</li>
+<li>Log checkpoint history</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=1ca95409">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your persistent workflow here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9dca1573">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Build Replay System</strong><br/><br/>
+Enable replay from any checkpoint:
+<ol>
+<li>List all checkpoints for a workflow</li>
+<li>Resume from specific checkpoint</li>
+<li>Compare results between checkpoints</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=3ccba832">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your replay system here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=67fbbe79">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-3-Project:-Resilient-Data-Pipeline">📝 Week 3 Project: Resilient Data Pipeline<a class="anchor-link" href="#%F0%9F%93%9D-Week-3-Project:-Resilient-Data-Pipeline">¶</a></h2><p><strong>Build a data processing pipeline with full persistence and replay.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>Pipeline Stages:</strong></p>
+<ol>
+<li>Extract (fetch data from API)</li>
+<li>Validate (check data quality)</li>
+<li>Transform (clean and normalize)</li>
+<li>Enrich (add metadata)</li>
+<li>Load (save to database)</li>
+</ol>
+<p><strong>Persistence Features:</strong></p>
+<ul>
+<li>Checkpoint after each stage</li>
+<li>Resume from checkpoint if interrupted</li>
+<li>Skip already-completed stages</li>
+</ul>
+<p><strong>Replay Capabilities:</strong></p>
+<ul>
+<li>List all checkpoints</li>
+<li>Replay from specific checkpoint</li>
+<li>Change transformation logic and re-run</li>
+</ul>
+<h3 id="Test-Scenarios:">Test Scenarios:<a class="anchor-link" href="#Test-Scenarios:">¶</a></h3><ol>
+<li><strong>Complete run:</strong> All stages succeed</li>
+<li><strong>Failure recovery:</strong> Fail at stage 3, resume from checkpoint</li>
+<li><strong>Logic change:</strong> Fix bug in Transform stage, replay</li>
+<li><strong>What-if:</strong> Test different Enrich strategies</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=7c1cb8f2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 3 Project Starter</span>
+
+<span class="c1"># TODO: Build 5-stage pipeline</span>
+<span class="c1"># TODO: Implement persistence at each stage  </span>
+<span class="c1"># TODO: Support resume from checkpoint</span>
+<span class="c1"># TODO: Build replay mechanism</span>
+<span class="c1"># TODO: Test with failure scenarios</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your resilient data pipeline here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b1a0f6ea">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>Checkpointing:</strong></p>
+<ul>
+<li>Save state after each workflow step</li>
+<li>Enable fast recovery from failures</li>
+</ul>
+<p>✅ <strong>Persistence:</strong></p>
+<ul>
+<li>Database vs in-memory vs file storage</li>
+<li>Trade-offs between speed and durability</li>
+</ul>
+<p>✅ <strong>Replay:</strong></p>
+<ul>
+<li>Resume from checkpoints</li>
+<li>Replay with modified logic</li>
+<li>Debug and test efficiently</li>
+</ul>
+<h2 id="%F0%9F%94%9C-Next-Week:-Human-in-the-Loop">🔜 Next Week: Human-in-the-Loop<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Human-in-the-Loop">¶</a></h2><p>In Week 4, we'll add humans to workflows:</p>
+<ul>
+<li>Pause for human approval</li>
+<li>Implement feedback loops</li>
+<li>Build interactive workflows</li>
+</ul>
+<hr/>
+<p><strong>🎉 Congratulations on completing Week 3!</strong> Your workflows can now survive failures and be debugged efficiently. See you next week! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-02-persistence-replay.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../langgraph/index.html" class="nav-link">Back to LangGraph Workflows</a>
-    
-        <a href="week-04-persistence-replay.html" class="nav-link next-link">Next Week →</a>
-        
-</div>
 
 <div class="navigation-footer">
     

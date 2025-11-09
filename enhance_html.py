@@ -287,29 +287,34 @@ def enhance_html_file(html_path):
     try:
         with open(html_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         filename = os.path.basename(html_path)
         course_key, total_weeks, course_name = get_course_info(html_path)
         week_num = get_week_number(filename)
-        
+
         if not week_num:
             print(f"⚠️  Skipped {filename} - could not extract week number")
             return False
-        
+
+        # Check if already enhanced (idempotency check)
+        if 'class="notebook-header"' in content:
+            print(f"ℹ️  Skipped {filename} - already enhanced")
+            return False
+
         # Create header and navigation
         header, prev_link, next_link = create_header_section(
             course_key, course_name, week_num, total_weeks, filename
         )
-        
+
         # Find insertion point (after <body> tag)
         body_pattern = r'(<body[^>]*>)'
         if not re.search(body_pattern, content):
             print(f"⚠️  Skipped {filename} - no body tag found")
             return False
-        
+
         # Insert header after body tag
         content = re.sub(body_pattern, r'\1' + header, content, count=1)
-        
+
         # Add footer navigation before closing body tag
         footer = f"""
 <div class="navigation-footer">
@@ -319,21 +324,22 @@ def enhance_html_file(html_path):
 </div>
 """
         content = content.replace('</body>', footer + '</body>')
-        
+
         # Write back
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(content)
-        
+
         print(f"✅ Enhanced {filename}")
         return True
-        
+
     except Exception as e:
         print(f"❌ Error processing {filename}: {e}")
         return False
 
 def main():
     """Find and enhance all HTML files in docs directories"""
-    base_path = Path('/workspaces/learn-ml')
+    # Use the directory where this script is located
+    base_path = Path(__file__).parent.absolute()
     courses = ['', 'langchain', 'langgraph', 'crewai']
     
     total = 0

@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,217 +7714,523 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../crewai/index.html">← Back to Crew.ai Multi-Agents</a>
-        <span>•</span>
-        <span>Week 3 of 4</span>
-    </div>
-    
-    <h1>Week 3 — Crew.ai Multi-Agents</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/crewai/notebooks/week-03-team-collaboration.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install crewai openai</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook crewai/notebooks/week-03*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=316edf81">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-3-%E2%80%94-Team-Collaboration-&amp;-Communication">Week 3 — Team Collaboration &amp; Communication<a class="anchor-link" href="#Week-3-%E2%80%94-Team-Collaboration-&amp;-Communication">¶</a></h1><p><strong>Course:</strong> Crew.ai for Multi-Agent Systems<br/>
-<strong>Week Focus:</strong> Coordinate agents to work together effectively.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Design team structures</li>
-<li>Implement inter-agent communication</li>
-<li>Handle knowledge sharing</li>
-<li>Manage competing goals</li>
-<li>Coordinate complex workflows</li>
-</ul>
-<h2 id="%F0%9F%A4%9D-Collaboration-Patterns">🤝 Collaboration Patterns<a class="anchor-link" href="#%F0%9F%A4%9D-Collaboration-Patterns">¶</a></h2><p><strong>Sequential:</strong> A → B → C (each waits for previous)</p>
+<h1 id="Week-3-%E2%80%94-Team-Collaboration-&amp;-Communication">Week 3 — Team Collaboration &amp; Communication<a class="anchor-link" href="#Week-3-%E2%80%94-Team-Collaboration-&amp;-Communication">¶</a></h1><p><strong>Course:</strong> CrewAI for Multi-Agent Systems<br/>
+<strong>Week Focus:</strong> Master inter-agent communication, delegation strategies, and consensus-building for complex collaborative workflows.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Analysis → Writing → Review</li>
+<li>Implement agent delegation and role-based communication</li>
+<li>Build consensus mechanisms for disagreeing agents</li>
+<li>Create hierarchical team structures (CEO, leads, specialists)</li>
+<li>Handle agent conflicts and decision-making</li>
+<li>Implement feedback loops and iterative refinement</li>
+<li>Build a real-world software development team</li>
 </ul>
-<p><strong>Parallel:</strong> A ∥ B → C (both run, then C)</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Building software requires multiple perspectives:</p>
 <ul>
-<li>Research ∥ Design → Combine</li>
+<li><strong>Product Manager</strong>: "This feature must do X"</li>
+<li><strong>Architect</strong>: "We need microservices architecture"</li>
+<li><strong>Security Lead</strong>: "We must add authentication"</li>
+<li><strong>Dev Lead</strong>: "We have 2 weeks for this"</li>
+<li><strong>QA Lead</strong>: "We need 95% test coverage"</li>
 </ul>
-<p><strong>Consensus:</strong> A ∥ B ∥ C → Vote → Execute</p>
+<p><strong>Without collaboration:</strong></p>
 <ul>
-<li>Multiple proposals → Debate → Decision</li>
+<li>Team works in silos (no alignment)</li>
+<li>Conflicting requirements cause delays</li>
+<li>Poor quality (no peer review)</li>
+<li>Missed security/performance considerations</li>
 </ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Product launch coordination:</p>
+<p><strong>With AI Team Collaboration:</strong></p>
+<ol>
+<li><strong>Communication</strong>: Agents discuss requirements and constraints</li>
+<li><strong>Consensus</strong>: Reach agreement on technical approach</li>
+<li><strong>Specialization</strong>: Each agent contributes expertise</li>
+<li><strong>Conflict Resolution</strong>: Handle disagreements systematically</li>
+<li><strong>Iteration</strong>: Refine decisions based on feedback</li>
+</ol>
+<p><strong>Business Impact:</strong></p>
 <ul>
-<li>Engineering: Build checklist</li>
-<li>Marketing: Launch plan</li>
-<li>Support: Runbook</li>
-<li>Legal: Compliance check</li>
+<li>⏱️ Reduce design review meetings from 20 hrs → 2 hrs</li>
+<li>✅ Catch 40% more issues (security, architecture, performance)</li>
+<li>📈 Faster time-to-market (better decisions = fewer rewrites)</li>
+<li>💰 Save $200K/year in review/rework cycles</li>
 </ul>
-<p>All must coordinate timing and dependencies!</p>
+<p>Companies like <strong>Google, GitHub, Anthropic</strong> use collaborative agent patterns internally.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=a9ee9e7b">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.jp-RenderedHTMLCommon h2 {</span>
+<span class="s1">    color: #2c3e50;</span>
+<span class="s1">    border-bottom: 2px solid #3498db;</span>
+<span class="s1">    padding-bottom: 10px;</span>
+<span class="s1">    margin-top: 30px;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon h3 {</span>
+<span class="s1">    color: #34495e;</span>
+<span class="s1">    margin-top: 20px;</span>
+<span class="s1">}</span>
+<span class="s1">.team-box {</span>
+<span class="s1">    background-color: #d4edda;</span>
+<span class="s1">    border-left: 5px solid #28a745;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.conflict-box {</span>
+<span class="s1">    background-color: #f8d7da;</span>
+<span class="s1">    border-left: 5px solid #dc3545;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a89b435">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Communication-Patterns">🔍 Part 1: Communication Patterns<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Communication-Patterns">¶</a></h2><h3 id="Agent-Communication-Types">Agent Communication Types<a class="anchor-link" href="#Agent-Communication-Types">¶</a></h3><p><strong>Direct Communication:</strong></p>
+<pre><code>Agent A → Task Output → Agent B
+         (context parameter)
+</code></pre>
+<p>Agent B uses Agent A's output as input.</p>
+<p><strong>Via Shared State:</strong></p>
+<pre><code>Agent A → Update Database ← Agent B
+         ↓
+      Central Repository
+</code></pre>
+<p>Agents write and read from shared knowledge base.</p>
+<p><strong>Hierarchical (CEO Pattern):</strong></p>
+<pre><code>         ┌─ Product Agent
+         │
+    [CEO Agent] ─ Architecture Agent
+         │
+         └─ Security Agent
+
+CEO makes final decisions after hearing from all specialists.
+</code></pre>
+<p><strong>Peer Review (Consensus):</strong></p>
+<pre><code>Agent A suggests solution → All agents vote
+                         ↓
+                    Consensus reached or
+                    Escalate to CEO
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b7d4e9f4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Part-2:-Delegation-Strategies">📚 Part 2: Delegation Strategies<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Delegation-Strategies">¶</a></h2><h3 id="2.1-When-to-Delegate">2.1 When to Delegate<a class="anchor-link" href="#2.1-When-to-Delegate">¶</a></h3><p><strong>Delegate if:</strong></p>
+<ul>
+<li>Another agent has specific expertise</li>
+<li>Task requires specialized knowledge</li>
+<li>Parallel execution possible</li>
+<li>Subtask is well-defined</li>
+</ul>
+<p><strong>Don't delegate if:</strong></p>
+<ul>
+<li>Task requires real-time feedback</li>
+<li>Decision is critical (CEO should decide)</li>
+<li>Agent would just repeat your work</li>
+<li>Output isn't clear (ambiguous task)</li>
+</ul>
+<h3 id="2.2-Effective-Delegation-Pattern">2.2 Effective Delegation Pattern<a class="anchor-link" href="#2.2-Effective-Delegation-Pattern">¶</a></h3><pre><code>1. CLARIFY: "Here's what I need and why"
+2. SPECIFY: "Here are detailed requirements"
+3. DELEGATE: "Task: {task}, Context: {context}, Success criteria: {criteria}"
+4. RECEIVE: Get output from delegated agent
+5. REVIEW: Check if output meets criteria
+6. ITERATE: If not satisfied, provide feedback and retry
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=282f981f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">crewai</span><span class="w"> </span><span class="kn">import</span> <span class="n">Agent</span><span class="p">,</span> <span class="n">Task</span><span class="p">,</span> <span class="n">Crew</span><span class="p">,</span> <span class="n">Process</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
+
+<span class="c1"># Create specialized agents</span>
+<span class="n">product_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"From product perspective: Users need real-time notifications, offline support, and mobile app. Core requirement: notification system with 99.9</span><span class="si">% u</span><span class="s2">ptime SLA."</span>
+<span class="p">])</span>
+
+<span class="n">architect_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"Architecture recommendation: Microservices (API, Notifications, Auth, Analytics). Use Kafka for async messaging. RDS for persistence. Redis for caching."</span>
+<span class="p">])</span>
+
+<span class="n">security_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+    <span class="s2">"Security requirements: OAuth2 for auth, TLS 1.3 for comms, encrypt PII at rest, SOC2 compliance, rate limiting, API key rotation."</span>
+<span class="p">])</span>
+
+<span class="c1"># Product Manager Agent</span>
+<span class="n">product_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s2">"Product Manager"</span><span class="p">,</span>
+    <span class="n">goal</span><span class="o">=</span><span class="s2">"Define user requirements and business success criteria"</span><span class="p">,</span>
+    <span class="n">backstory</span><span class="o">=</span><span class="s2">"Seasoned PM with 8 years at Stripe. Obsessed with user needs and product-market fit."</span><span class="p">,</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">product_llm</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Architect Agent</span>
+<span class="n">architect_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s2">"Technical Architect"</span><span class="p">,</span>
+    <span class="n">goal</span><span class="o">=</span><span class="s2">"Design scalable, maintainable technical architecture"</span><span class="p">,</span>
+    <span class="n">backstory</span><span class="o">=</span><span class="s2">"Former Netflix infrastructure engineer. Expert in microservices and cloud systems."</span><span class="p">,</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">architect_llm</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Security Lead Agent</span>
+<span class="n">security_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s2">"Security Lead"</span><span class="p">,</span>
+    <span class="n">goal</span><span class="o">=</span><span class="s2">"Ensure system meets enterprise security requirements"</span><span class="p">,</span>
+    <span class="n">backstory</span><span class="o">=</span><span class="s2">"Security researcher with 10 years experience. Led security at Amazon. Paranoid about attacks."</span><span class="p">,</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">security_llm</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Created specialized agents:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  1. </span><span class="si">{</span><span class="n">product_agent</span><span class="o">.</span><span class="n">role</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  2. </span><span class="si">{</span><span class="n">architect_agent</span><span class="o">.</span><span class="n">role</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  3. </span><span class="si">{</span><span class="n">security_agent</span><span class="o">.</span><span class="n">role</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e55de920">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8F%97%EF%B8%8F-Part-3:-Building-Hierarchical-Teams">🏗️ Part 3: Building Hierarchical Teams<a class="anchor-link" href="#%F0%9F%8F%97%EF%B8%8F-Part-3:-Building-Hierarchical-Teams">¶</a></h2><h3 id="The-CEO-Pattern">The CEO Pattern<a class="anchor-link" href="#The-CEO-Pattern">¶</a></h3><div class="team-box">
+<strong>👔 CEO Agent:</strong> Makes final decisions after consulting specialists
+</div>
+<p>CEO responsibilities:</p>
+<ol>
+<li><strong>Gather Input</strong>: Ask each specialist for their perspective</li>
+<li><strong>Identify Conflicts</strong>: Find areas of disagreement</li>
+<li><strong>Facilitate Discussion</strong>: Have specialists address each other's concerns</li>
+<li><strong>Make Decision</strong>: Apply business judgment to resolve conflicts</li>
+<li><strong>Communicate</strong>: Explain decision to team</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=57ce09aa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># CEO Agent coordinates the team</span>
+<span class="n">ceo_llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span>
+<span class="w">    </span><span class="sd">"""DESIGN DECISION SUMMARY:</span>
+
+<span class="sd">After consulting Product, Architecture, and Security:</span>
+
+<span class="sd">✅ APPROVED:</span>
+<span class="sd">- Microservices architecture (Address, Notifications, Auth, Analytics)</span>
+<span class="sd">- Real-time notification system with Kafka</span>
+<span class="sd">- OAuth2 + TLS 1.3 security</span>
+<span class="sd">- Offline support via local DB sync</span>
+
+<span class="sd">⚠️ CONSTRAINTS:</span>
+<span class="sd">- Timeline: 6 weeks (Phase 1: Core API, Phase 2: Mobile, Phase 3: Analytics)</span>
+<span class="sd">- Budget: $80K infrastructure/month</span>
+<span class="sd">- Team: 2 leads + 6 engineers</span>
+
+<span class="sd">🎯 CRITICAL PATH:</span>
+<span class="sd">1. Week 1-2: Auth + Notification service</span>
+<span class="sd">2. Week 3-4: API Gateway + main services</span>
+<span class="sd">3. Week 5-6: Mobile app + offline sync</span>
+
+<span class="sd">NEXT: Dev Lead to create detailed sprint plan.</span>
+<span class="sd">"""</span>
+<span class="p">])</span>
+
+<span class="n">ceo_agent</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">(</span>
+    <span class="n">role</span><span class="o">=</span><span class="s2">"Engineering Director (CEO)"</span><span class="p">,</span>
+    <span class="n">goal</span><span class="o">=</span><span class="s2">"Make architecture decisions that balance product needs, technical excellence, and security"</span><span class="p">,</span>
+    <span class="n">backstory</span><span class="o">=</span><span class="s2">"Former CTO at Series B startup. Excellent at consensus-building. Cares deeply about team health."</span><span class="p">,</span>
+    <span class="n">llm</span><span class="o">=</span><span class="n">ceo_llm</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">allow_delegation</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ CEO Agent created"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4640fee9">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%92%AC-Part-4:-Conflict-Resolution">💬 Part 4: Conflict Resolution<a class="anchor-link" href="#%F0%9F%92%AC-Part-4:-Conflict-Resolution">¶</a></h2><h3 id="Common-Conflicts-in-Teams">Common Conflicts in Teams<a class="anchor-link" href="#Common-Conflicts-in-Teams">¶</a></h3><div class="conflict-box">
+<strong>Example Conflict:</strong><br/>
+<strong>Architect:</strong> "We need 3 months for proper microservices architecture"<br/>
+<strong>Product:</strong> "Users need this in 4 weeks or we lose competitive advantage"<br/>
+<strong>Security:</strong> "Rushing leads to security vulnerabilities"
+</div>
+<h3 id="Resolution-Framework">Resolution Framework<a class="anchor-link" href="#Resolution-Framework">¶</a></h3><p><strong>Step 1: Understand each position</strong></p>
+<ul>
+<li>Architect: Quality and long-term maintainability</li>
+<li>Product: User needs and time-to-market</li>
+<li>Security: Risk mitigation</li>
+</ul>
+<p><strong>Step 2: Find middle ground</strong></p>
+<ul>
+<li>Phase approach: MVP (core only) in 4 weeks, then full platform</li>
+<li>Security in-built from start (not added later)</li>
+<li>Architecture allows future scalability</li>
+</ul>
+<p><strong>Step 3: Clear trade-offs</strong></p>
+<ul>
+<li>"We sacrifice some features (Phase 2) to hit market window"</li>
+<li>"We prioritize security even in MVP"</li>
+<li>"Core architecture designed for scale"</li>
+</ul>
+<p><strong>Step 4: Document decision</strong></p>
+<ul>
+<li>Why this approach</li>
+<li>Who agrees/disagrees</li>
+<li>How we'll revisit if needed</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=12f09452">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Delegation Workflow</strong><br/><br/>
+Build a multi-agent delegation chain:
+<ol>
+<li>CEO delegates to Product Manager (define requirements)</li>
+<li>Product Manager output → Architect (design system)</li>
+<li>Architect output → Security Lead (add security)</li>
+<li>All outputs → CEO (final decision)</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=00e671e4">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="c1"># Create tasks that flow from CEO → specialist → specialist → back to CEO</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your delegation workflow here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3790c6bc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Consensus Mechanism</strong><br/><br/>
+Implement consensus for team decisions:
+<ol>
+<li>Propose technical approach</li>
+<li>Each specialist evaluates and votes</li>
+<li>Aggregate votes and identify objections</li>
+<li>Discuss objections and re-vote if needed</li>
+<li>Reach consensus or escalate to CEO</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=acb069f0">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your consensus mechanism here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cccee71a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-3-Project:-Software-Design-Review-Team">📝 Week 3 Project: Software Design Review Team<a class="anchor-link" href="#%F0%9F%93%9D-Week-3-Project:-Software-Design-Review-Team">¶</a></h2><p><strong>Build a multi-agent team that reviews software designs.</strong></p>
+<h3 id="Team-Members-(5+-Agents):">Team Members (5+ Agents):<a class="anchor-link" href="#Team-Members-(5+-Agents):">¶</a></h3><ol>
+<li><strong>Product Manager</strong>: Requirements and user needs</li>
+<li><strong>Technical Architect</strong>: System design and scalability</li>
+<li><strong>Security Lead</strong>: Security and compliance</li>
+<li><strong>Performance Expert</strong>: Performance and optimization</li>
+<li><strong>DevOps Lead</strong>: Deployment and operations</li>
+<li><strong>CEO/Director</strong>: Makes final decisions</li>
+</ol>
+<h3 id="Design-Review-Process:">Design Review Process:<a class="anchor-link" href="#Design-Review-Process:">¶</a></h3><ol>
+<li>Product Manager presents requirements</li>
+<li>Architect proposes design</li>
+<li>Each specialist reviews and provides feedback</li>
+<li>CEO aggregates input and makes decision</li>
+<li>Document final design with rationale</li>
+</ol>
+<h3 id="Test-Scenarios:">Test Scenarios:<a class="anchor-link" href="#Test-Scenarios:">¶</a></h3><ol>
+<li><strong>Simple</strong>: CRUD API for user profiles</li>
+<li><strong>Complex</strong>: Real-time collaboration platform</li>
+<li><strong>Urgent</strong>: 2-week timeline constraint</li>
+<li><strong>Conflicting</strong>: Scalability vs budget vs timeline</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=bf0a15c5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 3 Project Starter</span>
+
+<span class="c1"># TODO: Create 6 specialized agents (Product, Architect, Security, Performance, DevOps, CEO)</span>
+<span class="c1"># TODO: Create 5+ tasks with delegation chains</span>
+<span class="c1"># TODO: Implement consensus/voting mechanism</span>
+<span class="c1"># TODO: Test with 3 different design scenarios</span>
+<span class="c1"># TODO: Document team decisions and trade-offs</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your software design review team here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=05c8259f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>Communication Patterns:</strong></p>
+<ul>
+<li>Direct communication via context</li>
+<li>Shared state repositories</li>
+<li>Hierarchical decision-making</li>
+</ul>
+<p>✅ <strong>Delegation:</strong></p>
+<ul>
+<li>When to delegate vs decide yourself</li>
+<li>Effective delegation instructions</li>
+<li>Feedback and iteration</li>
+</ul>
+<p>✅ <strong>Conflict Resolution:</strong></p>
+<ul>
+<li>Understanding different perspectives</li>
+<li>Finding middle ground</li>
+<li>Clear trade-off documentation</li>
+</ul>
+<p>✅ <strong>CEO Pattern:</strong></p>
+<ul>
+<li>Gather specialist input</li>
+<li>Facilitate discussion</li>
+<li>Make informed decisions</li>
+</ul>
+<h2 id="%F0%9F%94%9C-Next-Week:-Production-&amp;-Scaling">🔜 Next Week: Production &amp; Scaling<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Production-&amp;-Scaling">¶</a></h2><p>In Week 4, we'll deploy agents to production:</p>
+<ul>
+<li>Monitoring and observability</li>
+<li>Error handling and recovery</li>
+<li>Scaling strategies</li>
+<li>Production best practices</li>
+</ul>
+<h2 id="%F0%9F%93%9A-Additional-Resources">📚 Additional Resources<a class="anchor-link" href="#%F0%9F%93%9A-Additional-Resources">¶</a></h2><ul>
+<li><a href="https://docs.crewai.com/">CrewAI Agent Communication</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Team_collaboration">Team Collaboration Patterns</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Consensus_(computer_science">Consensus Algorithms</a>)</li>
+</ul>
+<hr/>
+<p><strong>🎉 Congratulations on completing Week 3!</strong> You can now build collaborative teams of agents. See you next week! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-02-team-collaboration.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../crewai/index.html" class="nav-link">Back to Crew.ai Multi-Agents</a>
-    
-        <a href="week-04-team-collaboration.html" class="nav-link next-link">Next Week →</a>
-        
-</div>
 
 <div class="navigation-footer">
     

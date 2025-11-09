@@ -7687,168 +7687,8 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link jupyter">Open in Jupyter</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install langgraph langchain openai</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook langgraph/notebooks/week-01*.ipynb</code>
-    </p>
-</div>
-
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../langgraph/index.html">← Back to LangGraph Workflows</a>
-        <span>•</span>
-        <span>Week 1 of 4</span>
-    </div>
-    
-    <h1>Week 1 — LangGraph Workflows</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link github" target="_blank">View on GitHub</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/langgraph/notebooks/week-01-graphs-basics.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
 </div>
@@ -7881,60 +7721,1454 @@ a.anchor-link {
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-1-%E2%80%94-LangGraph-Fundamentals-&amp;-State-Graphs">Week 1 — LangGraph Fundamentals &amp; State Graphs<a class="anchor-link" href="#Week-1-%E2%80%94-LangGraph-Fundamentals-&amp;-State-Graphs">¶</a></h1><p><strong>Course:</strong> LangGraph for Complex Workflows<br/>
-<strong>Week Focus:</strong> Build structured, debuggable AI workflows using directed graphs.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Understand state machines and graphs</li>
-<li>Define state schemas</li>
-<li>Create nodes and edges</li>
-<li>Implement branching logic</li>
-<li>Debug graph execution</li>
-</ul>
-<h2 id="%F0%9F%93%8A-Why-LangGraph?">📊 Why LangGraph?<a class="anchor-link" href="#%F0%9F%93%8A-Why-LangGraph?">¶</a></h2><p>LangChain chains are linear: Prompt → LLM → Output</p>
-<p>Real workflows are complex:</p>
-<pre><code>Input
-  ↓
-Analyze Issue
-  ↓
-[Bug? Feature? Question?]
- / | \
-B  F  Q
- \ | /
-  ↓
-Route to Tool
-  ↓
-Return Response
-</code></pre>
-<p>LangGraph provides:</p>
+<h1 id="Week-1-%E2%80%94-LangGraph-Fundamentals-&amp;-State-Management">Week 1 — LangGraph Fundamentals &amp; State Management<a class="anchor-link" href="#Week-1-%E2%80%94-LangGraph-Fundamentals-&amp;-State-Management">¶</a></h1><p><strong>Course:</strong> LangGraph for Complex Workflows<br/>
+<strong>Week Focus:</strong> Master state graphs, conditional routing, and multi-step workflows to build production-grade AI systems.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li><strong>State</strong>: Shared context across nodes</li>
-<li><strong>Nodes</strong>: Functions in the workflow</li>
-<li><strong>Edges</strong>: Connections with conditional routing</li>
-<li><strong>Persistence</strong>: Save/resume execution</li>
-<li><strong>Debugging</strong>: Visualize and trace execution</li>
+<li>Understand why graphs are superior to linear chains for complex workflows</li>
+<li>Design and implement StateGraph with typed state schemas</li>
+<li>Build nodes (workflow steps) and edges (transitions)</li>
+<li>Implement conditional routing based on state</li>
+<li>Handle errors gracefully in graph execution</li>
+<li>Visualize and debug graph workflows</li>
+<li>Build a real-world document processing pipeline</li>
 </ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Build a research assistant that:</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Your content platform receives 10,000+ user submissions daily:</p>
+<ul>
+<li>📄 Blog posts, comments, product reviews</li>
+<li>🎭 Mix of legitimate content and spam/toxic material</li>
+<li>🌍 Multiple languages requiring classification</li>
+<li>⚖️ Need to moderate without human bottleneck</li>
+</ul>
+<p><strong>Linear Chain Limitations:</strong></p>
+<div class="highlight"><pre><span></span><span class="c1"># ❌ This doesn't work well:</span>
+<span class="n">chain</span> <span class="o">=</span> <span class="n">classify</span> <span class="o">|</span> <span class="n">moderate</span> <span class="o">|</span> <span class="n">summarize</span> <span class="o">|</span> <span class="n">publish</span>
+<span class="c1"># Problem: What if we need to:</span>
+<span class="c1"># - Route spam to deletion (skip summarization)</span>
+<span class="c1"># - Send toxic content to human review</span>
+<span class="c1"># - Handle multiple languages differently</span>
+<span class="c1"># - Retry failed steps</span>
+</pre></div>
+<p><strong>The Solution:</strong> A content moderation graph that:</p>
 <ol>
-<li>Takes a query</li>
-<li>Searches Wikipedia</li>
-<li>Searches academic papers (if needed)</li>
-<li>Synthesizes findings</li>
-<li>Returns report</li>
+<li><strong>Classifies</strong> content type (article/comment/review/spam)</li>
+<li><strong>Detects</strong> language and toxicity</li>
+<li><strong>Routes</strong> based on results:<ul>
+<li>Spam → Auto-reject</li>
+<li>Toxic → Human review queue</li>
+<li>Clean → Extract key info</li>
+</ul>
+</li>
+<li><strong>Summarizes</strong> approved content</li>
+<li><strong>Publishes</strong> or routes for approval</li>
 </ol>
-<p>Decisions at each step → perfect for graphs!</p>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>🚀 Process 10K submissions/day (up from 500 manual reviews)</li>
+<li>⏱️ Reduce moderation time from 4 hours → 2 minutes</li>
+<li>🎯 95% accuracy with 10% human review (high-risk items)</li>
+<li>💰 Save $240K/year in moderation costs</li>
+</ul>
+<p>Companies like <strong>Reddit, Medium, and Substack</strong> use similar graph-based moderation systems.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.jp-RenderedHTMLCommon h2 {</span>
+<span class="s1">    color: #2c3e50;</span>
+<span class="s1">    border-bottom: 2px solid #3498db;</span>
+<span class="s1">    padding-bottom: 10px;</span>
+<span class="s1">    margin-top: 30px;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon h3 {</span>
+<span class="s1">    color: #34495e;</span>
+<span class="s1">    margin-top: 20px;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon code {</span>
+<span class="s1">    background-color: #f8f9fa;</span>
+<span class="s1">    padding: 2px 6px;</span>
+<span class="s1">    border-radius: 3px;</span>
+<span class="s1">    font-family: 'Courier New', monospace;</span>
+<span class="s1">}</span>
+<span class="s1">.jp-RenderedHTMLCommon pre {</span>
+<span class="s1">    background-color: #f8f9fa;</span>
+<span class="s1">    border-left: 4px solid #3498db;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.scenario-box {</span>
+<span class="s1">    background-color: #d1ecf1;</span>
+<span class="s1">    border-left: 5px solid #17a2b8;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.graph-box {</span>
+<span class="s1">    background-color: #e7f3e7;</span>
+<span class="s1">    border-left: 5px solid #28a745;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">    font-family: monospace;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Why-Graphs?-(Linear-Chains-vs-State-Graphs)">🔍 Part 1: Why Graphs? (Linear Chains vs State Graphs)<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Why-Graphs?-(Linear-Chains-vs-State-Graphs)">¶</a></h2><h3 id="The-Problem-with-Linear-Chains">The Problem with Linear Chains<a class="anchor-link" href="#The-Problem-with-Linear-Chains">¶</a></h3><p>LangChain chains work great for simple workflows, but fail for complex scenarios:</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ❌ Linear Chain - Can't handle branching logic</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">StrOutputParser</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"❌ LINEAR CHAIN LIMITATIONS:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Example: Content moderation</span>
+<span class="n">prompt</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="s2">"Moderate this content: </span><span class="si">{content}</span><span class="s2">"</span><span class="p">)</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">FakeListLLM</span><span class="p">(</span><span class="n">responses</span><span class="o">=</span><span class="p">[</span><span class="s2">"Content is spam"</span><span class="p">])</span>
+<span class="n">parser</span> <span class="o">=</span> <span class="n">StrOutputParser</span><span class="p">()</span>
+
+<span class="n">chain</span> <span class="o">=</span> <span class="n">prompt</span> <span class="o">|</span> <span class="n">llm</span> <span class="o">|</span> <span class="n">parser</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Problem 1: No conditional routing"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  If content is spam, we should STOP here."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  But chains always run ALL steps."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Problem 2: No shared state"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Each step only sees the previous output."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Can't access original input or intermediate results."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Problem 3: No cycles/loops"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Can't retry failed steps."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Can't implement 'try again until success' logic."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Problem 4: Hard to debug"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Can't inspect state between steps."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  Can't visualize the workflow."</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"💡 Solution: Use LangGraph!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="The-LangGraph-Way-(State-Graphs)">The LangGraph Way (State Graphs)<a class="anchor-link" href="#The-LangGraph-Way-(State-Graphs)">¶</a></h3><p>LangGraph introduces:</p>
+<ol>
+<li><strong>State</strong>: Shared context accessible by all nodes</li>
+<li><strong>Nodes</strong>: Functions that read/write state</li>
+<li><strong>Conditional Edges</strong>: Dynamic routing based on state</li>
+<li><strong>Cycles</strong>: Loops and retries</li>
+<li><strong>Visualization</strong>: See your workflow as a graph</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># ✅ State Graph - Handles complexity elegantly</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">END</span>
+
+<span class="c1"># 1. Define State Schema</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ContentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Shared state across all nodes."""</span>
+    <span class="n">content</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">content_type</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># "spam", "toxic", "clean"</span>
+    <span class="n">decision</span><span class="p">:</span> <span class="nb">str</span>       <span class="c1"># "reject", "review", "approve"</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="c1"># 2. Define Node Functions</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_content</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ContentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Node 1: Classify content."""</span>
+    <span class="c1"># In real app: use LLM to classify</span>
+    <span class="k">if</span> <span class="s2">"buy now"</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"content_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"spam"</span>
+    <span class="k">elif</span> <span class="s2">"hate"</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"content_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"toxic"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"content_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"clean"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">route_decision</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ContentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"reject"</span><span class="p">,</span> <span class="s2">"review"</span><span class="p">,</span> <span class="s2">"approve"</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Conditional router: decide next step based on state."""</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"content_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"spam"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"reject"</span>
+    <span class="k">elif</span> <span class="n">state</span><span class="p">[</span><span class="s2">"content_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"toxic"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"review"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"approve"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">reject_content</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ContentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Node 2a: Auto-reject spam."""</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"rejected"</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Spam detected - auto-rejected"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">queue_for_review</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ContentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Node 2b: Queue for human review."""</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"needs_review"</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Toxic content - queued for human review"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">approve_content</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ContentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ContentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Node 2c: Auto-approve clean content."""</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"approved"</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Clean content - approved for publication"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># 3. Build the Graph</span>
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">ContentState</span><span class="p">)</span>
+
+<span class="c1"># Add nodes</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"classify"</span><span class="p">,</span> <span class="n">classify_content</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"reject"</span><span class="p">,</span> <span class="n">reject_content</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"review"</span><span class="p">,</span> <span class="n">queue_for_review</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"approve"</span><span class="p">,</span> <span class="n">approve_content</span><span class="p">)</span>
+
+<span class="c1"># Set entry point</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"classify"</span><span class="p">)</span>
+
+<span class="c1"># Add conditional edges (routing logic)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+    <span class="s2">"classify"</span><span class="p">,</span>
+    <span class="n">route_decision</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">"reject"</span><span class="p">:</span> <span class="s2">"reject"</span><span class="p">,</span>
+        <span class="s2">"review"</span><span class="p">:</span> <span class="s2">"review"</span><span class="p">,</span>
+        <span class="s2">"approve"</span><span class="p">:</span> <span class="s2">"approve"</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># All paths end after their respective actions</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"reject"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"review"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"approve"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="c1"># 4. Compile the graph</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Graph created successfully!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📊 GRAPH STRUCTURE:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">    START</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [classify]</span>
+<span class="s2">      |</span>
+<span class="s2">   &lt;router&gt;</span>
+<span class="s2">   /  |  </span><span class="se">\\</span>
+<span class="s2">  /   |   </span><span class="se">\\</span>
+<span class="s2">spam toxic clean</span>
+<span class="s2"> |    |     |</span>
+<span class="s2"> v    v     v</span>
+<span class="s2">[reject] [review] [approve]</span>
+<span class="s2"> |    |     |</span>
+<span class="s2"> v    v     v</span>
+<span class="s2">    END</span>
+<span class="s2">"""</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Test-the-Graph-with-Different-Inputs">Test the Graph with Different Inputs<a class="anchor-link" href="#Test-the-Graph-with-Different-Inputs">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test 1: Spam content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 1: Spam Content"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"BUY NOW! Limited time offer!!!"</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input: </span><span class="si">{</span><span class="n">result1</span><span class="p">[</span><span class="s1">'content'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Type: </span><span class="si">{</span><span class="n">result1</span><span class="p">[</span><span class="s1">'content_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decision: </span><span class="si">{</span><span class="n">result1</span><span class="p">[</span><span class="s1">'decision'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Summary: </span><span class="si">{</span><span class="n">result1</span><span class="p">[</span><span class="s1">'summary'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Test 2: Toxic content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 2: Toxic Content"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">result2</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"I hate this product and everyone who uses it!"</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input: </span><span class="si">{</span><span class="n">result2</span><span class="p">[</span><span class="s1">'content'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Type: </span><span class="si">{</span><span class="n">result2</span><span class="p">[</span><span class="s1">'content_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decision: </span><span class="si">{</span><span class="n">result2</span><span class="p">[</span><span class="s1">'decision'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Summary: </span><span class="si">{</span><span class="n">result2</span><span class="p">[</span><span class="s1">'summary'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Test 3: Clean content</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 3: Clean Content"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">result3</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"content"</span><span class="p">:</span> <span class="s2">"This is a helpful tutorial on Python programming."</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Input: </span><span class="si">{</span><span class="n">result3</span><span class="p">[</span><span class="s1">'content'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Type: </span><span class="si">{</span><span class="n">result3</span><span class="p">[</span><span class="s1">'content_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Decision: </span><span class="si">{</span><span class="n">result3</span><span class="p">[</span><span class="s1">'decision'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Summary: </span><span class="si">{</span><span class="n">result3</span><span class="p">[</span><span class="s1">'summary'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Notice how each input takes a DIFFERENT path through the graph!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Part-2:-Core-Concepts-Deep-Dive">📚 Part 2: Core Concepts Deep Dive<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Core-Concepts-Deep-Dive">¶</a></h2><h3 id="2.1-State-Schemas-%E2%80%94-The-Heart-of-LangGraph">2.1 State Schemas — The Heart of LangGraph<a class="anchor-link" href="#2.1-State-Schemas-%E2%80%94-The-Heart-of-LangGraph">¶</a></h3><p><strong>State</strong> is a shared dictionary that flows through the graph. Every node can:</p>
+<ul>
+<li><strong>Read</strong> from state</li>
+<li><strong>Write</strong> to state (updates are merged)</li>
+<li><strong>Access</strong> full history</li>
+</ul>
+<p><strong>Best Practices:</strong></p>
+<ol>
+<li>Use TypedDict for type safety</li>
+<li>Document each field</li>
+<li>Keep state flat (avoid deep nesting)</li>
+<li>Use Optional for fields set later</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># ✅ Good State Design</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocumentProcessingState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""State for multi-step document processing workflow."""</span>
+    
+    <span class="c1"># Input (set at start)</span>
+    <span class="n">document_text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">document_id</span><span class="p">:</span> <span class="nb">str</span>
+    
+    <span class="c1"># Classification results (set by classify node)</span>
+    <span class="n">document_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "invoice", "contract", "report"</span>
+    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>        <span class="c1"># "en", "es", "fr"</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>    <span class="c1"># 0.0-1.0</span>
+    
+    <span class="c1"># Extraction results (set by extract node)</span>
+    <span class="n">entities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>  <span class="c1"># [{"type": "person", "value": "John"}]</span>
+    <span class="n">key_dates</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>  <span class="c1"># ["2024-01-15", "2024-02-01"]</span>
+    <span class="n">amounts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>  <span class="c1"># [1500.00, 2300.50]</span>
+    
+    <span class="c1"># Summary (set by summarize node)</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    
+    <span class="c1"># Routing decision (set by router)</span>
+    <span class="n">next_step</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "approve", "reject", "review"</span>
+    
+    <span class="c1"># Metadata</span>
+    <span class="n">processed_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Well-designed state schema!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Key features:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"1. Clear input vs output fields"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"2. Optional fields for values set later"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"3. Specific types (List[dict], float, etc.)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"4. Docstrings for clarity"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"5. Error tracking built-in"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.2-Nodes-%E2%80%94-The-Workflow-Steps">2.2 Nodes — The Workflow Steps<a class="anchor-link" href="#2.2-Nodes-%E2%80%94-The-Workflow-Steps">¶</a></h3><p><strong>Nodes</strong> are functions that:</p>
+<ul>
+<li>Take state as input</li>
+<li>Perform work (call LLM, API, database, etc.)</li>
+<li>Return updated state</li>
+</ul>
+<p><strong>Node Types:</strong></p>
+<ol>
+<li><strong>Processing nodes</strong>: Transform data (classify, extract, summarize)</li>
+<li><strong>Decision nodes</strong>: Analyze state and set routing flags</li>
+<li><strong>Integration nodes</strong>: Call external APIs/databases</li>
+<li><strong>Validation nodes</strong>: Check data quality</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DocState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">doc_type</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">entities</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">error</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="c1"># Example 1: Processing Node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Classify document type using keyword matching."""</span>
+    <span class="n">text_lower</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="s2">"invoice"</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="ow">or</span> <span class="s2">"payment"</span> <span class="ow">in</span> <span class="n">text_lower</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"doc_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"invoice"</span>
+    <span class="k">elif</span> <span class="s2">"agreement"</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="ow">or</span> <span class="s2">"contract"</span> <span class="ow">in</span> <span class="n">text_lower</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"doc_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"contract"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"doc_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"report"</span>
+    
+    <span class="n">state</span><span class="p">[</span><span class="s2">"timestamp"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Example 2: Extraction Node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_entities</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Extract key entities from document."""</span>
+    <span class="c1"># In production: use NER model or LLM</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Simple extraction example</span>
+    <span class="k">if</span> <span class="s2">"$"</span> <span class="ow">in</span> <span class="n">state</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]:</span>
+        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"amount"</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">:</span> <span class="s2">"$1,500"</span><span class="p">})</span>
+    
+    <span class="n">state</span><span class="p">[</span><span class="s2">"entities"</span><span class="p">]</span> <span class="o">=</span> <span class="n">entities</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Example 3: Summarization Node (with LLM)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate concise summary."""</span>
+    <span class="c1"># In production: use actual LLM</span>
+    <span class="n">doc_type</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"doc_type"</span><span class="p">,</span> <span class="s2">"document"</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"This is a </span><span class="si">{</span><span class="n">doc_type</span><span class="si">}</span><span class="s2"> containing </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">'text'</span><span class="p">])</span><span class="si">}</span><span class="s2"> characters."</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Example 4: Error Handling Node</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Validate document before processing."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">):</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Empty document"</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"text"</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Document too short"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"error"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>  <span class="c1"># No error</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Node functions created!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">💡 Node Best Practices:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"1. Single responsibility (do ONE thing well)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"2. Always return state (even if unchanged)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"3. Handle errors gracefully (don't crash)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"4. Add logging for debugging"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"5. Keep nodes pure (no hidden side effects)"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="2.3-Edges-%E2%80%94-Connecting-the-Workflow">2.3 Edges — Connecting the Workflow<a class="anchor-link" href="#2.3-Edges-%E2%80%94-Connecting-the-Workflow">¶</a></h3><p><strong>Edge Types:</strong></p>
+<ol>
+<li><p><strong>Normal Edges</strong>: Always go from A → B</p>
+<div class="highlight"><pre><span></span><span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"node_a"</span><span class="p">,</span> <span class="s2">"node_b"</span><span class="p">)</span>
+</pre></div>
+</li>
+<li><p><strong>Conditional Edges</strong>: Route based on state</p>
+<div class="highlight"><pre><span></span><span class="n">workflow</span><span class="o">.</span><span class="n">add_conditional_edges</span><span class="p">(</span>
+    <span class="s2">"router_node"</span><span class="p">,</span>
+    <span class="n">routing_function</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">"option1"</span><span class="p">:</span> <span class="s2">"node_a"</span><span class="p">,</span> <span class="s2">"option2"</span><span class="p">:</span> <span class="s2">"node_b"</span><span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</li>
+<li><p><strong>Entry Point</strong>: Where execution starts</p>
+<div class="highlight"><pre><span></span><span class="n">workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"first_node"</span><span class="p">)</span>
+</pre></div>
+</li>
+<li><p><strong>End</strong>: Terminal node (no outgoing edges)</p>
+<div class="highlight"><pre><span></span><span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"final_node"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+</pre></div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">END</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Literal</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">value</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">path_taken</span><span class="p">:</span> <span class="nb">str</span>
+
+<span class="c1"># Example: Conditional routing based on value</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_value</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SimpleState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"low"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Router: decide path based on value."""</span>
+    <span class="k">return</span> <span class="s2">"low"</span> <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"value"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">50</span> <span class="k">else</span> <span class="s2">"high"</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_low</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SimpleState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimpleState</span><span class="p">:</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"path_taken"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"LOW path"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_high</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">SimpleState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SimpleState</span><span class="p">:</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"path_taken"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"HIGH path"</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Build graph with conditional routing</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">SimpleState</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"process_low"</span><span class="p">,</span> <span class="n">process_low</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"process_high"</span><span class="p">,</span> <span class="n">process_high</span><span class="p">)</span>
+
+<span class="n">graph</span><span class="o">.</span><span class="n">set_conditional_entry_point</span><span class="p">(</span>
+    <span class="n">check_value</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">"low"</span><span class="p">:</span> <span class="s2">"process_low"</span><span class="p">,</span> <span class="s2">"high"</span><span class="p">:</span> <span class="s2">"process_high"</span><span class="p">}</span>
+<span class="p">)</span>
+
+<span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"process_low"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+<span class="n">graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"process_high"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="c1"># Test routing</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 Test conditional routing:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="n">result1</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="mi">25</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Value=25 → </span><span class="si">{</span><span class="n">result1</span><span class="p">[</span><span class="s1">'path_taken'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">result2</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">invoke</span><span class="p">({</span><span class="s2">"value"</span><span class="p">:</span> <span class="mi">75</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Value=75 → </span><span class="si">{</span><span class="n">result2</span><span class="p">[</span><span class="s1">'path_taken'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Routing works! Different inputs take different paths."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Real-Document-Processing-Pipeline">🛠️ Part 3: Building a Real Document Processing Pipeline<a class="anchor-link" href="#%F0%9F%9B%A0%EF%B8%8F-Part-3:-Building-a-Real-Document-Processing-Pipeline">¶</a></h2><div class="scenario-box">
+<strong>📌 Scenario:</strong> Build an intelligent document processor for a financial services company:
+<ol>
+<li><strong>Classify</strong> document type (invoice, contract, report, form)</li>
+<li><strong>Extract</strong> key information (dates, amounts, parties)</li>
+<li><strong>Validate</strong> extracted data</li>
+<li><strong>Summarize</strong> document content</li>
+<li><strong>Route</strong> for appropriate action:
+  <ul>
+<li>Invoice → Accounting system</li>
+<li>Contract → Legal review</li>
+<li>Report → Management dashboard</li>
+<li>Unknown → Human review</li>
+</ul>
+</li>
+</ol>
+</div>
+<h3 id="Step-1:-Define-Comprehensive-State">Step 1: Define Comprehensive State<a class="anchor-link" href="#Step-1:-Define-Comprehensive-State">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">DocumentState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""State for document processing workflow."""</span>
+    
+    <span class="c1"># Input</span>
+    <span class="n">document_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">document_text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">source</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># "email", "upload", "scan"</span>
+    
+    <span class="c1"># Classification</span>
+    <span class="n">document_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "invoice", "contract", "report", "form", "unknown"</span>
+    <span class="n">classification_confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    
+    <span class="c1"># Extraction</span>
+    <span class="n">entities</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span>  <span class="c1"># [{"type": "amount", "value": "$1500"}]</span>
+    <span class="n">dates</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+    <span class="n">amounts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span>
+    <span class="n">parties</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>  <span class="c1"># People/companies mentioned</span>
+    
+    <span class="c1"># Validation</span>
+    <span class="n">is_valid</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span>
+    <span class="n">validation_errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+    
+    <span class="c1"># Summary</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">key_points</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+    
+    <span class="c1"># Routing</span>
+    <span class="n">routing_decision</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "accounting", "legal", "management", "review"</span>
+    <span class="n">priority</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "low", "medium", "high", "urgent"</span>
+    
+    <span class="c1"># Metadata</span>
+    <span class="n">processing_started</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">processing_completed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">errors</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ DocumentState schema defined"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total fields: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">DocumentState</span><span class="o">.</span><span class="vm">__annotations__</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Input fields: 3"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Processing fields: 14"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Metadata fields: 3"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-2:-Implement-Processing-Nodes">Step 2: Implement Processing Nodes<a class="anchor-link" href="#Step-2:-Implement-Processing-Nodes">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain.llms.fake</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeListLLM</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.output_parsers</span><span class="w"> </span><span class="kn">import</span> <span class="n">JsonOutputParser</span>
+
+<span class="c1"># Node 1: Classify Document</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocumentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Classify document type using keyword analysis."""</span>
+    <span class="n">text_lower</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_text"</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    
+    <span class="c1"># Classification logic (in production: use LLM)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"invoice"</span><span class="p">,</span> <span class="s2">"payment"</span><span class="p">,</span> <span class="s2">"bill"</span><span class="p">,</span> <span class="s2">"amount due"</span><span class="p">]):</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"invoice"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"classification_confidence"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.92</span>
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"agreement"</span><span class="p">,</span> <span class="s2">"contract"</span><span class="p">,</span> <span class="s2">"hereby agree"</span><span class="p">]):</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"contract"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"classification_confidence"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.88</span>
+    <span class="k">elif</span> <span class="nb">any</span><span class="p">(</span><span class="n">word</span> <span class="ow">in</span> <span class="n">text_lower</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"report"</span><span class="p">,</span> <span class="s2">"analysis"</span><span class="p">,</span> <span class="s2">"findings"</span><span class="p">]):</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"report"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"classification_confidence"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.85</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"unknown"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"classification_confidence"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.40</span>
+    
+    <span class="c1"># Detect language (simplified)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"language"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"en"</span>  <span class="c1"># Default to English</span>
+    
+    <span class="n">state</span><span class="p">[</span><span class="s2">"processing_started"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Node 2: Extract Information</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">extract_information</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocumentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Extract key entities, dates, amounts from document."""</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_text"</span><span class="p">]</span>
+    
+    <span class="c1"># Extract dates (simple regex)</span>
+    <span class="n">date_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\d{1,2}[-/]\d{1,2}[-/]\d{2,4}|\d</span><span class="si">{4}</span><span class="s1">[-/]\d{1,2}[-/]\d{1,2}'</span>
+    <span class="n">dates</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">date_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"dates"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dates</span> <span class="k">if</span> <span class="n">dates</span> <span class="k">else</span> <span class="p">[]</span>
+    
+    <span class="c1"># Extract amounts (simple regex)</span>
+    <span class="n">amount_pattern</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">'\$\s*([0-9,]+\.?[0-9]*)'</span>
+    <span class="n">amounts_str</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">amount_pattern</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"amounts"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">amt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">','</span><span class="p">,</span> <span class="s1">''</span><span class="p">))</span> <span class="k">for</span> <span class="n">amt</span> <span class="ow">in</span> <span class="n">amounts_str</span><span class="p">]</span>
+    
+    <span class="c1"># Extract entities</span>
+    <span class="n">entities</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"amounts"</span><span class="p">]:</span>
+        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"monetary_amount"</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"$</span><span class="si">{</span><span class="n">state</span><span class="p">[</span><span class="s1">'amounts'</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"dates"</span><span class="p">]:</span>
+        <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"date"</span><span class="p">,</span> <span class="s2">"value"</span><span class="p">:</span> <span class="n">state</span><span class="p">[</span><span class="s1">'dates'</span><span class="p">][</span><span class="mi">0</span><span class="p">]})</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"entities"</span><span class="p">]</span> <span class="o">=</span> <span class="n">entities</span>
+    
+    <span class="c1"># Extract parties (simplified - just capitalized words)</span>
+    <span class="n">parties</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">'\b[A-Z][a-z]+ [A-Z][a-z]+\b'</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"parties"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">parties</span><span class="p">))[:</span><span class="mi">5</span><span class="p">]</span>  <span class="c1"># Top 5 unique</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Node 3: Validate Data</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_extraction</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocumentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Validate extracted information."""</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="c1"># Validation rules</span>
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"invoice"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"amounts"</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Invoice missing amount"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dates"</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Invoice missing date"</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"contract"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parties"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parties"</span><span class="p">,</span> <span class="p">[]))</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Contract missing parties"</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">state</span><span class="p">[</span><span class="s2">"classification_confidence"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.7</span><span class="p">:</span>
+        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Low classification confidence"</span><span class="p">)</span>
+    
+    <span class="n">state</span><span class="p">[</span><span class="s2">"is_valid"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">state</span><span class="p">[</span><span class="s2">"validation_errors"</span><span class="p">]</span> <span class="o">=</span> <span class="n">errors</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Node 4: Summarize Document</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">summarize_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocumentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Generate summary and key points."""</span>
+    <span class="n">doc_type</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span>
+    
+    <span class="c1"># Generate summary based on type</span>
+    <span class="k">if</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">"invoice"</span><span class="p">:</span>
+        <span class="n">amount</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"amounts"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"amounts"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"unknown"</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"dates"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"dates"</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"unknown"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invoice for $</span><span class="si">{</span><span class="n">amount</span><span class="si">}</span><span class="s2"> dated </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"key_points"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">"Amount due: $</span><span class="si">{</span><span class="n">amount</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Date: </span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Entities extracted: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'entities'</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">]</span>
+    <span class="k">elif</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">"contract"</span><span class="p">:</span>
+        <span class="n">parties</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parties"</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Contract agreement between </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">parties</span><span class="p">)</span><span class="si">}</span><span class="s2"> parties"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"key_points"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">"Parties: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parties</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"Dates mentioned: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'dates'</span><span class="p">,</span><span class="w"> </span><span class="p">[]))</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"summary"</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">doc_type</span><span class="o">.</span><span class="n">title</span><span class="p">()</span><span class="si">}</span><span class="s2"> document with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s1">'document_text'</span><span class="p">])</span><span class="si">}</span><span class="s2"> characters"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"key_points"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"Type: </span><span class="si">{</span><span class="n">doc_type</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"Language: </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'language'</span><span class="p">,</span><span class="w"> </span><span class="s1">'unknown'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="c1"># Node 5: Route Document</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">route_document</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">DocumentState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentState</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Determine routing and priority."""</span>
+    <span class="n">doc_type</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"document_type"</span><span class="p">]</span>
+    <span class="n">is_valid</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"is_valid"</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    
+    <span class="c1"># Routing logic</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_valid</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"routing_decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"review"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"high"</span>
+    <span class="k">elif</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">"invoice"</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"routing_decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"accounting"</span>
+        <span class="c1"># Check if urgent (amount &gt; $10,000)</span>
+        <span class="n">amounts</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"amounts"</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"urgent"</span> <span class="k">if</span> <span class="p">(</span><span class="n">amounts</span> <span class="ow">and</span> <span class="n">amounts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">)</span> <span class="k">else</span> <span class="s2">"medium"</span>
+    <span class="k">elif</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">"contract"</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"routing_decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"legal"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"high"</span>
+    <span class="k">elif</span> <span class="n">doc_type</span> <span class="o">==</span> <span class="s2">"report"</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"routing_decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"management"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"low"</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"routing_decision"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"review"</span>
+        <span class="n">state</span><span class="p">[</span><span class="s2">"priority"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"medium"</span>
+    
+    <span class="n">state</span><span class="p">[</span><span class="s2">"processing_completed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">state</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ All node functions implemented!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Nodes created:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  1. classify_document"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  2. extract_information"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  3. validate_extraction"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  4. summarize_document"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"  5. route_document"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-3:-Build-the-Complete-Graph">Step 3: Build the Complete Graph<a class="anchor-link" href="#Step-3:-Build-the-Complete-Graph">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">END</span>
+
+<span class="c1"># Create the graph</span>
+<span class="n">workflow</span> <span class="o">=</span> <span class="n">StateGraph</span><span class="p">(</span><span class="n">DocumentState</span><span class="p">)</span>
+
+<span class="c1"># Add all nodes</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"classify"</span><span class="p">,</span> <span class="n">classify_document</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"extract"</span><span class="p">,</span> <span class="n">extract_information</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"validate"</span><span class="p">,</span> <span class="n">validate_extraction</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"summarize"</span><span class="p">,</span> <span class="n">summarize_document</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="s2">"route"</span><span class="p">,</span> <span class="n">route_document</span><span class="p">)</span>
+
+<span class="c1"># Define the workflow</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">set_entry_point</span><span class="p">(</span><span class="s2">"classify"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"classify"</span><span class="p">,</span> <span class="s2">"extract"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"extract"</span><span class="p">,</span> <span class="s2">"validate"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"validate"</span><span class="p">,</span> <span class="s2">"summarize"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"summarize"</span><span class="p">,</span> <span class="s2">"route"</span><span class="p">)</span>
+<span class="n">workflow</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="s2">"route"</span><span class="p">,</span> <span class="n">END</span><span class="p">)</span>
+
+<span class="c1"># Compile the graph</span>
+<span class="n">doc_processor</span> <span class="o">=</span> <span class="n">workflow</span><span class="o">.</span><span class="n">compile</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"✅ Document processing graph compiled!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">📊 WORKFLOW:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"""</span>
+<span class="s2">    START</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [classify] ← Determine document type</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [extract] ← Extract dates, amounts, entities</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [validate] ← Check data quality</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [summarize] ← Generate summary</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">  [route] ← Determine destination &amp; priority</span>
+<span class="s2">      |</span>
+<span class="s2">      v</span>
+<span class="s2">    END</span>
+<span class="s2">"""</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h3 id="Step-4:-Test-with-Real-World-Documents">Step 4: Test with Real-World Documents<a class="anchor-link" href="#Step-4:-Test-with-Real-World-Documents">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Document 1: Invoice</span>
+<span class="n">invoice_doc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"document_id"</span><span class="p">:</span> <span class="s2">"DOC-001"</span><span class="p">,</span>
+    <span class="s2">"source"</span><span class="p">:</span> <span class="s2">"email"</span><span class="p">,</span>
+    <span class="s2">"document_text"</span><span class="p">:</span> <span class="s2">"""</span>
+<span class="s2">    INVOICE #INV-2024-001</span>
+<span class="s2">    </span>
+<span class="s2">    Date: 01/15/2024</span>
+<span class="s2">    Due Date: 02/15/2024</span>
+<span class="s2">    </span>
+<span class="s2">    Bill To: Acme Corporation</span>
+<span class="s2">    From: Tech Solutions Inc</span>
+<span class="s2">    </span>
+<span class="s2">    Services Rendered:</span>
+<span class="s2">    - Software Development: $15,000.00</span>
+<span class="s2">    - Cloud Hosting (Jan): $2,500.00</span>
+<span class="s2">    </span>
+<span class="s2">    Total Amount Due: $17,500.00</span>
+<span class="s2">    </span>
+<span class="s2">    Payment Terms: Net 30</span>
+<span class="s2">    """</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 1: Processing Invoice"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">doc_processor</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">invoice_doc</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Document ID: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'document_id'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'source'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📋 Classification:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Type: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'document_type'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Confidence: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'classification_confidence'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Language: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'language'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📊 Extraction:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Dates found: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">'dates'</span><span class="p">])</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'dates'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Amounts found: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">'amounts'</span><span class="p">])</span><span class="si">}</span><span class="s2"> → $</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'amounts'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Entities: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">'entities'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">entity</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">'entities'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    - </span><span class="si">{</span><span class="n">entity</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">entity</span><span class="p">[</span><span class="s1">'value'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Validation:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Valid: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_valid'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">'validation_errors'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Errors: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'validation_errors'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📝 Summary:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'summary'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Key Points:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">'key_points'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"    • </span><span class="si">{</span><span class="n">point</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🎯 Routing:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Destination: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'routing_decision'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Priority: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"⏱️ Processing Time: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'processing_started'</span><span class="p">][:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2"> → </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'processing_completed'</span><span class="p">][:</span><span class="mi">19</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Document 2: Contract</span>
+<span class="n">contract_doc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"document_id"</span><span class="p">:</span> <span class="s2">"DOC-002"</span><span class="p">,</span>
+    <span class="s2">"source"</span><span class="p">:</span> <span class="s2">"upload"</span><span class="p">,</span>
+    <span class="s2">"document_text"</span><span class="p">:</span> <span class="s2">"""</span>
+<span class="s2">    SERVICE AGREEMENT</span>
+<span class="s2">    </span>
+<span class="s2">    This agreement is entered into on 2024-01-10 between:</span>
+<span class="s2">    </span>
+<span class="s2">    Party A: John Smith, representing Smith Enterprises LLC</span>
+<span class="s2">    Party B: Jane Doe, representing Doe Consulting Inc</span>
+<span class="s2">    </span>
+<span class="s2">    The parties hereby agree to the following terms:</span>
+<span class="s2">    </span>
+<span class="s2">    1. Services: Consulting services for digital transformation</span>
+<span class="s2">    2. Duration: 6 months starting 2024-02-01</span>
+<span class="s2">    3. Compensation: $5,000.00 per month</span>
+<span class="s2">    4. Termination: Either party may terminate with 30 days notice</span>
+<span class="s2">    </span>
+<span class="s2">    Signed on 2024-01-10</span>
+<span class="s2">    """</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 2: Processing Contract"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">doc_processor</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">contract_doc</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📋 Classification: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'document_type'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'classification_confidence'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📊 Parties Identified: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">'parties'</span><span class="p">])</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Valid: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_valid'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📝 Summary: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'summary'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🎯 Route to: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'routing_decision'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> (Priority: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Test Document 3: Unknown/Ambiguous</span>
+<span class="n">unknown_doc</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"document_id"</span><span class="p">:</span> <span class="s2">"DOC-003"</span><span class="p">,</span>
+    <span class="s2">"source"</span><span class="p">:</span> <span class="s2">"scan"</span><span class="p">,</span>
+    <span class="s2">"document_text"</span><span class="p">:</span> <span class="s2">"Hello, this is a short note. Thanks!"</span>
+<span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🧪 TEST 3: Processing Unknown Document"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">doc_processor</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">unknown_doc</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"📋 Classification: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'document_type'</span><span class="p">]</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'classification_confidence'</span><span class="p">]</span><span class="si">:</span><span class="s2">.0%</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ Valid: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_valid'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s1">'validation_errors'</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"⚠️ Validation Errors:"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">error</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">'validation_errors'</span><span class="p">]:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  • </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"🎯 Route to: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'routing_decision'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2"> (Priority: </span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">'priority'</span><span class="p">]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Notice: Low confidence → routed to human review!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Add Error Handling</strong>
+<br/><br/>
+Enhance the document processor with robust error handling:
+<ol>
+<li>Add a <code>try/except</code> wrapper to each node</li>
+<li>If a node fails, log the error to <code>state["errors"]</code></li>
+<li>Add an error recovery node that handles failures</li>
+<li>Test with malformed input (empty text, None values)</li>
+</ol>
+<br/>
+<strong>Hint:</strong> Create a wrapper function:
+<pre><code>def safe_node(node_fn):
+    def wrapper(state):
+        try:
+            return node_fn(state)
+        except Exception as e:
+            state["errors"] = state.get("errors", []) + [str(e)]
+            return state
+    return wrapper
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+
+<span class="c1"># TODO: Create safe_node wrapper</span>
+<span class="c1"># TODO: Wrap all nodes with error handling</span>
+<span class="c1"># TODO: Add error recovery node</span>
+<span class="c1"># TODO: Test with bad inputs</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Add Conditional Routing</strong>
+<br/><br/>
+Modify the graph to skip summarization for invalid documents:
+<ol>
+<li>After <code>validate</code> node, add conditional routing</li>
+<li>If <code>is_valid == True</code> → go to <code>summarize</code></li>
+<li>If <code>is_valid == False</code> → skip directly to <code>route</code></li>
+<li>Test with both valid and invalid documents</li>
+</ol>
+<br/>
+<strong>Hint:</strong> Use <code>add_conditional_edges</code>:
+<pre><code>def route_after_validation(state):
+    return "summarize" if state["is_valid"] else "route"
+
+<p>workflow.add_conditional_edges(
+"validate",
+route_after_validation,
+{"summarize": "summarize", "route": "route"}
+)
+</p></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+
+<span class="c1"># TODO: Define routing function</span>
+<span class="c1"># TODO: Rebuild graph with conditional edges</span>
+<span class="c1"># TODO: Test with valid and invalid docs</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 3: Add Parallel Processing</strong>
+<br/><br/>
+Some operations can run in parallel. Modify the graph to:
+<ol>
+<li>After <code>classify</code>, run <code>extract</code> AND <code>detect_language</code> in parallel</li>
+<li>Create a new <code>detect_language</code> node (use simple heuristics)</li>
+<li>Both should finish before moving to <code>validate</code></li>
+</ol>
+<br/>
+<strong>Challenge:</strong> Research how to add parallel branches in LangGraph!
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Your solution here!</span>
+
+<span class="c1"># TODO: Create detect_language node</span>
+<span class="c1"># TODO: Add parallel branches</span>
+<span class="c1"># TODO: Test and measure performance improvement</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-1-Project:-Content-Moderation-Pipeline">📝 Week 1 Project: Content Moderation Pipeline<a class="anchor-link" href="#%F0%9F%93%9D-Week-1-Project:-Content-Moderation-Pipeline">¶</a></h2><p><strong>Build a complete content moderation system for a social media platform.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>Input:</strong> User-generated content (posts, comments)</p>
+<p><strong>Workflow:</strong></p>
+<ol>
+<li><strong>Classify</strong> content type (text, spam, promotional, news)</li>
+<li><strong>Detect</strong> toxicity level (clean, mild, toxic, severe)</li>
+<li><strong>Check</strong> for policy violations (hate speech, misinformation, etc.)</li>
+<li><strong>Route</strong> based on results:<ul>
+<li>Clean → Auto-approve</li>
+<li>Mild → Add warning label</li>
+<li>Toxic → Queue for review</li>
+<li>Severe → Auto-reject + alert moderators</li>
+</ul>
+</li>
+<li><strong>Log</strong> all decisions for audit trail</li>
+</ol>
+<h3 id="State-Schema:">State Schema:<a class="anchor-link" href="#State-Schema:">¶</a></h3><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">ModerationState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">content_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">content_text</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">author_id</span><span class="p">:</span> <span class="nb">str</span>
+    
+    <span class="n">content_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">toxicity_score</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>  <span class="c1"># 0.0-1.0</span>
+    <span class="n">policy_violations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
+    
+    <span class="n">decision</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>  <span class="c1"># "approve", "warn", "review", "reject"</span>
+    <span class="n">reason</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    
+    <span class="n">processed_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+</pre></div>
+<h3 id="Deliverables:">Deliverables:<a class="anchor-link" href="#Deliverables:">¶</a></h3><ol>
+<li>Complete state schema</li>
+<li>5+ node functions (classify, detect, check, route, log)</li>
+<li>Graph with conditional routing</li>
+<li>Test with 5 different content examples:<ul>
+<li>Clean post</li>
+<li>Spam</li>
+<li>Mild toxicity</li>
+<li>Severe violation</li>
+<li>Edge case (sarcasm, ambiguous)</li>
+</ul>
+</li>
+<li>ASCII diagram of your graph</li>
+</ol>
+<h3 id="Bonus-Challenges:">Bonus Challenges:<a class="anchor-link" href="#Bonus-Challenges:">¶</a></h3><ul>
+<li>Add retry logic for failed API calls</li>
+<li>Implement appeal mechanism (human override)</li>
+<li>Add metrics tracking (approval rate, false positives)</li>
+<li>Support multiple languages</li>
+</ul>
+<h3 id="Starter-Code:">Starter Code:<a class="anchor-link" href="#Starter-Code:">¶</a></h3>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># Content Moderation Project Starter</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langgraph.graph</span><span class="w"> </span><span class="kn">import</span> <span class="n">StateGraph</span><span class="p">,</span> <span class="n">END</span>
+
+<span class="c1"># TODO: Define ModerationState</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ModerationState</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="k">pass</span>  <span class="c1"># Your state schema here</span>
+
+<span class="c1"># TODO: Implement nodes</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">classify_content</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ModerationState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModerationState</span><span class="p">:</span>
+    <span class="k">pass</span>  <span class="c1"># Your implementation</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">detect_toxicity</span><span class="p">(</span><span class="n">state</span><span class="p">:</span> <span class="n">ModerationState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ModerationState</span><span class="p">:</span>
+    <span class="k">pass</span>  <span class="c1"># Your implementation</span>
+
+<span class="c1"># TODO: Build graph</span>
+<span class="c1"># TODO: Test with examples</span>
+
+<span class="c1"># Test cases</span>
+<span class="n">test_cases</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span> <span class="s2">"author_id"</span><span class="p">:</span> <span class="s2">"user123"</span><span class="p">,</span> <span class="s2">"content_text"</span><span class="p">:</span> <span class="s2">"Great product! Highly recommend."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span> <span class="s2">"author_id"</span><span class="p">:</span> <span class="s2">"user456"</span><span class="p">,</span> <span class="s2">"content_text"</span><span class="p">:</span> <span class="s2">"BUY NOW!!! 50% OFF CLICK HERE!!!"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">"3"</span><span class="p">,</span> <span class="s2">"author_id"</span><span class="p">:</span> <span class="s2">"user789"</span><span class="p">,</span> <span class="s2">"content_text"</span><span class="p">:</span> <span class="s2">"This is stupid and annoying."</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">"4"</span><span class="p">,</span> <span class="s2">"author_id"</span><span class="p">:</span> <span class="s2">"user000"</span><span class="p">,</span> <span class="s2">"content_text"</span><span class="p">:</span> <span class="s2">"I hate you all! Worst people ever!"</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"content_id"</span><span class="p">:</span> <span class="s2">"5"</span><span class="p">,</span> <span class="s2">"author_id"</span><span class="p">:</span> <span class="s2">"user111"</span><span class="p">,</span> <span class="s2">"content_text"</span><span class="p">:</span> <span class="s2">"Yeah right, like that's gonna work... 🙄"</span><span class="p">},</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>State Graphs &gt; Linear Chains:</strong></p>
+<ul>
+<li>Shared state accessible by all nodes</li>
+<li>Conditional routing based on runtime values</li>
+<li>Support for cycles and parallel execution</li>
+<li>Better debugging and visualization</li>
+</ul>
+<p>✅ <strong>Core Components:</strong></p>
+<ul>
+<li><strong>State</strong>: TypedDict with all workflow data</li>
+<li><strong>Nodes</strong>: Functions that transform state</li>
+<li><strong>Edges</strong>: Normal (fixed) or conditional (dynamic)</li>
+<li><strong>Entry/Exit</strong>: START and END points</li>
+</ul>
+<p>✅ <strong>Real-World Application:</strong></p>
+<ul>
+<li>Built document processing pipeline</li>
+<li>Implemented classification, extraction, validation</li>
+<li>Added routing logic for different document types</li>
+<li>Handled errors and edge cases</li>
+</ul>
+<p>✅ <strong>Best Practices:</strong></p>
+<ul>
+<li>Design state schema first (types matter!)</li>
+<li>Keep nodes small and focused (single responsibility)</li>
+<li>Use conditional routing for branching logic</li>
+<li>Always handle errors gracefully</li>
+<li>Test with diverse inputs (happy path + edge cases)</li>
+</ul>
+<h2 id="%F0%9F%94%9C-Next-Week:-Complex-Workflows">🔜 Next Week: Complex Workflows<a class="anchor-link" href="#%F0%9F%94%9C-Next-Week:-Complex-Workflows">¶</a></h2><p>In Week 2, we'll build advanced workflows with:</p>
+<ul>
+<li><strong>Subgraphs</strong>: Nested workflows for modularity</li>
+<li><strong>Cycles</strong>: Retry logic and iterative refinement</li>
+<li><strong>Parallel Execution</strong>: Speed up independent tasks</li>
+<li><strong>Dynamic Routing</strong>: Complex multi-branch decisions</li>
+<li><strong>Real Project</strong>: Customer onboarding system (50+ steps)</li>
+</ul>
+<p><strong>Preview question:</strong> How would you implement a "retry failed step up to 3 times" logic in a graph?</p>
+<h2 id="%F0%9F%93%9A-Additional-Resources">📚 Additional Resources<a class="anchor-link" href="#%F0%9F%93%9A-Additional-Resources">¶</a></h2><ul>
+<li><a href="https://langchain-ai.github.io/langgraph/">LangGraph Documentation</a></li>
+<li><a href="https://langchain-ai.github.io/langgraph/concepts/low_level/#state">State Management Guide</a></li>
+<li><a href="https://langchain-ai.github.io/langgraph/how-tos/branching/">Conditional Edges Examples</a></li>
+<li><a href="https://langchain-ai.github.io/langgraph/how-tos/visualization/">Graph Visualization Tools</a></li>
+</ul>
+<h2 id="%F0%9F%90%9B-Debugging-Tips">🐛 Debugging Tips<a class="anchor-link" href="#%F0%9F%90%9B-Debugging-Tips">¶</a></h2><p><strong>Common Issues:</strong></p>
+<ol>
+<li><p><strong>State not updating?</strong></p>
+<ul>
+<li>Make sure nodes RETURN the updated state</li>
+<li>Check for typos in state keys</li>
+</ul>
+</li>
+<li><p><strong>Conditional routing not working?</strong></p>
+<ul>
+<li>Verify router function returns exact strings from edge map</li>
+<li>Print state values before routing</li>
+</ul>
+</li>
+<li><p><strong>Graph hangs/infinite loop?</strong></p>
+<ul>
+<li>Check that all paths eventually reach END</li>
+<li>Look for cycles without exit conditions</li>
+</ul>
+</li>
+<li><p><strong>Type errors?</strong></p>
+<ul>
+<li>Initialize Optional fields: <code>state["field"] = None</code></li>
+<li>Check TypedDict annotations match actual usage</li>
+</ul>
+</li>
+</ol>
+<hr/>
+<p><strong>Congratulations on completing Week 1!</strong> You now know how to build sophisticated, production-ready workflows with LangGraph. See you next week!</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    <div></div>
-    <a href="../../langgraph/index.html" class="nav-link">Back to LangGraph Workflows</a>
-    
-        <a href="week-02-graphs-basics.html" class="nav-link next-link">Next Week →</a>
-        
-</div>
 
 <div class="navigation-footer">
     <div></div>

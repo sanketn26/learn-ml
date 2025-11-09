@@ -7687,7 +7687,7 @@ a.anchor-link {
     
     <div class="header-links">
         <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//workspaces/learn-ml/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link vscode">Open in VS Code</a>
+        <a href="vscode://file//home/sanket/workspaces/learn-ml/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link vscode">Open in VS Code</a>
         <a href="jupyter://relative-path:crewai/notebooks/week-04-production-scaling.ipynb" class="header-link jupyter">Open in Jupyter</a>
         <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
@@ -7714,211 +7714,672 @@ a.anchor-link {
     </p>
 </div>
 
-<style>
-.notebook-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.notebook-header h1 {
-    margin: 0 0 15px 0;
-    font-size: 2em;
-}
-
-.breadcrumbs {
-    font-size: 0.95em;
-    margin-bottom: 15px;
-    opacity: 0.95;
-}
-
-.breadcrumbs a {
-    color: white;
-    text-decoration: none;
-    border-bottom: 2px solid rgba(255,255,255,0.3);
-    padding-bottom: 2px;
-}
-
-.breadcrumbs a:hover {
-    border-bottom-color: white;
-}
-
-.breadcrumbs span {
-    margin: 0 8px;
-    opacity: 0.7;
-}
-
-.header-links {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.header-link {
-    display: inline-block;
-    background: rgba(255,255,255,0.15);
-    color: white;
-    padding: 8px 12px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 0.9em;
-    border: 1px solid rgba(255,255,255,0.3);
-    transition: all 0.3s ease;
-}
-
-.header-link:hover {
-    background: rgba(255,255,255,0.25);
-    border-color: white;
-}
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.navigation-footer {
-    display: flex;
-    gap: 20px;
-    justify-content: space-between;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 2px solid #e0e0e0;
-}
-
-.nav-link {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #f0f0f0;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    background: #667eea;
-    color: white;
-}
-
-.nav-link.prev-link {
-    margin-right: auto;
-}
-
-.nav-link.next-link {
-    margin-left: auto;
-}
-
-.setup-instructions {
-    background: #f5f5f5;
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 5px;
-    margin: 20px 0;
-    font-size: 0.95em;
-}
-
-.setup-instructions h3 {
-    margin-top: 0;
-    color: #667eea;
-}
-
-.setup-instructions code {
-    background: white;
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-family: 'Courier New', monospace;
-}
-</style>
-
-<div class="notebook-header">
-    <div class="breadcrumbs">
-        <a href="../../crewai/index.html">← Back to Crew.ai Multi-Agents</a>
-        <span>•</span>
-        <span>Week 4 of 4</span>
-    </div>
-    
-    <h1>Week 4 — Crew.ai Multi-Agents</h1>
-    
-    <div class="header-links">
-        <a href="https://github.com/sanketn26/learn-ml/blob/main/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link github" target="_blank">View on GitHub</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/crewai/notebooks/week-04-production-scaling.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
-    </div>
-</div>
-
-<div class="setup-instructions">
-    <h3>📝 How to Run This Notebook Locally</h3>
-    <p>
-        <strong>1. Clone the repository:</strong><br>
-        <code>git clone https://github.com/sanketn26/learn-ml.git && cd learn-ml</code>
-    </p>
-    <p>
-        <strong>2. Set up environment:</strong><br>
-        <code>python3 -m venv venv && source venv/bin/activate</code><br>
-        <code>pip install jupyter notebook</code>
-    </p>
-    <p>
-        <strong>3. Install course dependencies:</strong><br>
-    <code>pip install crewai openai</code>
-    </p>
-    <p>
-        <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook crewai/notebooks/week-04*.ipynb</code>
-    </p>
-</div>
-
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=86afa309">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-4-%E2%80%94-Production-Deployment-&amp;-Scaling">Week 4 — Production Deployment &amp; Scaling<a class="anchor-link" href="#Week-4-%E2%80%94-Production-Deployment-&amp;-Scaling">¶</a></h1><p><strong>Course:</strong> Crew.ai for Multi-Agent Systems<br/>
-<strong>Week Focus:</strong> Deploy and scale multi-agent systems in production.</p>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><ul>
-<li>Package crew configurations</li>
-<li>Deploy to cloud platforms</li>
-<li>Monitor agent performance</li>
-<li>Scale to handle volume</li>
-<li>Implement feedback loops</li>
-</ul>
-<h2 id="%F0%9F%93%8A-Production-Considerations">📊 Production Considerations<a class="anchor-link" href="#%F0%9F%93%8A-Production-Considerations">¶</a></h2><ul>
-<li><strong>Cost Control</strong>: LLM API calls add up fast</li>
-<li><strong>Latency</strong>: Some workflows must be fast</li>
-<li><strong>Reliability</strong>: Handle failures gracefully</li>
-<li><strong>Monitoring</strong>: Track agent decisions</li>
-<li><strong>Feedback</strong>: Learn from outcomes</li>
-</ul>
-<h2 id="%F0%9F%8F%A2-Scenario">🏢 Scenario<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario">¶</a></h2><p>Customer support automation at scale:</p>
+<h1 id="Week-4-%E2%80%94-Production-&amp;-Scaling">Week 4 — Production &amp; Scaling<a class="anchor-link" href="#Week-4-%E2%80%94-Production-&amp;-Scaling">¶</a></h1><p><strong>Course:</strong> CrewAI for Multi-Agent Systems<br/>
+<strong>Week Focus:</strong> Deploy agents to production, scale for high throughput, and monitor reliability.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
 <ul>
-<li>Intake Agent: Receives 1000s of tickets daily</li>
-<li>Classifier Agent: Routes appropriately</li>
-<li>Resolution Agent: Attempts fix</li>
-<li>Escalation Agent: Routes complex cases</li>
-<li>Analytics Agent: Tracks patterns</li>
+<li>Design production-grade agent systems</li>
+<li>Implement robust error handling and recovery</li>
+<li>Deploy agents as APIs and services</li>
+<li>Monitor agent performance and health</li>
+<li>Scale for high throughput and concurrency</li>
+<li>Handle failures gracefully</li>
+<li>Build a real-world production system</li>
 </ul>
-<p>Handles volume while maintaining quality!</p>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p><strong>The Challenge:</strong> Taking agents from notebook to production:</p>
+<ul>
+<li>Agents can fail (LLM timeouts, rate limits, API errors)</li>
+<li>Need to handle 10,000+ requests/day</li>
+<li>Must maintain 99.9% uptime</li>
+<li>Need to debug failures quickly</li>
+<li>Scale as demand grows</li>
+</ul>
+<p><strong>Production Requirements:</strong></p>
+<ol>
+<li><strong>Reliability</strong>: Retry failed tasks, circuit breakers</li>
+<li><strong>Scalability</strong>: Queue-based architecture, load balancing</li>
+<li><strong>Observability</strong>: Logging, metrics, tracing</li>
+<li><strong>Security</strong>: API authentication, rate limiting, input validation</li>
+<li><strong>Performance</strong>: Caching, async processing, optimization</li>
+</ol>
+<p><strong>Business Impact:</strong></p>
+<ul>
+<li>⏱️ Achieve 99.9% uptime SLA (vs 70% in development)</li>
+<li>📈 Scale from 100 → 10,000 requests/day</li>
+<li>💰 Reduce operational costs by 40% (efficient resource use)</li>
+<li>🚨 MTTR (Mean Time to Resolution): 30 mins → 5 mins</li>
+<li>📊 Gain visibility into system behavior</li>
+</ul>
+<p><strong>Deployment Targets:</strong></p>
+<ul>
+<li>Cloud: AWS, GCP, Azure</li>
+<li>Container: Docker + Kubernetes</li>
+<li>Serverless: AWS Lambda, Google Cloud Functions</li>
+<li>On-premises: Private data centers</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=32f62082">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
+<span class="s1">&lt;style&gt;</span>
+<span class="s1">.jp-RenderedHTMLCommon h2 {</span>
+<span class="s1">    color: #2c3e50;</span>
+<span class="s1">    border-bottom: 2px solid #3498db;</span>
+<span class="s1">    padding-bottom: 10px;</span>
+<span class="s1">    margin-top: 30px;</span>
+<span class="s1">}</span>
+<span class="s1">.production-box {</span>
+<span class="s1">    background-color: #e3f2fd;</span>
+<span class="s1">    border-left: 5px solid #1976d2;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.reliability-box {</span>
+<span class="s1">    background-color: #f3e5f5;</span>
+<span class="s1">    border-left: 5px solid #7b1fa2;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.scaling-box {</span>
+<span class="s1">    background-color: #fff3e0;</span>
+<span class="s1">    border-left: 5px solid #f57c00;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">.exercise-box {</span>
+<span class="s1">    background-color: #fff3cd;</span>
+<span class="s1">    border-left: 5px solid #ffc107;</span>
+<span class="s1">    padding: 15px;</span>
+<span class="s1">    margin: 20px 0;</span>
+<span class="s1">    border-radius: 5px;</span>
+<span class="s1">}</span>
+<span class="s1">&lt;/style&gt;</span>
+<span class="s1">'''</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9c28d227">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%94%8D-Part-1:-Production-Architecture">🔍 Part 1: Production Architecture<a class="anchor-link" href="#%F0%9F%94%8D-Part-1:-Production-Architecture">¶</a></h2><h3 id="Development-vs-Production">Development vs Production<a class="anchor-link" href="#Development-vs-Production">¶</a></h3><p><strong>Development (Week 1-3):</strong></p>
+<pre><code>Notebook → Agent → Print output
+Simple, fast iteration
+</code></pre>
+<p><strong>Production:</strong></p>
+<pre><code>Client API Request
+        ↓
+   API Gateway (auth, rate limit, validate)
+        ↓
+   Task Queue (Redis/RabbitMQ)
+        ↓
+Worker Pool (10+ agents running)
+        ↓
+  Database (store results)
+        ↓
+   Monitoring (Prometheus, CloudWatch)
+        ↓
+Client Gets Result (via webhook or polling)
+</code></pre>
+<h3 id="Key-Production-Concerns">Key Production Concerns<a class="anchor-link" href="#Key-Production-Concerns">¶</a></h3><table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>Development</th>
+<th>Production</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Error Handling</strong></td>
+<td>Print error ❌</td>
+<td>Retry, fallback, escalate ✅</td>
+</tr>
+<tr>
+<td><strong>Concurrency</strong></td>
+<td>1 request at a time</td>
+<td>100+ concurrent requests</td>
+</tr>
+<tr>
+<td><strong>Latency</strong></td>
+<td>30 seconds ok</td>
+<td>5 seconds max</td>
+</tr>
+<tr>
+<td><strong>Availability</strong></td>
+<td>50% uptime ok</td>
+<td>99.9% uptime required</td>
+</tr>
+<tr>
+<td><strong>Monitoring</strong></td>
+<td>None</td>
+<td>Comprehensive logging</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Doesn't matter</td>
+<td>Every $$ counts</td>
+</tr>
+<tr>
+<td><strong>Security</strong></td>
+<td>Ignore</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td><strong>Data</strong></td>
+<td>In-memory</td>
+<td>Persistent, replicated</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=69263445">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Part-2:-Error-Handling-&amp;-Reliability">📚 Part 2: Error Handling &amp; Reliability<a class="anchor-link" href="#%F0%9F%93%9A-Part-2:-Error-Handling-&amp;-Reliability">¶</a></h2><div class="reliability-box">
+<strong>🔄 Reliability Patterns:</strong>
+<ul>
+<li><strong>Retry:</strong> Try again (with exponential backoff)</li>
+<li><strong>Fallback:</strong> Use alternative agent/approach</li>
+<li><strong>Circuit Breaker:</strong> Stop calling failing service</li>
+<li><strong>Timeout:</strong> Don't wait forever</li>
+<li><strong>Bulkhead:</strong> Isolate failures</li>
+</ul>
+</div>
+<h3 id="Retry-Strategy">Retry Strategy<a class="anchor-link" href="#Retry-Strategy">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># Exponential backoff with jitter</span>
+<span class="n">attempt</span> <span class="mi">1</span><span class="p">:</span> <span class="n">wait</span> <span class="mi">1</span><span class="n">s</span> <span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+<span class="n">attempt</span> <span class="mi">2</span><span class="p">:</span> <span class="n">wait</span> <span class="mi">2</span><span class="n">s</span> <span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+<span class="n">attempt</span> <span class="mi">3</span><span class="p">:</span> <span class="n">wait</span> <span class="mi">4</span><span class="n">s</span> <span class="p">(</span><span class="n">fail</span><span class="p">)</span>
+<span class="n">attempt</span> <span class="mi">4</span><span class="p">:</span> <span class="n">wait</span> <span class="mi">8</span><span class="n">s</span> <span class="p">(</span><span class="n">success</span><span class="err">!</span><span class="p">)</span> <span class="err">✓</span>
+
+<span class="c1"># Add randomness to avoid thundering herd</span>
+<span class="n">wait</span> <span class="mi">1</span><span class="n">s</span> <span class="o">+</span> <span class="n">random</span><span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="mi">1</span><span class="n">s</span><span class="p">)</span>
+<span class="n">wait</span> <span class="mi">2</span><span class="n">s</span> <span class="o">+</span> <span class="n">random</span><span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="mi">2</span><span class="n">s</span><span class="p">)</span>
+<span class="n">wait</span> <span class="mi">4</span><span class="n">s</span> <span class="o">+</span> <span class="n">random</span><span class="p">(</span><span class="mi">0</span><span class="o">-</span><span class="mi">4</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=eea67e3f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">retry_with_backoff</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">base_wait</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Decorator for retry logic with exponential backoff."""</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+            <span class="n">last_exception</span> <span class="o">=</span> <span class="kc">None</span>
+            
+            <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_attempts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">last_exception</span> <span class="o">=</span> <span class="n">e</span>
+                    
+                    <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_attempts</span><span class="p">:</span>
+                        <span class="c1"># Exponential backoff with jitter</span>
+                        <span class="n">wait_time</span> <span class="o">=</span> <span class="n">base_wait</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                        <span class="n">jitter</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">wait_time</span> <span class="o">*</span> <span class="mf">0.1</span><span class="p">)</span>
+                        <span class="n">total_wait</span> <span class="o">=</span> <span class="n">wait_time</span> <span class="o">+</span> <span class="n">jitter</span>
+                        
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ⚠️ Attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2"> failed: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)[:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"     Retrying in </span><span class="si">{</span><span class="n">total_wait</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">s..."</span><span class="p">)</span>
+                        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">total_wait</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ❌ All </span><span class="si">{</span><span class="n">max_attempts</span><span class="si">}</span><span class="s2"> attempts failed"</span><span class="p">)</span>
+            
+            <span class="k">raise</span> <span class="n">last_exception</span>
+        
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+
+<span class="c1"># Example: Unreliable API call</span>
+<span class="n">call_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nd">@retry_with_backoff</span><span class="p">(</span><span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">base_wait</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">flaky_api_call</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">call_count</span>
+    <span class="n">call_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="c1"># Fails first 2 times, succeeds on 3rd</span>
+    <span class="k">if</span> <span class="n">call_count</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">"API temporary unavailable (attempt </span><span class="si">{</span><span class="n">call_count</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"success"</span><span class="p">,</span> <span class="s2">"data"</span><span class="p">:</span> <span class="s2">"Important data"</span><span class="p">}</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Testing retry with backoff:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">flaky_api_call</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">✅ Success! Result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fc83e776">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%9A%80-Part-3:-Scaling-Agents">🚀 Part 3: Scaling Agents<a class="anchor-link" href="#%F0%9F%9A%80-Part-3:-Scaling-Agents">¶</a></h2><div class="scaling-box">
+<strong>Scaling Strategies:</strong>
+<ul>
+<li><strong>Vertical:</strong> Bigger machines (limit: cost and physics)</li>
+<li><strong>Horizontal:</strong> More machines (load balance requests)</li>
+<li><strong>Async:</strong> Queue + workers (handle bursts)</li>
+<li><strong>Caching:</strong> Avoid recomputing results</li>
+<li><strong>Batching:</strong> Process multiple requests together</li>
+</ul>
+</div>
+<h3 id="Queue-Based-Architecture">Queue-Based Architecture<a class="anchor-link" href="#Queue-Based-Architecture">¶</a></h3><pre><code>Client 1 ─→ ┐
+Client 2 ─→ ├→ API Gateway ─→ Task Queue ─→ Worker Pool ─→ Database
+Client 3 ─→ └→ (validates)     (Redis)       (10+ procs)    (results)
+
+Without queue: "I have 3 requests, but only 1 agent. Wait in line!"
+With queue: "I have 3 requests. Distribute to 3 different agents. Done!"
+</code></pre>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c4864d7a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Simple in-memory task queue example</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskStatus</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PENDING</span> <span class="o">=</span> <span class="s2">"pending"</span>
+    <span class="n">RUNNING</span> <span class="o">=</span> <span class="s2">"running"</span>
+    <span class="n">COMPLETED</span> <span class="o">=</span> <span class="s2">"completed"</span>
+    <span class="n">FAILED</span> <span class="o">=</span> <span class="s2">"failed"</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Task</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_role</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">input_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_role</span> <span class="o">=</span> <span class="n">agent_role</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_data</span> <span class="o">=</span> <span class="n">input_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">PENDING</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">completed_at</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">duration_seconds</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">completed_at</span> <span class="ow">or</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TaskQueue</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pending_queue</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Task</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">enqueue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">:</span> <span class="n">Task</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add task to queue."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">task</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pending_queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">task</span><span class="o">.</span><span class="n">id</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Task</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Get next task from queue."""</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pending_queue</span><span class="p">:</span>
+            <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pending_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">RUNNING</span>
+            <span class="k">return</span> <span class="n">task</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">mark_completed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Mark task as completed."""</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">[</span><span class="n">task_id</span><span class="p">]</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">TaskStatus</span><span class="o">.</span><span class="n">COMPLETED</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="n">task</span><span class="o">.</span><span class="n">completed_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="nf">stats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get queue statistics."""</span>
+        <span class="n">statuses</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"pending"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"running"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"completed"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"failed"</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">statuses</span><span class="p">[</span><span class="n">task</span><span class="o">.</span><span class="n">status</span><span class="o">.</span><span class="n">value</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"total_tasks"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">),</span>
+            <span class="s2">"pending_in_queue"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pending_queue</span><span class="p">),</span>
+            <span class="s2">"status_breakdown"</span><span class="p">:</span> <span class="n">statuses</span><span class="p">,</span>
+            <span class="s2">"average_duration_s"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">duration_seconds</span><span class="p">()</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tasks</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+
+<span class="c1"># Simulate queue with multiple workers</span>
+<span class="n">queue</span> <span class="o">=</span> <span class="n">TaskQueue</span><span class="p">()</span>
+
+<span class="c1"># Enqueue multiple tasks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📊 Simulating Production Task Queue"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span><span class="o">*</span><span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># 10 incoming requests</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"➕ Enqueuing 10 tasks..."</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">task</span> <span class="o">=</span> <span class="n">Task</span><span class="p">(</span>
+        <span class="n">agent_role</span><span class="o">=</span><span class="s2">"ContentWriter"</span><span class="p">,</span>
+        <span class="n">input_data</span><span class="o">=</span><span class="p">{</span><span class="s2">"topic"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"topic_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"priority"</span><span class="p">:</span> <span class="s2">"high"</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">"normal"</span><span class="p">}</span>
+    <span class="p">)</span>
+    <span class="n">queue</span><span class="o">.</span><span class="n">enqueue</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Queue stats: </span><span class="si">{</span><span class="n">queue</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Simulate 3 workers processing tasks</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"👷 Processing with 3 workers..."</span><span class="p">)</span>
+<span class="n">workers_completed</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">worker_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>  <span class="c1"># 3 workers</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Worker </span><span class="si">{</span><span class="n">worker_id</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">task</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">dequeue</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">task</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"  ✓ Queue empty, waiting for more work..."</span><span class="p">)</span>
+            <span class="k">break</span>
+        
+        <span class="c1"># Simulate work</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Processing task </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">..."</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># Simulate work</span>
+        
+        <span class="c1"># Mark completed</span>
+        <span class="n">queue</span><span class="o">.</span><span class="n">mark_completed</span><span class="p">(</span><span class="n">task</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">{</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"written"</span><span class="p">})</span>
+        <span class="n">workers_completed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ✓ Completed (duration: </span><span class="si">{</span><span class="n">task</span><span class="o">.</span><span class="n">duration_seconds</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s)"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"📈 Final Queue Stats:"</span><span class="p">)</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">stats</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Total tasks: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'total_tasks'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Status breakdown: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'status_breakdown'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Avg duration: </span><span class="si">{</span><span class="n">stats</span><span class="p">[</span><span class="s1">'average_duration_s'</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">s"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=da6dbce3">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%8A-Part-4:-Monitoring-&amp;-Observability">📊 Part 4: Monitoring &amp; Observability<a class="anchor-link" href="#%F0%9F%93%8A-Part-4:-Monitoring-&amp;-Observability">¶</a></h2><div class="production-box">
+<strong>What to Monitor:</strong>
+<ul>
+<li><strong>Availability:</strong> Is the service up? (uptime %)</li>
+<li><strong>Latency:</strong> How fast? (p50, p95, p99 milliseconds)</li>
+<li><strong>Throughput:</strong> How many requests/second?</li>
+<li><strong>Errors:</strong> What failed and why? (error rate %)</li>
+<li><strong>Cost:</strong> How much did this request cost? (per request)</li>
+</ul>
+</div>
+<h3 id="Key-Metrics">Key Metrics<a class="anchor-link" href="#Key-Metrics">¶</a></h3><p><strong>SLO (Service Level Objective):</strong></p>
+<ul>
+<li>Availability: 99.9% ("three nines")</li>
+<li>Latency: p95 &lt; 500ms</li>
+<li>Error rate: &lt; 0.1%</li>
+</ul>
+<p><strong>Example Dashboard:</strong></p>
+<pre><code>Uptime: 99.95% ✓ (target: 99.9%)
+Latency (p95): 450ms ✓ (target: 500ms)
+Error Rate: 0.08% ✓ (target: 0.1%)
+Throughput: 1,200 req/s ✓ (capacity: 2,000)
+Cost: $8.50/1000 req ($0.0085 per request)
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3abba0bc">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">✍️ Hands-On Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-On-Exercises">¶</a></h2><div class="exercise-box">
+<strong>🎯 Exercise 1: Build Production Wrapper</strong><br/><br/>
+Wrap an agent with production features:
+<ol>
+<li>Input validation</li>
+<li>Retry logic (exponential backoff)</li>
+<li>Timeout handling</li>
+<li>Error logging</li>
+<li>Result caching (avoid recomputation)</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=2e1a2d9f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your production wrapper here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc72a81d">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="exercise-box">
+<strong>🎯 Exercise 2: Task Queue System</strong><br/><br/>
+Build a queue-based system:
+<ol>
+<li>Task queue (store pending tasks)</li>
+<li>Worker pool (multiple agents working in parallel)</li>
+<li>Load balancing (distribute work evenly)</li>
+<li>Status tracking (query task status)</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=b5ff962e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Your implementation here!</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Your task queue system here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e4cbeaaa">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9D-Week-4-Project:-Production-Agent-System">📝 Week 4 Project: Production Agent System<a class="anchor-link" href="#%F0%9F%93%9D-Week-4-Project:-Production-Agent-System">¶</a></h2><p><strong>Deploy agents to production with full observability.</strong></p>
+<h3 id="Requirements:">Requirements:<a class="anchor-link" href="#Requirements:">¶</a></h3><p><strong>1. Reliability:</strong></p>
+<ul>
+<li>Retry logic with exponential backoff</li>
+<li>Timeout handling (max 30 seconds per task)</li>
+<li>Graceful error handling</li>
+<li>Circuit breaker for failing services</li>
+</ul>
+<p><strong>2. Scalability:</strong></p>
+<ul>
+<li>Task queue architecture</li>
+<li>Worker pool (5+ workers)</li>
+<li>Load balancing</li>
+<li>Concurrency support</li>
+</ul>
+<p><strong>3. Observability:</strong></p>
+<ul>
+<li>Comprehensive logging</li>
+<li>Metrics (latency, throughput, errors)</li>
+<li>Health checks</li>
+<li>Dashboard/reporting</li>
+</ul>
+<p><strong>4. Deployment:</strong></p>
+<ul>
+<li>Docker container</li>
+<li>Environment configuration</li>
+<li>Start/stop scripts</li>
+<li>Deployment docs</li>
+</ul>
+<h3 id="Test-Scenarios:">Test Scenarios:<a class="anchor-link" href="#Test-Scenarios:">¶</a></h3><ol>
+<li><strong>Normal load</strong>: 100 requests/second</li>
+<li><strong>Peak load</strong>: 500 requests/second</li>
+<li><strong>Failures</strong>: 10% of requests timeout</li>
+<li><strong>Recovery</strong>: System recovers when failures stop</li>
+</ol>
+<h3 id="Success-Criteria:">Success Criteria:<a class="anchor-link" href="#Success-Criteria:">¶</a></h3><ul>
+<li>✅ Handle 500 concurrent requests</li>
+<li>✅ 99% success rate (even with 10% failures)</li>
+<li>✅ p95 latency &lt; 5 seconds</li>
+<li>✅ Detailed logging and metrics</li>
+<li>✅ Graceful degradation under load</li>
+</ul>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=90049bc5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Week 4 Project Starter</span>
+
+<span class="c1"># TODO: Build production wrapper with error handling</span>
+<span class="c1"># TODO: Implement task queue + worker pool</span>
+<span class="c1"># TODO: Add monitoring and metrics</span>
+<span class="c1"># TODO: Create API endpoint</span>
+<span class="c1"># TODO: Write deployment docs</span>
+<span class="c1"># TODO: Test with load generator</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"🎯 Your production agent system here!"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7366c012">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%8E%93-Key-Takeaways">🎓 Key Takeaways<a class="anchor-link" href="#%F0%9F%8E%93-Key-Takeaways">¶</a></h2><p><strong>What you learned this week:</strong></p>
+<p>✅ <strong>Production Architecture:</strong></p>
+<ul>
+<li>API Gateway, Task Queue, Workers, Database</li>
+<li>Horizontal scaling via worker pools</li>
+<li>Async processing with queues</li>
+</ul>
+<p>✅ <strong>Reliability:</strong></p>
+<ul>
+<li>Retry logic with exponential backoff</li>
+<li>Circuit breakers for failing services</li>
+<li>Timeout handling</li>
+<li>Graceful degradation</li>
+</ul>
+<p>✅ <strong>Observability:</strong></p>
+<ul>
+<li>Comprehensive logging</li>
+<li>Key metrics (latency, throughput, errors)</li>
+<li>SLOs and alerting</li>
+<li>Health checks</li>
+</ul>
+<p>✅ <strong>Deployment:</strong></p>
+<ul>
+<li>Containerization (Docker)</li>
+<li>Configuration management</li>
+<li>Scaling strategies</li>
+<li>Cost optimization</li>
+</ul>
+<h2 id="%F0%9F%93%9A-Additional-Resources">📚 Additional Resources<a class="anchor-link" href="#%F0%9F%93%9A-Additional-Resources">¶</a></h2><ul>
+<li><a href="https://kubernetes.io/">Kubernetes for Deployment</a></li>
+<li><a href="https://sre.google/">Site Reliability Engineering (SRE) Book</a></li>
+<li><a href="https://aws.amazon.com/architecture/well-architected/">AWS Best Practices</a></li>
+<li><a href="https://prometheus.io/">Prometheus Monitoring</a></li>
+</ul>
+<hr/>
+<p><strong>🎉 Congratulations on completing the CrewAI course!</strong> You can now build, deploy, and operate production agent systems. Go build something amazing! 🚀</p>
 </div>
 </div>
 </div>
 </div>
 </main>
-
-<div class="navigation-footer">
-    
-        <a href="week-03-production-scaling.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../crewai/index.html" class="nav-link">Back to Crew.ai Multi-Agents</a>
-    <div></div>
-</div>
 
 <div class="navigation-footer">
     
