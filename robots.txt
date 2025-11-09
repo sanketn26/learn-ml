@@ -1,0 +1,27 @@
+# robots.txt for AI Frameworks Learning Platform
+# Allow all search engines to crawl and index content
+
+User-agent: *
+Allow: /
+
+# Allow search engines to crawl all HTML pages
+Allow: /index.html
+Allow: /docs/*.html
+Allow: /langchain/index.html
+Allow: /langchain/docs/*.html
+Allow: /langgraph/index.html
+Allow: /langgraph/docs/*.html
+Allow: /crewai/index.html
+Allow: /crewai/docs/*.html
+
+# Disallow unnecessary files
+Disallow: /*.py
+Disallow: /*.ipynb
+Disallow: /data/
+Disallow: /.git/
+
+# Point search engines to sitemap
+Sitemap: https://sanketn26.github.io/learn-ml/sitemap.xml
+
+# Crawl delay to be respectful
+Crawl-delay: 1
