@@ -7511,17 +7511,41 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8bb3ba1d">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=801f8cff">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-1-%E2%80%94-Applied-SaaS-Notebook">Week 1 — Applied SaaS Notebook<a class="anchor-link" href="#Week-1-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-1-%E2%80%94-NumPy-Fundamentals-&amp;-Vectorized-Computing">Week 1 — NumPy Fundamentals &amp; Vectorized Computing<a class="anchor-link" href="#Week-1-%E2%80%94-NumPy-Fundamentals-&amp;-Vectorized-Computing">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Learn NumPy arrays, vectorization, and efficient numerical operations for processing millions of SaaS telemetry records.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Understand NumPy arrays and their advantages over Python lists</li>
+<li>Master array creation, indexing, and manipulation</li>
+<li>Apply vectorized operations for fast computations at scale</li>
+<li>Use broadcasting to efficiently compute metrics across dimensions</li>
+<li>Process real SaaS telemetry data with NumPy operations</li>
+</ul>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p>At a SaaS company like CloudWave, you're analyzing:</p>
+<ul>
+<li><strong>Daily Active Users (DAU)</strong>: tracking engagement trends</li>
+<li><strong>Session counts</strong>: per region, by plan tier, time-of-day</li>
+<li><strong>Feature adoption</strong>: how many users engage with each product feature</li>
+<li><strong>Performance metrics</strong>: response times, error rates, API latency</li>
+</ul>
+<p>NumPy is the foundation because:</p>
+<ol>
+<li><strong>Speed</strong>: 50-100x faster than pure Python loops</li>
+<li><strong>Memory</strong>: compact arrays use 8-10x less memory than lists</li>
+<li><strong>Simplicity</strong>: expressive syntax for complex operations in one line</li>
+<li><strong>Integration</strong>: ecosystem standard (Pandas, Scikit-learn, TensorFlow built on NumPy)</li>
+</ol>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=dae8ce7d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=3d161469">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,119 +7585,234 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8dc107af">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=85649e91">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-You-are-a-growth-analyst-at-CloudWave">Scenario — You are a growth analyst at CloudWave<a class="anchor-link" href="#Scenario-%E2%80%94-You-are-a-growth-analyst-at-CloudWave">¶</a></h2><p>We will use NumPy to process large telemetry arrays: DAU, sessions, region splits. The goal is to compute robust metrics quickly and reproducibly.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-CloudWave-Growth-Analytics">🏢 Scenario — CloudWave Growth Analytics<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-CloudWave-Growth-Analytics">¶</a></h2><p>You're a data analyst at CloudWave, a growing SaaS company. Your CEO wants a daily health report:</p>
+<ul>
+<li>Which regions are growing?</li>
+<li>How do different customer tiers compare?</li>
+<li>Is feature adoption uniform or concentrated?</li>
+</ul>
+<p>The challenge: you have 3 months of telemetry data with 220,000 event records. Processing millions of numbers efficiently requires understanding NumPy.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cc8f64bc">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e0eca986">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
+<summary>💡 Hint — Breaking Down the Problem</summary>
+<p><strong>Hint 1:</strong> When working with large arrays, think about the shape and dimensions you need:</p>
+<ul>
+<li>Do you have per-user metrics or per-event metrics?</li>
+<li>Are you aggregating across time (days/weeks) or across users (cohorts)?</li>
+<li>What dimensions need broadcasting?</li>
+</ul>
+<p><strong>Hint 2:</strong> Use NumPy's aggregation methods efficiently:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Good: single operation</span>
+<span class="n">mean_usage</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Avoid: explicit loop</span>
+<span class="n">mean_usage</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>  <span class="c1"># slower</span>
+</pre></div>
+<p><strong>Hint 3:</strong> For edge cases:</p>
+<ul>
+<li>Missing/zero values: use <code>np.nanmean()</code> to ignore NaN</li>
+<li>Outliers: use <code>np.percentile()</code> for robust statistics</li>
+<li>Integer vs float: be aware of type promotion (important for memory!)</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c1abdb51">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c2131f66">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<summary>✅ Solution — Feature Usage Aggregation</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Load data (adjust path as needed)</span>
+<span class="c1"># Load data</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<span class="c1"># Extract feature usage counts as NumPy array</span>
+<span class="n">usage_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># converts to NumPy array</span>
+
+<span class="c1"># Compute statistics</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total events: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">usage_counts</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mean usage per event: </span><span class="si">{</span><span class="n">usage_counts</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Median: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">usage_counts</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Std Dev: </span><span class="si">{</span><span class="n">usage_counts</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Min: </span><span class="si">{</span><span class="n">usage_counts</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">, Max: </span><span class="si">{</span><span class="n">usage_counts</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Top 10% threshold</span>
+<span class="n">percentile_90</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">usage_counts</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">top_10_percent</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'usage_count'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">percentile_90</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Top 10% threshold: </span><span class="si">{</span><span class="n">percentile_90</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Number of events in top 10%: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">top_10_percent</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top users: </span><span class="si">{</span><span class="n">top_10_percent</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Why this works:</strong></p>
+<ul>
+<li><code>.values</code> converts Pandas Series to NumPy array (then we get fast operations)</li>
+<li><code>np.percentile()</code> is vectorized and handles large arrays efficiently</li>
+<li>No Python loops means we're leveraging NumPy's compiled C backend</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a2945674">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=104fe5fc">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Concept-%E2%80%94-Why-NumPy-matters">Concept — Why NumPy matters<a class="anchor-link" href="#Concept-%E2%80%94-Why-NumPy-matters">¶</a></h2><p>NumPy arrays allow vectorized math and compact memory representation. In SaaS, you compute metrics across millions of events; NumPy is the engine.</p>
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Why-NumPy-Matters">📚 Key Concepts — Why NumPy Matters<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Why-NumPy-Matters">¶</a></h2><h3 id="Arrays-vs-Lists">Arrays vs Lists<a class="anchor-link" href="#Arrays-vs-Lists">¶</a></h3><pre><code>Python list:  [1, 2, 3, 4, 5]  → stored as 5 separate objects in memory
+NumPy array:  array([1,2,3,4,5]) → contiguous block, all elements same type
+</code></pre>
+<p><strong>Vectorization</strong>: Operations applied to entire arrays without explicit loops.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Slow (Python loop)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">big_list</span><span class="p">:</span>
+    <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Fast (NumPy vectorization)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">big_array</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+<h3 id="Broadcasting">Broadcasting<a class="anchor-link" href="#Broadcasting">¶</a></h3><p>Automatically aligns dimensions for operations:</p>
+<div class="highlight"><pre><span></span><span class="c1"># 2D array (100 days × 50 regions)</span>
+<span class="n">daily_revenue</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="c1"># 1D baseline (50 regions)</span>
+<span class="n">baseline</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">100</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>  <span class="c1"># one per region</span>
+
+<span class="c1"># Automatically broadcasts baseline across all days</span>
+<span class="n">adjusted</span> <span class="o">=</span> <span class="n">daily_revenue</span> <span class="o">/</span> <span class="n">baseline</span>  <span class="c1"># shape (100, 50)</span>
+</pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c570df2e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fdfb9acf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Try computing pairwise distances between feature usage vectors or z-score normalisation for features.</p>
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><h3 id="Exercise-1:-Create-and-Manipulate-Arrays">Exercise 1: Create and Manipulate Arrays<a class="anchor-link" href="#Exercise-1:-Create-and-Manipulate-Arrays">¶</a></h3><p>Load feature usage data and compute metrics using NumPy operations:</p>
+<ol>
+<li>Load the feature_usage.csv data into a NumPy array</li>
+<li>Extract usage counts for a single feature across all events</li>
+<li>Compute: mean, median, std dev, min, max usage counts</li>
+<li>Identify which users are in the top 10% for usage</li>
+</ol>
+<h3 id="Exercise-2:-Broadcasting-in-Action">Exercise 2: Broadcasting in Action<a class="anchor-link" href="#Exercise-2:-Broadcasting-in-Action">¶</a></h3><ol>
+<li>Load daily DAU data (shape: 90 days × 50 regions)</li>
+<li>Compute the regional average DAU across the 90-day period</li>
+<li>Calculate deviation from regional average for each day (broadcast)</li>
+<li>Find which region+day combination has highest growth rate</li>
+</ol>
+<h3 id="Exercise-3:-Vectorized-Aggregations">Exercise 3: Vectorized Aggregations<a class="anchor-link" href="#Exercise-3:-Vectorized-Aggregations">¶</a></h3><ol>
+<li>Load user_events.csv</li>
+<li>Group events by user (use unique users as an index)</li>
+<li>For each user, compute: total events, avg event_value, events per day</li>
+<li>All operations must use NumPy (no Pandas loops)</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b94588e8">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0c7a6f85">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
+<summary>💡 Hint — Broadcasting Challenge</summary>
+<p>When you have arrays of different shapes, NumPy automatically broadcasts them:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Day 1 data (50 regions):    [100, 150, 200, ...]  shape (50,)</span>
+<span class="c1"># Regional baseline (50):      [95,  140, 210, ...]  shape (50,)</span>
+<span class="c1">#</span>
+<span class="c1"># When you divide them, NumPy broadcasts baseline to match across rows:</span>
+<span class="c1"># [100/95, 100/140, 100/210, ...] for day 1</span>
+<span class="c1"># [120/95, 120/140, 120/210, ...] for day 2</span>
+<span class="c1"># etc.</span>
+</pre></div>
+<p><strong>Key:</strong> The shapes must be compatible for broadcasting:</p>
+<ul>
+<li>Dimensions align from the right</li>
+<li>Size 1 broadcasts to any size</li>
+<li>Mismatched non-1 dimensions cause an error</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aa960fc2">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1874de0a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<summary>✅ Solution — Vectorized Metrics Computation</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Load data (adjust path as needed)</span>
+<span class="c1"># Load feature usage and reshape for analysis</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<span class="c1"># Method 1: Using Pandas groupby, then convert to NumPy for vectorized operations</span>
+<span class="n">user_stats</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'sum'</span><span class="p">,</span> <span class="s1">'mean'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">]</span>
+<span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">user_stats</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'avg_usage'</span><span class="p">,</span> <span class="s1">'event_count'</span><span class="p">]</span>
+
+<span class="c1"># Now use NumPy to find top users</span>
+<span class="n">total_usage_array</span> <span class="o">=</span> <span class="n">user_stats</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<span class="n">top_10_percent_threshold</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">total_usage_array</span><span class="p">,</span> <span class="mi">90</span><span class="p">)</span>
+<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_stats</span><span class="p">[</span><span class="n">user_stats</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">top_10_percent_threshold</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total unique users: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_stats</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top 10% threshold: </span><span class="si">{</span><span class="n">top_10_percent_threshold</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Top 10% users: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">top_users</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Their avg usage: </span><span class="si">{</span><span class="n">top_users</span><span class="p">[</span><span class="s1">'avg_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Using NumPy broadcasting to compute z-scores</span>
+<span class="n">mean_usage</span> <span class="o">=</span> <span class="n">total_usage_array</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">std_usage</span> <span class="o">=</span> <span class="n">total_usage_array</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">z_scores</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_usage_array</span> <span class="o">-</span> <span class="n">mean_usage</span><span class="p">)</span> <span class="o">/</span> <span class="n">std_usage</span>
+<span class="n">outliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">z_scores</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">2.5</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Outlier users (|z| &gt; 2.5): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Why this hybrid approach works:</strong></p>
+<ul>
+<li>Pandas handles grouped aggregation (more efficient than manual NumPy)</li>
+<li>NumPy handles statistical computations (vectorized and fast)</li>
+<li><code>.values</code> bridges Pandas and NumPy seamlessly</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=f612b93d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=89b0522c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7681,26 +7820,89 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Quick demo: load feature_usage.csv and compute daily total usage counts per feature (sample)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Quick demo: NumPy operations on real SaaS data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Load feature usage data</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'rows:'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
-<span class="c1"># compute total usage_count per feature (fast with groupby, but we show numpy array ops too)</span>
-<span class="n">grp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'feature_name'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"FEATURE USAGE DATA OVERVIEW"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Date range: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unique users: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unique features: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'feature_name'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># NumPy operations: find total usage per feature</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"FEATURE USAGE SUMMARY (VECTORIZED WITH NUMPY)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+
+<span class="c1"># Convert to NumPy array</span>
+<span class="n">usage_array</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="c1"># Compute statistics</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'Total usage events'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">usage_array</span><span class="p">),</span>
+    <span class="s1">'Mean usage'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">usage_array</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s1">'Median usage'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">usage_array</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s1">'Std Dev'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">usage_array</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s1">'Min'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">usage_array</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s1">'Max'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">usage_array</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+    <span class="s1">'P95'</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">usage_array</span><span class="p">,</span><span class="w"> </span><span class="mi">95</span><span class="p">)</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">key</span><span class="si">:</span><span class="s2">.&lt;40</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">val</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Group by feature using pandas, then analyze with NumPy</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'feature_name'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Top 5 Features by Total Usage:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">feature_usage</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"NumPy power: computed statistics on 160,000+ records in milliseconds!"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5dd9031e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=afea1182">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>How would broadcasting help if you wanted to scale a baseline usage per feature across 100k users?</p>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> Broadcasting helps scale baseline usage across 100k users. How would you structure this?</p>
+<ul>
+<li>Create a baseline array (features) and usage array (users × features)</li>
+<li>The broadcasting rule: <code>(100000, 1) / (1, 50)</code> becomes <code>(100000, 50)</code></li>
+</ul>
+<p><strong>Question 2:</strong> When is NumPy not the right tool?</p>
+<ul>
+<li>When you need labeled data (use Pandas)</li>
+<li>When working with strings/text heavily (use regular Python)</li>
+<li>When data doesn't fit in memory (use Dask or Spark)</li>
+</ul>
+<p><strong>Question 3:</strong> How does NumPy performance scale?</p>
+<ul>
+<li>1,000 elements: all methods similar</li>
+<li>1,000,000 elements: NumPy ~50x faster</li>
+<li>1,000,000,000+ elements: NumPy essential; pure Python becomes impractical</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> You have daily DAU data for 30 days across 10 regions. Compute:</p>
+<ol>
+<li>Total DAU across all regions for each day</li>
+<li>Regional share of total DAU each day (as percentages)</li>
+<li>Which region had highest average share? Lowest?</li>
+<li>Compute z-score for each region's daily DAU (standardize by region)</li>
+<li>Identify anomalies (days where any region's DAU is &gt; 2σ from its mean)</li>
+</ol>
+<p><strong>Deliverable:</strong> Write functions using NumPy (no loops), document with comments explaining the broadcasting logic.</p>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 2, we'll layer Pandas on top to handle labeled data, join multiple tables, and prepare datasets for analysis. NumPy becomes the engine underlying Pandas' high-performance operations.</p>
 </div>
 </div>
 </div>

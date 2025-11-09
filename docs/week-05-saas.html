@@ -7511,17 +7511,29 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3cbc190b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=61ef1244">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-5-%E2%80%94-Applied-SaaS-Notebook">Week 5 — Applied SaaS Notebook<a class="anchor-link" href="#Week-5-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-5-%E2%80%94-Feature-Engineering-&amp;-Data-Preprocessing">Week 5 — Feature Engineering &amp; Data Preprocessing<a class="anchor-link" href="#Week-5-%E2%80%94-Feature-Engineering-&amp;-Data-Preprocessing">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Transform raw data into powerful features that capture customer behavior and business signals.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Encode categorical variables (one-hot, target encoding)</li>
+<li>Handle missing data strategically</li>
+<li>Scale and normalize numerical features</li>
+<li>Create interaction and polynomial features</li>
+<li>Build domain-driven features from business knowledge</li>
+<li>Detect and handle outliers appropriately</li>
+<li>Validate feature quality and distribution</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=35c1f984">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=569fa1e3">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,68 +7573,145 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=886875bd">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=40459758">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-Prepare-a-3-panel-KPI-dashboard-for-the-CEO">Scenario — Prepare a 3-panel KPI dashboard for the CEO<a class="anchor-link" href="#Scenario-%E2%80%94-Prepare-a-3-panel-KPI-dashboard-for-the-CEO">¶</a></h2><p>We will create time series, distribution, and segmentation plots to tell a clear story about adoption and revenue.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Build-a-Churn-Prediction-Dataset">🏢 Scenario — Build a Churn Prediction Dataset<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Build-a-Churn-Prediction-Dataset">¶</a></h2><p>You need to train a churn prediction model. Raw data has:</p>
+<ul>
+<li>Mixed types: plan_tier (categorical), signup_date (datetime), usage_count (numeric)</li>
+<li>Missing values: some users have no feature usage data</li>
+<li>Outliers: a few power users with 1000x normal usage</li>
+<li>Business knowledge: days_since_signup, recent_engagement_change, plan_change_count</li>
+</ul>
+<p>Task: Transform into a clean, ML-ready dataset.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9b7cdd1e">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=408858c9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Make a boxplot of usage_count by plan_type (join feature_usage with subscriptions).</p>
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><ol>
+<li><strong>Categorical Encoding</strong>: One-hot encode plan_tier, region, and customer_segment</li>
+<li><strong>Temporal Features</strong>: From signup_date, create: days_active, months_active, signup_quarter, is_recent</li>
+<li><strong>Scaling</strong>: Normalize usage_count and revenue features with StandardScaler or MinMaxScaler</li>
+<li><strong>Interactions</strong>: Create plan_tier × region, recent_usage × lifetime features</li>
+<li><strong>Missing Data Strategy</strong>: Define whether to drop, fill with mean, or use indicator variables for each column</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5c8347c3">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f28f38be">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c4f7a764">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<summary>💡 Hint — Feature Engineering Workflow</summary>
+<p><strong>Step 1: Understand Data Types</strong></p>
+<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>  <span class="c1"># what are we working with?</span>
+<span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># where are the gaps?</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Step 2: Missing Data Strategy</strong></p>
+<ul>
+<li>Numeric: mean/median imputation or "unknown" indicator</li>
+<li>Categorical: mode or "Unknown" category</li>
+<li>When to drop: if &gt; 50% missing in a feature</li>
+</ul>
+<p><strong>Step 3: Encode Categoricals</strong></p>
+<ul>
+<li>Few categories (&lt; 5): one-hot encoding</li>
+<li>Many categories (&gt; 100): target encoding or embedding</li>
+</ul>
+<p><strong>Step 4: Scale/Normalize</strong></p>
+<ul>
+<li>Tree models: no scaling needed</li>
+<li>Linear models, neural nets, KNN: use StandardScaler or MinMaxScaler</li>
+</ul>
+<p><strong>Step 5: Feature Selection</strong></p>
+<ul>
+<li>Remove highly correlated features</li>
+<li>Remove near-zero variance features</li>
+<li>Use domain knowledge to keep business-meaningful features</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6e0096ab">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dbb2b4ed">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<details>
+<summary>✅ Solution — Complete Feature Engineering Pipeline</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Load and merge data</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+
+<span class="c1"># Aggregate features by user</span>
+<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'num_features'</span><span class="p">})</span>
+
+<span class="c1"># Merge</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+
+<span class="c1"># FEATURE ENGINEERING</span>
+<span class="c1"># 1. Create temporal features</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'signup_quarter'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">quarter</span>
+
+<span class="c1"># 2. Handle missing engagement data</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 3. Create target: churned in next 30 days?</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># 4. Encode categorical</span>
+<span class="n">df_encoded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 5. Scale numeric features</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">numeric_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'days_active'</span><span class="p">,</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]</span>
+<span class="n">df_encoded</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">])</span>
+
+<span class="c1"># Result: ML-ready dataset</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature matrix shape: </span><span class="si">{</span><span class="n">df_encoded</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Null values: </span><span class="si">{</span><span class="n">df_encoded</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target distribution: </span><span class="si">{</span><span class="n">df_encoded</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+<p><strong>Why this works:</strong></p>
+<ul>
+<li>Clear separation: raw data → aggregation → features → encoding → scaling</li>
+<li>Handles missing values explicitly</li>
+<li>Target clearly defined</li>
+<li>Ready for train/test split and modeling</li>
+</ul>
+</details>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=44c694fa">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7630,30 +7719,139 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="o">,</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 5: FEATURE ENGINEERING DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Load data</span>
 <span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/user_events.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>  <span class="c1"># sample for plot speed</span>
-<span class="c1"># daily DAU</span>
-<span class="n">events</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
-<span class="n">dau</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dau</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">dau</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Daily Active Users (sampled events)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. DATA PREPARATION"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Subscriptions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">}</span><span class="s2"> records"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature usage: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_usage</span><span class="p">)</span><span class="si">}</span><span class="s2"> records"</span><span class="p">)</span>
+
+<span class="c1"># Aggregate user metrics</span>
+<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'num_features'</span><span class="p">})</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unique users in feature data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_features</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Merge</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After merge: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> subscriptions with feature data"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. FEATURE ENGINEERING"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Temporal features</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="c1"># Handle missing engagement</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active: min=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total usage: min=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Users with feature data: </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE SCALING"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Before scaling</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total usage (before): mean=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active (before): mean=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Apply scaling</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">scaled_features</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'days_active'</span><span class="p">]])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total usage (after): mean=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active (after): mean=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. CHURN PREDICTION FEATURE SET"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate overall: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate (high feature users): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">][</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate (low feature users): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">][</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Insight: Feature adoption is protective against churn!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0e03e45a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e4744499">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>Which single chart would you show in a 30-second update to the CEO?</p>
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Feature-Engineering-Best-Practices">📚 Key Concepts — Feature Engineering Best Practices<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Feature-Engineering-Best-Practices">¶</a></h2><h3 id="The-Feature-Engineering-Hierarchy">The Feature Engineering Hierarchy<a class="anchor-link" href="#The-Feature-Engineering-Hierarchy">¶</a></h3><ol>
+<li><strong>Data collection</strong>: Ensure you have the right data</li>
+<li><strong>Data cleaning</strong>: Handle missing, duplicates, outliers</li>
+<li><strong>Domain features</strong>: Leverage business knowledge (recency, frequency, customer lifecycle)</li>
+<li><strong>Statistical features</strong>: Interactions, ratios, transformations</li>
+<li><strong>Automated features</strong>: Deep learning, AutoML (usually unnecessary for SaaS)</li>
+</ol>
+<h3 id="Feature-Quality-Checklist">Feature Quality Checklist<a class="anchor-link" href="#Feature-Quality-Checklist">¶</a></h3><ul>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>No missing values (or strategy documented)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Appropriate for model type (tree vs linear)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Interpretable to business stakeholders</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Not highly correlated with other features</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Not a data leak (information from the future)</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Distribution makes sense (outliers justified)</li>
+</ul>
+<h3 id="Data-Leakage:-The-Silent-Killer">Data Leakage: The Silent Killer<a class="anchor-link" href="#Data-Leakage:-The-Silent-Killer">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># BAD: Using future information</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'has_churn_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>  <span class="c1"># we're predicting this!</span>
+
+<span class="c1"># GOOD: Using only historical information</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'days_since_signup'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">today</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">days</span>
+</pre></div>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> Which single chart would you show a CEO in 30 seconds?</p>
+<ul>
+<li>Line chart: Trend (retention vs churn over time)</li>
+<li>Bar chart: Comparison (segment A vs B)</li>
+<li>Combination: Show both signal and uncertainty</li>
+</ul>
+<p><strong>Question 2:</strong> Should you include all features in your model?</p>
+<ul>
+<li>No! Too many features → overfitting → poor generalization</li>
+<li>Use correlation analysis, feature importance, or domain knowledge to select</li>
+</ul>
+<p><strong>Question 3:</strong> How do you avoid data leakage in production?</p>
+<ul>
+<li>Clearly timestamp each data point</li>
+<li>Use only features available at decision time</li>
+<li>Test on truly holdout (future) data</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Create a customer quality score (0-100) combining:</p>
+<ol>
+<li>Engagement: Feature adoption and usage</li>
+<li>Stability: Customer lifetime and churn risk</li>
+<li>Value: Plan tier and payment health</li>
+</ol>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Engineer the 3 dimension features</li>
+<li>Normalize each to 0-100 scale</li>
+<li>Create composite score (weighted average)</li>
+<li>Validate: does high score correlate with lower churn?</li>
+</ol>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 6, we'll use these engineered features to train classification models that predict which customers are at risk.</p>
 </div>
 </div>
 </div>

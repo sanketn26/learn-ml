@@ -7511,17 +7511,36 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f89ffb17">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9342f3f5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-2-%E2%80%94-Applied-SaaS-Notebook">Week 2 — Applied SaaS Notebook<a class="anchor-link" href="#Week-2-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-2-%E2%80%94-Pandas-Data-Manipulation-&amp;-ETL">Week 2 — Pandas Data Manipulation &amp; ETL<a class="anchor-link" href="#Week-2-%E2%80%94-Pandas-Data-Manipulation-&amp;-ETL">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Master Pandas for data cleaning, aggregation, joining multiple datasets, and preparing clean data for analysis.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Load and inspect data from multiple file formats (CSV, JSON)</li>
+<li>Clean and handle missing data effectively</li>
+<li>Group, aggregate, and pivot data for SaaS analytics</li>
+<li>Join datasets to create comprehensive views</li>
+<li>Detect and handle outliers and anomalies</li>
+<li>Build reliable ETL pipelines</li>
+</ul>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p>SaaS analytics requires combining multiple data sources:</p>
+<ul>
+<li><strong>Subscriptions data</strong>: signup dates, churn dates, plan tier, pricing</li>
+<li><strong>User events</strong>: activity logs, timestamps, event types</li>
+<li><strong>Feature usage</strong>: which features users interact with</li>
+<li><strong>Feedback</strong>: customer sentiment, support tickets</li>
+</ul>
+<p>Your job: Transform messy, fragmented raw data into clean, joined datasets ready for analysis and modeling.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=3748c9fe">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=5c0af613">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,119 +7580,273 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=74e1d941">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9da2048d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-You-are-a-growth-analyst-at-CloudWave">Scenario — You are a growth analyst at CloudWave<a class="anchor-link" href="#Scenario-%E2%80%94-You-are-a-growth-analyst-at-CloudWave">¶</a></h2><p>We will use NumPy to process large telemetry arrays: DAU, sessions, region splits. The goal is to compute robust metrics quickly and reproducibly.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Merging-CloudWave-Data">🏢 Scenario — Merging CloudWave Data<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Merging-CloudWave-Data">¶</a></h2><p>Your company stores data in 4 separate systems:</p>
+<ol>
+<li><strong>Subscriptions DB</strong>: customer IDs, signup dates, churn dates, plan types</li>
+<li><strong>Event streaming logs</strong>: user_id, timestamp, event_type, value</li>
+<li><strong>Feature DB</strong>: feature_id, feature_name, category, launch_date</li>
+<li><strong>Customer feedback</strong>: user_id, timestamp, category, sentiment, text</li>
+</ol>
+<p><strong>Task</strong>: Create a unified "customer 360" view combining all sources to answer:</p>
+<ul>
+<li>Which customers are at risk of churning?</li>
+<li>Which features drive the most engagement?</li>
+<li>How does feature adoption correlate with retention?</li>
+</ul>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b59e3976">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f6923d8a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
+<summary>💡 Hint — Structured Approach to Data Integration</summary>
+<p><strong>Step 1: Understand the data</strong></p>
+<ul>
+<li>Load each dataset separately first</li>
+<li>Check shapes, columns, data types</li>
+<li>Look for key identifiers (user_id, feature_id, etc.)</li>
+</ul>
+<p><strong>Step 2: Data quality check</strong></p>
+<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>  <span class="c1"># types and nulls</span>
+<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>  <span class="c1"># numeric summaries</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># find rows with ANY null</span>
+</pre></div>
+<p><strong>Step 3: Choose join strategy</strong></p>
+<ul>
+<li><code>inner</code>: only matching rows (stricter, smaller dataset)</li>
+<li><code>left</code>: keep all from left table, add from right</li>
+<li><code>outer</code>: keep all rows, fill NaNs where no match</li>
+</ul>
+<p><strong>Step 4: Validate results</strong></p>
+<ul>
+<li>Check row count before/after</li>
+<li>Verify no unexpected NaNs</li>
+<li>Spot-check a few rows manually</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6f2c39d1">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f55167d6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<summary>✅ Solution — Subscription Lifecycle Analysis</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="c1"># Load subscriptions</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total subscriptions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churned: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Active: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Create useful derived columns</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="c1"># Lifetime: days from signup to churn (or today if active)</span>
+<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'churn_or_today'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'lifetime_days'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_or_today'</span><span class="p">]</span> <span class="o">-</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+
+<span class="c1"># Cohort by signup month</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
+
+<span class="c1"># Churn rate by plan</span>
+<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'user_id'</span><span class="p">:</span> <span class="s1">'count'</span><span class="p">,</span>
+    <span class="s1">'is_churned'</span><span class="p">:</span> <span class="s1">'sum'</span>
+<span class="p">})</span>
+<span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'churn_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">/</span> <span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Churn Rate by Plan:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="p">)</span>
+
+<span class="c1"># Average lifetime by cohort</span>
+<span class="n">lifetime_by_cohort</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'lifetime_days'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Average Lifetime (days) by Signup Cohort:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">lifetime_by_cohort</span><span class="p">)</span>
+</pre></div>
+<p><strong>Key takeaways:</strong></p>
+<ul>
+<li>Handle dates properly with <code>pd.to_datetime()</code></li>
+<li>Fill NaN values strategically for analysis</li>
+<li>Groupby + agg is the engine for SaaS metrics</li>
+<li>Create cohort columns for temporal analysis</li>
+</ul>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b386d1b2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Pandas-Fundamentals">📚 Key Concepts — Pandas Fundamentals<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Pandas-Fundamentals">¶</a></h2><h3 id="DataFrames:-The-Core-Abstraction">DataFrames: The Core Abstraction<a class="anchor-link" href="#DataFrames:-The-Core-Abstraction">¶</a></h3><pre><code>DataFrames = SQL tables + NumPy speed + Flexible labels
+</code></pre>
+<h3 id="Key-Operations">Key Operations<a class="anchor-link" href="#Key-Operations">¶</a></h3><ol>
+<li><strong>Load</strong>: <code>pd.read_csv()</code>, <code>pd.read_json()</code>, <code>pd.read_sql()</code></li>
+<li><strong>Inspect</strong>: <code>.shape</code>, <code>.dtypes</code>, <code>.info()</code>, <code>.describe()</code>, <code>.head()</code></li>
+<li><strong>Clean</strong>: <code>.dropna()</code>, <code>.fillna()</code>, <code>.astype()</code></li>
+<li><strong>Group</strong>: <code>.groupby()</code> → powerful aggregations</li>
+<li><strong>Join</strong>: <code>.merge()</code> → combine datasets on keys</li>
+<li><strong>Pivot</strong>: <code>.pivot_table()</code> → reshape data for different views</li>
+</ol>
+<h3 id="Critical-Patterns-for-SaaS">Critical Patterns for SaaS<a class="anchor-link" href="#Critical-Patterns-for-SaaS">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># Find churn cohort</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+<span class="c1"># Active users each day</span>
+<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'event_date'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="s1">'2024-01-01'</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'event_date'</span><span class="p">,</span><span class="s1">'user_id'</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
+
+<span class="c1"># Feature adoption by segment</span>
+<span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feature_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'feature_id'</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'segment'</span><span class="p">,</span><span class="s1">'feature_name'</span><span class="p">])[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2c88ab66">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><h3 id="Exercise-1:-Data-Cleaning-&amp;-Preparation">Exercise 1: Data Cleaning &amp; Preparation<a class="anchor-link" href="#Exercise-1:-Data-Cleaning-&amp;-Preparation">¶</a></h3><ol>
+<li>Load subscriptions.csv</li>
+<li>Check for missing values and data types</li>
+<li>Convert signup_date and churn_date to datetime</li>
+<li>Create a "is_churned" binary column</li>
+<li>Create a "lifetime_days" metric (days from signup to churn or today)</li>
+<li>Handle any edge cases (negative lifetimes, invalid dates)</li>
+</ol>
+<h3 id="Exercise-2:-Aggregation-&amp;-Grouping">Exercise 2: Aggregation &amp; Grouping<a class="anchor-link" href="#Exercise-2:-Aggregation-&amp;-Grouping">¶</a></h3><ol>
+<li>Load user_events.csv and subscriptions.csv</li>
+<li>Join them on user_id</li>
+<li>For each user, compute: total events, first event date, last event date, event frequency</li>
+<li>Group by plan_tier: which tier has the highest event frequency?</li>
+<li>Create a cohort analysis: signup_month vs. retention at 30/60/90 days</li>
+</ol>
+<h3 id="Exercise-3:-Multi-table-Integration">Exercise 3: Multi-table Integration<a class="anchor-link" href="#Exercise-3:-Multi-table-Integration">¶</a></h3><ol>
+<li>Load all 5 datasets</li>
+<li>Create a user-centric joined table with:<ul>
+<li>Subscription info (plan_tier, signup_date, churn_date)</li>
+<li>Engagement metrics (total_events, total_feature_usage, feature_count)</li>
+<li>Feedback sentiment (avg_sentiment, feedback_count)</li>
+</ul>
+</li>
+<li>Identify high-engagement, high-satisfaction customers at churn risk</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3cdd4bdd">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<details>
+<summary>💡 Hint — Joining Multiple Tables Effectively</summary>
+<p><strong>Join types visualization:</strong></p>
+<pre><code>LEFT (subscription.user_id):  [1, 2, 3, 4, 5]
+RIGHT (events.user_id):       [2, 3, 4, 5, 6]
+
+INNER:  [2, 3, 4, 5]  ← only matching
+LEFT:   [1, 2, 3, 4, 5]  ← all from left, NaNs on right where no match
+OUTER:  [1, 2, 3, 4, 5, 6]  ← all from both
+</code></pre>
+<p><strong>Common pitfall:</strong> Don't <code>.groupby()</code> after a join without checking cardinality!</p>
+<ul>
+<li>If events table has multiple rows per user, you'll get multiplied results</li>
+<li>Always aggregate at the appropriate level before joining</li>
+</ul>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=68b9234a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<details>
+<summary>✅ Solution — Feature Adoption by Customer Segment</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Load datasets</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+<span class="n">feature_cat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/product_catalog.csv'</span><span class="p">)</span>
 
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<span class="c1"># Pre-aggregate: total usage per user per feature (avoid data explosion on join)</span>
+<span class="n">user_feature_summary</span> <span class="o">=</span> <span class="p">(</span><span class="n">feature_usage</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'user_id'</span><span class="p">,</span><span class="s1">'feature_name'</span><span class="p">])[</span><span class="s1">'usage_count'</span><span class="p">]</span>
+    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span><span class="s1">'total_usage'</span><span class="p">})</span>
+<span class="p">)</span>
+
+<span class="c1"># Count features per user</span>
+<span class="n">features_per_user</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_feature_summary</span>
+    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'feature_name'</span><span class="p">]</span>
+    <span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'feature_name'</span><span class="p">:</span><span class="s1">'feature_count'</span><span class="p">})</span>
+<span class="p">)</span>
+
+<span class="c1"># Join to subscriptions</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">features_per_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">result</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Analyze by plan tier</span>
+<span class="n">adoption_by_plan</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'feature_count'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'mean'</span><span class="p">,</span> <span class="s1">'median'</span><span class="p">,</span> <span class="s1">'std'</span><span class="p">],</span>
+    <span class="s1">'is_churned'</span><span class="p">:</span> <span class="s1">'mean'</span>  <span class="c1"># churn rate</span>
+<span class="p">})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Feature adoption by plan tier:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adoption_by_plan</span><span class="p">)</span>
+
+<span class="c1"># Do churned users have lower feature adoption?</span>
+<span class="n">active</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="o">~</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
+<span class="n">churned</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Active users avg features: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churned users avg features: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Why this approach:</strong></p>
+<ul>
+<li>Aggregates first to reduce join cardinality</li>
+<li>Fills NaNs strategically (0 for no features = inactive)</li>
+<li>Compares segments (active vs churned) to find patterns</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=66e7f3ce">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Concept-%E2%80%94-Why-NumPy-matters">Concept — Why NumPy matters<a class="anchor-link" href="#Concept-%E2%80%94-Why-NumPy-matters">¶</a></h2><p>NumPy arrays allow vectorized math and compact memory representation. In SaaS, you compute metrics across millions of events; NumPy is the engine.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1d1e0ba7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Try computing pairwise distances between feature usage vectors or z-score normalisation for features.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f7eab550">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d5b00d61">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
-</pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
-</details>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=dae478d5">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=6844b9ea">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7681,26 +7854,116 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Quick demo: load feature_usage.csv and compute daily total usage counts per feature (sample)</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'rows:'</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
-<span class="c1"># compute total usage_count per feature (fast with groupby, but we show numpy array ops too)</span>
-<span class="n">grp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'feature_name'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">grp</span><span class="p">)</span>
+<div class="highlight hl-python"><pre><span></span><span class="c1"># Demo: Pandas ETL pipeline for SaaS data</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 2: PANDAS DATA INTEGRATION DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Load subscriptions</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span> <span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. SUBSCRIPTIONS DATA"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Churned: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+
+<span class="c1"># Load events</span>
+<span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/user_events.csv'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. USER EVENTS DATA"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Unique users: </span><span class="si">{</span><span class="n">events</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Load feature usage</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE USAGE DATA"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_usage</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Unique features: </span><span class="si">{</span><span class="n">feature_usage</span><span class="p">[</span><span class="s1">'feature_name'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">feature_usage</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Create merged view</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. DATA INTEGRATION"</span><span class="p">)</span>
+
+<span class="c1"># Aggregate user-level metrics</span>
+<span class="n">user_stats</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'event_type'</span><span class="p">:</span> <span class="s1">'count'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'event_type'</span><span class="p">:</span><span class="s1">'total_events'</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">feature_stats</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span><span class="s1">'features_used'</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="c1"># Join to subscriptions</span>
+<span class="n">merged</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_stats</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feature_stats</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Merged dataset: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> users"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="n">merged</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Analysis</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">5. INSIGHTS FROM JOINED DATA"</span><span class="p">)</span>
+<span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Active users with data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">False</span><span class="p">])</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Churned users: </span><span class="si">{</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">active</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">~</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
+<span class="n">churned</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Active users stats:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg events: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'total_events'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg features used: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'features_used'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Churned users stats:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg events: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'total_events'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg features used: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'features_used'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Insight: Churned users have lower feature adoption!"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5afce819">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cecc1d93">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>How would broadcasting help if you wanted to scale a baseline usage per feature across 100k users?</p>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> When should you use <code>.merge()</code> vs <code>.join()</code>?</p>
+<ul>
+<li><code>merge()</code>: explicit, works on any columns (not just index)</li>
+<li><code>join()</code>: default on index, slightly faster for index-based joins</li>
+</ul>
+<p><strong>Question 2:</strong> What are the risks of <code>.merge()</code> without aggregating first?</p>
+<ul>
+<li>Cardinality explosion: 10 subscriptions × 1000 events per user = 10,000 rows!</li>
+<li>Solution: Aggregate to 1 row per user before joining</li>
+</ul>
+<p><strong>Question 3:</strong> How do you validate a join was successful?</p>
+<ul>
+<li>Check row count: should match the "left" table unless duplicates</li>
+<li>Check NaN distribution: if many unexpected NaNs, join keys misaligned</li>
+<li>Spot-check: manually verify a few rows</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Create a customer risk score combining:</p>
+<ol>
+<li>Churn likelihood (cohort churn rate)</li>
+<li>Low engagement (below median feature adoption)</li>
+<li>Declining trend (compare recent usage to historical average)</li>
+</ol>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Load all datasets</li>
+<li>Create user-level aggregations for each dimension</li>
+<li>Merge into a unified customer table</li>
+<li>Compute a composite risk score (0-100)</li>
+<li>Segment users: low/medium/high risk</li>
+</ol>
+<p><strong>Deliverable:</strong> Jupyter notebook showing the ETL process and final risk segment distribution.</p>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 3, we'll visualize these joined datasets to uncover patterns and tell compelling stories about customer behavior.</p>
 </div>
 </div>
 </div>

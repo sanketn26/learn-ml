@@ -1,28 +1,463 @@
 <!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Applied ML for SaaS Analytics — Course Index (HTML renders)</title>
-<style>body{font-family:system-ui;padding:20px;background:#f7f9fc} .card{background:#fff;padding:18px;border-radius:10px;max-width:980px;margin:auto;box-shadow:0 6px 18px rgba(0,0,0,0.06)} a{color:#0b84ff}</style>
-</head><body>
-<div class="card">
-  <h1>Applied ML Foundations for SaaS Analytics</h1>
-  <p>This branch adds HTML-rendered notebooks under <code>docs/</code>. These are ready to be served by GitHub Pages.</p>
-  <h3>Rendered Notebooks</h3>
-  <ul>
-    <li><a href="docs/week-01-saas.html">week-01-saas</a></li>
-    <li><a href="docs/week-02-saas.html">week-02-saas</a></li>
-    <li><a href="docs/week-03-saas.html">week-03-saas</a></li>
-    <li><a href="docs/week-04-saas.html">week-04-saas</a></li>
-    <li><a href="docs/week-05-saas.html">week-05-saas</a></li>
-    <li><a href="docs/week-06-saas.html">week-06-saas</a></li>
-    <li><a href="docs/week-07-saas.html">week-07-saas</a></li>
-    <li><a href="docs/week-08-saas.html">week-08-saas</a></li>
-    <li><a href="docs/week-09-saas.html">week-09-saas</a></li>
-    <li><a href="docs/week-10-saas.html">week-10-saas</a></li>
-    <li><a href="docs/week-11-saas.html">week-11-saas</a></li>
-    <li><a href="docs/week-12-saas.html">week-12-saas</a></li>
-  </ul>
-  <p>Notes: The full notebooks remain in <code>notebooks/</code>. The <code>docs/</code> folder contains the HTML renders that Pages can serve directly.</p>
-  <p><strong>To publish:</strong> Merge this PR to <code>main</code> and enable Pages from the <code>/docs</code> folder (or root if you prefer).</p>
-</div>
-</body></html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI Frameworks Learning Platform: Master machine learning, LangChain, LangGraph, and Crew.ai through comprehensive, practical courses.">
+  <meta name="keywords" content="AI frameworks, machine learning, LangChain, LangGraph, Crew.ai, multi-agent systems, LLM orchestration">
+  <title>AI Frameworks Learning Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      background: white;
+      border-radius: 12px;
+      padding: 40px 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+    
+    .header h1 {
+      color: #2d3748;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #4a5568;
+      font-size: 1.1em;
+      margin-bottom: 15px;
+    }
+    
+    .courses-showcase {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
+    
+    .course-link-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-top: 4px solid;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .course-link-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .course-link-card.ml { border-top-color: #667eea; }
+    .course-link-card.langchain { border-top-color: #667eea; }
+    .course-link-card.langgraph { border-top-color: #f5576c; }
+    .course-link-card.crewai { border-top-color: #00f2fe; }
+    
+    .course-link-card .emoji { font-size: 2em; margin-bottom: 10px; }
+    .course-link-card h3 { color: #2d3748; font-size: 1.4em; margin-bottom: 8px; }
+    .course-link-card p { color: #718096; font-size: 0.95em; flex-grow: 1; margin-bottom: 15px; }
+    .course-link-card .course-arrow { color: #667eea; font-weight: 600; }
+    
+    .badge {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    
+    .course-info {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .course-info h2 {
+      color: #2d3748;
+      font-size: 1.5em;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    
+    .course-info p {
+      color: #4a5568;
+      line-height: 1.8;
+      margin-bottom: 15px;
+    }
+    
+    .datasets {
+      background: #f7fafc;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    
+    .datasets h3 {
+      color: #2d3748;
+      margin-bottom: 12px;
+    }
+    
+    .datasets ul {
+      list-style-position: inside;
+      color: #4a5568;
+      line-height: 1.8;
+    }
+    
+    .datasets code {
+      background: #edf2f7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .notebooks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .notebook-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .notebook-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .notebook-card h3 {
+      color: #2d3748;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+    
+    .notebook-card p {
+      color: #718096;
+      font-size: 0.95em;
+      flex-grow: 1;
+      margin-bottom: 15px;
+    }
+    
+    .notebook-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.3s ease;
+      text-align: center;
+      width: 100%;
+    }
+    
+    .notebook-link:hover {
+      opacity: 0.9;
+    }
+    
+    .resources {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .resources h2 {
+      color: #2d3748;
+      font-size: 1.5em;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #667eea;
+      padding-bottom: 10px;
+    }
+    
+    .resource-item {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #f7fafc;
+      border-radius: 8px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .resource-item strong {
+      color: #2d3748;
+    }
+    
+    .resource-item p {
+      color: #4a5568;
+      margin-top: 8px;
+    }
+    
+    .footer {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+      font-size: 0.95em;
+    }
+    
+    code {
+      background: #edf2f7;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2em;
+      }
+      
+      .notebooks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>🚀 AI Frameworks Learning Platform</h1>
+      <p>Master machine learning, LLM orchestration, and multi-agent systems</p>
+      <p style="font-size: 0.95em; color: #718096; margin-top: 15px;">
+        Four comprehensive courses covering NumPy, Pandas, Scikit-learn, LangChain, LangGraph, and Crew.ai
+      </p>
+    </div>
+
+    <!-- Courses Showcase -->
+    <div class="courses-showcase">
+      <a href="#ml-course" class="course-link-card ml">
+        <div class="emoji">📊</div>
+        <h3>ML Fundamentals</h3>
+        <p>12-week course on machine learning and SaaS analytics with NumPy, Pandas, and Scikit-learn</p>
+        <div class="course-arrow">Explore Course →</div>
+      </a>
+      
+      <a href="langchain/index.html" class="course-link-card langchain">
+        <div class="emoji">🔗</div>
+        <h3>LangChain Mastery</h3>
+        <p>6-week course building AI applications with LLM orchestration and tool integration</p>
+        <div class="course-arrow">Explore Course →</div>
+      </a>
+      
+      <a href="langgraph/index.html" class="course-link-card langgraph">
+        <div class="emoji">📊</div>
+        <h3>LangGraph Workflows</h3>
+        <p>4-week course on building complex, debuggable workflows with state graphs</p>
+        <div class="course-arrow">Explore Course →</div>
+      </a>
+      
+      <a href="crewai/index.html" class="course-link-card crewai">
+        <div class="emoji">👥</div>
+        <h3>Crew.ai Multi-Agents</h3>
+        <p>4-week course on building autonomous agent teams that collaborate and scale</p>
+        <div class="course-arrow">Explore Course →</div>
+      </a>
+    </div>
+
+    <!-- Course Overview -->
+    <div class="course-info" id="ml-course">
+      <h2>📚 ML Fundamentals — 12-Week Course</h2>
+      <p>
+        This comprehensive 12-week tutorial teaches machine learning and data science fundamentals through realistic SaaS analytics scenarios. 
+        You'll learn how to process telemetry data, build predictive models, and extract actionable insights from real-world business metrics.
+      </p>
+      <p>
+        <strong>Learning Style:</strong> Conversational, mentor-guided instruction combining concept explanations, hands-on exercises, 
+        reflection prompts, and real-world datasets.
+      </p>
+
+      <div class="datasets">
+        <h3>📊 Sample Datasets Included</h3>
+        <ul>
+          <li><code>subscriptions.csv</code> — 50,000 subscription records with lifecycle events</li>
+          <li><code>user_events.csv</code> — 220,000 user activity telemetry records</li>
+          <li><code>feature_usage.csv</code> — 160,000 feature engagement records</li>
+          <li><code>feedback.json</code> — 10,000 customer feedback entries</li>
+          <li><code>product_catalog.csv</code> — 300 product and feature definitions</li>
+        </ul>
+        <p style="margin-top: 15px; color: #718096; font-size: 0.95em;">
+          All datasets are synthetically generated with realistic patterns to mirror production SaaS environments.
+        </p>
+      </div>
+    </div>
+
+    <!-- Notebooks Grid -->
+    <div style="margin-bottom: 30px;">
+      <h2 style="color: white; font-size: 1.8em; margin-bottom: 20px;">📖 Weekly Lessons</h2>
+      <div class="notebooks-grid">
+        <div class="notebook-card">
+          <h3>Week 1</h3>
+          <p><strong>Topic:</strong> NumPy Fundamentals & Array Operations</p>
+          <p>Learn vectorized computing, broadcasting, and efficient numerical operations for processing large telemetry arrays.</p>
+          <a href="docs/week-01-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 2</h3>
+          <p><strong>Topic:</strong> Pandas Data Manipulation</p>
+          <p>Master dataframe operations, grouping, aggregation, and data cleaning techniques for SaaS analytics.</p>
+          <a href="docs/week-02-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 3</h3>
+          <p><strong>Topic:</strong> Data Visualization & Exploratory Analysis</p>
+          <p>Create compelling visualizations to uncover patterns and trends in customer behavior data.</p>
+          <a href="docs/week-03-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 4</h3>
+          <p><strong>Topic:</strong> Statistical Analysis & Hypothesis Testing</p>
+          <p>Validate assumptions, compare cohorts, and draw statistical conclusions from SaaS metrics.</p>
+          <a href="docs/week-04-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 5</h3>
+          <p><strong>Topic:</strong> Feature Engineering & Preprocessing</p>
+          <p>Transform raw data into meaningful features for machine learning models.</p>
+          <a href="docs/week-05-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 6</h3>
+          <p><strong>Topic:</strong> Supervised Learning: Classification</p>
+          <p>Build classification models to predict customer churn, upgrade likelihood, and engagement levels.</p>
+          <a href="docs/week-06-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 7</h3>
+          <p><strong>Topic:</strong> Supervised Learning: Regression</p>
+          <p>Develop regression models for customer lifetime value, revenue prediction, and usage forecasting.</p>
+          <a href="docs/week-07-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 8</h3>
+          <p><strong>Topic:</strong> Unsupervised Learning: Clustering</p>
+          <p>Discover customer segments, behavioral patterns, and natural groupings in your data.</p>
+          <a href="docs/week-08-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 9</h3>
+          <p><strong>Topic:</strong> Dimensionality Reduction & PCA</p>
+          <p>Reduce feature complexity while preserving information for better model performance.</p>
+          <a href="docs/week-09-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 10</h3>
+          <p><strong>Topic:</strong> Ensemble Methods & Model Optimization</p>
+          <p>Combine multiple models for improved accuracy and robustness in predictions.</p>
+          <a href="docs/week-10-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 11</h3>
+          <p><strong>Topic:</strong> Introduction to Deep Learning</p>
+          <p>Build neural networks for complex pattern recognition in SaaS data.</p>
+          <a href="docs/week-11-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 12</h3>
+          <p><strong>Topic:</strong> Capstone Project & Production Readiness</p>
+          <p>Integrate all concepts into an end-to-end machine learning project with deployment considerations.</p>
+          <a href="docs/week-12-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resources & Getting Started -->
+    <div class="resources">
+      <h2>🎯 Getting Started</h2>
+      
+      <div class="resource-item">
+        <strong>📁 Local Development</strong>
+        <p>Clone the repository and run Jupyter locally: <code>jupyter notebook notebooks/</code> to access the full interactive notebooks.</p>
+      </div>
+
+      <div class="resource-item">
+        <strong>🌐 Online Viewing</strong>
+        <p>View the HTML-rendered versions directly in your browser using the links above. These are automatically generated from the notebook files.</p>
+      </div>
+
+      <div class="resource-item">
+        <strong>📝 Assignments</strong>
+        <p>Each week includes assignments in the <code>assignments/</code> folder. Work through these exercises to reinforce your understanding.</p>
+      </div>
+
+      <div class="resource-item">
+        <strong>💾 Repository Structure</strong>
+        <p>
+          <code>notebooks/</code> — Full interactive Jupyter notebooks for each week<br>
+          <code>docs/</code> — HTML renderings of notebooks for online viewing<br>
+          <code>data/</code> — Sample datasets for all exercises<br>
+          <code>assignments/</code> — Weekly assignments and reflection prompts<br>
+          <code>solutions/</code> — Reference solutions (when available)
+        </p>
+      </div>
+
+      <div class="resource-item">
+        <strong>⚙️ Prerequisites</strong>
+        <p>Python 3.8+, Jupyter, NumPy, Pandas, Scikit-learn, and Matplotlib. See the README for full setup instructions.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Applied ML Foundations for SaaS Analytics — Build data-driven products with machine learning</p>
+      <p style="margin-top: 10px; opacity: 0.8;">Last updated: November 2025</p>
+    </div>
+  </div>
+</body>
+</html>

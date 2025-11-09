@@ -7511,17 +7511,28 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e5764871">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3af996e2">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-4-%E2%80%94-Applied-SaaS-Notebook">Week 4 — Applied SaaS Notebook<a class="anchor-link" href="#Week-4-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-4-%E2%80%94-Statistical-Analysis-&amp;-Hypothesis-Testing">Week 4 — Statistical Analysis &amp; Hypothesis Testing<a class="anchor-link" href="#Week-4-%E2%80%94-Statistical-Analysis-&amp;-Hypothesis-Testing">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Move from descriptive to inferential statistics—test hypotheses, quantify uncertainty, and make data-driven decisions.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Understand statistical significance and p-values</li>
+<li>Conduct t-tests, chi-squared tests, and ANOVA</li>
+<li>Compare customer segments statistically</li>
+<li>Build confidence intervals for key metrics</li>
+<li>Avoid common statistical pitfalls (multiple comparison bias, p-hacking)</li>
+<li>Interpret results for business decisions</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=81a5baca">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=0664e4a4">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,68 +7572,116 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=25ca880a">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=116dcfb5">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-CFO-asks-for-churn-by-plan-and-region">Scenario — CFO asks for churn by plan and region<a class="anchor-link" href="#Scenario-%E2%80%94-CFO-asks-for-churn-by-plan-and-region">¶</a></h2><p>We will clean subscriptions and events data, compute churn cohorts, and produce a weekly MRR lost report.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Is-the-Premium-Plan-Worth-It?">🏢 Scenario — Is the Premium Plan Worth It?<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Is-the-Premium-Plan-Worth-It?">¶</a></h2><p>Your Product Manager proposes a new premium plan. Early data shows:</p>
+<ul>
+<li>Premium: 8 out of 50 customers churned (16%)</li>
+<li>Standard: 12 out of 60 customers churned (20%)</li>
+</ul>
+<p>Question: Is this difference real or just noise? Should we roll it out company-wide?</p>
+<p>Use hypothesis testing to decide.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4107ea9b">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3c8d7b0a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Build a cohort table (signup_month -&gt; retention at 30/60/90 days) using merge with events.</p>
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><ol>
+<li><strong>Chi-Squared Test</strong>: Is churn significantly different across plan tiers? (χ² test)</li>
+<li><strong>T-Test</strong>: Do premium customers spend significantly more? Compare ARPU by segment</li>
+<li><strong>ANOVA</strong>: Are feature adoption rates significantly different across regions?</li>
+<li><strong>Confidence Intervals</strong>: Estimate churn rate with 95% CI for each segment</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=aa17c5de">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=fa50eec9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
+<summary>💡 Hint — Hypothesis Testing Framework</summary>
+<p><strong>Setup:</strong></p>
+<ol>
+<li>Define H₀ (null): "No difference" vs H₁ (alternative): "Difference exists"</li>
+<li>Choose significance level α (usually 0.05)</li>
+<li>Compute test statistic (t, χ², F, etc.)</li>
+<li>Compare p-value to α: if p &lt; α, reject H₀</li>
+</ol>
+<p><strong>Common Tests:</strong></p>
+<ul>
+<li><strong>Chi-squared</strong>: categorical vs categorical (plan_type vs churned)</li>
+<li><strong>T-test</strong>: continuous vs binary (ARPU vs churned)</li>
+<li><strong>ANOVA</strong>: continuous across 3+ groups (adoption by region)</li>
+</ul>
+<p><strong>Key insight:</strong> Small sample? Use power analysis. Multiple tests? Adjust p-value (Bonferroni).</p>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6332fabf">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2ccf6597">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<summary>✅ Solution — Chi-Squared Test for Plan Churn</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2_contingency</span>
 
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Load subscriptions</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
 
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<span class="c1"># Create contingency table: plan_tier vs is_churned</span>
+<span class="n">contingency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">subs</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">],</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Contingency Table:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">contingency</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Chi-squared test</span>
+<span class="n">chi2</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Chi-squared statistic: </span><span class="si">{</span><span class="n">chi2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"P-value: </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Degrees of freedom: </span><span class="si">{</span><span class="n">dof</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="n">alpha</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✓ SIGNIFICANT (p=</span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &lt; </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"  Conclusion: Churn rates differ significantly across plan types"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"✗ NOT SIGNIFICANT (p=</span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2"> &gt;= </span><span class="si">{</span><span class="n">alpha</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"  Conclusion: No evidence of difference in churn rates"</span><span class="p">)</span>
+
+<span class="c1"># Show churn rates for context</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Churn Rate by Plan:"</span><span class="p">)</span>
+<span class="n">churn_rates</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">'sum'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">])</span>
+<span class="n">churn_rates</span><span class="p">[</span><span class="s1">'churn_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">churn_rates</span><span class="p">[</span><span class="s1">'sum'</span><span class="p">]</span> <span class="o">/</span> <span class="n">churn_rates</span><span class="p">[</span><span class="s1">'count'</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">churn_rates</span><span class="p">[[</span><span class="s1">'churn_rate'</span><span class="p">]])</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Key insight:</strong> Statistical significance ≠ practical significance. A 2% difference with p=0.03 might not warrant action.</p>
 </details>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=67df5a1d">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=22c69b27">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7631,25 +7690,112 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'subscriptions:'</span><span class="p">,</span> <span class="n">subs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="n">subs</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
-<span class="c1"># simple churn rate by plan</span>
-<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_type'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'churn_rate'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">chi2_contingency</span><span class="p">,</span> <span class="n">ttest_ind</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 4: STATISTICAL HYPOTHESIS TESTING DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Load data</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+
+<span class="c1"># 1. Chi-squared test for independence</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. CHI-SQUARED TEST: Does churn differ by plan type?"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">contingency</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">subs</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">],</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">])</span>
+<span class="n">chi2</span><span class="p">,</span> <span class="n">p_value</span><span class="p">,</span> <span class="n">dof</span><span class="p">,</span> <span class="n">expected</span> <span class="o">=</span> <span class="n">chi2_contingency</span><span class="p">(</span><span class="n">contingency</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Chi-squared = </span><span class="si">{</span><span class="n">chi2</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">, p-value = </span><span class="si">{</span><span class="n">p_value</span><span class="si">:</span><span class="s2">.6f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Churn rates by plan:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">plan</span><span class="p">,</span> <span class="n">rate</span> <span class="ow">in</span> <span class="n">churn_by_plan</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  </span><span class="si">{</span><span class="n">plan</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">p_value</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✓ RESULT: Statistically significant difference (p &lt; 0.05)"</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"✗ RESULT: No significant difference (p &gt;= 0.05)"</span><span class="p">)</span>
+
+<span class="c1"># 2. Confidence interval for churn rate</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. CONFIDENCE INTERVALS: Churn rates with uncertainty"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+
+<span class="k">for</span> <span class="n">plan</span> <span class="ow">in</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+    <span class="n">plan_data</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="n">subs</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">]</span> <span class="o">==</span> <span class="n">plan</span><span class="p">]</span>
+    <span class="n">churned</span> <span class="o">=</span> <span class="n">plan_data</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">plan_data</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">churned</span> <span class="o">/</span> <span class="n">total</span>
+    
+    <span class="c1"># Binomial 95% CI</span>
+    <span class="n">ci_lower</span><span class="p">,</span> <span class="n">ci_upper</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binom</span><span class="o">.</span><span class="n">interval</span><span class="p">(</span><span class="mf">0.95</span><span class="p">,</span> <span class="n">total</span><span class="p">,</span> <span class="n">rate</span><span class="p">)</span>
+    <span class="n">ci_lower</span> <span class="o">/=</span> <span class="n">total</span>
+    <span class="n">ci_upper</span> <span class="o">/=</span> <span class="n">total</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">plan</span><span class="si">}</span><span class="s2">:"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  Churn rate: </span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  95% CI: [</span><span class="si">{</span><span class="n">ci_lower</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">ci_upper</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">]"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d7965e01">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c017b96c">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>If churn is higher in a region, what product or pricing hypotheses would you investigate?</p>
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Statistical-Decision-Making">📚 Key Concepts — Statistical Decision Making<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Statistical-Decision-Making">¶</a></h2><h3 id="P-Values-Explained">P-Values Explained<a class="anchor-link" href="#P-Values-Explained">¶</a></h3><ul>
+<li><strong>p-value</strong>: Probability of seeing this data IF the null hypothesis were true</li>
+<li><strong>Small p-value</strong> (&lt; 0.05): Unlikely under null; reject H₀</li>
+<li><strong>Large p-value</strong> (≥ 0.05): Could happen under null; fail to reject H₀</li>
+</ul>
+<h3 id="Common-Mistakes">Common Mistakes<a class="anchor-link" href="#Common-Mistakes">¶</a></h3><ol>
+<li><strong>P-hacking</strong>: Running 100 tests, finding 5 "significant" ones by chance<ul>
+<li><strong>Solution</strong>: Pre-register hypotheses, adjust p-values for multiple comparisons</li>
+</ul>
+</li>
+<li><strong>Statistical ≠ Practical significance</strong><ul>
+<li><strong>Example</strong>: 1M users, 2% vs 2.1% churn → p &lt; 0.001, but 0.1% difference?</li>
+</ul>
+</li>
+<li><strong>Confounding variables</strong>: Association ≠ causation<ul>
+<li><strong>Example</strong>: Premium users might have different product fit, not plan quality</li>
+</ul>
+</li>
+</ol>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> Your test shows p = 0.07. Can you conclude no effect?</p>
+<ul>
+<li>No! You can only say "insufficient evidence at α=0.05 level"</li>
+<li>With bigger sample, p might drop below 0.05</li>
+<li>Absence of evidence ≠ evidence of absence</li>
+</ul>
+<p><strong>Question 2:</strong> When should you run statistical tests on SaaS data?</p>
+<ul>
+<li><strong>Yes:</strong> A/B tests, comparing segments, validating model assumptions</li>
+<li><strong>No:</strong> Exploring data (causes p-hacking), sample sizes &lt; 30 per group</li>
+</ul>
+<p><strong>Question 3:</strong> How do you choose α (significance level)?</p>
+<ul>
+<li>Standard: 0.05 (5% false positive rate)</li>
+<li>Medical studies: 0.01 (stricter)</li>
+<li>Exploratory analysis: 0.10 (more lenient)</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Customers report different satisfaction across regions. Test if this is statistically significant.</p>
+<ol>
+<li>Load subscriptions data</li>
+<li>For each region, compute average customer lifetime</li>
+<li>Conduct ANOVA: is there significant difference across regions?</li>
+<li>Post-hoc test: which specific regions differ?</li>
+<li>Report with confidence intervals</li>
+</ol>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 5, we'll prepare data scientifically for modeling through feature engineering and preprocessing.</p>
 </div>
 </div>
 </div>

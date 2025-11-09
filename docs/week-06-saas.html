@@ -7511,17 +7511,28 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=573199af">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=306228c6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-6-%E2%80%94-Applied-SaaS-Notebook">Week 6 — Applied SaaS Notebook<a class="anchor-link" href="#Week-6-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-6-%E2%80%94-Supervised-Learning:-Classification">Week 6 — Supervised Learning: Classification<a class="anchor-link" href="#Week-6-%E2%80%94-Supervised-Learning:-Classification">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Build classification models to predict customer churn, upgrade likelihood, and segment behavior.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Understand classification algorithms: Logistic Regression, Decision Trees, Random Forests</li>
+<li>Build and evaluate classification models</li>
+<li>Handle class imbalance in SaaS data</li>
+<li>Interpret feature importance</li>
+<li>Optimize for business metrics (precision vs recall trade-offs)</li>
+<li>Deploy models responsibly</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=3a60f13a">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=4abd8305">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,68 +7572,140 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=c5bb1223">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f9383a55">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-Prepare-a-3-panel-KPI-dashboard-for-the-CEO">Scenario — Prepare a 3-panel KPI dashboard for the CEO<a class="anchor-link" href="#Scenario-%E2%80%94-Prepare-a-3-panel-KPI-dashboard-for-the-CEO">¶</a></h2><p>We will create time series, distribution, and segmentation plots to tell a clear story about adoption and revenue.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Churn-Prediction-Model">🏢 Scenario — Churn Prediction Model<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Churn-Prediction-Model">¶</a></h2><p>Sales wants to identify at-risk customers so they can intervene. Build a model that:</p>
+<ul>
+<li>Predicts which customers will churn in the next 30 days</li>
+<li>Ranks customers by churn risk</li>
+<li>Explains which features drive churn decisions</li>
+</ul>
+<p>Goal: Actionable predictions for the sales team.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e48afb66">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f2b74d72">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Make a boxplot of usage_count by plan_type (join feature_usage with subscriptions).</p>
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><ol>
+<li><strong>Binary Classification</strong>: Train Logistic Regression on churn (Yes/No)</li>
+<li><strong>Decision Tree</strong>: Build a tree model and visualize feature splits</li>
+<li><strong>Random Forest</strong>: Train an ensemble and compute feature importance</li>
+<li><strong>Hyperparameter Tuning</strong>: Use GridSearchCV to find optimal max_depth, n_estimators</li>
+<li><strong>Evaluation Metrics</strong>: Compute precision, recall, F1, ROC-AUC for each model</li>
+<li><strong>Business Interpretation</strong>: For top 3 features, explain impact on churn prediction</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5b6f987c">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b50d7a0e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6847f609">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<summary>💡 Hint — Classification Model Workflow</summary>
+<p><strong>Step 1: Prepare Data</strong></p>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Step 2: Train Multiple Models</strong></p>
+<div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+
+<span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">'logistic'</span><span class="p">:</span> <span class="n">LogisticRegression</span><span class="p">(),</span>
+    <span class="s1">'forest'</span><span class="p">:</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong>Step 3: Evaluate on Test Set</strong></p>
+<ul>
+<li>Accuracy: % correct (bad for imbalanced data!)</li>
+<li>Precision: Of predicted positives, % are actually positive</li>
+<li>Recall: Of actual positives, % did we catch?</li>
+<li>F1-Score: Balance between precision &amp; recall</li>
+<li>ROC-AUC: Threshold-independent performance</li>
+</ul>
+<p><strong>Step 4: Choose Metric for Your Goal</strong></p>
+<ul>
+<li>Minimize false positives (costly interventions): Precision</li>
+<li>Minimize false negatives (can't lose customers): Recall</li>
+<li>Balance both: F1 or threshold tuning</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=95ec4826">
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=0f94ac7a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<details>
+<summary>✅ Solution — End-to-End Churn Classification</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+
+<span class="c1"># Prepare data (from Week 5 feature engineering)</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+
+<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">user_features</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="c1"># Features and target</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span>
+
+<span class="c1"># Split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Train Random Forest</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># Evaluate</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_pred_proba</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Classification Report:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">target_names</span><span class="o">=</span><span class="p">[</span><span class="s1">'Active'</span><span class="p">,</span> <span class="s1">'Churned'</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">ROC-AUC: </span><span class="si">{</span><span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="w"> </span><span class="n">y_pred_proba</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Feature importance</span>
+<span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">importance</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">importance</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+<p><strong>Key insight:</strong> Feature adoption is the strongest churn predictor. Invest in onboarding!</p>
+</details>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=c1204355">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7630,30 +7713,127 @@ a.anchor-link {
 <div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span><span class="o">,</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="o">,</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.ensemble</span><span class="w"> </span><span class="kn">import</span> <span class="n">RandomForestClassifier</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">roc_auc_score</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 6: CLASSIFICATION MODEL DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Prepare data</span>
 <span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/user_events.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">],</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span>  <span class="c1"># sample for plot speed</span>
-<span class="c1"># daily DAU</span>
-<span class="n">events</span><span class="p">[</span><span class="s1">'date'</span><span class="p">]</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="s1">'timestamp'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">date</span>
-<span class="n">dau</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'date'</span><span class="p">)[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dau</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">dau</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">])</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">'Daily Active Users (sampled events)'</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+
+<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
+    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
+    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
+<span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+<span class="n">user_features</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Dataset: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> customers"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># Prepare features</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. LOGISTIC REGRESSION"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">()</span>
+<span class="n">lr</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">lr_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ROC-AUC: </span><span class="si">{</span><span class="n">lr_auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. RANDOM FOREST"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">rf</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">n_estimators</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">rf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">rf_auc</span> <span class="o">=</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X_test</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"ROC-AUC: </span><span class="si">{</span><span class="n">rf_auc</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE IMPORTANCE (Random Forest)"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">feature</span><span class="p">,</span> <span class="n">importance</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rf</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">feature</span><span class="si">:</span><span class="s2">.&lt;30</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">importance</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. BUSINESS APPLICATION"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="c1"># Get top 20% at-risk customers</span>
+<span class="n">risk_scores</span> <span class="o">=</span> <span class="n">rf</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">'churn_risk'</span><span class="p">]</span> <span class="o">=</span> <span class="n">risk_scores</span>
+<span class="n">high_risk</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_risk'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_risk'</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.80</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"High-risk segment (top 20%): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">high_risk</span><span class="p">)</span><span class="si">}</span><span class="s2"> customers"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Their actual churn rate: </span><span class="si">{</span><span class="n">high_risk</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Overall churn rate: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Lift: </span><span class="si">{</span><span class="n">high_risk</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">x"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=59f8bc19">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=afd78418">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>Which single chart would you show in a 30-second update to the CEO?</p>
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Classification-Metrics-Explained">📚 Key Concepts — Classification Metrics Explained<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Classification-Metrics-Explained">¶</a></h2><h3 id="Confusion-Matrix">Confusion Matrix<a class="anchor-link" href="#Confusion-Matrix">¶</a></h3><pre><code>                 Predicted
+                Positive  Negative
+Actual
+Positive    TP (correct)   FN (miss)
+Negative    FP (false alarm) TN (correct)
+</code></pre>
+<h3 id="Metric-Definitions">Metric Definitions<a class="anchor-link" href="#Metric-Definitions">¶</a></h3><ul>
+<li><strong>Accuracy</strong>: (TP + TN) / All — overall correctness (can be misleading!)</li>
+<li><strong>Precision</strong>: TP / (TP + FP) — of predictions, how many right?</li>
+<li><strong>Recall</strong>: TP / (TP + FN) — of actual positives, how many caught?</li>
+<li><strong>F1</strong>: Harmonic mean of precision &amp; recall</li>
+<li><strong>ROC-AUC</strong>: How well does the model rank positives higher than negatives?</li>
+</ul>
+<h3 id="Churn-Prediction-Trade-off-Example">Churn Prediction Trade-off Example<a class="anchor-link" href="#Churn-Prediction-Trade-off-Example">¶</a></h3><ul>
+<li><strong>High precision</strong>: Only warn on very confident churners (miss some)</li>
+<li><strong>High recall</strong>: Warn on anyone at slight risk (false alarms)</li>
+<li><strong>Business choice</strong>: Sales can handle false alarms; can't afford to miss true churners → prioritize recall</li>
+</ul>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> Your model achieves 95% accuracy but only 10% recall on churners. Is it good?</p>
+<ul>
+<li>No! It's predicting everyone stays (easy baseline on imbalanced data)</li>
+<li>Always check recall separately; use business metric</li>
+</ul>
+<p><strong>Question 2:</strong> How do you explain model predictions to sales?</p>
+<ul>
+<li>Feature importance: "Customers with &lt; 3 features adopted churn 5x more"</li>
+<li>SHAP values: Individual prediction reasons</li>
+<li>Decision trees: Visualize decision path</li>
+</ul>
+<p><strong>Question 3:</strong> When should you retrain the model?</p>
+<ul>
+<li>Monthly at minimum (customer behavior changes)</li>
+<li>Immediately if model performance drops</li>
+<li>When you add new data sources or business rules</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Build a churn intervention strategy:</p>
+<ol>
+<li>Train classification model on historical data</li>
+<li>Generate churn risk scores for all current customers</li>
+<li>Define segments: high/medium/low risk</li>
+<li>For each segment, estimate: % likely to churn, cost to intervene, expected retention</li>
+<li>Recommend: which segment(s) should sales contact?</li>
+</ol>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 7, we'll predict continuous values (CLV, revenue) with regression models.</p>
 </div>
 </div>
 </div>

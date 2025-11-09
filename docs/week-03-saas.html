@@ -7511,17 +7511,34 @@ a.anchor-link {
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2504f1e9">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8287760e">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-3-%E2%80%94-Applied-SaaS-Notebook">Week 3 — Applied SaaS Notebook<a class="anchor-link" href="#Week-3-%E2%80%94-Applied-SaaS-Notebook">¶</a></h1><p>This notebook is part of the 'Applied ML Foundations for SaaS Analytics' course. Conversational, mentor-style guidance is provided throughout.</p>
+<h1 id="Week-3-%E2%80%94-Data-Visualization-&amp;-Exploratory-Data-Analysis">Week 3 — Data Visualization &amp; Exploratory Data Analysis<a class="anchor-link" href="#Week-3-%E2%80%94-Data-Visualization-&amp;-Exploratory-Data-Analysis">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Week Focus:</strong> Create compelling visualizations to uncover patterns, trends, and anomalies in customer and product data.</p>
+<hr/>
+<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
+<ul>
+<li>Create effective visualizations for different data types</li>
+<li>Build dashboards that tell data-driven stories</li>
+<li>Detect trends, seasonality, and anomalies visually</li>
+<li>Compare segments and cohorts graphically</li>
+<li>Use visualization to guide statistical analysis and modeling</li>
+</ul>
+<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p>Visualizations are your primary tool for:</p>
+<ul>
+<li><strong>Communicating with stakeholders</strong>: executives understand charts better than tables</li>
+<li><strong>Hypothesis generation</strong>: seeing patterns guides your analysis</li>
+<li><strong>Quality assurance</strong>: spotting data anomalies before modeling</li>
+<li><strong>Storytelling</strong>: showing before/after, winners/losers, trends over time</li>
+</ul>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=07e0ddf0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=78b0779a">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7561,68 +7578,133 @@ a.anchor-link {
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=733c2bf4">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5061bdc7">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Scenario-%E2%80%94-CFO-asks-for-churn-by-plan-and-region">Scenario — CFO asks for churn by plan and region<a class="anchor-link" href="#Scenario-%E2%80%94-CFO-asks-for-churn-by-plan-and-region">¶</a></h2><p>We will clean subscriptions and events data, compute churn cohorts, and produce a weekly MRR lost report.</p>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Dashboard-for-Executive-Review">🏢 Scenario — Dashboard for Executive Review<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Dashboard-for-Executive-Review">¶</a></h2><p>Your CFO wants a weekly dashboard showing:</p>
+<ol>
+<li>Churn trends by plan type and region</li>
+<li>Feature adoption curves for new customers</li>
+<li>Revenue impact: MRR by cohort</li>
+<li>Customer retention: 30/60/90 day retention rates</li>
+<li>Alerts: which regions/segments are declining?</li>
+</ol>
+<p>You need compelling visuals that fit on 1 page and drive decision-making.</p>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f2e30cb6">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=683fa4cf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Hands-on">Hands-on<a class="anchor-link" href="#Hands-on">¶</a></h2><p>Build a cohort table (signup_month -&gt; retention at 30/60/90 days) using merge with events.</p>
+<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Visualization-for-Analytics">📚 Key Concepts — Visualization for Analytics<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Visualization-for-Analytics">¶</a></h2><h3 id="Chart-Types-&amp;-When-to-Use-Them">Chart Types &amp; When to Use Them<a class="anchor-link" href="#Chart-Types-&amp;-When-to-Use-Them">¶</a></h3><ul>
+<li><strong>Line chart</strong>: Trends over time (DAU, revenue, adoption)</li>
+<li><strong>Bar chart</strong>: Comparing categories (plan type, region, feature)</li>
+<li><strong>Scatter plot</strong>: Relationships between two continuous variables</li>
+<li><strong>Heatmap</strong>: Patterns across two dimensions (cohort × time)</li>
+<li><strong>Box plot</strong>: Distribution comparison across groups</li>
+<li><strong>Histogram</strong>: Distribution of a single variable</li>
+<li><strong>Pie chart</strong>: Avoid! Use bar charts instead</li>
+</ul>
+<h3 id="Visualization-Libraries">Visualization Libraries<a class="anchor-link" href="#Visualization-Libraries">¶</a></h3><ul>
+<li><strong>Matplotlib</strong>: Low-level, very flexible</li>
+<li><strong>Seaborn</strong>: Higher-level, statistical visualizations</li>
+<li><strong>Plotly</strong>: Interactive, beautiful defaults</li>
+<li><strong>Pandas plotting</strong>: Quick exploratory plots</li>
+</ul>
+<h3 id="Effective-Visualization-Principles">Effective Visualization Principles<a class="anchor-link" href="#Effective-Visualization-Principles">¶</a></h3><ol>
+<li><strong>Simplicity</strong>: Remove clutter, focus on the insight</li>
+<li><strong>Clarity</strong>: Clear labels, legends, and units</li>
+<li><strong>Color</strong>: Use color purposefully (accessibility first)</li>
+<li><strong>Context</strong>: Show baselines, targets, comparisons</li>
+</ol>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=f634c459">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6692ffdf">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>💡 Hint</summary>
-<p>Try breaking the problem into smaller steps. For example, if you need to aggregate per-user metrics, first compute a grouped table, then convert to NumPy arrays for vectorized ops. Think about edge cases: missing users, zero counts, or extreme values.</p>
+<summary>💡 Hint — Building a Retention Cohort Chart</summary>
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Create signup cohorts (by month or week)</li>
+<li>For each cohort, track what % return after 30/60/90 days</li>
+<li>Visualize as heatmap: cohorts on rows, days on columns, % in cells</li>
+</ol>
+<p><strong>Common mistakes:</strong></p>
+<ul>
+<li>Forgetting to normalize: compare cohorts only up to age they've lived</li>
+<li>Not filtering correctly: "30 day retention" = active 30+ days after signup</li>
+<li>Ignoring recent cohorts: they haven't had time to churn yet (bias!)</li>
+</ul>
 </details>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=6130310f">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1781d893">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
 <details>
-<summary>✅ Solution (example)</summary>
-<div class="highlight"><pre><span></span><span class="c1"># Example solution snippet — adapt to your dataset &amp; question.</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<summary>✅ Solution — Churn Trends by Plan &amp; Region</summary>
+<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="c1"># Load data (adjust path as needed)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Load data</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
 
-<span class="c1"># Example: compute total usage per user and return top users</span>
-<span class="n">user_usage</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'total_usage'</span><span class="p">)</span>
-<span class="n">top_users</span> <span class="o">=</span> <span class="n">user_usage</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">top_users</span>
+<span class="c1"># Prepare data</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
+
+<span class="c1"># Churn rate by plan type</span>
+<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Churn rate over time</span>
+<span class="n">churn_timeline</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Create visualization</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="c1"># Plot 1: Churn by plan</span>
+<span class="n">churn_by_plan</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">'bar'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'steelblue'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Churn Rate by Plan Type'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Churn Rate'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Plan'</span><span class="p">)</span>
+
+<span class="c1"># Plot 2: Churn over time</span>
+<span class="n">churn_timeline</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'o'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">'Monthly Churn Rate Trend'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Churn Rate'</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'Signup Month'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Churn by Plan:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
-<p><strong>Why this works:</strong> We use <code>groupby</code> to aggregate events by <code>user_id</code>, then sort to find the heaviest users. Converting to NumPy arrays can speed up numeric-only operations.</p>
+<p><strong>Key insight:</strong> If free tier has higher churn, consider engagement tactics vs pricing changes.</p>
 </details>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=5e34b6d0">
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=93ce30d6">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
@@ -7631,25 +7713,98 @@ a.anchor-link {
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
 <div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">],</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">'subscriptions:'</span><span class="p">,</span> <span class="n">subs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Load data</span>
+<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
+<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 3: DATA VISUALIZATION DEMO"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+<span class="c1"># Prepare churn analysis</span>
+<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
 <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
-<span class="c1"># simple churn rate by plan</span>
-<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_type'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">'churn_rate'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="p">)</span>
+
+<span class="c1"># 1. Churn by plan</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. CHURN RATE BY PLAN TYPE"</span><span class="p">)</span>
+<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># 2. Churn timeline</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. MONTHLY CHURN TREND"</span><span class="p">)</span>
+<span class="n">churn_timeline</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">churn_timeline</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># 3. Feature adoption vs churn</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE ADOPTION ANALYSIS"</span><span class="p">)</span>
+<span class="n">user_feature_count</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'feature_name'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
+<span class="n">subs_merged</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span>
+    <span class="n">user_feature_count</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'feature_count'</span><span class="p">}),</span>
+    <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span>
+    <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span>
+<span class="p">)</span>
+<span class="n">subs_merged</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs_merged</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">adoption_vs_churn</span> <span class="o">=</span> <span class="n">subs_merged</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'feature_count'</span><span class="p">)[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">([</span><span class="s1">'mean'</span><span class="p">,</span> <span class="s1">'count'</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">adoption_vs_churn</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. INSIGHTS"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   • Churn varies significantly by plan: </span><span class="si">{</span><span class="n">churn_by_plan</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">churn_by_plan</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   • Users with more feature adoption churn less"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   • Visualizations reveal: focus acquisition &amp; engagement efforts!"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=a0b43a30">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=5f891c4d">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="Reflection">Reflection<a class="anchor-link" href="#Reflection">¶</a></h2><p>If churn is higher in a region, what product or pricing hypotheses would you investigate?</p>
+<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> If churn is higher in a region, what would you investigate?</p>
+<ul>
+<li>Product: Does the product work well for that region's use case?</li>
+<li>Pricing: Is pricing too high for the market?</li>
+<li>Support: Are they getting adequate help/response times?</li>
+<li>Competition: Did a competitor enter that market?</li>
+<li>Sales: Was the customer expected to succeed?</li>
+</ul>
+<p><strong>Question 2:</strong> Why might "feature adoption" correlate with lower churn?</p>
+<ul>
+<li>Causation: Using more features → more value → less likely to leave</li>
+<li>Selection: We acquired engaged customers who naturally use more</li>
+<li>Both could be true! Need deeper analysis</li>
+</ul>
+<p><strong>Question 3:</strong> How do you communicate findings to non-technical stakeholders?</p>
+<ul>
+<li>Avoid jargon; use business terminology</li>
+<li>Lead with the headline insight</li>
+<li>Use visuals; minimize tables</li>
+<li>Provide actionable next steps</li>
+</ul>
+<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Create a 1-page dashboard showing:</p>
+<ol>
+<li>Line chart: Monthly churn trend</li>
+<li>Bar chart: Churn by plan tier</li>
+<li>Scatter plot: Feature adoption vs retention</li>
+<li>Text summary: Top 3 insights and recommended actions</li>
+</ol>
+<p><strong>Deliverable:</strong> Jupyter notebook with clean visualizations and narrative.</p>
+<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><ol>
+<li><strong>Retention Cohort Analysis</strong>: Build a heatmap showing 30/60/90-day retention by signup month</li>
+<li><strong>Feature Adoption Curves</strong>: Plot cumulative feature adoption over customer lifetime for different segments</li>
+<li><strong>Revenue Impact</strong>: Visualize MRR by cohort and show correlation with engagement metrics</li>
+</ol>
+<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 4, we'll add statistical rigor: hypothesis testing, significance, and confidence to our visual insights.</p>
 </div>
 </div>
 </div>

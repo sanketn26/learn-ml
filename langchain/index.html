@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LangChain Course — Building AI Applications</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 20px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .logo { font-size: 2.5em; margin-bottom: 10px; }
+        header h1 { font-size: 2.5em; color: #667eea; margin: 15px 0; }
+        header p { font-size: 1.1em; color: #666; }
+        
+        .course-overview {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-overview h2 { color: #667eea; margin-bottom: 15px; font-size: 1.8em; }
+        .course-overview ul { margin-left: 20px; line-height: 1.8; font-size: 1.05em; }
+        .course-overview li { margin: 10px 0; }
+        
+        .weeks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .week-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .week-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .week-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .week-num { font-size: 0.9em; opacity: 0.9; font-weight: 500; }
+        .week-title { font-size: 1.4em; font-weight: 700; margin: 8px 0; }
+        
+        .week-content {
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .week-content p { margin-bottom: 15px; }
+        .week-topics { margin: 15px 0; }
+        .week-topics li { margin: 8px 0; margin-left: 20px; }
+        
+        .week-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background 0.3s;
+            font-weight: 600;
+        }
+        
+        .week-link:hover {
+            background: #764ba2;
+            text-decoration: none;
+        }
+        
+        .resources {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .resources h2 { color: #667eea; margin-bottom: 20px; font-size: 1.8em; }
+        .resources ul { margin-left: 20px; }
+        .resources li { margin: 10px 0; }
+        .resources a { color: #667eea; text-decoration: none; font-weight: 600; }
+        .resources a:hover { text-decoration: underline; }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            margin-top: 40px;
+        }
+        
+        .back-link {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background: #f0f0f0;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../index.html" class="back-link">← Back to All Courses</a>
+        
+        <header>
+            <div class="logo">🔗</div>
+            <h1>LangChain Mastery</h1>
+            <p>Build powerful AI applications with LangChain orchestration</p>
+        </header>
+        
+        <div class="course-overview">
+            <h2>Course Overview</h2>
+            <p><strong>Duration:</strong> 6 weeks | <strong>Level:</strong> Intermediate | <strong>Focus:</strong> Production AI applications</p>
+            <p style="margin-top: 15px;">LangChain simplifies building applications powered by language models. From basic prompts to complex agents, learn to orchestrate LLM workflows that actually work in production.</p>
+            <ul style="margin-top: 20px;">
+                <li>✅ Master LLM fundamentals and prompt engineering</li>
+                <li>✅ Implement conversation memory and stateful interactions</li>
+                <li>✅ Build autonomous agents with tool use</li>
+                <li>✅ Create RAG systems with embeddings and vector stores</li>
+                <li>✅ Evaluate and debug AI systems</li>
+                <li>✅ Deploy production-ready applications</li>
+            </ul>
+        </div>
+        
+        <h2 style="color: white; font-size: 2em; margin-bottom: 30px; text-align: center;">📚 Course Weeks</h2>
+        
+        <div class="weeks-grid">
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 1</div>
+                    <div class="week-title">LangChain Basics</div>
+                </div>
+                <div class="week-content">
+                    <p>Master LLM fundamentals, prompt templates, and output parsing.</p>
+                    <ul class="week-topics">
+                        <li>LLM models & providers</li>
+                        <li>Prompt templates</li>
+                        <li>Output parsing</li>
+                        <li>Basic chains</li>
+                    </ul>
+                    <a href="docs/week-01-langchain-basics.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+            
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 2</div>
+                    <div class="week-title">Memory & Conversation</div>
+                </div>
+                <div class="week-content">
+                    <p>Build stateful conversations with different memory strategies.</p>
+                    <ul class="week-topics">
+                        <li>Buffer memory</li>
+                        <li>Summary memory</li>
+                        <li>Entity memory</li>
+                        <li>Conversation chains</li>
+                    </ul>
+                    <a href="docs/week-02-memory-conversation.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+            
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 3</div>
+                    <div class="week-title">Agents & Tools</div>
+                </div>
+                <div class="week-content">
+                    <p>Create autonomous agents that reason and select tools.</p>
+                    <ul class="week-topics">
+                        <li>Agent architecture</li>
+                        <li>Tool definition</li>
+                        <li>ReAct pattern</li>
+                        <li>Error handling</li>
+                    </ul>
+                    <a href="docs/week-03-agents-tools.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+            
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 4</div>
+                    <div class="week-title">RAG & Embeddings</div>
+                </div>
+                <div class="week-content">
+                    <p>Implement retrieval-augmented generation with embeddings.</p>
+                    <ul class="week-topics">
+                        <li>Embeddings models</li>
+                        <li>Vector stores</li>
+                        <li>RAG patterns</li>
+                        <li>Document loading</li>
+                    </ul>
+                    <a href="docs/week-04-rag-embeddings.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+            
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 5</div>
+                    <div class="week-title">Evaluation & Debugging</div>
+                </div>
+                <div class="week-content">
+                    <p>Test and debug AI systems with LangSmith and metrics.</p>
+                    <ul class="week-topics">
+                        <li>LangSmith tracing</li>
+                        <li>Evaluation metrics</li>
+                        <li>Testing strategies</li>
+                        <li>Production monitoring</li>
+                    </ul>
+                    <a href="docs/week-05-evaluation-debugging.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+            
+            <div class="week-card">
+                <div class="week-header">
+                    <div class="week-num">WEEK 6</div>
+                    <div class="week-title">Production Deployment</div>
+                </div>
+                <div class="week-content">
+                    <p>Deploy LangChain applications to production at scale.</p>
+                    <ul class="week-topics">
+                        <li>Async chains</li>
+                        <li>Caching strategies</li>
+                        <li>Docker deployment</li>
+                        <li>Performance optimization</li>
+                    </ul>
+                    <a href="docs/week-06-production-deployment.html" class="week-link">View Lesson →</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="resources">
+            <h2>Resources & Getting Started</h2>
+            <ul>
+                <li><strong>Prerequisites:</strong> Python 3.8+, basic knowledge of LLMs</li>
+                <li><strong>Setup:</strong> <code>pip install langchain openai python-dotenv</code></li>
+                <li><strong>API Keys:</strong> OpenAI (or alternative LLM provider)</li>
+                <li><a href="https://python.langchain.com/" target="_blank">LangChain Official Docs</a></li>
+                <li><a href="https://github.com/langchain-ai/langchain" target="_blank">LangChain GitHub</a></li>
+                <li><a href="https://smith.langchain.com/" target="_blank">LangSmith Platform</a></li>
+            </ul>
+        </div>
+        
+        <footer>
+            <p>LangChain Course | Learn AI Application Development</p>
+            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">Part of the AI Frameworks Learning Platform</p>
+        </footer>
+    </div>
+</body>
+</html>
