@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AI Frameworks Learning Platform: Master machine learning, LangChain, LangGraph, and Crew.ai through comprehensive, practical courses. 26 weeks, 100+ hours of content.">
+  <meta name="description" content="AI Frameworks Learning Platform: Master machine learning, LangChain, LangGraph, and Crew.ai through comprehensive, practical courses. Python, PyTorch, CNNs, Transformers included.">
   <meta name="keywords" content="AI frameworks, machine learning, LangChain, LangGraph, Crew.ai, multi-agent systems, LLM orchestration, NumPy, Pandas, Scikit-learn">
   <meta name="author" content="sanketn26">
   <meta name="robots" content="index, follow">
@@ -286,7 +286,7 @@
       <a href="#ml-course" class="course-link-card ml">
         <div class="emoji">📊</div>
         <h3>ML Fundamentals</h3>
-        <p>12-week course on machine learning and SaaS analytics with NumPy, Pandas, and Scikit-learn</p>
+        <p>Python, NumPy, Pandas, PyTorch, ML fundamentals, and deep learning — for engineers without a math background</p>
         <div class="course-arrow">Explore Course →</div>
       </a>
       
@@ -314,14 +314,14 @@
 
     <!-- Course Overview -->
     <div class="course-info" id="ml-course">
-      <h2>📚 ML Fundamentals — 12-Week Course</h2>
+      <h2>📚 ML Fundamentals — 16 weeks (0–15)</h2>
       <p>
-        This comprehensive 12-week tutorial teaches machine learning and data science fundamentals through realistic SaaS analytics scenarios. 
-        You'll learn how to process telemetry data, build predictive models, and extract actionable insights from real-world business metrics.
+        Written for software developers and engineers who do not have a math background. Every new idea starts with
+        an analogy you already know (SQL joins, code review, API contracts), a picture, then working code on CloudWave’s SaaS data.
       </p>
       <p>
-        <strong>Learning Style:</strong> Conversational, mentor-guided instruction combining concept explanations, hands-on exercises, 
-        reflection prompts, and real-world datasets.
+        <strong>How each week is taught:</strong> <em>Think of it like…</em> → <em>Engineer mental model</em> → live plots →
+        a <em>Watch out</em> foot-gun → a <em>Ship / don’t ship</em> decision. Formulas appear only as “math, translated.”
       </p>
 
       <div class="datasets">
@@ -344,87 +344,115 @@
       <h2 style="color: white; font-size: 1.8em; margin-bottom: 20px;">📖 Weekly Lessons</h2>
       <div class="notebooks-grid">
         <div class="notebook-card">
+          <h3>Week 0</h3>
+          <p><strong>Topic:</strong> Strong Python for AI</p>
+          <p>Names vs values, dataclasses, a fit/predict class, and the five foot-guns. NumPy / Pandas / PyTorch are the engines — this is the glue.</p>
+          <a href="docs/week-00-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
           <h3>Week 1</h3>
-          <p><strong>Topic:</strong> NumPy Fundamentals & Array Operations</p>
-          <p>Learn vectorized computing, broadcasting, and efficient numerical operations for processing large telemetry arrays.</p>
+          <p><strong>Topic:</strong> NumPy — fast math on whole columns</p>
+          <p>Think SIMD / SQL, not linear algebra. Picture broadcasting, then time a loop vs a vectorized column.</p>
           <a href="docs/week-01-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 2</h3>
-          <p><strong>Topic:</strong> Pandas Data Manipulation</p>
-          <p>Master dataframe operations, grouping, aggregation, and data cleaning techniques for SaaS analytics.</p>
+          <p><strong>Topic:</strong> Pandas — SQL you already know</p>
+          <p>Build a Customer 360 table. Catch a join that secretly exploded 10×.</p>
           <a href="docs/week-02-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 3</h3>
-          <p><strong>Topic:</strong> Data Visualization & Exploratory Analysis</p>
-          <p>Create compelling visualizations to uncover patterns and trends in customer behavior data.</p>
+          <p><strong>Topic:</strong> Charts that change a decision</p>
+          <p>A live dashboard, a cohort heatmap, and why a truncated axis is a lie.</p>
           <a href="docs/week-03-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 4</h3>
-          <p><strong>Topic:</strong> Statistical Analysis & Hypothesis Testing</p>
-          <p>Validate assumptions, compare cohorts, and draw statistical conclusions from SaaS metrics.</p>
+          <p><strong>Topic:</strong> Is this real, or just noise?</p>
+          <p>A p-value in one sentence, a coin-flip simulation, and why 8/50 vs 12/60 is not a launch.</p>
           <a href="docs/week-04-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 5</h3>
-          <p><strong>Topic:</strong> Feature Engineering & Preprocessing</p>
-          <p>Transform raw data into meaningful features for machine learning models.</p>
+          <p><strong>Topic:</strong> Features are the model’s API</p>
+          <p>The scaler ships with the pickle. Nothing from the future may enter X.</p>
           <a href="docs/week-05-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 6</h3>
-          <p><strong>Topic:</strong> Supervised Learning: Classification</p>
-          <p>Build classification models to predict customer churn, upgrade likelihood, and engagement levels.</p>
+          <p><strong>Topic:</strong> Classification — a score, then a threshold</p>
+          <p>Beat a dummy baseline. Read a confusion matrix in customers. Staff the cutoff.</p>
           <a href="docs/week-06-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 7</h3>
-          <p><strong>Topic:</strong> Supervised Learning: Regression</p>
-          <p>Develop regression models for customer lifetime value, revenue prediction, and usage forecasting.</p>
+          <p><strong>Topic:</strong> Regression — predict a number</p>
+          <p>MAE in real units, residual “trumpets,” and why you must not predict mrr × tenure.</p>
           <a href="docs/week-07-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 8</h3>
-          <p><strong>Topic:</strong> Unsupervised Learning: Clustering</p>
-          <p>Discover customer segments, behavioral patterns, and natural groupings in your data.</p>
+          <p><strong>Topic:</strong> Clustering — pins on a map</p>
+          <p>K-Means as dropping pins. Scale or MRR hijacks the neighborhoods. Personas, not APIs.</p>
           <a href="docs/week-08-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 9</h3>
-          <p><strong>Topic:</strong> Dimensionality Reduction & PCA</p>
-          <p>Reduce feature complexity while preserving information for better model performance.</p>
+          <p><strong>Topic:</strong> PCA — JPEG for tables</p>
+          <p>Rotate the cloud. Read a scree plot. Do not tell a PM to “improve PC3.”</p>
           <a href="docs/week-09-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 10</h3>
-          <p><strong>Topic:</strong> Ensemble Methods & Model Optimization</p>
-          <p>Combine multiple models for improved accuracy and robustness in predictions.</p>
+          <p><strong>Topic:</strong> Ensembles — a room of reviewers</p>
+          <p>Bagging vs boosting vs voting (not stacking). GBT is the tabular default.</p>
           <a href="docs/week-10-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 11</h3>
-          <p><strong>Topic:</strong> Introduction to Deep Learning</p>
-          <p>Build neural networks for complex pattern recognition in SaaS data.</p>
+          <p><strong>Topic:</strong> Neural nets, without the mystique</p>
+          <p>Mixers + switches. Why depth needs ReLU. Why a GBT still wins on this table.</p>
           <a href="docs/week-11-saas.html" class="notebook-link">View Notebook →</a>
         </div>
 
         <div class="notebook-card">
           <h3>Week 12</h3>
-          <p><strong>Topic:</strong> Capstone Project & Production Readiness</p>
-          <p>Integrate all concepts into an end-to-end machine learning project with deployment considerations.</p>
+          <p><strong>Topic:</strong> Capstone — a notebook is not production</p>
+          <p>Time-based split, a predict() contract, a 80-call budget, and a drift picture.</p>
           <a href="docs/week-12-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 13</h3>
+          <p><strong>Topic:</strong> CNNs — sliding detectors</p>
+          <p>A stencil that reuses one filter everywhere. 1-D conv on CloudWave usage, then the 2-D picture.</p>
+          <a href="docs/week-13-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 14</h3>
+          <p><strong>Topic:</strong> RNNs — a clipboard that walks</p>
+          <p>Same function, new input, old hidden state. Why memory fades. LSTM/GRU as locks on the clipboard.</p>
+          <a href="docs/week-14-saas.html" class="notebook-link">View Notebook →</a>
+        </div>
+
+        <div class="notebook-card">
+          <h3>Week 15</h3>
+          <p><strong>Topic:</strong> Transformers — everything looks at everything</p>
+          <p>Attention as a soft join (Q, K, V). Positions because there is no loop. A tiny encoder on feedback text.</p>
+          <a href="docs/week-15-saas.html" class="notebook-link">View Notebook →</a>
         </div>
       </div>
     </div>

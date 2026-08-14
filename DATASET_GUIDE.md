@@ -17,16 +17,16 @@ All datasets are included in the repository and available for download in multip
 ### Dataset Descriptions
 
 #### 1. **subscriptions.csv**
-**Purpose:** Customer subscription lifecycle and events
+**Purpose:** Customer subscription lifecycle (one row per user)
 
 **Columns:**
-- `customer_id` - Unique customer identifier
-- `subscription_date` - Date subscription started
-- `status` - Current status (active, churned, upgraded)
-- `plan_type` - Subscription plan (free, pro, enterprise)
-- `monthly_cost` - Monthly subscription cost
-- `upgrade_date` - Date of last upgrade (if applicable)
-- `churn_date` - Date of cancellation (if applicable)
+- `user_id` — Unique customer identifier
+- `plan_type` — `free`, `starter`, `pro`, or `enterprise`
+- `mrr` — Monthly recurring revenue in dollars (0 for free)
+- `signup_date` — Date the subscription started
+- `churn_date` — Date of cancellation (empty if still active)
+- `is_churned` — `1` if the customer cancelled, else `0`
+- `tenure_days` — Days between signup and churn (or last observation)
 
 **Use Cases:**
 - Customer retention analysis
@@ -35,16 +35,16 @@ All datasets are included in the repository and available for download in multip
 - Upgrade pattern analysis
 
 #### 2. **user_events.csv**
-**Purpose:** User activity and interaction telemetry
+**Purpose:** User activity and interaction telemetry (one row per event)
 
 **Columns:**
-- `user_id` - Unique user identifier
-- `timestamp` - Event timestamp
-- `event_type` - Type of activity (login, click, purchase, etc.)
-- `feature_used` - Feature accessed
-- `session_duration` - Duration in seconds
-- `device_type` - Device used (desktop, mobile, tablet)
-- `success` - Whether event was successful (true/false)
+- `event_id` — Unique event identifier
+- `user_id` — User who performed the event
+- `event_type` — e.g. `login`, `page_view`, `click`, `feature_use`, `payment`, `upgrade`, `cancel`
+- `timestamp` — Event timestamp
+- `device` — `web`, `ios`, or `android`
+- `region` — `NA`, `EMEA`, `APAC`, or `LATAM`
+- `session_duration` — Duration in seconds
 
 **Use Cases:**
 - User engagement analysis
@@ -53,15 +53,14 @@ All datasets are included in the repository and available for download in multip
 - Session duration analysis
 
 #### 3. **feature_usage.csv**
-**Purpose:** Feature adoption and usage metrics
+**Purpose:** Feature adoption and usage metrics (one row per user × feature × day)
 
 **Columns:**
-- `feature_id` - Unique feature identifier
-- `user_id` - User using the feature
-- `usage_count` - Number of times used
-- `last_used` - Date last used
-- `adoption_rate` - Percentage adoption
-- `satisfaction_score` - User satisfaction rating (1-5)
+- `user_id` — User using the feature
+- `feature_name` — e.g. `dashboard`, `analytics`, `api_call`, `export`
+- `usage_count` — Times used in that row’s window
+- `avg_session_seconds` — Average session length
+- `date` — Usage date
 
 **Use Cases:**
 - Feature adoption analysis
@@ -70,16 +69,15 @@ All datasets are included in the repository and available for download in multip
 - User satisfaction correlation
 
 #### 4. **feedback.json**
-**Purpose:** Customer feedback and sentiment
+**Purpose:** Customer feedback and sentiment (JSON Lines — one object per line)
 
 **Fields per entry:**
-- `feedback_id` - Unique feedback identifier
-- `customer_id` - Customer providing feedback
-- `date_submitted` - Date feedback submitted
-- `rating` - Overall rating (1-5)
-- `category` - Feedback category (bug, feature_request, support, other)
-- `text` - Feedback text
-- `sentiment` - Sentiment analysis (positive, neutral, negative)
+- `user_id` — Customer providing feedback
+- `category` — e.g. `billing`, `bug`, `praise`
+- `sentiment_score` — Numeric sentiment (negative → positive)
+- `feedback_text` — Free-text comment
+
+Load with `pd.read_json("data/feedback.json", lines=True)`.
 
 **Use Cases:**
 - Sentiment analysis
@@ -91,12 +89,11 @@ All datasets are included in the repository and available for download in multip
 **Purpose:** Product and feature definitions
 
 **Columns:**
-- `product_id` - Unique product identifier
-- `product_name` - Name of product
-- `category` - Product category
-- `launch_date` - Product launch date
-- `status` - Product status (active, deprecated, beta)
-- `price_tier` - Pricing tier (free, standard, premium)
+- `feature_id` — Unique feature identifier
+- `feature_name` — Name of the feature
+- `tier` — Plan that includes it (`starter`, …)
+- `release_date` — When the feature shipped
+- `owner_team` — Team that owns it
 
 **Use Cases:**
 - Product portfolio analysis

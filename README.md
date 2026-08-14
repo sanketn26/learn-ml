@@ -4,10 +4,13 @@ A comprehensive multi-course learning platform covering machine learning, LLM or
 
 ## 📚 Courses Included
 
-1. **Applied ML Foundations for SaaS Analytics** (12 weeks)
-   - NumPy, Pandas, Visualization, Scikit-learn, Deep Learning
-   - Realistic SaaS analytics scenarios
-   - Notebooks: `notebooks/week-01-saas.ipynb` through `week-12-saas.ipynb`
+1. **Applied ML Foundations for SaaS Analytics** (weeks 0–15)
+   - Written for software engineers — no calculus or stats degree required
+   - Analogies, pictures, and “how to think about it” before any formula
+   - **Python**, NumPy, Pandas, **PyTorch**
+   - ML fundamentals: regression, classification, overfitting, bias, variance
+   - Deep learning: training loop, CNNs, RNNs, Transformers
+   - Notebooks: `notebooks/week-00-saas.ipynb` through `week-15-saas.ipynb`
 
 2. **LangChain Fundamentals** (6 weeks)
    - LLM chains, prompts, memory, and agents
@@ -63,6 +66,8 @@ Located in `data/` (synthetic, production-like patterns):
    jupyter notebook notebooks/
    ```
 
+   ML notebooks are sized for a normal laptop: **no GPU**, about **8 GB RAM**, and each week should finish in a few minutes on CPU. Modeling weeks sample ~8,000 customers. Install `torch` only when you reach Week 11+.
+
 5. **Start with week 1:**
    - ML Fundamentals: `week-01-saas.ipynb`
    - Or choose another course path
@@ -85,7 +90,7 @@ learn-ml/
 
 ## 🎯 Course Navigation
 
-Each course includes 4-12 weeks of content. Navigate using:
+Each course includes 4–16 weeks of content. Navigate using:
 - **Previous/Next buttons** in HTML versions (`docs/`)
 - **GitHub links** on each page to access notebooks directly
 - **Setup instructions** on every page for local execution

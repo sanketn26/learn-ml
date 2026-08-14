@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>week-02-saas</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Week 2 — Pandas</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7332,7 +7332,12 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs")).default;
+    const elkUrl = "https://cdnjs.cloudflare.com/ajax/libs/mermaid-layout-elk/0.1.9/mermaid-layout-elk.esm.min.mjs";
+    if(elkUrl) {
+      const elkLayouts = (await import(elkUrl)).default;
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7429,7 +7434,8 @@ a.anchor-link {
      * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
      */
     function cleanMermaidSvg(svg) {
-      return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      svg = svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      return `${SVG_XML_HEADER}${svg}`;
     }
 
 
@@ -7455,6 +7461,285 @@ a.anchor-link {
       }
       return `<${tag} ${rest}>`;
     }
+
+
+  /**
+   * Named HTML entities with their decimal equivalent codes.
+   *
+   * @see https://www.w3.org/TR/WD-html40-970708/sgml/entities.html
+   * */
+  const HTML_ENTITIES = `<!ENTITY Aacute "&#193;">
+<!ENTITY aacute "&#225;">
+<!ENTITY Acirc "&#194;">
+<!ENTITY acirc "&#226;">
+<!ENTITY acute "&#180;">
+<!ENTITY AElig "&#198;">
+<!ENTITY aelig "&#230;">
+<!ENTITY Agrave "&#192;">
+<!ENTITY agrave "&#224;">
+<!ENTITY alefsym "&#8501;">
+<!ENTITY Alpha "&#913;">
+<!ENTITY alpha "&#945;">
+<!ENTITY amp "&#38;">
+<!ENTITY and "&#8869;">
+<!ENTITY ang "&#8736;">
+<!ENTITY Aring "&#197;">
+<!ENTITY aring "&#229;">
+<!ENTITY asymp "&#8776;">
+<!ENTITY Atilde "&#195;">
+<!ENTITY atilde "&#227;">
+<!ENTITY Auml "&#196;">
+<!ENTITY auml "&#228;">
+<!ENTITY bdquo "&#8222;">
+<!ENTITY Beta "&#914;">
+<!ENTITY beta "&#946;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY bull "&#8226;">
+<!ENTITY cap "&#8745;">
+<!ENTITY Ccedil "&#199;">
+<!ENTITY ccedil "&#231;">
+<!ENTITY cedil "&#184;">
+<!ENTITY cent "&#162;">
+<!ENTITY Chi "&#935;">
+<!ENTITY chi "&#967;">
+<!ENTITY circ "&#710;">
+<!ENTITY clubs "&#9827;">
+<!ENTITY cong "&#8773;">
+<!ENTITY copy "&#169;">
+<!ENTITY crarr "&#8629;">
+<!ENTITY cup "&#8746;">
+<!ENTITY curren "&#164;">
+<!ENTITY dagger "&#8224;">
+<!ENTITY Dagger "&#8225;">
+<!ENTITY darr "&#8595;">
+<!ENTITY dArr "&#8659;">
+<!ENTITY deg "&#176;">
+<!ENTITY Delta "&#916;">
+<!ENTITY delta "&#948;">
+<!ENTITY diams "&#9830;">
+<!ENTITY divide "&#247;">
+<!ENTITY Eacute "&#201;">
+<!ENTITY eacute "&#233;">
+<!ENTITY Ecirc "&#202;">
+<!ENTITY ecirc "&#234;">
+<!ENTITY Egrave "&#200;">
+<!ENTITY egrave "&#232;">
+<!ENTITY empty "&#8709;">
+<!ENTITY emsp "&#8195;">
+<!ENTITY ensp "&#8194;">
+<!ENTITY epsilon "&#949;">
+<!ENTITY Epsilon "&#917;">
+<!ENTITY equiv "&#8801;">
+<!ENTITY Eta "&#919;">
+<!ENTITY eta "&#951;">
+<!ENTITY ETH "&#208;">
+<!ENTITY eth "&#240;">
+<!ENTITY Euml "&#203;">
+<!ENTITY euml "&#235;">
+<!ENTITY exist "&#8707;">
+<!ENTITY fnof "&#402;">
+<!ENTITY forall "&#8704;">
+<!ENTITY frac12 "&#189;">
+<!ENTITY frac14 "&#188;">
+<!ENTITY frac34 "&#190;">
+<!ENTITY frasl "&#8260;">
+<!ENTITY Gamma "&#915;">
+<!ENTITY gamma "&#947;">
+<!ENTITY ge "&#8805;">
+<!ENTITY gt "&#62;">
+<!ENTITY harr "&#8596;">
+<!ENTITY hArr "&#8660;">
+<!ENTITY hearts "&#9829;">
+<!ENTITY hellip "&#8230;">
+<!ENTITY Iacute "&#205;">
+<!ENTITY iacute "&#237;">
+<!ENTITY Icirc "&#206;">
+<!ENTITY icirc "&#238;">
+<!ENTITY iexcl "&#161;">
+<!ENTITY Igrave "&#204;">
+<!ENTITY igrave "&#236;">
+<!ENTITY image "&#8465;">
+<!ENTITY infin "&#8734;">
+<!ENTITY int "&#8747;">
+<!ENTITY Iota "&#921;">
+<!ENTITY iota "&#953;">
+<!ENTITY iquest "&#191;">
+<!ENTITY isin "&#8712;">
+<!ENTITY Iuml "&#207;">
+<!ENTITY iuml "&#239;">
+<!ENTITY Kappa "&#922;">
+<!ENTITY kappa "&#954;">
+<!ENTITY Lambda "&#923;">
+<!ENTITY lambda "&#955;">
+<!ENTITY lang "&#9001;">
+<!ENTITY laquo "&#171;">
+<!ENTITY larr "&#8592;">
+<!ENTITY lArr "&#8656;">
+<!ENTITY lceil "&#8968;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY le "&#8804;">
+<!ENTITY lfloor "&#8970;">
+<!ENTITY lowast "&#8727;">
+<!ENTITY loz "&#9674;">
+<!ENTITY lrm "&#8206;">
+<!ENTITY lsaquo "&#8249;">
+<!ENTITY lsquo "&#8216;">
+<!ENTITY lt "&#60;">
+<!ENTITY macr "&#175;">
+<!ENTITY mdash "&#8212;">
+<!ENTITY micro "&#181;">
+<!ENTITY middot "&#183;">
+<!ENTITY minus "&#8722;">
+<!ENTITY Mu "&#924;">
+<!ENTITY mu "&#956;">
+<!ENTITY nabla "&#8711;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#8211;">
+<!ENTITY ne "&#8800;">
+<!ENTITY ni "&#8715;">
+<!ENTITY not "&#172;">
+<!ENTITY notin "&#8713;">
+<!ENTITY nsub "&#8836;">
+<!ENTITY Ntilde "&#209;">
+<!ENTITY ntilde "&#241;">
+<!ENTITY Nu "&#925;">
+<!ENTITY nu "&#957;">
+<!ENTITY Oacute "&#211;">
+<!ENTITY oacute "&#243;">
+<!ENTITY Ocirc "&#212;">
+<!ENTITY ocirc "&#244;">
+<!ENTITY OElig "&#338;">
+<!ENTITY oelig "&#339;">
+<!ENTITY Ograve "&#210;">
+<!ENTITY ograve "&#242;">
+<!ENTITY oline "&#8254;">
+<!ENTITY Omega "&#937;">
+<!ENTITY omega "&#969;">
+<!ENTITY Omicron "&#927;">
+<!ENTITY omicron "&#959;">
+<!ENTITY oplus "&#8853;">
+<!ENTITY or "&#8870;">
+<!ENTITY ordf "&#170;">
+<!ENTITY ordm "&#186;">
+<!ENTITY Oslash "&#216;">
+<!ENTITY oslash "&#248;">
+<!ENTITY Otilde "&#213;">
+<!ENTITY otilde "&#245;">
+<!ENTITY otimes "&#8855;">
+<!ENTITY Ouml "&#214;">
+<!ENTITY ouml "&#246;">
+<!ENTITY para "&#182;">
+<!ENTITY part "&#8706;">
+<!ENTITY permil "&#8240;">
+<!ENTITY perp "&#8869;">
+<!ENTITY Phi "&#934;">
+<!ENTITY phi "&#966;">
+<!ENTITY Pi "&#928;">
+<!ENTITY pi "&#960;">
+<!ENTITY piv "&#982;">
+<!ENTITY plusmn "&#177;">
+<!ENTITY pound "&#163;">
+<!ENTITY prime "&#8242;">
+<!ENTITY Prime "&#8243;">
+<!ENTITY prod "&#8719;">
+<!ENTITY prop "&#8733;">
+<!ENTITY Psi "&#936;">
+<!ENTITY psi "&#968;">
+<!ENTITY quot "&#34;">
+<!ENTITY radic "&#8730;">
+<!ENTITY rang "&#9002;">
+<!ENTITY raquo "&#187;">
+<!ENTITY rarr "&#8594;">
+<!ENTITY rArr "&#8658;">
+<!ENTITY rceil "&#8969;">
+<!ENTITY rdquo "&#8221;">
+<!ENTITY real "&#8476;">
+<!ENTITY reg "&#174;">
+<!ENTITY rfloor "&#8971;">
+<!ENTITY Rho "&#929;">
+<!ENTITY rho "&#961;">
+<!ENTITY rlm "&#8207;">
+<!ENTITY rsaquo "&#8250;">
+<!ENTITY rsquo "&#8217;">
+<!ENTITY sbquo "&#8218;">
+<!ENTITY Scaron "&#352;">
+<!ENTITY scaron "&#353;">
+<!ENTITY sdot "&#8901;">
+<!ENTITY sect "&#167;">
+<!ENTITY shy "&#173;">
+<!ENTITY Sigma "&#931;">
+<!ENTITY sigma "&#963;">
+<!ENTITY sigmaf "&#962;">
+<!ENTITY sim "&#8764;">
+<!ENTITY spades "&#9824;">
+<!ENTITY sub "&#8834;">
+<!ENTITY sube "&#8838;">
+<!ENTITY sum "&#8721;">
+<!ENTITY sup "&#8835;">
+<!ENTITY sup1 "&#185;">
+<!ENTITY sup2 "&#178;">
+<!ENTITY sup3 "&#179;">
+<!ENTITY supe "&#8839;">
+<!ENTITY szlig "&#223;">
+<!ENTITY Tau "&#932;">
+<!ENTITY tau "&#964;">
+<!ENTITY there4 "&#8756;">
+<!ENTITY Theta "&#920;">
+<!ENTITY theta "&#952;">
+<!ENTITY thetasym "&#977;">
+<!ENTITY thinsp "&#8201;">
+<!ENTITY THORN "&#222;">
+<!ENTITY thorn "&#254;">
+<!ENTITY tilde "&#732;">
+<!ENTITY times "&#215;">
+<!ENTITY trade "&#8482;">
+<!ENTITY Uacute "&#218;">
+<!ENTITY uacute "&#250;">
+<!ENTITY uarr "&#8593;">
+<!ENTITY uArr "&#8657;">
+<!ENTITY Ucirc "&#219;">
+<!ENTITY ucirc "&#251;">
+<!ENTITY Ugrave "&#217;">
+<!ENTITY ugrave "&#249;">
+<!ENTITY uml "&#168;">
+<!ENTITY upsih "&#978;">
+<!ENTITY Upsilon "&#933;">
+<!ENTITY upsilon "&#965;">
+<!ENTITY Uuml "&#220;">
+<!ENTITY uuml "&#252;">
+<!ENTITY weierp "&#8472;">
+<!ENTITY Xi "&#926;">
+<!ENTITY xi "&#958;">
+<!ENTITY Yacute "&#221;">
+<!ENTITY yacute "&#253;">
+<!ENTITY yen "&#165;">
+<!ENTITY Yuml "&#376;">
+<!ENTITY yuml "&#255;">
+<!ENTITY Zeta "&#918;">
+<!ENTITY zeta "&#950;">
+<!ENTITY zwj "&#8205;">
+<!ENTITY zwnj "&#8204;">`.replace(/\n/g, ' ');
+
+  /**
+   * A reasonably strict xml declaration.
+   */
+  const XML_DECL = '<?xml version="1.0" standalone="no"?>';
+
+  /**
+   * The beginning of the XML doctype declaration.
+   */
+  const DOCTYPE_START = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [`;
+
+  /**
+   * The end of the XML docype declaration.
+   */
+  const DOCTYPE_END = ']>';
+
+  /**
+   * A full header for an SVG XML document.
+   */
+  const SVG_XML_HEADER = `${XML_DECL}
+    ${DOCTYPE_START}${HTML_ENTITIES}${DOCTYPE_END}`;
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
@@ -7510,6 +7795,90 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<!-- learn-ml-enhance:start -->
+<style>
+:root {
+  --think: #b45309;
+  --think-bg: #fffbeb;
+  --think-border: #f59e0b;
+  --eng: #1d4ed8;
+  --eng-bg: #eff6ff;
+  --eng-border: #3b82f6;
+  --watch: #b91c1c;
+  --watch-bg: #fef2f2;
+  --watch-border: #f87171;
+  --ship: #047857;
+  --ship-bg: #ecfdf5;
+  --ship-border: #34d399;
+  --math: #6d28d9;
+  --math-bg: #f5f3ff;
+  --math-border: #a78bfa;
+  --cue: #0f766e;
+  --cue-bg: #f0fdfa;
+  --cue-border: #2dd4bf;
+}
+
+.think-box, .engineer-box, .watch-box, .ship-box, .math-box, .cue-box {
+  border-left: 6px solid;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  line-height: 1.55;
+}
+.think-box { background: var(--think-bg); border-color: var(--think-border); }
+.engineer-box { background: var(--eng-bg); border-color: var(--eng-border); }
+.watch-box { background: var(--watch-bg); border-color: var(--watch-border); }
+.ship-box { background: var(--ship-bg); border-color: var(--ship-border); }
+.math-box { background: var(--math-bg); border-color: var(--math-border); }
+.cue-box { background: var(--cue-bg); border-color: var(--cue-border); }
+
+.think-box strong, .engineer-box strong, .watch-box strong,
+.ship-box strong, .math-box strong, .cue-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.02em;
+}
+.think-box strong { color: var(--think); }
+.engineer-box strong { color: var(--eng); }
+.watch-box strong { color: var(--watch); }
+.ship-box strong { color: var(--ship); }
+.math-box strong { color: var(--math); }
+.cue-box strong { color: var(--cue); }
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.flow-node {
+  background: #312e81;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.92em;
+  font-weight: 600;
+}
+.flow-node.alt { background: #0f766e; }
+.flow-node.warn { background: #b45309; }
+.flow-arrow { color: #64748b; font-weight: 700; }
+
+details.lesson-extra {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+details.lesson-extra summary {
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+</style>
+
 <style>
 .notebook-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -7519,41 +7888,34 @@ a.anchor-link {
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
 .notebook-header h1 {
     margin: 0 0 15px 0;
     font-size: 2em;
 }
-
 .breadcrumbs {
     font-size: 0.95em;
     margin-bottom: 15px;
     opacity: 0.95;
 }
-
 .breadcrumbs a {
     color: white;
     text-decoration: none;
     border-bottom: 2px solid rgba(255,255,255,0.3);
     padding-bottom: 2px;
 }
-
 .breadcrumbs a:hover {
     border-bottom-color: white;
 }
-
 .breadcrumbs span {
     margin: 0 8px;
     opacity: 0.7;
 }
-
 .header-links {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
     margin-bottom: 15px;
 }
-
 .header-link {
     display: inline-block;
     background: rgba(255,255,255,0.15);
@@ -7565,62 +7927,22 @@ a.anchor-link {
     border: 1px solid rgba(255,255,255,0.3);
     transition: all 0.3s ease;
 }
-
 .header-link:hover {
     background: rgba(255,255,255,0.25);
     border-color: white;
 }
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.header-link.colab::before {
-    content: "☁️ ";
-}
-
 .header-link.colab {
     background: rgba(249, 203, 0, 0.2);
     border-color: rgba(249, 203, 0, 0.5);
 }
-
-.header-link.colab:hover {
-    background: rgba(249, 203, 0, 0.3);
-    border-color: rgba(249, 203, 0, 1);
-}
-
-.header-link.vscode::before {
-    content: "💻 ";
-}
-
 .header-link.vscode {
     background: rgba(0, 120, 215, 0.2);
     border-color: rgba(0, 120, 215, 0.5);
 }
-
-.header-link.vscode:hover {
-    background: rgba(0, 120, 215, 0.3);
-    border-color: rgba(0, 120, 215, 1);
-}
-
-.header-link.jupyter::before {
-    content: "📓 ";
-}
-
 .header-link.jupyter {
     background: rgba(249, 149, 0, 0.2);
     border-color: rgba(249, 149, 0, 0.5);
 }
-
-.header-link.jupyter:hover {
-    background: rgba(249, 149, 0, 0.3);
-    border-color: rgba(249, 149, 0, 1);
-}
-
 .navigation-footer {
     display: flex;
     gap: 20px;
@@ -7629,7 +7951,6 @@ a.anchor-link {
     padding-top: 20px;
     border-top: 2px solid #e0e0e0;
 }
-
 .nav-link {
     display: inline-block;
     padding: 10px 20px;
@@ -7640,20 +7961,16 @@ a.anchor-link {
     transition: all 0.3s ease;
     font-weight: 600;
 }
-
 .nav-link:hover {
     background: #667eea;
     color: white;
 }
-
 .nav-link.prev-link {
     margin-right: auto;
 }
-
 .nav-link.next-link {
     margin-left: auto;
 }
-
 .setup-instructions {
     background: #f5f5f5;
     border-left: 4px solid #667eea;
@@ -7662,12 +7979,10 @@ a.anchor-link {
     margin: 20px 0;
     font-size: 0.95em;
 }
-
 .setup-instructions h3 {
     margin-top: 0;
     color: #667eea;
 }
-
 .setup-instructions code {
     background: white;
     padding: 2px 6px;
@@ -7678,18 +7993,16 @@ a.anchor-link {
 
 <div class="notebook-header">
     <div class="breadcrumbs">
-        <a href="../../index.html#ml-course">← Back to ML Fundamentals</a>
+        <a href="../index.html#ml-course">← Back to ML Fundamentals</a>
         <span>•</span>
-        <span>Week 2 of 12</span>
+        <span>Week 2 of 0–15</span>
     </div>
-    
     <h1>Week 2 — ML Fundamentals</h1>
-    
     <div class="header-links">
-        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/ml/notebooks/week-02-saas.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//home/sanket/workspaces/learn-ml/ml/notebooks/week-02-saas.ipynb" class="header-link vscode">Open in VS Code</a>
-        <a href="jupyter://relative-path:ml/notebooks/week-02-saas.ipynb" class="header-link jupyter">Open in Jupyter</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/ml/notebooks/week-02-saas.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
+        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/notebooks/week-02-saas.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
+        <a href="https://vscode.dev/github/sanketn26/learn-ml/blob/main/notebooks/week-02-saas.ipynb" class="header-link vscode" target="_blank">Open in VS Code</a>
+        <a href="jupyter://relative-path:notebooks/week-02-saas.ipynb" class="header-link jupyter">Open in Jupyter</a>
+        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/notebooks/week-02-saas.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
 </div>
 
@@ -7706,482 +8019,626 @@ a.anchor-link {
     </p>
     <p>
         <strong>3. Install course dependencies:</strong><br>
-    <code>pip install numpy pandas scikit-learn matplotlib scipy</code>
+        <code>pip install numpy pandas scikit-learn matplotlib scipy seaborn</code><br><code>pip install torch</code>  <!-- Weeks 11–15 only; CPU wheel is enough -->
     </p>
     <p>
         <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook ml/notebooks/week-02*.ipynb</code>
+        <code>jupyter notebook notebooks/week-02-saas.ipynb</code>
     </p>
 </div>
+<!-- learn-ml-enhance:end -->
 
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=50d73fd0">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=cfe0b8c2ce21">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-2-%E2%80%94-Pandas-Data-Manipulation-&amp;-ETL">Week 2 — Pandas Data Manipulation &amp; ETL<a class="anchor-link" href="#Week-2-%E2%80%94-Pandas-Data-Manipulation-&amp;-ETL">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
-<strong>Week Focus:</strong> Master Pandas for data cleaning, aggregation, joining multiple datasets, and preparing clean data for analysis.</p>
+<h1 id="Week-2-%E2%80%94-Pandas:-SQL-You-Already-Know,-in-Python">Week 2 — Pandas: SQL You Already Know, in Python<a class="anchor-link" href="#Week-2-%E2%80%94-Pandas:-SQL-You-Already-Know,-in-Python">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Who this is for:</strong> Engineers who have written <code>SELECT / JOIN / GROUP BY</code>. You do not need statistics yet.</p>
 <hr/>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
-<ul>
-<li>Load and inspect data from multiple file formats (CSV, JSON)</li>
-<li>Clean and handle missing data effectively</li>
-<li>Group, aggregate, and pivot data for SaaS analytics</li>
-<li>Join datasets to create comprehensive views</li>
-<li>Detect and handle outliers and anomalies</li>
-<li>Build reliable ETL pipelines</li>
+<h2 id="%F0%9F%8E%AF-What-you-will-be-able-to-do">🎯 What you will be able to do<a class="anchor-link" href="#%F0%9F%8E%AF-What-you-will-be-able-to-do">¶</a></h2><ul>
+<li>Map every Pandas verb to the SQL you already know</li>
+<li>Build a <strong>Customer 360</strong> row from four messy systems</li>
+<li>Catch a join that secretly exploded 10×</li>
+<li>Decide what to do with missing values (0 vs median vs “missing is a signal”)</li>
 </ul>
-<h2 id="%F0%9F%93%8A-Real-World-Context">📊 Real-World Context<a class="anchor-link" href="#%F0%9F%93%8A-Real-World-Context">¶</a></h2><p>SaaS analytics requires combining multiple data sources:</p>
-<ul>
-<li><strong>Subscriptions data</strong>: signup dates, churn dates, plan tier, pricing</li>
-<li><strong>User events</strong>: activity logs, timestamps, event types</li>
-<li><strong>Feature usage</strong>: which features users interact with</li>
-<li><strong>Feedback</strong>: customer sentiment, support tickets</li>
-</ul>
-<p>Your job: Transform messy, fragmented raw data into clean, joined datasets ready for analysis and modeling.</p>
+<div class="think-box">
+<strong>Think of it like… a typed DataFrame is a SQL table that lives in RAM.</strong>
+<p>A Series is a column. An index is a primary key (sometimes sloppy). <code>merge</code> is <code>JOIN</code>. <code>groupby</code> is <code>GROUP BY</code>. If you can write the query, you can write the Pandas.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=4c34473c">
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=0589364b4f84">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
-<span class="s1">&lt;style&gt;</span>
-<span class="s1">details {</span>
-<span class="s1">  margin: 10px 0;</span>
-<span class="s1">  padding: 8px 12px;</span>
-<span class="s1">  border: 1px solid #d9e2ec;</span>
-<span class="s1">  border-radius: 8px;</span>
-<span class="s1">  background: #f9fbfd;</span>
-<span class="s1">}</span>
-<span class="s1">details summary {</span>
-<span class="s1">  font-weight: 600;</span>
-<span class="s1">  color: #0056b3;</span>
-<span class="s1">  cursor: pointer;</span>
-<span class="s1">}</span>
-<span class="s1">details[open] {</span>
-<span class="s1">  background: #f1f7ff;</span>
-<span class="s1">  border-color: #c3d4f0;</span>
-<span class="s1">}</span>
-<span class="s1">details pre {</span>
-<span class="s1">  background: #f8f9fa;</span>
-<span class="s1">  padding: 8px;</span>
-<span class="s1">  border-radius: 6px;</span>
-<span class="s1">}</span>
-<span class="s1">&lt;/style&gt;</span>
-<span class="s1">'''</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=55d7c73f">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Merging-CloudWave-Data">🏢 Scenario — Merging CloudWave Data<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Merging-CloudWave-Data">¶</a></h2><p>Your company stores data in 4 separate systems:</p>
-<ol>
-<li><strong>Subscriptions DB</strong>: customer IDs, signup dates, churn dates, plan types</li>
-<li><strong>Event streaming logs</strong>: user_id, timestamp, event_type, value</li>
-<li><strong>Feature DB</strong>: feature_id, feature_name, category, launch_date</li>
-<li><strong>Customer feedback</strong>: user_id, timestamp, category, sentiment, text</li>
-</ol>
-<p><strong>Task</strong>: Create a unified "customer 360" view combining all sources to answer:</p>
-<ul>
-<li>Which customers are at risk of churning?</li>
-<li>Which features drive the most engagement?</li>
-<li>How does feature adoption correlate with retention?</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=3bc1d8d8">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>💡 Hint — Structured Approach to Data Integration</summary>
-<p><strong>Step 1: Understand the data</strong></p>
-<ul>
-<li>Load each dataset separately first</li>
-<li>Check shapes, columns, data types</li>
-<li>Look for key identifiers (user_id, feature_id, etc.)</li>
-</ul>
-<p><strong>Step 2: Data quality check</strong></p>
-<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>  <span class="c1"># types and nulls</span>
-<span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>  <span class="c1"># numeric summaries</span>
-<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>  <span class="c1"># find rows with ANY null</span>
-</pre></div>
-<p><strong>Step 3: Choose join strategy</strong></p>
-<ul>
-<li><code>inner</code>: only matching rows (stricter, smaller dataset)</li>
-<li><code>left</code>: keep all from left table, add from right</li>
-<li><code>outer</code>: keep all rows, fill NaNs where no match</li>
-</ul>
-<p><strong>Step 4: Validate results</strong></p>
-<ul>
-<li>Check row count before/after</li>
-<li>Verify no unexpected NaNs</li>
-<li>Spot-check a few rows manually</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=9875ee73">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution — Subscription Lifecycle Analysis</summary>
-<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="c1"># Load subscriptions</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total subscriptions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churned: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Active: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Create useful derived columns</span>
-<span class="n">subs</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
-
-<span class="c1"># Lifetime: days from signup to churn (or today if active)</span>
-<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="n">subs</span><span class="p">[</span><span class="s1">'churn_or_today'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span>
-<span class="n">subs</span><span class="p">[</span><span class="s1">'lifetime_days'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_or_today'</span><span class="p">]</span> <span class="o">-</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
-
-<span class="c1"># Cohort by signup month</span>
-<span class="n">subs</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">subs</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">to_period</span><span class="p">(</span><span class="s1">'M'</span><span class="p">)</span>
-
-<span class="c1"># Churn rate by plan</span>
-<span class="n">churn_by_plan</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'user_id'</span><span class="p">:</span> <span class="s1">'count'</span><span class="p">,</span>
-    <span class="s1">'is_churned'</span><span class="p">:</span> <span class="s1">'sum'</span>
-<span class="p">})</span>
-<span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'churn_rate'</span><span class="p">]</span> <span class="o">=</span> <span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">/</span> <span class="n">churn_by_plan</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Churn Rate by Plan:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">churn_by_plan</span><span class="p">)</span>
-
-<span class="c1"># Average lifetime by cohort</span>
-<span class="n">lifetime_by_cohort</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'lifetime_days'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Average Lifetime (days) by Signup Cohort:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">lifetime_by_cohort</span><span class="p">)</span>
-</pre></div>
-<p><strong>Key takeaways:</strong></p>
-<ul>
-<li>Handle dates properly with <code>pd.to_datetime()</code></li>
-<li>Fill NaN values strategically for analysis</li>
-<li>Groupby + agg is the engine for SaaS metrics</li>
-<li>Create cohort columns for temporal analysis</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=eb67d3ce">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Pandas-Fundamentals">📚 Key Concepts — Pandas Fundamentals<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Pandas-Fundamentals">¶</a></h2><h3 id="DataFrames:-The-Core-Abstraction">DataFrames: The Core Abstraction<a class="anchor-link" href="#DataFrames:-The-Core-Abstraction">¶</a></h3><pre><code>DataFrames = SQL tables + NumPy speed + Flexible labels
-</code></pre>
-<h3 id="Key-Operations">Key Operations<a class="anchor-link" href="#Key-Operations">¶</a></h3><ol>
-<li><strong>Load</strong>: <code>pd.read_csv()</code>, <code>pd.read_json()</code>, <code>pd.read_sql()</code></li>
-<li><strong>Inspect</strong>: <code>.shape</code>, <code>.dtypes</code>, <code>.info()</code>, <code>.describe()</code>, <code>.head()</code></li>
-<li><strong>Clean</strong>: <code>.dropna()</code>, <code>.fillna()</code>, <code>.astype()</code></li>
-<li><strong>Group</strong>: <code>.groupby()</code> → powerful aggregations</li>
-<li><strong>Join</strong>: <code>.merge()</code> → combine datasets on keys</li>
-<li><strong>Pivot</strong>: <code>.pivot_table()</code> → reshape data for different views</li>
-</ol>
-<h3 id="Critical-Patterns-for-SaaS">Critical Patterns for SaaS<a class="anchor-link" href="#Critical-Patterns-for-SaaS">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># Find churn cohort</span>
-<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'signup_month'</span><span class="p">)[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-
-<span class="c1"># Active users each day</span>
-<span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'event_date'</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="s1">'2024-01-01'</span><span class="p">]</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'event_date'</span><span class="p">,</span><span class="s1">'user_id'</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span>
-
-<span class="c1"># Feature adoption by segment</span>
-<span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feature_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'feature_id'</span><span class="p">)</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'segment'</span><span class="p">,</span><span class="s1">'feature_name'</span><span class="p">])[</span><span class="s1">'usage_count'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=8d01287c">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><h3 id="Exercise-1:-Data-Cleaning-&amp;-Preparation">Exercise 1: Data Cleaning &amp; Preparation<a class="anchor-link" href="#Exercise-1:-Data-Cleaning-&amp;-Preparation">¶</a></h3><ol>
-<li>Load subscriptions.csv</li>
-<li>Check for missing values and data types</li>
-<li>Convert signup_date and churn_date to datetime</li>
-<li>Create a "is_churned" binary column</li>
-<li>Create a "lifetime_days" metric (days from signup to churn or today)</li>
-<li>Handle any edge cases (negative lifetimes, invalid dates)</li>
-</ol>
-<h3 id="Exercise-2:-Aggregation-&amp;-Grouping">Exercise 2: Aggregation &amp; Grouping<a class="anchor-link" href="#Exercise-2:-Aggregation-&amp;-Grouping">¶</a></h3><ol>
-<li>Load user_events.csv and subscriptions.csv</li>
-<li>Join them on user_id</li>
-<li>For each user, compute: total events, first event date, last event date, event frequency</li>
-<li>Group by plan_tier: which tier has the highest event frequency?</li>
-<li>Create a cohort analysis: signup_month vs. retention at 30/60/90 days</li>
-</ol>
-<h3 id="Exercise-3:-Multi-table-Integration">Exercise 3: Multi-table Integration<a class="anchor-link" href="#Exercise-3:-Multi-table-Integration">¶</a></h3><ol>
-<li>Load all 5 datasets</li>
-<li>Create a user-centric joined table with:<ul>
-<li>Subscription info (plan_tier, signup_date, churn_date)</li>
-<li>Engagement metrics (total_events, total_feature_usage, feature_count)</li>
-<li>Feedback sentiment (avg_sentiment, feedback_count)</li>
-</ul>
-</li>
-<li>Identify high-engagement, high-satisfaction customers at churn risk</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7af7d6f7">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>💡 Hint — Joining Multiple Tables Effectively</summary>
-<p><strong>Join types visualization:</strong></p>
-<pre><code>LEFT (subscription.user_id):  [1, 2, 3, 4, 5]
-RIGHT (events.user_id):       [2, 3, 4, 5, 6]
-
-INNER:  [2, 3, 4, 5]  ← only matching
-LEFT:   [1, 2, 3, 4, 5]  ← all from left, NaNs on right where no match
-OUTER:  [1, 2, 3, 4, 5, 6]  ← all from both
-</code></pre>
-<p><strong>Common pitfall:</strong> Don't <code>.groupby()</code> after a join without checking cardinality!</p>
-<ul>
-<li>If events table has multiple rows per user, you'll get multiplied results</li>
-<li>Always aggregate at the appropriate level before joining</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4b914447">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution — Feature Adoption by Customer Segment</summary>
-<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-
-<span class="c1"># Load datasets</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
-<span class="n">feature_cat</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/product_catalog.csv'</span><span class="p">)</span>
-
-<span class="c1"># Pre-aggregate: total usage per user per feature (avoid data explosion on join)</span>
-<span class="n">user_feature_summary</span> <span class="o">=</span> <span class="p">(</span><span class="n">feature_usage</span>
-    <span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">'user_id'</span><span class="p">,</span><span class="s1">'feature_name'</span><span class="p">])[</span><span class="s1">'usage_count'</span><span class="p">]</span>
-    <span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span><span class="s1">'total_usage'</span><span class="p">})</span>
-<span class="p">)</span>
-
-<span class="c1"># Count features per user</span>
-<span class="n">features_per_user</span> <span class="o">=</span> <span class="p">(</span><span class="n">user_feature_summary</span>
-    <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)[</span><span class="s1">'feature_name'</span><span class="p">]</span>
-    <span class="o">.</span><span class="n">nunique</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-    <span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'feature_name'</span><span class="p">:</span><span class="s1">'feature_count'</span><span class="p">})</span>
-<span class="p">)</span>
-
-<span class="c1"># Join to subscriptions</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">features_per_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">result</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># Analyze by plan tier</span>
-<span class="n">adoption_by_plan</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'plan_tier'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'feature_count'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'mean'</span><span class="p">,</span> <span class="s1">'median'</span><span class="p">,</span> <span class="s1">'std'</span><span class="p">],</span>
-    <span class="s1">'is_churned'</span><span class="p">:</span> <span class="s1">'mean'</span>  <span class="c1"># churn rate</span>
-<span class="p">})</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"Feature adoption by plan tier:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">adoption_by_plan</span><span class="p">)</span>
-
-<span class="c1"># Do churned users have lower feature adoption?</span>
-<span class="n">active</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="o">~</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
-<span class="n">churned</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">result</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Active users avg features: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churned users avg features: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'feature_count'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-<p><strong>Why this approach:</strong></p>
-<ul>
-<li>Aggregates first to reduce join cardinality</li>
-<li>Fills NaNs strategically (0 for no features = inactive)</li>
-<li>Compares segments (active vs churned) to find patterns</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=0a7c6003">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="c1"># Demo: Pandas ETL pipeline for SaaS data</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 2: PANDAS DATA INTEGRATION DEMO"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="c1"># Make the shared style kit importable whether you launch from notebooks/ or repo root</span>
+<span class="k">for</span> <span class="n">_p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">(),</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"notebooks"</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_p</span> <span class="o">/</span> <span class="s2">"course_style.py"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">_p</span><span class="p">))</span>
+        <span class="k">break</span>
 
-<span class="c1"># Load subscriptions</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span> <span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. SUBSCRIPTIONS DATA"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">subs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Churned: </span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%)"</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">course_style</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_style</span><span class="p">,</span> <span class="n">setup_plots</span><span class="p">,</span> <span class="n">find_data_dir</span>
 
-<span class="c1"># Load events</span>
-<span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/user_events.csv'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. USER EVENTS DATA"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">events</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Unique users: </span><span class="si">{</span><span class="n">events</span><span class="p">[</span><span class="s1">'user_id'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Load feature usage</span>
-<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE USAGE DATA"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Records: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_usage</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Unique features: </span><span class="si">{</span><span class="n">feature_usage</span><span class="p">[</span><span class="s1">'feature_name'</span><span class="p">]</span><span class="o">.</span><span class="n">nunique</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">feature_usage</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Create merged view</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. DATA INTEGRATION"</span><span class="p">)</span>
-
-<span class="c1"># Aggregate user-level metrics</span>
-<span class="n">user_stats</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'event_type'</span><span class="p">:</span> <span class="s1">'count'</span>
-<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'event_type'</span><span class="p">:</span><span class="s1">'total_events'</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
-<span class="n">feature_stats</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
-    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
-<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span><span class="s1">'features_used'</span><span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
-<span class="c1"># Join to subscriptions</span>
-<span class="n">merged</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_stats</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="n">merged</span> <span class="o">=</span> <span class="n">merged</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feature_stats</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Merged dataset: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2"> users"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Columns: </span><span class="si">{</span><span class="n">merged</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Analysis</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">5. INSIGHTS FROM JOINED DATA"</span><span class="p">)</span>
-<span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Active users with data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">False</span><span class="p">])</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"   Churned users: </span><span class="si">{</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="n">active</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="o">~</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
-<span class="n">churned</span> <span class="o">=</span> <span class="n">merged</span><span class="p">[</span><span class="n">merged</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]]</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Active users stats:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg events: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'total_events'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg features used: </span><span class="si">{</span><span class="n">active</span><span class="p">[</span><span class="s1">'features_used'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Churned users stats:"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg events: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'total_events'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"      Avg features used: </span><span class="si">{</span><span class="n">churned</span><span class="p">[</span><span class="s1">'features_used'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">   Insight: Churned users have lower feature adoption!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="n">apply_style</span><span class="p">()</span>
+<span class="n">setup_plots</span><span class="p">()</span>
+<span class="n">DATA</span> <span class="o">=</span> <span class="n">find_data_dir</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data folder: </span><span class="si">{</span><span class="n">DATA</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Laptop mode: no GPU required. Models use a sample so each week finishes in a few minutes on CPU."</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=dac265d9">
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<style>
+:root {
+  --think: #b45309;
+  --think-bg: #fffbeb;
+  --think-border: #f59e0b;
+  --eng: #1d4ed8;
+  --eng-bg: #eff6ff;
+  --eng-border: #3b82f6;
+  --watch: #b91c1c;
+  --watch-bg: #fef2f2;
+  --watch-border: #f87171;
+  --ship: #047857;
+  --ship-bg: #ecfdf5;
+  --ship-border: #34d399;
+  --math: #6d28d9;
+  --math-bg: #f5f3ff;
+  --math-border: #a78bfa;
+  --cue: #0f766e;
+  --cue-bg: #f0fdfa;
+  --cue-border: #2dd4bf;
+}
+
+.think-box, .engineer-box, .watch-box, .ship-box, .math-box, .cue-box {
+  border-left: 6px solid;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  line-height: 1.55;
+}
+.think-box { background: var(--think-bg); border-color: var(--think-border); }
+.engineer-box { background: var(--eng-bg); border-color: var(--eng-border); }
+.watch-box { background: var(--watch-bg); border-color: var(--watch-border); }
+.ship-box { background: var(--ship-bg); border-color: var(--ship-border); }
+.math-box { background: var(--math-bg); border-color: var(--math-border); }
+.cue-box { background: var(--cue-bg); border-color: var(--cue-border); }
+
+.think-box strong, .engineer-box strong, .watch-box strong,
+.ship-box strong, .math-box strong, .cue-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.02em;
+}
+.think-box strong { color: var(--think); }
+.engineer-box strong { color: var(--eng); }
+.watch-box strong { color: var(--watch); }
+.ship-box strong { color: var(--ship); }
+.math-box strong { color: var(--math); }
+.cue-box strong { color: var(--cue); }
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.flow-node {
+  background: #312e81;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.92em;
+  font-weight: 600;
+}
+.flow-node.alt { background: #0f766e; }
+.flow-node.warn { background: #b45309; }
+.flow-arrow { color: #64748b; font-weight: 700; }
+
+details.lesson-extra {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+details.lesson-extra summary {
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+</style>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Data folder: /Users/sanketnaik/workspace/learn-ml/data
+Laptop mode: no GPU required. Models use a sample so each week finishes in a few minutes on CPU.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=d9adc51ed72b">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> When should you use <code>.merge()</code> vs <code>.join()</code>?</p>
-<ul>
-<li><code>merge()</code>: explicit, works on any columns (not just index)</li>
-<li><code>join()</code>: default on index, slightly faster for index-based joins</li>
-</ul>
-<p><strong>Question 2:</strong> What are the risks of <code>.merge()</code> without aggregating first?</p>
-<ul>
-<li>Cardinality explosion: 10 subscriptions × 1000 events per user = 10,000 rows!</li>
-<li>Solution: Aggregate to 1 row per user before joining</li>
-</ul>
-<p><strong>Question 3:</strong> How do you validate a join was successful?</p>
-<ul>
-<li>Check row count: should match the "left" table unless duplicates</li>
-<li>Check NaN distribution: if many unexpected NaNs, join keys misaligned</li>
-<li>Spot-check: manually verify a few rows</li>
-</ul>
-<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Create a customer risk score combining:</p>
-<ol>
-<li>Churn likelihood (cohort churn rate)</li>
-<li>Low engagement (below median feature adoption)</li>
-<li>Declining trend (compare recent usage to historical average)</li>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-four-systems,-one-customer">🏢 Scenario — four systems, one customer<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-four-systems,-one-customer">¶</a></h2><p>CloudWave’s data is not one warehouse table. It is:</p>
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>File</th>
+<th>Grain</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Billing</td>
+<td><code>subscriptions.csv</code></td>
+<td>one row per user</td>
+</tr>
+<tr>
+<td>Product</td>
+<td><code>feature_usage.csv</code></td>
+<td>one row per user × feature × day</td>
+</tr>
+<tr>
+<td>Telemetry</td>
+<td><code>user_events.csv</code></td>
+<td>one row per event</td>
+</tr>
+<tr>
+<td>Support</td>
+<td><code>feedback.json</code></td>
+<td>one JSON object per comment (JSON Lines)</td>
+</tr>
+</tbody>
+</table>
+<p>Your job: <strong>one row per customer</strong> the ML weeks can train on.</p>
+<pre><code>subscriptions ──┐
+feature_usage ──┼──► customer_360  (one row = one user)
+user_events  ───┤
+feedback     ───┘
+</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2d06a0834759">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="SQL-%E2%86%92-Pandas-cheat-sheet">SQL → Pandas cheat sheet<a class="anchor-link" href="#SQL-%E2%86%92-Pandas-cheat-sheet">¶</a></h2><table>
+<thead>
+<tr>
+<th>You already write</th>
+<th>Pandas</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SELECT cols</code></td>
+<td><code>df[["user_id", "mrr"]]</code></td>
+</tr>
+<tr>
+<td><code>WHERE mrr &gt; 50</code></td>
+<td><code>df[df["mrr"] &gt; 50]</code></td>
+</tr>
+<tr>
+<td><code>ORDER BY mrr DESC</code></td>
+<td><code>df.sort_values("mrr", ascending=False)</code></td>
+</tr>
+<tr>
+<td><code>GROUP BY plan_type</code></td>
+<td><code>df.groupby("plan_type")</code></td>
+</tr>
+<tr>
+<td><code>COUNT(*)</code></td>
+<td><code>.size()</code> or <code>.agg(n=("user_id", "count"))</code></td>
+</tr>
+<tr>
+<td><code>LEFT JOIN</code></td>
+<td><code>left.merge(right, on="user_id", how="left")</code></td>
+</tr>
+<tr>
+<td><code>COALESCE(x, 0)</code></td>
+<td><code>df["x"].fillna(0)</code></td>
+</tr>
+</tbody>
+</table>
+<div class="engineer-box">
+<strong>Engineer mental model</strong>
+<p>Prefer <strong>named aggregations</strong> over chained mystery columns. Treat <code>merge</code> like a code review: assert row counts before and after, the same way you would check a SQL join in a PR.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=2a846b5fdba5">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Visual:-what-each-join-keeps">Visual: what each join keeps<a class="anchor-link" href="#Visual:-what-each-join-keeps">¶</a></h2><pre><code>LEFT (subscriptions)     RIGHT (feedback)
+
+ user_1 ●───────────● comment_a     INNER: only matches
+ user_2 ●                           LEFT:  keep user_2, feedback = NaN
+ user_3 ●───────────● comment_b     OUTER: everyone, holes filled with NaN
+                    ● comment_orphan
+</code></pre>
+<p><strong>SaaS default is LEFT JOIN from the customer table.</strong> You do not want to drop a paying user because they never left feedback.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=aa102f066227">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA</span> <span class="o">/</span> <span class="s2">"subscriptions.csv"</span><span class="p">,</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"plan_type"</span><span class="p">,</span> <span class="s2">"mrr"</span><span class="p">,</span> <span class="s2">"signup_date"</span><span class="p">,</span> <span class="s2">"churn_date"</span><span class="p">,</span> <span class="s2">"is_churned"</span><span class="p">,</span> <span class="s2">"tenure_days"</span><span class="p">],</span>
+    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">"signup_date"</span><span class="p">,</span> <span class="s2">"churn_date"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA</span> <span class="o">/</span> <span class="s2">"feature_usage.csv"</span><span class="p">,</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"feature_name"</span><span class="p">,</span> <span class="s2">"usage_count"</span><span class="p">,</span> <span class="s2">"avg_session_seconds"</span><span class="p">,</span> <span class="s2">"date"</span><span class="p">],</span>
+    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">"date"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="n">events</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+    <span class="n">DATA</span> <span class="o">/</span> <span class="s2">"user_events.csv"</span><span class="p">,</span>
+    <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">"event_id"</span><span class="p">,</span> <span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"event_type"</span><span class="p">,</span> <span class="s2">"timestamp"</span><span class="p">,</span> <span class="s2">"device"</span><span class="p">,</span> <span class="s2">"region"</span><span class="p">],</span>
+    <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s2">"timestamp"</span><span class="p">],</span>
+<span class="p">)</span>
+<span class="c1"># feedback.json is JSON Lines (one object per line), not a JSON array</span>
+<span class="n">feedback</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">DATA</span> <span class="o">/</span> <span class="s2">"feedback.json"</span><span class="p">,</span> <span class="n">lines</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"subscriptions"</span><span class="p">,</span> <span class="n">subs</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">subs</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"feature_usage"</span><span class="p">,</span> <span class="n">usage</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">usage</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"user_events   "</span><span class="p">,</span> <span class="n">events</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"feedback      "</span><span class="p">,</span> <span class="n">feedback</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">feedback</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">plan_type counts:</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">subs</span><span class="p">[</span><span class="s2">"plan_type"</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"churn rate   "</span><span class="p">,</span> <span class="n">subs</span><span class="p">[</span><span class="s2">"is_churned"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>subscriptions (50000, 7) ['user_id', 'plan_type', 'mrr', 'signup_date', 'churn_date', 'is_churned', 'tenure_days']
+feature_usage (160000, 5) ['user_id', 'feature_name', 'usage_count', 'avg_session_seconds', 'date']
+user_events    (220000, 6) ['event_id', 'user_id', 'event_type', 'timestamp', 'device', 'region']
+feedback       (10000, 4) ['user_id', 'category', 'sentiment_score', 'feedback_text']
+
+plan_type counts:
+ plan_type
+free          24886
+starter       14967
+pro            7548
+enterprise     2599
+churn rate    0.067
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=056caf4a5957">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Worked-example-%E2%80%94-Customer-360">Worked example — Customer 360<a class="anchor-link" href="#Worked-example-%E2%80%94-Customer-360">¶</a></h2><p>Aggregate the <em>many</em> side down to <em>one row per user</em> <strong>before</strong> you join. That is the single most important ETL habit in this course.</p>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=802f7a74fd70">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="c1"># 1) collapse usage and events to user grain</span>
+<span class="n">usage_by_user</span> <span class="o">=</span> <span class="n">usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"user_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">total_usage</span><span class="o">=</span><span class="p">(</span><span class="s2">"usage_count"</span><span class="p">,</span> <span class="s2">"sum"</span><span class="p">),</span>
+    <span class="n">features_adopted</span><span class="o">=</span><span class="p">(</span><span class="s2">"feature_name"</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span>
+    <span class="n">last_usage_date</span><span class="o">=</span><span class="p">(</span><span class="s2">"date"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">events_by_user</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"user_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">total_events</span><span class="o">=</span><span class="p">(</span><span class="s2">"event_id"</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">),</span>
+    <span class="n">n_devices</span><span class="o">=</span><span class="p">(</span><span class="s2">"device"</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span>
+    <span class="n">n_regions</span><span class="o">=</span><span class="p">(</span><span class="s2">"region"</span><span class="p">,</span> <span class="s2">"nunique"</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="n">feedback_by_user</span> <span class="o">=</span> <span class="n">feedback</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"user_id"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">n_feedback</span><span class="o">=</span><span class="p">(</span><span class="s2">"feedback_text"</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">),</span>
+    <span class="n">avg_sentiment</span><span class="o">=</span><span class="p">(</span><span class="s2">"sentiment_score"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"before join, subscriptions rows:"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">))</span>
+
+<span class="n">customer</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">usage_by_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">events_by_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feedback_by_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"after  join, customer rows:     "</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">customer</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"row-count ratio (want ~1.0):    "</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">customer</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># missingness is information</span>
+<span class="n">customer</span><span class="p">[</span><span class="s2">"has_feedback"</span><span class="p">]</span> <span class="o">=</span> <span class="n">customer</span><span class="p">[</span><span class="s2">"n_feedback"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">gt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">customer</span><span class="p">[</span><span class="s2">"total_usage"</span><span class="p">]</span> <span class="o">=</span> <span class="n">customer</span><span class="p">[</span><span class="s2">"total_usage"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">customer</span><span class="p">[</span><span class="s2">"total_events"</span><span class="p">]</span> <span class="o">=</span> <span class="n">customer</span><span class="p">[</span><span class="s2">"total_events"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">customer</span><span class="p">[</span><span class="s2">"features_adopted"</span><span class="p">]</span> <span class="o">=</span> <span class="n">customer</span><span class="p">[</span><span class="s2">"features_adopted"</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Customer 360 sample:"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">customer</span><span class="p">[[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"plan_type"</span><span class="p">,</span> <span class="s2">"mrr"</span><span class="p">,</span> <span class="s2">"is_churned"</span><span class="p">,</span>
+                <span class="s2">"total_usage"</span><span class="p">,</span> <span class="s2">"features_adopted"</span><span class="p">,</span> <span class="s2">"total_events"</span><span class="p">,</span>
+                <span class="s2">"has_feedback"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>before join, subscriptions rows: 50000
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>after  join, customer rows:      50000
+row-count ratio (want ~1.0):     1.0
+
+Customer 360 sample:
+       user_id plan_type    mrr  is_churned  total_usage  features_adopted  \
+0  user_041906   starter  28.22           0          5.0               2.0   
+1  user_007297      free   0.00           0          3.0               2.0   
+2  user_001640   starter  31.66           0         10.0               3.0   
+3  user_048599       pro  95.55           0         14.0               3.0   
+4  user_018025      free   0.00           0          2.0               1.0   
+
+   total_events  has_feedback  
+0           3.0             0  
+1           4.0             0  
+2           8.0             0  
+3           3.0             0  
+4           4.0             0  
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=4663d1a6e535">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Watch-the-join-explode-on-purpose">Watch the join explode on purpose<a class="anchor-link" href="#Watch-the-join-explode-on-purpose">¶</a></h2><p>If you join subscriptions to <strong>raw</strong> feature_usage (many rows per user), you duplicate every billing field.</p>
+<div class="watch-box">
+<strong>Watch out — fan-out</strong>
+<p>A 50,000-row customer table joined to 160,000 usage rows becomes ~160,000 rows, and <code>mrr.sum()</code> will lie by a factor of ~3. Always aggregate the many-side first. Always print <code>len(left)</code> vs <code>len(result)</code>.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=23a82779c965">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">exploded</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">usage</span><span class="p">[[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"usage_count"</span><span class="p">]],</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"subscriptions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"joined to raw usage: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">exploded</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">   ← </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">exploded</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">× blow-up"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"true total MRR:     $</span><span class="si">{</span><span class="n">subs</span><span class="p">[</span><span class="s1">'mrr'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"exploded MRR sum:   $</span><span class="si">{</span><span class="n">exploded</span><span class="p">[</span><span class="s1">'mrr'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">:</span><span class="s2">,.0f</span><span class="si">}</span><span class="s2">   ← do not ship this number"</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>subscriptions: 50,000
+joined to raw usage: 136,908   ← 2.7× blow-up
+true total MRR:     $2,480,027
+exploded MRR sum:   $6,789,329   ← do not ship this number
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b52105a7abfb">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Missing-values-%E2%80%94-a-decision,-not-a-default">Missing values — a decision, not a default<a class="anchor-link" href="#Missing-values-%E2%80%94-a-decision,-not-a-default">¶</a></h2><pre><code>Is “missing” actually zero?
+   │
+   ├─ YES (they never used the feature) → fillna(0)
+   │
+   └─ NO (we never observed it)
+         │
+         ├─ The hole itself predicts the outcome → keep a has_* flag
+         └─ The model needs a number            → median of the *training* set
+</code></pre>
+<div class="ship-box">
+<strong>Ship / don’t ship</strong>
+<p><code>fillna(0)</code> on <em>usage</em> is honest: no events means no usage. <code>fillna(0)</code> on <em>sentiment</em> is a lie: “no review” is not “neutral review.” Use a flag.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=427bc6c05212">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [5]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">"Null share in customer_360 (after left joins, before our fills):"</span><span class="p">)</span>
+<span class="n">probe</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">usage_by_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">feedback_by_user</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"left"</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">((</span><span class="n">probe</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"%"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Churn rate by 'left any feedback':"</span><span class="p">)</span>
+<span class="n">probe</span><span class="p">[</span><span class="s2">"has_feedback"</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="p">[</span><span class="s2">"n_feedback"</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">probe</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"has_feedback"</span><span class="p">)[</span><span class="s2">"is_churned"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Null share in customer_360 (after left joins, before our fills):
+user_id              0.0%
+plan_type            0.0%
+mrr                  0.0%
+signup_date          0.0%
+churn_date          93.3%
+is_churned           0.0%
+tenure_days          0.0%
+total_usage          7.1%
+features_adopted     7.1%
+last_usage_date      7.1%
+n_feedback          84.7%
+avg_sentiment       84.7%
+dtype: str
+
+Churn rate by 'left any feedback':
+has_feedback
+False    0.067
+True     0.064
+Name: is_churned, dtype: float64
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=86634af8846a">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Exercises">✍️ Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Exercises">¶</a></h2><p><strong>1. Plan snapshot.</strong> Churn rate, mean MRR, and user count by <code>plan_type</code>. Which plan is the leaky bucket?</p>
+<p><strong>2. Region mix.</strong> From <code>user_events</code>, each user’s most-common <code>region</code>. Left-join onto subscriptions. Does churn differ by region?</p>
+<p><strong>3. Quality check.</strong> Write a 5-line join validator: input rows, output rows, duplicate <code>user_id</code> count, null share of a key metric, and a <code>raise</code> if output rows &gt; 1.01 × input rows.</p>
+<details class="lesson-extra">
+<summary>✅ One possible plan snapshot</summary>
+<div class="highlight"><pre><span></span><span class="n">subs</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">"plan_type"</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span>
+    <span class="n">users</span><span class="o">=</span><span class="p">(</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"count"</span><span class="p">),</span>
+    <span class="n">churn_rate</span><span class="o">=</span><span class="p">(</span><span class="s2">"is_churned"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">),</span>
+    <span class="n">arpu</span><span class="o">=</span><span class="p">(</span><span class="s2">"mrr"</span><span class="p">,</span> <span class="s2">"mean"</span><span class="p">),</span>
+<span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"churn_rate"</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</details>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=e75a952fcc82">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%F0%9F%A4%94-Reflection">🤔 Reflection<a class="anchor-link" href="#%F0%9F%A4%94-Reflection">¶</a></h2><ol>
+<li>Your exploded MRR was 3× too big. What code review comment do you leave?</li>
+<li>A PM says “customers who write feedback churn less.” Is that product magic, or selection (happy people write reviews)?</li>
+<li>When would you <em>want</em> an inner join from subscriptions to events?</li>
 </ol>
-<p><strong>Steps:</strong></p>
-<ol>
-<li>Load all datasets</li>
-<li>Create user-level aggregations for each dimension</li>
-<li>Merge into a unified customer table</li>
-<li>Compute a composite risk score (0-100)</li>
-<li>Segment users: low/medium/high risk</li>
-</ol>
-<p><strong>Deliverable:</strong> Jupyter notebook showing the ETL process and final risk segment distribution.</p>
-<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 3, we'll visualize these joined datasets to uncover patterns and tell compelling stories about customer behavior.</p>
+<h2 id="%F0%9F%94%97-Next-week">🔗 Next week<a class="anchor-link" href="#%F0%9F%94%97-Next-week">¶</a></h2><p>Pictures. We will actually plot the dashboard the CFO asked for — not hide it inside a collapsed solution.</p>
 </div>
 </div>
 </div>
 </div>
 </main>
 
+
+<!-- learn-ml-footer:start -->
 <div class="navigation-footer">
-    
-        <a href="week-01-saas.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../index.html#ml-course" class="nav-link">Back to ML Fundamentals</a>
-    
-        <a href="week-03-saas.html" class="nav-link next-link">Next Week →</a>
-        
+    <a href="week-01-saas.html" class="nav-link prev-link">← Previous Week</a>
+    <a href="../index.html#ml-course" class="nav-link">Back to ML Fundamentals</a>
+    <a href="week-03-saas.html" class="nav-link next-link">Next Week →</a>
 </div>
+<!-- learn-ml-footer:end -->
 </body>
 </html>

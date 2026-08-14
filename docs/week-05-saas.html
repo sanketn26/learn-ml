@@ -3,7 +3,7 @@
 <html lang="en">
 <head><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>week-05-saas</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
+<title>Week 5 — Features</title><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <style type="text/css">
     pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
@@ -7332,7 +7332,12 @@ a.anchor-link {
     if (!diagrams.length) {
       return;
     }
-    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.7.0/mermaid.esm.min.mjs")).default;
+    const mermaid = (await import("https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.10.0/mermaid.esm.min.mjs")).default;
+    const elkUrl = "https://cdnjs.cloudflare.com/ajax/libs/mermaid-layout-elk/0.1.9/mermaid-layout-elk.esm.min.mjs";
+    if(elkUrl) {
+      const elkLayouts = (await import(elkUrl)).default;
+      mermaid.registerLayoutLoaders(elkLayouts);
+    }
     const parser = new DOMParser();
 
     mermaid.initialize({
@@ -7429,7 +7434,8 @@ a.anchor-link {
      * Post-process to ensure mermaid diagrams contain only valid SVG and XHTML.
      */
     function cleanMermaidSvg(svg) {
-      return svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      svg = svg.replace(RE_VOID_ELEMENT, replaceVoidElement);
+      return `${SVG_XML_HEADER}${svg}`;
     }
 
 
@@ -7455,6 +7461,285 @@ a.anchor-link {
       }
       return `<${tag} ${rest}>`;
     }
+
+
+  /**
+   * Named HTML entities with their decimal equivalent codes.
+   *
+   * @see https://www.w3.org/TR/WD-html40-970708/sgml/entities.html
+   * */
+  const HTML_ENTITIES = `<!ENTITY Aacute "&#193;">
+<!ENTITY aacute "&#225;">
+<!ENTITY Acirc "&#194;">
+<!ENTITY acirc "&#226;">
+<!ENTITY acute "&#180;">
+<!ENTITY AElig "&#198;">
+<!ENTITY aelig "&#230;">
+<!ENTITY Agrave "&#192;">
+<!ENTITY agrave "&#224;">
+<!ENTITY alefsym "&#8501;">
+<!ENTITY Alpha "&#913;">
+<!ENTITY alpha "&#945;">
+<!ENTITY amp "&#38;">
+<!ENTITY and "&#8869;">
+<!ENTITY ang "&#8736;">
+<!ENTITY Aring "&#197;">
+<!ENTITY aring "&#229;">
+<!ENTITY asymp "&#8776;">
+<!ENTITY Atilde "&#195;">
+<!ENTITY atilde "&#227;">
+<!ENTITY Auml "&#196;">
+<!ENTITY auml "&#228;">
+<!ENTITY bdquo "&#8222;">
+<!ENTITY Beta "&#914;">
+<!ENTITY beta "&#946;">
+<!ENTITY brvbar "&#166;">
+<!ENTITY bull "&#8226;">
+<!ENTITY cap "&#8745;">
+<!ENTITY Ccedil "&#199;">
+<!ENTITY ccedil "&#231;">
+<!ENTITY cedil "&#184;">
+<!ENTITY cent "&#162;">
+<!ENTITY Chi "&#935;">
+<!ENTITY chi "&#967;">
+<!ENTITY circ "&#710;">
+<!ENTITY clubs "&#9827;">
+<!ENTITY cong "&#8773;">
+<!ENTITY copy "&#169;">
+<!ENTITY crarr "&#8629;">
+<!ENTITY cup "&#8746;">
+<!ENTITY curren "&#164;">
+<!ENTITY dagger "&#8224;">
+<!ENTITY Dagger "&#8225;">
+<!ENTITY darr "&#8595;">
+<!ENTITY dArr "&#8659;">
+<!ENTITY deg "&#176;">
+<!ENTITY Delta "&#916;">
+<!ENTITY delta "&#948;">
+<!ENTITY diams "&#9830;">
+<!ENTITY divide "&#247;">
+<!ENTITY Eacute "&#201;">
+<!ENTITY eacute "&#233;">
+<!ENTITY Ecirc "&#202;">
+<!ENTITY ecirc "&#234;">
+<!ENTITY Egrave "&#200;">
+<!ENTITY egrave "&#232;">
+<!ENTITY empty "&#8709;">
+<!ENTITY emsp "&#8195;">
+<!ENTITY ensp "&#8194;">
+<!ENTITY epsilon "&#949;">
+<!ENTITY Epsilon "&#917;">
+<!ENTITY equiv "&#8801;">
+<!ENTITY Eta "&#919;">
+<!ENTITY eta "&#951;">
+<!ENTITY ETH "&#208;">
+<!ENTITY eth "&#240;">
+<!ENTITY Euml "&#203;">
+<!ENTITY euml "&#235;">
+<!ENTITY exist "&#8707;">
+<!ENTITY fnof "&#402;">
+<!ENTITY forall "&#8704;">
+<!ENTITY frac12 "&#189;">
+<!ENTITY frac14 "&#188;">
+<!ENTITY frac34 "&#190;">
+<!ENTITY frasl "&#8260;">
+<!ENTITY Gamma "&#915;">
+<!ENTITY gamma "&#947;">
+<!ENTITY ge "&#8805;">
+<!ENTITY gt "&#62;">
+<!ENTITY harr "&#8596;">
+<!ENTITY hArr "&#8660;">
+<!ENTITY hearts "&#9829;">
+<!ENTITY hellip "&#8230;">
+<!ENTITY Iacute "&#205;">
+<!ENTITY iacute "&#237;">
+<!ENTITY Icirc "&#206;">
+<!ENTITY icirc "&#238;">
+<!ENTITY iexcl "&#161;">
+<!ENTITY Igrave "&#204;">
+<!ENTITY igrave "&#236;">
+<!ENTITY image "&#8465;">
+<!ENTITY infin "&#8734;">
+<!ENTITY int "&#8747;">
+<!ENTITY Iota "&#921;">
+<!ENTITY iota "&#953;">
+<!ENTITY iquest "&#191;">
+<!ENTITY isin "&#8712;">
+<!ENTITY Iuml "&#207;">
+<!ENTITY iuml "&#239;">
+<!ENTITY Kappa "&#922;">
+<!ENTITY kappa "&#954;">
+<!ENTITY Lambda "&#923;">
+<!ENTITY lambda "&#955;">
+<!ENTITY lang "&#9001;">
+<!ENTITY laquo "&#171;">
+<!ENTITY larr "&#8592;">
+<!ENTITY lArr "&#8656;">
+<!ENTITY lceil "&#8968;">
+<!ENTITY ldquo "&#8220;">
+<!ENTITY le "&#8804;">
+<!ENTITY lfloor "&#8970;">
+<!ENTITY lowast "&#8727;">
+<!ENTITY loz "&#9674;">
+<!ENTITY lrm "&#8206;">
+<!ENTITY lsaquo "&#8249;">
+<!ENTITY lsquo "&#8216;">
+<!ENTITY lt "&#60;">
+<!ENTITY macr "&#175;">
+<!ENTITY mdash "&#8212;">
+<!ENTITY micro "&#181;">
+<!ENTITY middot "&#183;">
+<!ENTITY minus "&#8722;">
+<!ENTITY Mu "&#924;">
+<!ENTITY mu "&#956;">
+<!ENTITY nabla "&#8711;">
+<!ENTITY nbsp "&#160;">
+<!ENTITY ndash "&#8211;">
+<!ENTITY ne "&#8800;">
+<!ENTITY ni "&#8715;">
+<!ENTITY not "&#172;">
+<!ENTITY notin "&#8713;">
+<!ENTITY nsub "&#8836;">
+<!ENTITY Ntilde "&#209;">
+<!ENTITY ntilde "&#241;">
+<!ENTITY Nu "&#925;">
+<!ENTITY nu "&#957;">
+<!ENTITY Oacute "&#211;">
+<!ENTITY oacute "&#243;">
+<!ENTITY Ocirc "&#212;">
+<!ENTITY ocirc "&#244;">
+<!ENTITY OElig "&#338;">
+<!ENTITY oelig "&#339;">
+<!ENTITY Ograve "&#210;">
+<!ENTITY ograve "&#242;">
+<!ENTITY oline "&#8254;">
+<!ENTITY Omega "&#937;">
+<!ENTITY omega "&#969;">
+<!ENTITY Omicron "&#927;">
+<!ENTITY omicron "&#959;">
+<!ENTITY oplus "&#8853;">
+<!ENTITY or "&#8870;">
+<!ENTITY ordf "&#170;">
+<!ENTITY ordm "&#186;">
+<!ENTITY Oslash "&#216;">
+<!ENTITY oslash "&#248;">
+<!ENTITY Otilde "&#213;">
+<!ENTITY otilde "&#245;">
+<!ENTITY otimes "&#8855;">
+<!ENTITY Ouml "&#214;">
+<!ENTITY ouml "&#246;">
+<!ENTITY para "&#182;">
+<!ENTITY part "&#8706;">
+<!ENTITY permil "&#8240;">
+<!ENTITY perp "&#8869;">
+<!ENTITY Phi "&#934;">
+<!ENTITY phi "&#966;">
+<!ENTITY Pi "&#928;">
+<!ENTITY pi "&#960;">
+<!ENTITY piv "&#982;">
+<!ENTITY plusmn "&#177;">
+<!ENTITY pound "&#163;">
+<!ENTITY prime "&#8242;">
+<!ENTITY Prime "&#8243;">
+<!ENTITY prod "&#8719;">
+<!ENTITY prop "&#8733;">
+<!ENTITY Psi "&#936;">
+<!ENTITY psi "&#968;">
+<!ENTITY quot "&#34;">
+<!ENTITY radic "&#8730;">
+<!ENTITY rang "&#9002;">
+<!ENTITY raquo "&#187;">
+<!ENTITY rarr "&#8594;">
+<!ENTITY rArr "&#8658;">
+<!ENTITY rceil "&#8969;">
+<!ENTITY rdquo "&#8221;">
+<!ENTITY real "&#8476;">
+<!ENTITY reg "&#174;">
+<!ENTITY rfloor "&#8971;">
+<!ENTITY Rho "&#929;">
+<!ENTITY rho "&#961;">
+<!ENTITY rlm "&#8207;">
+<!ENTITY rsaquo "&#8250;">
+<!ENTITY rsquo "&#8217;">
+<!ENTITY sbquo "&#8218;">
+<!ENTITY Scaron "&#352;">
+<!ENTITY scaron "&#353;">
+<!ENTITY sdot "&#8901;">
+<!ENTITY sect "&#167;">
+<!ENTITY shy "&#173;">
+<!ENTITY Sigma "&#931;">
+<!ENTITY sigma "&#963;">
+<!ENTITY sigmaf "&#962;">
+<!ENTITY sim "&#8764;">
+<!ENTITY spades "&#9824;">
+<!ENTITY sub "&#8834;">
+<!ENTITY sube "&#8838;">
+<!ENTITY sum "&#8721;">
+<!ENTITY sup "&#8835;">
+<!ENTITY sup1 "&#185;">
+<!ENTITY sup2 "&#178;">
+<!ENTITY sup3 "&#179;">
+<!ENTITY supe "&#8839;">
+<!ENTITY szlig "&#223;">
+<!ENTITY Tau "&#932;">
+<!ENTITY tau "&#964;">
+<!ENTITY there4 "&#8756;">
+<!ENTITY Theta "&#920;">
+<!ENTITY theta "&#952;">
+<!ENTITY thetasym "&#977;">
+<!ENTITY thinsp "&#8201;">
+<!ENTITY THORN "&#222;">
+<!ENTITY thorn "&#254;">
+<!ENTITY tilde "&#732;">
+<!ENTITY times "&#215;">
+<!ENTITY trade "&#8482;">
+<!ENTITY Uacute "&#218;">
+<!ENTITY uacute "&#250;">
+<!ENTITY uarr "&#8593;">
+<!ENTITY uArr "&#8657;">
+<!ENTITY Ucirc "&#219;">
+<!ENTITY ucirc "&#251;">
+<!ENTITY Ugrave "&#217;">
+<!ENTITY ugrave "&#249;">
+<!ENTITY uml "&#168;">
+<!ENTITY upsih "&#978;">
+<!ENTITY Upsilon "&#933;">
+<!ENTITY upsilon "&#965;">
+<!ENTITY Uuml "&#220;">
+<!ENTITY uuml "&#252;">
+<!ENTITY weierp "&#8472;">
+<!ENTITY Xi "&#926;">
+<!ENTITY xi "&#958;">
+<!ENTITY Yacute "&#221;">
+<!ENTITY yacute "&#253;">
+<!ENTITY yen "&#165;">
+<!ENTITY Yuml "&#376;">
+<!ENTITY yuml "&#255;">
+<!ENTITY Zeta "&#918;">
+<!ENTITY zeta "&#950;">
+<!ENTITY zwj "&#8205;">
+<!ENTITY zwnj "&#8204;">`.replace(/\n/g, ' ');
+
+  /**
+   * A reasonably strict xml declaration.
+   */
+  const XML_DECL = '<?xml version="1.0" standalone="no"?>';
+
+  /**
+   * The beginning of the XML doctype declaration.
+   */
+  const DOCTYPE_START = `<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [`;
+
+  /**
+   * The end of the XML docype declaration.
+   */
+  const DOCTYPE_END = ']>';
+
+  /**
+   * A full header for an SVG XML document.
+   */
+  const SVG_XML_HEADER = `${XML_DECL}
+    ${DOCTYPE_START}${HTML_ENTITIES}${DOCTYPE_END}`;
 
     void Promise.all([...diagrams].map(renderOneMarmaid));
   });
@@ -7510,6 +7795,90 @@ a.anchor-link {
 </style>
 <!-- End of mermaid configuration --></head>
 <body class="jp-Notebook" data-jp-theme-light="true" data-jp-theme-name="JupyterLab Light">
+<!-- learn-ml-enhance:start -->
+<style>
+:root {
+  --think: #b45309;
+  --think-bg: #fffbeb;
+  --think-border: #f59e0b;
+  --eng: #1d4ed8;
+  --eng-bg: #eff6ff;
+  --eng-border: #3b82f6;
+  --watch: #b91c1c;
+  --watch-bg: #fef2f2;
+  --watch-border: #f87171;
+  --ship: #047857;
+  --ship-bg: #ecfdf5;
+  --ship-border: #34d399;
+  --math: #6d28d9;
+  --math-bg: #f5f3ff;
+  --math-border: #a78bfa;
+  --cue: #0f766e;
+  --cue-bg: #f0fdfa;
+  --cue-border: #2dd4bf;
+}
+
+.think-box, .engineer-box, .watch-box, .ship-box, .math-box, .cue-box {
+  border-left: 6px solid;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  line-height: 1.55;
+}
+.think-box { background: var(--think-bg); border-color: var(--think-border); }
+.engineer-box { background: var(--eng-bg); border-color: var(--eng-border); }
+.watch-box { background: var(--watch-bg); border-color: var(--watch-border); }
+.ship-box { background: var(--ship-bg); border-color: var(--ship-border); }
+.math-box { background: var(--math-bg); border-color: var(--math-border); }
+.cue-box { background: var(--cue-bg); border-color: var(--cue-border); }
+
+.think-box strong, .engineer-box strong, .watch-box strong,
+.ship-box strong, .math-box strong, .cue-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.02em;
+}
+.think-box strong { color: var(--think); }
+.engineer-box strong { color: var(--eng); }
+.watch-box strong { color: var(--watch); }
+.ship-box strong { color: var(--ship); }
+.math-box strong { color: var(--math); }
+.cue-box strong { color: var(--cue); }
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.flow-node {
+  background: #312e81;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.92em;
+  font-weight: 600;
+}
+.flow-node.alt { background: #0f766e; }
+.flow-node.warn { background: #b45309; }
+.flow-arrow { color: #64748b; font-weight: 700; }
+
+details.lesson-extra {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+details.lesson-extra summary {
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+</style>
+
 <style>
 .notebook-header {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -7519,41 +7888,34 @@ a.anchor-link {
     margin-bottom: 30px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
 .notebook-header h1 {
     margin: 0 0 15px 0;
     font-size: 2em;
 }
-
 .breadcrumbs {
     font-size: 0.95em;
     margin-bottom: 15px;
     opacity: 0.95;
 }
-
 .breadcrumbs a {
     color: white;
     text-decoration: none;
     border-bottom: 2px solid rgba(255,255,255,0.3);
     padding-bottom: 2px;
 }
-
 .breadcrumbs a:hover {
     border-bottom-color: white;
 }
-
 .breadcrumbs span {
     margin: 0 8px;
     opacity: 0.7;
 }
-
 .header-links {
     display: flex;
     gap: 15px;
     flex-wrap: wrap;
     margin-bottom: 15px;
 }
-
 .header-link {
     display: inline-block;
     background: rgba(255,255,255,0.15);
@@ -7565,62 +7927,22 @@ a.anchor-link {
     border: 1px solid rgba(255,255,255,0.3);
     transition: all 0.3s ease;
 }
-
 .header-link:hover {
     background: rgba(255,255,255,0.25);
     border-color: white;
 }
-
-.header-link.github::before {
-    content: "🔗 ";
-}
-
-.header-link.download::before {
-    content: "⬇️ ";
-}
-
-.header-link.colab::before {
-    content: "☁️ ";
-}
-
 .header-link.colab {
     background: rgba(249, 203, 0, 0.2);
     border-color: rgba(249, 203, 0, 0.5);
 }
-
-.header-link.colab:hover {
-    background: rgba(249, 203, 0, 0.3);
-    border-color: rgba(249, 203, 0, 1);
-}
-
-.header-link.vscode::before {
-    content: "💻 ";
-}
-
 .header-link.vscode {
     background: rgba(0, 120, 215, 0.2);
     border-color: rgba(0, 120, 215, 0.5);
 }
-
-.header-link.vscode:hover {
-    background: rgba(0, 120, 215, 0.3);
-    border-color: rgba(0, 120, 215, 1);
-}
-
-.header-link.jupyter::before {
-    content: "📓 ";
-}
-
 .header-link.jupyter {
     background: rgba(249, 149, 0, 0.2);
     border-color: rgba(249, 149, 0, 0.5);
 }
-
-.header-link.jupyter:hover {
-    background: rgba(249, 149, 0, 0.3);
-    border-color: rgba(249, 149, 0, 1);
-}
-
 .navigation-footer {
     display: flex;
     gap: 20px;
@@ -7629,7 +7951,6 @@ a.anchor-link {
     padding-top: 20px;
     border-top: 2px solid #e0e0e0;
 }
-
 .nav-link {
     display: inline-block;
     padding: 10px 20px;
@@ -7640,20 +7961,16 @@ a.anchor-link {
     transition: all 0.3s ease;
     font-weight: 600;
 }
-
 .nav-link:hover {
     background: #667eea;
     color: white;
 }
-
 .nav-link.prev-link {
     margin-right: auto;
 }
-
 .nav-link.next-link {
     margin-left: auto;
 }
-
 .setup-instructions {
     background: #f5f5f5;
     border-left: 4px solid #667eea;
@@ -7662,12 +7979,10 @@ a.anchor-link {
     margin: 20px 0;
     font-size: 0.95em;
 }
-
 .setup-instructions h3 {
     margin-top: 0;
     color: #667eea;
 }
-
 .setup-instructions code {
     background: white;
     padding: 2px 6px;
@@ -7678,18 +7993,16 @@ a.anchor-link {
 
 <div class="notebook-header">
     <div class="breadcrumbs">
-        <a href="../../index.html#ml-course">← Back to ML Fundamentals</a>
+        <a href="../index.html#ml-course">← Back to ML Fundamentals</a>
         <span>•</span>
-        <span>Week 5 of 12</span>
+        <span>Week 5 of 0–15</span>
     </div>
-    
     <h1>Week 5 — ML Fundamentals</h1>
-    
     <div class="header-links">
-        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/ml/notebooks/week-05-saas.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
-        <a href="vscode://file//home/sanket/workspaces/learn-ml/ml/notebooks/week-05-saas.ipynb" class="header-link vscode">Open in VS Code</a>
-        <a href="jupyter://relative-path:ml/notebooks/week-05-saas.ipynb" class="header-link jupyter">Open in Jupyter</a>
-        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/ml/notebooks/week-05-saas.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
+        <a href="https://colab.research.google.com/github/sanketn26/learn-ml/blob/main/notebooks/week-05-saas.ipynb" class="header-link colab" target="_blank">Open in Colab</a>
+        <a href="https://vscode.dev/github/sanketn26/learn-ml/blob/main/notebooks/week-05-saas.ipynb" class="header-link vscode" target="_blank">Open in VS Code</a>
+        <a href="jupyter://relative-path:notebooks/week-05-saas.ipynb" class="header-link jupyter">Open in Jupyter</a>
+        <a href="https://raw.githubusercontent.com/sanketn26/learn-ml/main/notebooks/week-05-saas.ipynb" class="header-link download" target="_blank">Download .ipynb</a>
     </div>
 </div>
 
@@ -7706,370 +8019,497 @@ a.anchor-link {
     </p>
     <p>
         <strong>3. Install course dependencies:</strong><br>
-    <code>pip install numpy pandas scikit-learn matplotlib scipy</code>
+        <code>pip install numpy pandas scikit-learn matplotlib scipy seaborn</code><br><code>pip install torch</code>  <!-- Weeks 11–15 only; CPU wheel is enough -->
     </p>
     <p>
         <strong>4. Open the notebook:</strong><br>
-        <code>jupyter notebook ml/notebooks/week-05*.ipynb</code>
+        <code>jupyter notebook notebooks/week-05-saas.ipynb</code>
     </p>
 </div>
+<!-- learn-ml-enhance:end -->
 
 <main>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=95651f56">
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=50b741b2c7d9">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h1 id="Week-5-%E2%80%94-Feature-Engineering-&amp;-Data-Preprocessing">Week 5 — Feature Engineering &amp; Data Preprocessing<a class="anchor-link" href="#Week-5-%E2%80%94-Feature-Engineering-&amp;-Data-Preprocessing">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
-<strong>Week Focus:</strong> Transform raw data into powerful features that capture customer behavior and business signals.</p>
+<h1 id="Week-5-%E2%80%94-Features-Are-the-Model%E2%80%99s-API">Week 5 — Features Are the Model’s API<a class="anchor-link" href="#Week-5-%E2%80%94-Features-Are-the-Model%E2%80%99s-API">¶</a></h1><p><strong>Course:</strong> Applied ML Foundations for SaaS Analytics<br/>
+<strong>Who this is for:</strong> Engineers who have designed request payloads. Feature engineering is that, plus a timeline rule.</p>
 <hr/>
-<h2 id="%F0%9F%8E%AF-Learning-Objectives">🎯 Learning Objectives<a class="anchor-link" href="#%F0%9F%8E%AF-Learning-Objectives">¶</a></h2><p>By the end of this week, you will:</p>
-<ul>
-<li>Encode categorical variables (one-hot, target encoding)</li>
-<li>Handle missing data strategically</li>
-<li>Scale and normalize numerical features</li>
-<li>Create interaction and polynomial features</li>
-<li>Build domain-driven features from business knowledge</li>
-<li>Detect and handle outliers appropriately</li>
-<li>Validate feature quality and distribution</li>
+<h2 id="%F0%9F%8E%AF-What-you-will-be-able-to-do">🎯 What you will be able to do<a class="anchor-link" href="#%F0%9F%8E%AF-What-you-will-be-able-to-do">¶</a></h2><ul>
+<li>Treat a feature vector as a <strong>versioned contract</strong> the training job and the <code>/predict</code> handler must share</li>
+<li>Scale numbers so “dollars” and “click counts” can sit in the same model</li>
+<li>One-hot encode <code>plan_type</code> without treating free &lt; starter &lt; pro as a number line</li>
+<li><strong>Fit the scaler on train only</strong> — the leak that will follow you to production</li>
+<li>Draw a wall between “known at score time” and “the future”</li>
 </ul>
+<div class="think-box">
+<strong>Think of it like… an API contract + a time machine rule.</strong>
+<p>The model only sees the JSON you send it. If a field would not exist when you score a live user at noon on Tuesday, it cannot exist in training either. That is leakage: the model cheated on the exam by reading tomorrow’s answer key.</p>
 </div>
 </div>
 </div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs celltag_style" id="cell-id=11866a88">
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1e65bdb6fe6f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<div class="cue-box">
+<strong>Laptop budget</strong>
+<p>No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this notebook should finish in a <strong>few minutes on CPU</strong>. The ideas are the same if you later set <code>n=None</code> and train on all 50k rows.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=779d26cf4110">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
+<div class="jp-InputPrompt jp-InputArea-prompt">In [1]:</div>
 <div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
 <div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
-<span class="n">HTML</span><span class="p">(</span><span class="s1">'''</span>
-<span class="s1">&lt;style&gt;</span>
-<span class="s1">details {</span>
-<span class="s1">  margin: 10px 0;</span>
-<span class="s1">  padding: 8px 12px;</span>
-<span class="s1">  border: 1px solid #d9e2ec;</span>
-<span class="s1">  border-radius: 8px;</span>
-<span class="s1">  background: #f9fbfd;</span>
-<span class="s1">}</span>
-<span class="s1">details summary {</span>
-<span class="s1">  font-weight: 600;</span>
-<span class="s1">  color: #0056b3;</span>
-<span class="s1">  cursor: pointer;</span>
-<span class="s1">}</span>
-<span class="s1">details[open] {</span>
-<span class="s1">  background: #f1f7ff;</span>
-<span class="s1">  border-color: #c3d4f0;</span>
-<span class="s1">}</span>
-<span class="s1">details pre {</span>
-<span class="s1">  background: #f8f9fa;</span>
-<span class="s1">  padding: 8px;</span>
-<span class="s1">  border-radius: 6px;</span>
-<span class="s1">}</span>
-<span class="s1">&lt;/style&gt;</span>
-<span class="s1">'''</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=941e8960">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-Build-a-Churn-Prediction-Dataset">🏢 Scenario — Build a Churn Prediction Dataset<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-Build-a-Churn-Prediction-Dataset">¶</a></h2><p>You need to train a churn prediction model. Raw data has:</p>
-<ul>
-<li>Mixed types: plan_tier (categorical), signup_date (datetime), usage_count (numeric)</li>
-<li>Missing values: some users have no feature usage data</li>
-<li>Outliers: a few power users with 1000x normal usage</li>
-<li>Business knowledge: days_since_signup, recent_engagement_change, plan_change_count</li>
-</ul>
-<p>Task: Transform into a clean, ML-ready dataset.</p>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=05f12da9">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">✍️ Hands-on Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Hands-on-Exercises">¶</a></h2><ol>
-<li><strong>Categorical Encoding</strong>: One-hot encode plan_tier, region, and customer_segment</li>
-<li><strong>Temporal Features</strong>: From signup_date, create: days_active, months_active, signup_quarter, is_recent</li>
-<li><strong>Scaling</strong>: Normalize usage_count and revenue features with StandardScaler or MinMaxScaler</li>
-<li><strong>Interactions</strong>: Create plan_tier × region, recent_usage × lifetime features</li>
-<li><strong>Missing Data Strategy</strong>: Define whether to drop, fill with mean, or use indicator variables for each column</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=99135c05">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>💡 Hint — Feature Engineering Workflow</summary>
-<p><strong>Step 1: Understand Data Types</strong></p>
-<div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span>  <span class="c1"># what are we working with?</span>
-<span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>  <span class="c1"># where are the gaps?</span>
-</pre></div>
-<p><strong>Step 2: Missing Data Strategy</strong></p>
-<ul>
-<li>Numeric: mean/median imputation or "unknown" indicator</li>
-<li>Categorical: mode or "Unknown" category</li>
-<li>When to drop: if &gt; 50% missing in a feature</li>
-</ul>
-<p><strong>Step 3: Encode Categoricals</strong></p>
-<ul>
-<li>Few categories (&lt; 5): one-hot encoding</li>
-<li>Many categories (&gt; 100): target encoding or embedding</li>
-</ul>
-<p><strong>Step 4: Scale/Normalize</strong></p>
-<ul>
-<li>Tree models: no scaling needed</li>
-<li>Linear models, neural nets, KNN: use StandardScaler or MinMaxScaler</li>
-</ul>
-<p><strong>Step 5: Feature Selection</strong></p>
-<ul>
-<li>Remove highly correlated features</li>
-<li>Remove near-zero variance features</li>
-<li>Use domain knowledge to keep business-meaningful features</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7f0b8364">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<details>
-<summary>✅ Solution — Complete Feature Engineering Pipeline</summary>
-<div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<div class="highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">LabelEncoder</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-
-<span class="c1"># Load and merge data</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
-
-<span class="c1"># Aggregate features by user</span>
-<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
-    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
-<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'num_features'</span><span class="p">})</span>
-
-<span class="c1"># Merge</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-
-<span class="c1"># FEATURE ENGINEERING</span>
-<span class="c1"># 1. Create temporal features</span>
-<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'signup_month'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'signup_quarter'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">quarter</span>
-
-<span class="c1"># 2. Handle missing engagement data</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="c1"># 3. Create target: churned in next 30 days?</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-
-<span class="c1"># 4. Encode categorical</span>
-<span class="n">df_encoded</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">'plan_tier'</span><span class="p">],</span> <span class="n">drop_first</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># 5. Scale numeric features</span>
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-<span class="n">numeric_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'days_active'</span><span class="p">,</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'num_features'</span><span class="p">]</span>
-<span class="n">df_encoded</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df_encoded</span><span class="p">[</span><span class="n">numeric_cols</span><span class="p">])</span>
-
-<span class="c1"># Result: ML-ready dataset</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature matrix shape: </span><span class="si">{</span><span class="n">df_encoded</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Null values: </span><span class="si">{</span><span class="n">df_encoded</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Target distribution: </span><span class="si">{</span><span class="n">df_encoded</span><span class="p">[</span><span class="s1">'target'</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-</pre></div>
-<p><strong>Why this works:</strong></p>
-<ul>
-<li>Clear separation: raw data → aggregation → features → encoding → scaling</li>
-<li>Handles missing values explicitly</li>
-<li>Target clearly defined</li>
-<li>Ready for train/test split and modeling</li>
-</ul>
-</details>
-</div>
-</div>
-</div>
-</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs" id="cell-id=df33d2b4">
-<div class="jp-Cell-inputWrapper" tabindex="0">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea">
-<div class="jp-InputPrompt jp-InputArea-prompt">In [ ]:</div>
-<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
-<div class="cm-editor cm-s-jupyter">
-<div class="highlight hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"WEEK 5: FEATURE ENGINEERING DEMO"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="c1"># Make the shared style kit importable whether you launch from notebooks/ or repo root</span>
+<span class="k">for</span> <span class="n">_p</span> <span class="ow">in</span> <span class="p">[</span><span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">(),</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span> <span class="o">/</span> <span class="s2">"notebooks"</span><span class="p">,</span> <span class="n">Path</span><span class="o">.</span><span class="n">cwd</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">_p</span> <span class="o">/</span> <span class="s2">"course_style.py"</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">_p</span><span class="p">))</span>
+        <span class="k">break</span>
 
-<span class="c1"># Load data</span>
-<span class="n">subs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/subscriptions.csv'</span><span class="p">,</span> <span class="n">parse_dates</span><span class="o">=</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">,</span><span class="s1">'churn_date'</span><span class="p">])</span>
-<span class="n">feature_usage</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'../data/feature_usage.csv'</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">course_style</span><span class="w"> </span><span class="kn">import</span> <span class="n">apply_style</span><span class="p">,</span> <span class="n">setup_plots</span><span class="p">,</span> <span class="n">find_data_dir</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">1. DATA PREPARATION"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Subscriptions: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">subs</span><span class="p">)</span><span class="si">}</span><span class="s2"> records"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Feature usage: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">feature_usage</span><span class="p">)</span><span class="si">}</span><span class="s2"> records"</span><span class="p">)</span>
+<span class="n">apply_style</span><span class="p">()</span>
+<span class="n">setup_plots</span><span class="p">()</span>
+<span class="n">DATA</span> <span class="o">=</span> <span class="n">find_data_dir</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Data folder: </span><span class="si">{</span><span class="n">DATA</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Laptop mode: no GPU required. Models use a sample so each week finishes in a few minutes on CPU."</span><span class="p">)</span>
 
-<span class="c1"># Aggregate user metrics</span>
-<span class="n">user_features</span> <span class="o">=</span> <span class="n">feature_usage</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">'user_id'</span><span class="p">)</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-    <span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'sum'</span><span class="p">,</span>
-    <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'nunique'</span>
-<span class="p">})</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">'usage_count'</span><span class="p">:</span> <span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'feature_name'</span><span class="p">:</span> <span class="s1">'num_features'</span><span class="p">})</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unique users in feature data: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">user_features</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Merge</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">subs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">user_features</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">'user_id'</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">'left'</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"After merge: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> subscriptions with feature data"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">2. FEATURE ENGINEERING"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-
-<span class="c1"># Temporal features</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
-<span class="n">today</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">today</span><span class="p">)</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>
-
-<span class="c1"># Handle missing engagement</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active: min=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total usage: min=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, max=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Users with feature data: </span><span class="si">{</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="si">}</span><span class="s2"> / </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">3. FEATURE SCALING"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-
-<span class="c1"># Before scaling</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total usage (before): mean=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'total_usage'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active (before): mean=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'days_active'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="c1"># Apply scaling</span>
-<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
-<span class="n">scaled_features</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s1">'total_usage'</span><span class="p">,</span> <span class="s1">'days_active'</span><span class="p">]])</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Total usage (after): mean=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Days active (after): mean=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, std=</span><span class="si">{</span><span class="n">scaled_features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">4. CHURN PREDICTION FEATURE SET"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate overall: </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate (high feature users): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">][</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Churn rate (low feature users): </span><span class="si">{</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'num_features'</span><span class="p">]</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">][</span><span class="s1">'is_churned'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Insight: Feature adoption is protective against churn!"</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span><span class="p">,</span> <span class="n">OneHotEncoder</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.compose</span><span class="w"> </span><span class="kn">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
 </div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=59e38332">
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedHTMLCommon jp-RenderedHTML jp-OutputArea-output" data-mime-type="text/html" tabindex="0">
+<style>
+:root {
+  --think: #b45309;
+  --think-bg: #fffbeb;
+  --think-border: #f59e0b;
+  --eng: #1d4ed8;
+  --eng-bg: #eff6ff;
+  --eng-border: #3b82f6;
+  --watch: #b91c1c;
+  --watch-bg: #fef2f2;
+  --watch-border: #f87171;
+  --ship: #047857;
+  --ship-bg: #ecfdf5;
+  --ship-border: #34d399;
+  --math: #6d28d9;
+  --math-bg: #f5f3ff;
+  --math-border: #a78bfa;
+  --cue: #0f766e;
+  --cue-bg: #f0fdfa;
+  --cue-border: #2dd4bf;
+}
+
+.think-box, .engineer-box, .watch-box, .ship-box, .math-box, .cue-box {
+  border-left: 6px solid;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  line-height: 1.55;
+}
+.think-box { background: var(--think-bg); border-color: var(--think-border); }
+.engineer-box { background: var(--eng-bg); border-color: var(--eng-border); }
+.watch-box { background: var(--watch-bg); border-color: var(--watch-border); }
+.ship-box { background: var(--ship-bg); border-color: var(--ship-border); }
+.math-box { background: var(--math-bg); border-color: var(--math-border); }
+.cue-box { background: var(--cue-bg); border-color: var(--cue-border); }
+
+.think-box strong, .engineer-box strong, .watch-box strong,
+.ship-box strong, .math-box strong, .cue-box strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.02em;
+}
+.think-box strong { color: var(--think); }
+.engineer-box strong { color: var(--eng); }
+.watch-box strong { color: var(--watch); }
+.ship-box strong { color: var(--ship); }
+.math-box strong { color: var(--math); }
+.cue-box strong { color: var(--cue); }
+
+.flow-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0 4px;
+}
+.flow-node {
+  background: #312e81;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.92em;
+  font-weight: 600;
+}
+.flow-node.alt { background: #0f766e; }
+.flow-node.warn { background: #b45309; }
+.flow-arrow { color: #64748b; font-weight: 700; }
+
+details.lesson-extra {
+  margin: 12px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9e2ec;
+  border-radius: 8px;
+  background: #f9fbfd;
+}
+details.lesson-extra summary {
+  font-weight: 600;
+  color: #1d4ed8;
+  cursor: pointer;
+}
+
+</style>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Data folder: /Users/sanketnaik/workspace/learn-ml/data
+Laptop mode: no GPU required. Models use a sample so each week finishes in a few minutes on CPU.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=7f483b4b01ea">
 <div class="jp-Cell-inputWrapper" tabindex="0">
 <div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
-<h2 id="%F0%9F%93%9A-Key-Concepts-%E2%80%94-Feature-Engineering-Best-Practices">📚 Key Concepts — Feature Engineering Best Practices<a class="anchor-link" href="#%F0%9F%93%9A-Key-Concepts-%E2%80%94-Feature-Engineering-Best-Practices">¶</a></h2><h3 id="The-Feature-Engineering-Hierarchy">The Feature Engineering Hierarchy<a class="anchor-link" href="#The-Feature-Engineering-Hierarchy">¶</a></h3><ol>
-<li><strong>Data collection</strong>: Ensure you have the right data</li>
-<li><strong>Data cleaning</strong>: Handle missing, duplicates, outliers</li>
-<li><strong>Domain features</strong>: Leverage business knowledge (recency, frequency, customer lifecycle)</li>
-<li><strong>Statistical features</strong>: Interactions, ratios, transformations</li>
-<li><strong>Automated features</strong>: Deep learning, AutoML (usually unnecessary for SaaS)</li>
-</ol>
-<h3 id="Feature-Quality-Checklist">Feature Quality Checklist<a class="anchor-link" href="#Feature-Quality-Checklist">¶</a></h3><ul>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>No missing values (or strategy documented)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Appropriate for model type (tree vs linear)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Interpretable to business stakeholders</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Not highly correlated with other features</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Not a data leak (information from the future)</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"/>Distribution makes sense (outliers justified)</li>
+<h2 id="%F0%9F%8F%A2-Scenario-%E2%80%94-churn-features-the-scoring-service-can-actually-compute">🏢 Scenario — churn features the scoring service can actually compute<a class="anchor-link" href="#%F0%9F%8F%A2-Scenario-%E2%80%94-churn-features-the-scoring-service-can-actually-compute">¶</a></h2><p>We want to flag accounts that will cancel. At score time we know:</p>
+<ul>
+<li>plan, MRR, tenure so far, usage so far, events so far</li>
 </ul>
-<h3 id="Data-Leakage:-The-Silent-Killer">Data Leakage: The Silent Killer<a class="anchor-link" href="#Data-Leakage:-The-Silent-Killer">¶</a></h3><div class="highlight"><pre><span></span><span class="c1"># BAD: Using future information</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'has_churn_flag'</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'churn_date'</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()</span>  <span class="c1"># we're predicting this!</span>
+<p>We do <strong>not</strong> know <code>churn_date</code>. We must not sneak it in as <code>has_churn_flag</code>.</p>
+<pre><code> timeline:  signup -------- now -------- churn?
+                       ▲
+                       └── score time. Nothing to the right of this wall
+                           may enter X. The label y may look right of the wall.
+</code></pre>
+<div class="engineer-box">
+<strong>Engineer mental model</strong>
+<p>Features = request body. Scaler + encoder = middleware that <em>must ship next to the .pkl</em>. If production sends raw dollars and the model expects “standard deviations from the training mean,” every score is garbage and nobody gets a stack trace.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=c2291d526f54">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [2]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">course_style</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_customer_360</span>
 
-<span class="c1"># GOOD: Using only historical information</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">'days_since_signup'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">today</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s1">'signup_date'</span><span class="p">])</span><span class="o">.</span><span class="n">days</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">load_customer_360</span><span class="p">(</span><span class="n">DATA</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">"user_id"</span><span class="p">,</span> <span class="s2">"plan_type"</span><span class="p">,</span> <span class="s2">"mrr"</span><span class="p">,</span> <span class="s2">"tenure_days"</span><span class="p">,</span> <span class="s2">"total_usage"</span><span class="p">,</span>
+          <span class="s2">"features_adopted"</span><span class="p">,</span> <span class="s2">"total_events"</span><span class="p">,</span> <span class="s2">"is_churned"</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Label rate (churned):"</span><span class="p">,</span> <span class="n">df</span><span class="p">[</span><span class="s2">"is_churned"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 </pre></div>
-<h2 id="%F0%9F%A4%94-Reflection-&amp;-Application">🤔 Reflection &amp; Application<a class="anchor-link" href="#%F0%9F%A4%94-Reflection-&amp;-Application">¶</a></h2><p><strong>Question 1:</strong> Which single chart would you show a CEO in 30 seconds?</p>
-<ul>
-<li>Line chart: Trend (retention vs churn over time)</li>
-<li>Bar chart: Comparison (segment A vs B)</li>
-<li>Combination: Show both signal and uncertainty</li>
-</ul>
-<p><strong>Question 2:</strong> Should you include all features in your model?</p>
-<ul>
-<li>No! Too many features → overfitting → poor generalization</li>
-<li>Use correlation analysis, feature importance, or domain knowledge to select</li>
-</ul>
-<p><strong>Question 3:</strong> How do you avoid data leakage in production?</p>
-<ul>
-<li>Clearly timestamp each data point</li>
-<li>Use only features available at decision time</li>
-<li>Test on truly holdout (future) data</li>
-</ul>
-<h2 id="%F0%9F%93%9D-Practice-Assignment">📝 Practice Assignment<a class="anchor-link" href="#%F0%9F%93%9D-Practice-Assignment">¶</a></h2><p><strong>Problem:</strong> Create a customer quality score (0-100) combining:</p>
-<ol>
-<li>Engagement: Feature adoption and usage</li>
-<li>Stability: Customer lifetime and churn risk</li>
-<li>Value: Plan tier and payment health</li>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>(8000, 16)
+       user_id plan_type     mrr  tenure_days  total_usage  features_adopted  \
+0  user_049544       pro  102.69          530          4.0               2.0   
+1  user_015269      free    0.00           22          3.0               1.0   
+2  user_019235      free    0.00          468         10.0               2.0   
+3  user_039586      free    0.00          531          8.0               2.0   
+4  user_020468   starter   28.55           41          8.0               2.0   
+
+   total_events  is_churned  
+0           3.0           0  
+1           6.0           1  
+2           4.0           0  
+3           8.0           0  
+4           2.0           0  
+
+Label rate (churned): 0.065
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=1a1d185da786">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Scaling-%E2%80%94-why-trees-shrug-and-linear-models-panic">Scaling — why trees shrug and linear models panic<a class="anchor-link" href="#Scaling-%E2%80%94-why-trees-shrug-and-linear-models-panic">¶</a></h2><p><code>mrr</code> is 0–500. <code>total_usage</code> can be tens of thousands. A linear model / k-means / neural net <strong>adds</strong> these numbers. The big column shouts down the small one.</p>
+<p>A tree only asks “is usage &gt; 40?” — units do not matter.</p>
+<div class="math-box">
+<strong>Math, translated</strong>
+<p><code>StandardScaler</code>: subtract the column’s mean, divide by its standard deviation. After that, “1” means “one typical-spread above average,” the same z-score idea from Week 1. <code>log1p(usage)</code> is “compress the whales so they do not own the axis.”</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=041be1380a0f">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [3]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">))</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"total_usage"</span><span class="p">]</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">upper</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"total_usage"</span><span class="p">],</span> <span class="mi">99</span><span class="p">)),</span>
+             <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#6366f1"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"Raw usage — whales squash the axis"</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">"log_usage"</span><span class="p">],</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#0f766e"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"log1p(usage) — readable shape"</span><span class="p">)</span>
+
+<span class="c1"># WRONG: scaler fit on everyone. We show it only to picture the shape.</span>
+<span class="n">demo</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">df</span><span class="p">[[</span><span class="s2">"total_usage"</span><span class="p">]])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">demo</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"#f59e0b"</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"StandardScaler(usage) — mean 0, still skewed"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">ax</span> <span class="ow">in</span> <span class="n">axes</span><span class="p">:</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">"users"</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Trees: raw is fine.  Linear / k-means / nets: log then scale, and fit on TRAIN only."</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="application/vnd.jupyter.stderr" tabindex="0">
+<pre>findfont: Failed to find font weight semibold, now using 700.
+</pre>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedImage jp-OutputArea-output" tabindex="0">
+<img alt="No description has been provided for this image" class="" src="data:image/png;base64,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2bPN56+88oqjcswqf7LqiN0+eqR2TG/Rdb/ssssyzUPzyn7NY79OieRy5WQ5ws13+6j2/q969epFZT2HDh2a7bLq+jjNL6XrZaXRPPJnH3TCepUoUcInP+37sg4sltXytWnTJuy8UXoNFWj76rEZbIC5UPLNogMf6XS9jnQygE60+Z8b7dvTPniWde3sP1Ch/doz1DzJjXNIVn744YdM957WS7fPxIkTM31HRz4PlCfBhLLfOjnvRnsAjFCWN9hv29ehUKFCZnAzpfculStXzvL3dTTlYNdxVplq0UFW7J/paLX+Qp2nXi8HKot1P7ffMyTkaLb+wTwdovyMM84IOBqY7vw6CokOU60bRTe6/yiO/sG8J554wudzHTLbcumll3qn641uKKMbHT582IxCqSP26PK0bdvWXNAFG81Th9jWUS+7d+/uOfvss80G1+/VrVvX/I7/6L2hrqsGtUaPHm1GuNLf1pOGDkf/zDPPeNPrMvrTnU8LPc1zHflHdzidr46Cq9+Plxv0nGzHcIMvoWyDrOYRSj6Hup8EEupv6LxHjhzpqVq1qs++o+sfLJgX6v4fan6Gsg6RDubpMg0ePNgso/3GNafBvEgdb07zUUdfso8oZh+ZTEeJrlGjhvezl156Kct1i8R+6TZZ3ZTrEPV64VKzZk1zwaGv2rVre+677z6fUT4tekGio3VpOt1merxt2bLFJ691hKxIBfN0eXXUTR19U+dZsWJFs2x63Pp78803vd97+eWXM33+wQcfeBo3buwpUqSIp3r16maUxWCj2Sqdr47erOcMvcHSIKGus14s2YMeSkf80uXW40BHEuvatasZodE+sp09iBFOXirdj3VEZg0663rovqv7sc5bjwv//de6CdOLcntgMN6DeaGuazj5P2fOHE+LFi3MOcDKfx3ZOthotqHOI5z9OKu8CXXbBxLKPh1qMC+38iicvNAyRMv03r17m+/otbsGL3U+Wn7oQ6G1a9dmmo+WF/379zfp7WWodVNp3Yxr+aG/pdceev2q585I3ohrHuj6nn766WY+rVq1MnmleRbsOiVSy5WT5Qg335XeKOp+qfunfkevNfR85n9vFMn11JFB9dpA9z2dpwaNtfKAPvTR5bFGpgwlONCsWTPvNb3uT3b79+83v6032rofa6Bs1apVQUez1fRTpkwx+7leE+m1lwZD9Trq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fXs544wzpEOHDpKa6nt9U7hwYTNYEgAAiHDNvKlTp8oXX3wh48ePl1q1aplCuHjx4t6XFtIAAFhGjBhhBkkaMmSIGTjJXmbo6+WXXyazACAJ6KAX27Ztkz59+kilSpUylQd6jwEAAKJQM09HIsyqzzy9UQMAwHLLLbeYmhjBNGjQgMwCgCR5uHP77bdnOfo5AACIQjCvatWq5gUAgBMarCNgBwBo1aoVmQAAQCyCeRYdBOONN96QDRs2SJs2baRnz56ybNky6datW06XCwCQoKPavv/++7Jp0yZTW++ss86SQ4cOSdu2bWO9aACAXOLxeGTWrFkyb948+eOPP2T06NFy4MAB0w93vXr12A4AAESjzzz1+OOPS6NGjWTp0qWye/duWb9+vSmAhw4dKjt37gz3ZwEACXrjdv3118ull14qGzduNP0l7dixQ8qVKye33nqrnDhxIqzfPXnypPz222/mN4PRG0Qtow4fPpzlbzlNBwAIn55jzz//fPNA559//pHff/9d9u7dK4UKFZK77rqLrAUAIFrBPL3ZefLJJ+Wrr76SxYsXm8JYFShQQDp16iTTp08P52cBAAnqk08+kYULF8qaNWtk7ty5pu9VpaMZVq5cWebPnx/W744aNco039URcgMF+rRfpgoVKshll11mAoePPvpo2OkAADmnA+hpQE9r5GnZUL9+fTNdW/noPcbmzZvJZgAAotHMdsmSJeZGTJ+q+atevbq5WQMAwPL999/LzTffbJrVBio3wrl505rhelN47rnnypEjRwIG+rQZ16+//io1atQwy6CDcGifr3379g05HeJD2eGDpWZqCVmXvl8yxBMwzb6nXsj15QLgjJ5jBw8eLGXKlAlaHpx55plkJwAAka6Zp9XgtTp8IFpdvmTJkuH8LAAgQUW63NDg3Q033GACcYEGZNJmuxroGzBggAnQWZ2uX3PNNfLss8+GnA4AEBncRwAAEKNgXuvWreW7776T119/PVN/Q++8845cdNFFEVg0AECiaNeunRkwSbtnsNNmVgsWLDCfh2LYsGFStmxZGThwYMDPtR+9ffv2ZRpYQ99bn4WSDgAQGXq+HzNmTKaWPF9//bWkpaUx8jkAANFqZqsDXTz88MPSr18/GTt2rBQrVswE8nRADH1deOGF4fwsACBBXXDBBdKlSxdTPjRt2tSUGVp2PPHEE3Lv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"/>
+</div>
+</div>
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Trees: raw is fine.  Linear / k-means / nets: log then scale, and fit on TRAIN only.
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=b603b845b3a2">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Categories-are-not-numbers">Categories are not numbers<a class="anchor-link" href="#Categories-are-not-numbers">¶</a></h2><p><code>plan_type</code> is free / starter / pro / enterprise. If you map those to 0,1,2,3 you are telling the model “enterprise is three more than free” and “the step from free→starter equals starter→pro.” Sometimes that is true. Usually it is a lie.</p>
+<p><strong>One-hot:</strong> four yes/no columns. Honest, a bit wide.</p>
+<div class="watch-box">
+<strong>Watch out — the scaler leak</strong>
+<p><code>scaler.fit_transform(X)</code> on the <em>full</em> table peeks at the test set’s mean and spread. That is a small leak that becomes a habit. Fit on train. Transform test. In production, the saved scaler <em>is</em> the fit.</p>
+</div>
+</div>
+</div>
+</div>
+</div><div class="jp-Cell jp-CodeCell jp-Notebook-cell" id="cell-id=a19c60e1823e">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea">
+<div class="jp-InputPrompt jp-InputArea-prompt">In [4]:</div>
+<div class="jp-CodeMirrorEditor jp-Editor jp-InputArea-editor" data-type="inline">
+<div class="cm-editor cm-s-jupyter">
+<div class="highlight hl-ipython3"><pre><span></span><span class="n">numeric</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"mrr"</span><span class="p">,</span> <span class="s2">"tenure_days"</span><span class="p">,</span> <span class="s2">"log_usage"</span><span class="p">,</span> <span class="s2">"features_adopted"</span><span class="p">,</span>
+           <span class="s2">"total_events"</span><span class="p">,</span> <span class="s2">"n_devices"</span><span class="p">,</span> <span class="s2">"n_support"</span><span class="p">]</span>
+<span class="n">categorical</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"plan_type"</span><span class="p">]</span>
+<span class="n">label</span> <span class="o">=</span> <span class="s2">"is_churned"</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">numeric</span> <span class="o">+</span> <span class="n">categorical</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">label</span><span class="p">]</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">y</span>
+<span class="p">)</span>
+
+<span class="c1"># Time-based split is even better (Week 12). Stratified random is the honest starter.</span>
+
+<span class="n">prep</span> <span class="o">=</span> <span class="n">ColumnTransformer</span><span class="p">(</span>
+    <span class="n">transformers</span><span class="o">=</span><span class="p">[</span>
+        <span class="p">(</span><span class="s2">"num"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">numeric</span><span class="p">),</span>
+        <span class="p">(</span><span class="s2">"cat"</span><span class="p">,</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">handle_unknown</span><span class="o">=</span><span class="s2">"ignore"</span><span class="p">),</span> <span class="n">categorical</span><span class="p">),</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+<span class="n">prep</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>  <span class="c1"># train only</span>
+
+<span class="n">X_train_t</span> <span class="o">=</span> <span class="n">prep</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">X_test_t</span> <span class="o">=</span> <span class="n">prep</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="n">numeric</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">prep</span><span class="o">.</span><span class="n">named_transformers_</span><span class="p">[</span><span class="s2">"cat"</span><span class="p">]</span><span class="o">.</span><span class="n">get_feature_names_out</span><span class="p">(</span><span class="n">categorical</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Train rows"</span><span class="p">,</span> <span class="n">X_train_t</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">"Test rows"</span><span class="p">,</span> <span class="n">X_test_t</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"Feature contract:"</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Scaled train means (numeric should sit near 0):"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">X_train_t</span><span class="p">[:,</span> <span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">numeric</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell-outputWrapper">
+<div class="jp-Collapser jp-OutputCollapser jp-Cell-outputCollapser">
+</div>
+<div class="jp-OutputArea jp-Cell-outputArea">
+<div class="jp-OutputArea-child">
+<div class="jp-OutputPrompt jp-OutputArea-prompt"></div>
+<div class="jp-RenderedText jp-OutputArea-output" data-mime-type="text/plain" tabindex="0">
+<pre>Train rows (6400, 11) Test rows (1600, 11)
+Feature contract:
+  mrr
+  tenure_days
+  log_usage
+  features_adopted
+  total_events
+  n_devices
+  n_support
+  plan_type_enterprise
+  plan_type_free
+  plan_type_pro
+  plan_type_starter
+
+Scaled train means (numeric should sit near 0):
+[-0.  0.  0. -0.  0. -0. -0.]
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=50f8e6a97373">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="Leakage-hall-of-shame-(we-will-keep-coming-back)">Leakage hall of shame (we will keep coming back)<a class="anchor-link" href="#Leakage-hall-of-shame-(we-will-keep-coming-back)">¶</a></h2><table>
+<thead>
+<tr>
+<th>Looks clever</th>
+<th>Why it is cheating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_churn_flag</code> as a feature</td>
+<td>That <strong>is</strong> the label</td>
+</tr>
+<tr>
+<td><code>lifetime_value = mrr * tenure</code> as a target, <code>tenure</code> as a feature</td>
+<td>The model multiplies two columns it was handed</td>
+</tr>
+<tr>
+<td>Fit scaler / target-encoder on all rows</td>
+<td>Test set leaked into preprocessing</td>
+</tr>
+<tr>
+<td>Random split when the world is a time series</td>
+<td>The model trains on “next month” and tests on “last month”</td>
+</tr>
+</tbody>
+</table>
+<div class="ship-box">
+<strong>Ship / don’t ship</strong>
+<p>A feature ships if a tired on-call engineer can compute it from <em>today’s</em> warehouses for a single <code>user_id</code> with no peek at the label table. If you cannot write that function, it is not a feature.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell" id="cell-id=58709aa4ef23">
+<div class="jp-Cell-inputWrapper" tabindex="0">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput" data-mime-type="text/markdown">
+<h2 id="%E2%9C%8D%EF%B8%8F-Exercises">✍️ Exercises<a class="anchor-link" href="#%E2%9C%8D%EF%B8%8F-Exercises">¶</a></h2><p><strong>1. Honest vs leaked scaler.</strong> Fit a scaler on all rows, then only on train. Print the two means used for <code>mrr</code>. How far apart are they? (On 50k rows, tiny — the habit is still wrong.)</p>
+<p><strong>2. Missingness flag.</strong> Add <code>has_usage = total_usage &gt; 0</code>. Does churn differ? Would you keep the flag <em>and</em> the count?</p>
+<p><strong>3. Contract test.</strong> Write <code>assert_score_payload(payload: dict)</code> that checks required keys and types. This is more production-shaped than another transformer.</p>
+<h2 id="%F0%9F%A4%94-Reflection">🤔 Reflection<a class="anchor-link" href="#%F0%9F%A4%94-Reflection">¶</a></h2><ol>
+<li>Why is “churned in the next 30 days” a better label than “ever churned”?</li>
+<li>A teammate one-hot encodes <code>user_id</code>. What happens?</li>
+<li>Where does the scaler live in your repo — next to the model, or re-fit in the API process?</li>
 </ol>
-<p><strong>Steps:</strong></p>
-<ol>
-<li>Engineer the 3 dimension features</li>
-<li>Normalize each to 0-100 scale</li>
-<li>Create composite score (weighted average)</li>
-<li>Validate: does high score correlate with lower churn?</li>
-</ol>
-<h2 id="%F0%9F%94%97-Next-Steps">🔗 Next Steps<a class="anchor-link" href="#%F0%9F%94%97-Next-Steps">¶</a></h2><p>In Week 6, we'll use these engineered features to train classification models that predict which customers are at risk.</p>
+<h2 id="%F0%9F%94%97-Next-week">🔗 Next week<a class="anchor-link" href="#%F0%9F%94%97-Next-week">¶</a></h2><p>Classification: a model is a function <code>features → risk score</code>. We pick a threshold the sales team can staff.</p>
 </div>
 </div>
 </div>
 </div>
 </main>
 
+
+<!-- learn-ml-footer:start -->
 <div class="navigation-footer">
-    
-        <a href="week-04-saas.html" class="nav-link prev-link">← Previous Week</a>
-        
-    <a href="../../index.html#ml-course" class="nav-link">Back to ML Fundamentals</a>
-    
-        <a href="week-06-saas.html" class="nav-link next-link">Next Week →</a>
-        
+    <a href="week-04-saas.html" class="nav-link prev-link">← Previous Week</a>
+    <a href="../index.html#ml-course" class="nav-link">Back to ML Fundamentals</a>
+    <a href="week-06-saas.html" class="nav-link next-link">Next Week →</a>
 </div>
+<!-- learn-ml-footer:end -->
 </body>
 </html>

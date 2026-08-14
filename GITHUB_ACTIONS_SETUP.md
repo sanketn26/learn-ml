@@ -1,5 +1,22 @@
 # GitHub Actions Workflow Setup Guide
 
+## What actually runs
+
+The live workflow is [`.github/workflows/render-notebooks.yml`](.github/workflows/render-notebooks.yml).
+
+It converts **existing** `week-*.ipynb` files into the matching `docs/` folder, then runs `python enhance_html.py`:
+
+| Notebooks | HTML output |
+|---|---|
+| `notebooks/week-*.ipynb` | `docs/` |
+| `langchain/notebooks/week-*.ipynb` | `langchain/docs/` |
+| `langgraph/notebooks/week-*.ipynb` | `langgraph/docs/` |
+| `crewai/notebooks/week-*.ipynb` | `crewai/docs/` |
+
+`enhance_html.py` must run after convert. It writes repo-relative paths (`notebooks/week-00-saas.ipynb`, not `ml/notebooks/...`) and prev/next links from files that actually exist.
+
+The sections below are optional GitHub Pages deploy recipes. If you copy them, keep those output directories and the `python enhance_html.py` step.
+
 ## 📋 Overview
 
 This guide covers setting up GitHub Actions for automated HTML rendering and deployment to GitHub Pages.

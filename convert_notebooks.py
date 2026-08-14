@@ -24,9 +24,10 @@ def convert_notebook(notebook_path, output_dir):
         return False, f"✗ {notebook_path.name}: {str(e)}"
 
 def main():
-    base_path = Path("/home/sanket/workspaces/learn-ml")
-    
+    base_path = Path(__file__).resolve().parent
+
     frameworks = {
+        "ML": (base_path / "notebooks", base_path / "docs"),
         "LangChain": (base_path / "langchain/notebooks", base_path / "langchain/docs"),
         "CrewAI": (base_path / "crewai/notebooks", base_path / "crewai/docs"),
         "LangGraph": (base_path / "langgraph/notebooks", base_path / "langgraph/docs"),

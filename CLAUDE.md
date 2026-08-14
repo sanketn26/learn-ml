@@ -5,7 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Repository Overview
 
 This is an AI Frameworks Learning Platform containing 26 Jupyter notebooks covering 4 courses:
-- **ML Fundamentals** (12 weeks): NumPy, Pandas, Visualization, Scikit-learn, Deep Learning
+- **ML Fundamentals** (weeks 0–15): written for software engineers without a math background. Each week is analogy → picture → runnable code → “watch out” → “ship / don’t ship.” Rebuild with `python3 scripts/build_week_00_python.py`, `build_weeks_01_04.py`, `05_08`, `09_12`, `13_15`. Shared callouts live in `notebooks/course.css`. Course week count in `enhance_html.py` is 15 (week 00 through 15).
+- **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; sequence weeks use ~3k users. Each week is meant to finish in a few minutes on an 8 GB CPU laptop. Override with `n=None` only if you want the full 50k.
 - **LangChain Fundamentals** (6 weeks): LLM chains, prompts, memory, agents
 - **LangGraph Workflows** (4 weeks): Graph-based workflow automation
 - **Crew.ai Multi-Agent Systems** (4 weeks): Multi-agent orchestration
@@ -121,7 +122,7 @@ The `enhance_html.py` script is the core automation tool that transforms basic J
 **Important:** The script now uses `Path(__file__).parent.absolute()` to automatically detect the repository path, so it works regardless of where the repo is cloned.
 
 **Hard-coded configuration in enhance_html.py:**
-- Course week counts: ML=12, LangChain=6, LangGraph=4, CrewAI=4 (lines 18-25)
+- Course week counts: ML=15 (week 00 through 15), LangChain=6, LangGraph=4, CrewAI=4
 - GitHub URLs: Points to `sanketn26/learn-ml` repository (lines 41-42)
 
 **To modify enhance_html.py for a fork:**

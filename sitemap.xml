@@ -30,6 +30,12 @@
 
   <!-- ML Fundamentals Lessons -->
   <url>
+    <loc>https://sanketn26.github.io/learn-ml/docs/week-00-saas.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://sanketn26.github.io/learn-ml/docs/week-01-saas.html</loc>
     <lastmod>2025-11-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -98,6 +104,24 @@
   <url>
     <loc>https://sanketn26.github.io/learn-ml/docs/week-12-saas.html</loc>
     <lastmod>2025-11-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sanketn26.github.io/learn-ml/docs/week-13-saas.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sanketn26.github.io/learn-ml/docs/week-14-saas.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sanketn26.github.io/learn-ml/docs/week-15-saas.html</loc>
+    <lastmod>2026-08-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
