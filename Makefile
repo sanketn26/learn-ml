@@ -25,6 +25,9 @@ build: ## build the static site into site/
 exercise: ## run week 00 starter (override WEEK=01)
 	python3 exercises/ml/week-$(or $(WEEK),00)/starter.py
 
+test: ## pipeline + contract tests
+	python3 -m pytest tests/
+
 clean: ## caches and build output
 	rm -rf site .pytest_cache
 	find . -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

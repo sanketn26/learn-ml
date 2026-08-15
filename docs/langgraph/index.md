@@ -10,6 +10,7 @@ Use a graph when you need branches, retries, pause-for-a-human, or replay. Three
 | [2 — Workflows](week-02.md) | Conditional edges, fan-out, subgraphs. |
 | [3 — Persistence](week-03.md) | Checkpoints. Replay after a crash. |
 | [4 — Human in the loop](week-04.md) | Interrupt, resume, the approval node. |
+| [5 — Don’t charge twice](week-05.md) | Resume is at-least-once. Keys make effects once. |
 
 !!! think "Think of it like… CI, Redux, or a workflow engine"
     The runtime owns the state so you can stop in the middle and start again. That is the product feature. Pretty diagrams are a side effect.

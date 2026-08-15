@@ -11,7 +11,8 @@ The model is a dependency. LangChain is middleware. If you cannot redraw a chain
 | [3 — Agents](week-03.md) | A loop that picks tools. ReAct is not autonomy. |
 | [4 — RAG](week-04.md) | Embed, retrieve, then prompt. Search quality first. |
 | [5 — Eval](week-05.md) | You cannot ship what you cannot score. |
-| [6 — Production](week-06.md) | Timeouts, fallbacks, tracing, a real handler. |
+| [6 — Production](week-06.md) | Timeouts, fallbacks, tracing — brochure. Then actually: |
+| [7 — Ticket bot](week-07.md) | Golden file, allowlist, “I don’t know”, cost line. |
 
 !!! think "Think of it like… Express / FastAPI middleware"
     The LLM is the slow, flaky downstream service. Your job is the same as always: validate input, bound the work, parse output, log enough to debug the next incident.

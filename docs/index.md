@@ -10,7 +10,7 @@ Every idea starts as something you already know — a SQL join, an API contract,
 
     ---
 
-    16 weeks. Python → NumPy → Pandas → classical ML → a little PyTorch.
+    Weeks 0–12 plus the job (16–20). Optional deep learning 13–15.
 
     Analogies first. Formulas only as “math, translated.”
 
@@ -20,7 +20,7 @@ Every idea starts as something you already know — a SQL join, an API contract,
 
     ---
 
-    6 weeks. Prompts, memory, agents, RAG, eval, production.
+    7 weeks. Prompts, tools, RAG, a golden file that can fail CI.
 
     Treat the framework as middleware, not magic.
 

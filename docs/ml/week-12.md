@@ -278,12 +278,14 @@ In one page: (1) the time wall you used, (2) holdout AUC vs a dummy, (3) the 80-
 
 When you can explain the week out loud, do the [exercises](exercises/week-12.md). Starter: `python exercises/ml/week-12/starter.py` from the repo root.
 
-## 🔗 Next: the deep-learning track
+## 🔗 Next: the job, then (optionally) deep learning
 
-You can now refuse a leak, demand a baseline, and staff a threshold. Weeks **13–15** are the other half of “I know deep learning”:
+You can refuse a leak, demand a baseline, and staff a threshold. You do not yet have a **job**:
 
-- **13 CNNs** — sliding detectors (1-D on usage, 2-D on images)
-- **14 RNNs** — a clipboard that walks a sequence
-- **15 Transformers** — every token looks at every other token
+- **16** SQL / `as_of` extract (if you skipped it after Week 2)
+- **17** horizon labels, imbalance, calibration
+- **18** rank a list, precision@k
+- **19** the pipeline: train → gate → prod → tonight’s CSV
+- **20** on-call + the score as a bot tool
 
-Then the LangChain / LangGraph / CrewAI tracks in this repo.
+Weeks **13–15** are optional pictures (CNN / RNN / attention). They are not how CloudWave ships churn.

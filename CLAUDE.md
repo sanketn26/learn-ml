@@ -6,9 +6,9 @@ Guidance for working in this repository.
 
 An AI-frameworks learning platform. **Markdown lessons + separate Python exercises**, served with MkDocs on GitHub Pages. No Jupyter.
 
-- **ML Fundamentals** (weeks 0–15): for software engineers without a math background. Each week is analogy → picture → code → “watch out” → “ship / don’t ship,” plus an “If you already write software” mapping.
-- **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; sequence weeks use ~3k users. Override with `n=None` only for the full 50k.
-- **LangChain** (6 weeks), **LangGraph** (4), **CrewAI** (4).
+- **ML Fundamentals** (weeks 0–12 required tabular, 16–20 the job, 13–15 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
+- **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full 50k.
+- **LangChain** (7 weeks), **LangGraph** (5), **CrewAI** (4, optional).
 
 Synthetic SaaS data in `data/`. CloudWave is the through-line.
 
@@ -20,6 +20,9 @@ docs/                 MkDocs source = the course
   ml/exercises/       exercise pages
   langchain/ langgraph/ crewai/
 exercises/ml/week-XX/ starter.py the learner runs
+pipelines/            train / score / promote / contract
+tests/                pytest gates
+eval/                 golden tickets for the bot
 lib/course_data.py    loaders (no IPython)
 data/                 CSVs / JSON
 mkdocs.yml
@@ -31,6 +34,8 @@ mkdocs.yml
 pip install -r requirements.txt
 mkdocs serve                          # http://127.0.0.1:8000
 python exercises/ml/week-00/starter.py
+pytest tests/
+python -m pipelines.train --as-of 2024-06-01 --n 4000
 mkdocs build --strict
 ```
 

@@ -17,6 +17,7 @@ python3 -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python exercises/ml/week-00/starter.py
+pytest tests/                 # from week 16 on
 ```
 
 Each ML week has:

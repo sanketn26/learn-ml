@@ -11,19 +11,22 @@ CloudWave is a fake B2B SaaS company. You will use the same customers from “wh
 | 0 | Python as glue. Names vs values. A `fit` / `predict` class. |
 | 1 | NumPy as a typed column. Stop looping 160k rows. |
 | 2 | Pandas as SQL. Customer 360. The join that explodes. |
+| **16** | **SQL is the source of truth. `as_of`. Grain tests.** |
 | 3 | Charts as API responses. Honest axes. |
-| 4 | p-values as flaky-test statistics. |
-| 5 | Features as a versioned `/predict` contract. Leakage. |
+| 4 | p-values as flaky-test statistics. A ranker is not a lever. |
+| 5 | Features as a `/predict` contract. Leakage. PII stays out. |
 | 6 | Classification = score + threshold. Staffing, not jargon. |
+| **17** | **Labels lie. Horizon, censoring, PR-AUC, calibration.** |
 | 7 | Regression in dollars. Residual trumpets. |
 | 8 | Clustering as unsorted piles. Personas, not APIs. |
+| **18** | **Rank a list. Precision@k. Beat `ORDER BY n_support`.** |
 | 9 | PCA as JPEG for a wide table. |
 | 10 | Ensembles as code review. Trees for tabular data. |
 | 11 | Nets as mixers + switches. Why a tree still wins here. |
-| 12 | A notebook is not production. Time split, `predict()`, drift. |
-| 13 | CNNs as a sliding detector. |
-| 14 | RNNs as a clipboard that walks. |
-| 15 | Transformers as a soft join. |
+| 12 | A pickle is not production. Time split, `predict()`, drift. |
+| **19** | **The job pipeline. Gate. Prod dir. Tonight’s CSV.** |
+| **20** | **On-call. Score as a tool. Golden tickets.** |
+| 13–15 | Optional: CNNs, RNNs, Transformers — pictures, not the churn path. |
 
 ## How to take it
 

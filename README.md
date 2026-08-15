@@ -6,13 +6,12 @@ Lessons are markdown. Exercises are ordinary Python. The site is GitHub Pages (M
 
 ## Courses
 
-1. **Applied ML Foundations for SaaS Analytics** (weeks 0–15)  
-   Analogies, pictures, then code. Python, NumPy, Pandas, scikit-learn, a little PyTorch.  
-   Written for people who already write software.
+1. **Applied ML Foundations for SaaS Analytics** (weeks 0–12, then 16–20; 13–15 optional)  
+   Analogies, pictures, then code. Ends in a real job: `as_of` features, a gate, tonight’s CSV.
 
-2. **LangChain** (6 weeks) — prompts, memory, agents, RAG, eval, production.
+2. **LangChain** (7 weeks) — prompts, tools, RAG, a golden file that can fail CI.
 
-3. **LangGraph** (4 weeks) — state machines, branches, checkpoints, human-in-the-loop.
+3. **LangGraph** (5 weeks) — state machines, resume, don’t charge twice.
 
 4. **CrewAI** (4 weeks) — roles, tickets, crews.
 
@@ -47,6 +46,9 @@ No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes
 ```
 docs/                 # lessons (MkDocs source, this is the course)
 exercises/ml/         # starter.py for each week
+pipelines/            # train / score / promote
+tests/                # pytest gates
+eval/                 # golden tickets
 lib/course_data.py    # CloudWave loaders
 data/                 # synthetic SaaS CSVs / JSON
 mkdocs.yml

@@ -193,6 +193,10 @@ print("Free users have MRR = 0 and churn more. The t-test may just be rediscover
 
     Ship when (1) the interval on the lift is mostly above your *business* threshold, (2) you have looked at the chart, (3) a second slice (another month, another region) rhymes. p < 0.05 is a filter, not a launch button.
 
+!!! warning "A ranker is not a lever"
+
+    Later weeks will rank who looks like they will churn. That is **prediction**. “If we increase usage, they will stay” is **causation**. You get causation from an experiment (this week), not from a feature importance plot (Week 18).
+
 
 ## ✍️ Exercise
 

@@ -189,6 +189,8 @@ print(np.round(X_train_t[:, : len(numeric)].mean(axis=0), 3))
 
     A feature ships if a tired on-call engineer can compute it from *today’s* warehouses for a single `user_id` with no peek at the label table. If you cannot write that function, it is not a feature.
 
+    Email, name, ticket body, `user_id`, `churn_date`, and lifetime `tenure_days` do not go in `X`. `pipelines/contract.py` rejects unknown keys so PII cannot wander in. The one function that builds the row is `pipelines.features.build_features(as_of=...)` — Week 16 and 19 hang the job on it.
+
 
 ## ✍️ Exercise
 

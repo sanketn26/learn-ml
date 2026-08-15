@@ -1,5 +1,7 @@
 # Exercises
 
+ML weeks 16–20 are the job: `as_of` SQL, labels, ranking, `pipelines/`, on-call.
+
 Each ML week has a folder:
 
 ```

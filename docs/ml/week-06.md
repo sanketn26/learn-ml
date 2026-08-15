@@ -206,6 +206,8 @@ plt.show()
 
     Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
 
+    CloudWave’s lifetime churn is ~6.7%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 17](week-17.md) is labels, PR-AUC, and calibration. [Week 18](week-18.md) is the list CS actually uses.
+
 ## Overfitting, bias, and variance — the three words on every ML interview
 
 A model can fail in two opposite ways:

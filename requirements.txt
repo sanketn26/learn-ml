@@ -17,5 +17,8 @@ langgraph>=0.2
 python-dotenv>=1.0
 requests>=2.31
 
+# Warehouse-shaped SQL on the CSVs (week 16)
+duckdb>=1.0
+
 # Dev
 pytest>=7.4

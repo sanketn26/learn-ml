@@ -237,4 +237,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-02.md)
 
 ## 🔗 Next week
 
-Pictures. We will actually plot the dashboard the CFO asked for — not hide it inside a collapsed solution.
+Pictures (Week 3). When you are ready to treat the CSV as a warehouse checkout — with an `as_of` — that is [Week 16](week-16.md). Do it before you train anything you would score on Tuesday.
