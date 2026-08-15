@@ -1,4 +1,4 @@
-"""Week 13 exercises — Week 13 — CNNs: Sliding Detectors.
+"""Week 13 exercises — Week 13 — Ensembles: A Room of Reviewers.
 
 Run from the repo root:
 

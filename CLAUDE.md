@@ -6,7 +6,7 @@ Guidance for working in this repository.
 
 An AI-frameworks learning platform. **Markdown lessons + separate Python exercises**, served with MkDocs on GitHub Pages. No Jupyter.
 
-- **ML Fundamentals** (weeks 0–12 required tabular, 16–20 the job, 13–15 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
+- **ML Fundamentals** (weeks 0–12 required tabular, 16–20 the job, 18–20 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
 - **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full 50k.
 - **LangChain** (7 weeks), **LangGraph** (5), **CrewAI** (4, optional).
 

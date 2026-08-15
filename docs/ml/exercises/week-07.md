@@ -1,9 +1,9 @@
-# Exercises — Week 7 — Regression: Predict a Number, Not a Category
+# Exercises — Week 7 — Classification: A Score, Then a Threshold
 
-Do these after reading [Week 7 — Regression: Predict a Number, Not a Category](../week-07.md).
+Do these after reading [Week 7 — Classification: A Score, Then a Threshold](../week-07.md).
 
-**1. Log target.** Train the forest on `log1p(y)` and `expm1` the predictions. Does MAE on the original scale improve? (Whales often get kinder.)
+**1. Capacity budget.** Assume CS can call 100 test-set users. Sort by forest score, take the top 100, report how many of those actually churned. That is precision at a fixed budget.
 
-**2. Residual slices.** MAE for `free` vs `enterprise`. Where is the model actually bad?
+**2. Threshold sweep.** For thresholds 0.1, 0.2, … 0.9 print flagged, precision, recall. Circle the row you would ship.
 
-**3. Forbidden target.** Create `fake_clv = mrr * (tenure_days / 30)` and train a linear model using `mrr` and `tenure_days`. Marvel at R². Then delete it and never do this at work.
+**3. Ablation.** Retrain the forest without `tenure_days`. How much AUC dies? (Tenure is powerful and a little circular — long-lived users have not churned yet.)

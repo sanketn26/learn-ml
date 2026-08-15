@@ -1,4 +1,6 @@
-"""Week 19 — run the job, do not overwrite prod from train.
+"""Week 19 exercises — Week 19 — RNNs: A Clipboard That Walks the Sequence.
+
+Run from the repo root:
 
     python exercises/ml/week-19/starter.py
 """
@@ -11,14 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from pipelines.train import train
+from lib.course_data import find_data_dir, load_customer_360
+
+DATA = find_data_dir()
 
 
 def main() -> None:
-    meta = train("2024-06-01", ROOT / "artifacts", n=4000)
-    print(meta)
-    print("next: python -m pipelines.promote --candidate artifacts/20240601")
-    print("then: python -m pipelines.score_batch --artifact artifacts/prod --out tonight.csv")
+    print(f"data: {DATA}")
+    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
+    # TODO: implement the tasks in README.md
 
 
 if __name__ == "__main__":

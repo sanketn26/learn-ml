@@ -1,4 +1,4 @@
-"""Week 16 — SQL / as_of extract.
+"""Week 16 — run the job, do not overwrite prod from train.
 
     python exercises/ml/week-16/starter.py
 """
@@ -11,17 +11,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from pipelines.features import build_features
+from pipelines.train import train
 
 
 def main() -> None:
-    as_of = "2024-06-01"
-    df = build_features(as_of=as_of, n=None)
-    print(f"as_of={as_of}  rows={len(df):,}  unique={df['user_id'].nunique():,}")
-    print("TODO 1: count feature_usage rows with date <= as_of vs all")
-    print("TODO 2: assert unique user_id and match at-risk subscriptions")
-    print("TODO 3: compare tenure_days vs tenure_so_far on 5 users")
-    print("TODO 4: min/max of usage and events — latest legal as_of")
+    meta = train("2024-06-01", ROOT / "artifacts", n=4000)
+    print(meta)
+    print("next: python -m pipelines.promote --candidate artifacts/20240601")
+    print("then: python -m pipelines.score_batch --artifact artifacts/prod --out tonight.csv")
 
 
 if __name__ == "__main__":

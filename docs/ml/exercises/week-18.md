@@ -1,11 +1,9 @@
-# Exercises — Week 18 — Rank a List
+# Exercises — Week 18 — CNNs: Sliding Detectors
 
-Do these after reading [Week 18](../week-18.md).
+Do these after reading [Week 18 — CNNs: Sliding Detectors](../week-18.md).
 
-**1. Four rankers.** On a time-split holdout, print precision@80 and recall@80 for: the GBT, `n_support`, `-log_usage`, and random. Circle a ship / don’t-ship.
+**1. Kernel size.** Change `kernel_size` to 5. Does test accuracy move? What did you make the detector look at?
 
-**2. Capacity.** Repeat precision@k for k in `{20, 80, 200}`. What happens to precision as k grows? Write the Slack message to CS if they 4× the budget.
+**2. Dense baseline.** Flatten the 12 weeks into a `nn.Linear(12, 1)` and compare. If they tie, the *shape* was not the signal — the *total* was.
 
-**3. Pre-register.** Write down k *before* you look at the numbers. (You already did: 80.) Changing k after seeing precision is p-hacking. Add a comment in your script that says so.
-
-**4. Causal trap.** In two sentences, reply to: “the model says usage predicts churn, so let’s force people through the tutorial.”
+**3. Draw it.** Sketch one user as 12 boxes and a 3-wide stencil in three positions. Circle the position you think fires on a late-week drop.

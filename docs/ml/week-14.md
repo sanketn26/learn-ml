@@ -1,53 +1,65 @@
-# Week 14 — RNNs: A Clipboard That Walks the Sequence
+# Week 14 — Neural Nets, Without the Mystique
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a fold / reduce, a state machine, or a running total.
+**Who this is for:** Engineers who keep hearing “just use a network.” This week is permission to **not**, plus a picture of what a net actually is.
 
-An **RNN** (Recurrent Neural Network) is a loop with memory: *read the next token, update a hidden state, repeat.*
+We will **not** pretend we taught calculus-level backpropagation.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Draw an RNN as “same function, new input, old clipboard”
-- See why long memory fades (vanishing gradients — in engineer English)
-- Know what LSTM / GRU add (gates = locks on the clipboard)
-- Train a tiny RNN on CloudWave weekly usage
-- Know when to skip RNNs and go to Transformers (next week)
+- Draw a net as an assembly line of mixers + on/off switches
+- See why stacked *linear* layers collapse to one linear layer (so we need activations)
+- Regularize with dropout + early stopping, and read a train/val loss curve
+- Write the four-line **PyTorch training step**: forward → loss → backward → step
+- Decide **GBDT vs net** on a tabular SaaS problem honestly
 
-!!! think "Think of it like… a running total, or a state machine."
+!!! think "Think of it like… an assembly line of mixers."
 
-    You walk a user’s weeks from oldest to newest. After each week you update a small vector — the **hidden state** — the way a cashier updates the subtotal. At the end, that vector is “everything I still remember about this customer.” A linear layer turns it into a churn score.
+    Each hidden layer takes the previous numbers, mixes them (weighted sum), then puts each mix through a cheap non-linear switch (ReLU: “if negative, make it 0”). The last mixer outputs a churn score. Training is *credit assignment*: nudge every weight a tiny bit so tomorrow’s score is less wrong. The library does the calculus (backprop). You do the architecture and the data.
 
 ## If you already write software
 
-An RNN is a `reduce` with a clipboard.
-
-```python
-state = empty
-for token in sequence:
-    state = f(state, token)    # same function, new input, old clipboard
-return state                   # or emit something every step
-```
-
-That is a recurrent net. The “recurrent” part is: **one function, reused, carrying a hidden state forward.**
+A neural net is not magic and not a brain. It is **mixers + switches**, stacked.
 
 ```
-for-loop over events          RNN
-fold / reduce                 hidden state
-iterator                      the time axis
-a bug where you forget        vanishing gradient (memory fades)
+input numbers
+    │
+    ▼
+linear mix     (weighted sum — the same idea as a spreadsheet SUMPRODUCT)
+    │
+    ▼
+switch         (ReLU: if negative, emit 0; else pass through)
+    │
+    ▼
+linear mix
+    │
+    ▼
+switch
+    │
+    ▼
+one number     (a churn score)
 ```
 
-### Why memory fades — and what LSTM/GRU add
+Without the switch, stacked mixers collapse into *one* mixer — you paid for depth and got a linear model. ReLU is the cheap non-linearity that makes depth mean something.
 
-A vanilla RNN multiplies the clipboard by a matrix at every step. Multiply a number by 0.9 twelve times and it is basically gone. Early weeks of usage never reach the churn decision. That is vanishing gradient, in one sentence.
+### Why a GBT still wins on this table
 
-LSTM / GRU add **locks** on the clipboard: forget gate, input gate, output gate. They are not a new philosophy. They are valves so the clipboard can *keep* a fact (“this user was a whale in week 1”) for a long time.
+CloudWave’s Customer 360 is ~15 columns. A gradient-boosted tree will usually beat a small net here, train faster, and be easier to ship. You are learning nets this week so weeks 18–20 (images of usage-over-time, sequences, text) make sense — not because a net is the right churn model.
 
-### When this is the wrong tool
+### Picture the training loop
 
-If you only have a single row per user, there is no sequence. If the sequence is short and positional (12 weeks of usage), a 1-D CNN or a tiny Transformer may be simpler. RNNs still matter as a mental model — “state + new input → new state” — and they still show up in streaming systems.
+```
+for each batch of customers:
+    score = model(features)
+    loss  = how wrong is the score          # the complaint
+    loss.backward()                         # fill in .grad on every weight
+    optimizer.step()                        # nudge weights to be less wrong
+    optimizer.zero_grad()                   # do not accumulate last batch's blame
+```
+
+That is the whole mystery. The library does the calculus (backprop). You pick the architecture, the data, the loss, and when to stop.
 
 !!! tip "Laptop budget"
 
@@ -66,132 +78,199 @@ from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 
-try:
-    import torch
-    import torch.nn as nn
-    import torch.nn.functional as F
-except ImportError as exc:
-    raise SystemExit("PyTorch is missing. Install with:  pip install torch") from exc
-
-torch.manual_seed(0)
-DEVICE = torch.device("cpu")
-print("torch", torch.__version__, "device", DEVICE)
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.neural_network import MLPClassifier
+from sklearn.metrics import roc_auc_score
 ```
 
-## Unrolling the loop
+## Why activations exist — a 30-second proof
+
+If every layer is just `x → Wx + b`, then two layers are `W2(W1x + b1) + b2`, which is some other `W'x + b'`. You built a logistic regression with extra typing.
+
+ReLU (and friends) break that collapse. That is the whole reason they exist.
 
 ```
-h0 = zeros
-h1 = f(h0, week1)
-h2 = f(h1, week2)
-...
-hT = f(hT-1, weekT)  →  score
-
-f is THE SAME function every step. That is the whole trick.
+features ─► mix ─► ReLU ─► mix ─► ReLU ─► mix ─► sigmoid ─► score
+              ▲                  ▲
+              └── without these switches, the whole tower is one line
 ```
 
-!!! math "Math, translated — vanishing memory"
+!!! math "Math, translated — backprop in one sentence"
 
-    Training walks backward through those T steps. If each step multiplies the “how much should I remember?” signal by a number < 1, after 30 steps the early weeks have been multiplied into dust. The model becomes “whatever happened last.” **LSTMs / GRUs** add gates: learned locks that can say “keep this bit unchanged.” They do not magically remember 10,000 steps. They just forget slower.
+    After a batch of examples, we know how wrong the score was. Backprop walks backward through the assembly line and estimates “if I wiggle this weight, does the error go up or down?” Then we wiggle it the helpful way (gradient descent). You will not derive it this week. You will treat it like the compiler: necessary, already written.
 
 ```python
-# Memory fade cartoon: multiply a signal by 0.7, 30 times
-steps = np.arange(1, 31)
-fig, ax = plt.subplots(figsize=(8, 3.2))
-for rho, label in [(0.95, "gate mostly open (0.95)"),
-                   (0.7, "typical tanh/sigmoid (0.7)"),
-                   (0.4, "closed-ish (0.4)")]:
-    ax.plot(steps, rho ** steps, label=label)
-ax.set_xlabel("steps back in time")
-ax.set_ylabel("how much of week-1 still remains")
-ax.set_title("Why vanilla RNNs forget the signup week")
+# Collapse demo: two linear maps == one linear map
+rng = np.random.default_rng(0)
+X = rng.normal(size=(5, 3))
+W1, b1 = rng.normal(size=(3, 4)), rng.normal(size=4)
+W2, b2 = rng.normal(size=(4, 2)), rng.normal(size=2)
+two_layers = (X @ W1 + b1) @ W2 + b2
+W_eq, b_eq = W1 @ W2, b1 @ W2 + b2
+one_layer = X @ W_eq + b_eq
+print("Max difference between 2 linear layers and 1 equivalent layer:",
+      np.max(np.abs(two_layers - one_layer)))
+print("That number should be ~0. Activations are what make depth real.")
+```
+
+## CloudWave bake-off — sklearn MLP vs logistic vs GBT
+
+We use `MLPClassifier` so this week runs **without TensorFlow**. Same idea as Keras `Dense` layers.
+
+```python
+df = load_customer_360(DATA)
+numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
+X = df[numeric + ["plan_type"]]
+y = df["is_churned"].astype(int)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+# A further val split so we can draw a learning curve
+X_tr, X_val, y_tr, y_val = train_test_split(
+    X_train, y_train, test_size=0.2, random_state=0, stratify=y_train
+)
+prep = ColumnTransformer([
+    ("num", StandardScaler(), numeric),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), ["plan_type"]),
+])
+X_tr_t, X_val_t, X_test_t = prep.fit_transform(X_tr), prep.transform(X_val), prep.transform(X_test)
+
+def report(name, model, Xt=X_tr_t, Xv=X_test_t):
+    model.fit(Xt, y_tr if Xt is X_tr_t else y_train)
+    # fitted on the matching labels — keep it simple below
+    return name, model
+
+results = []
+for name, model, xfit, yfit, xeval in [
+    ("logreg", LogisticRegression(max_iter=1000), X_tr_t, y_tr, X_test_t),
+    ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42), X_tr_t, y_tr, X_test_t),
+    ("mlp", MLPClassifier(hidden_layer_sizes=(16, 8), activation="relu",
+                          max_iter=20, random_state=42), X_tr_t, y_tr, X_test_t),
+    ("mlp+dropout-ish", MLPClassifier(hidden_layer_sizes=(16, 8), activation="relu",
+                          alpha=0.01, max_iter=20, random_state=42), X_tr_t, y_tr, X_test_t),
+]:
+    model.fit(xfit, yfit)
+    auc = roc_auc_score(y_test, model.predict_proba(xeval)[:, 1])
+    results.append((name, auc))
+    print(f"{name:<18} AUC={auc:.3f}")
+```
+
+## The one plot a net owes you: train vs validation loss
+
+If train loss keeps falling and val loss turns up, you are memorizing. **Early stopping** = take the checkpoint when val was best. **Dropout** (in Keras; here we use `alpha` L2 as the cousin) = randomly break mixers so no single path can memorize.
+
+```python
+mlp = MLPClassifier(hidden_layer_sizes=(24, 12), activation="relu",
+                    max_iter=25, random_state=42, early_stopping=True,
+                    validation_fraction=0.2, n_iter_no_change=5)
+mlp.fit(prep.fit_transform(X_train), y_train)
+
+fig, ax = plt.subplots(figsize=(8, 3.4))
+ax.plot(mlp.loss_curve_, label="train loss", color="#1d4ed8")
+if hasattr(mlp, "validation_scores_"):
+    ax.plot(1 - np.array(mlp.validation_scores_), label="val error (1 − acc)", color="#b45309")
+ax.set_xlabel("epoch (one pass over the data)")
+ax.set_title("Learning curve — stop when the orange line stops helping")
 ax.legend()
 plt.tight_layout()
 plt.show()
+
+print("Test AUC (early-stopped MLP):",
+      f"{roc_auc_score(y_test, mlp.predict_proba(prep.transform(X_test))[:,1]):.3f}")
+print("On this table, GBT is usually equal or better. That is the lesson.")
 ```
 
-## Same CloudWave sequences as Week 13, new `forward`
+## PyTorch — NumPy with a tape recorder
 
-```python
-X, y = load_weekly_usage_grid(DATA, random_state=1)
-rng = np.random.default_rng(1)
-idx = rng.permutation(len(X))
-cut = int(0.8 * len(X))
-Xtr, Xte = X[idx[:cut]], X[idx[cut:]]
-ytr, yte = y[idx[:cut]], y[idx[cut:]]
-print(Xtr.shape, "churn", float(ytr.mean()))
+Week 0 promised this. A `torch.tensor` is a NumPy array that **remembers the recipe**. `loss.backward()` walks the recipe and fills `.grad` on every weight. `optimizer.step()` nudges the weights the helpful way.
+
+```
+batch of rows
+    │  forward
+    ▼
+  logits → loss
+    │  backward  (the library’s calculus)
+    ▼
+  .grad on every weight
+    │  step
+    ▼
+  slightly less-wrong weights
 ```
 
-## Vanilla RNN, then a GRU
-
-`nn.RNN` / `nn.GRU` want `(batch, time, features)` when `batch_first=True`.
+Install once: `pip install torch` (CPU is enough for this course).
 
 ```python
-class SequenceNet(nn.Module):
-    def __init__(self, kind="gru", hidden=16):
-        super().__init__()
-        cell = {"rnn": nn.RNN, "gru": nn.GRU}[kind]
-        self.rnn = cell(input_size=1, hidden_size=hidden, batch_first=True)
-        self.head = nn.Linear(hidden, 1)
+try:
+    import torch
+    import torch.nn as nn
+except ImportError:
+    raise SystemExit("PyTorch is missing. Install with:  pip install torch") from None
 
-    def forward(self, x):
-        # x: (B, T) → (B, T, 1)
-        out, h = self.rnn(x.unsqueeze(-1))
-        last = out[:, -1, :]                 # clipboard after the final week
-        return self.head(last).squeeze(-1)
+torch.manual_seed(0)
+x = torch.tensor([2.0, 3.0], requires_grad=True)
+y = (x ** 2).sum()          # 4 + 9 = 13
+y.backward()
+print("x      ", x.tolist())
+print("y      ", float(y))
+print("x.grad ", x.grad.tolist(), "  ← d(x1²+x2²)/dx = 2x")
 
-def fit(kind, epochs=8):
-    model = SequenceNet(kind)
-    opt = torch.optim.Adam(model.parameters(), lr=1e-2)
-    rows = []
-    for _ in range(epochs):
-        model.train()
-        xb = torch.tensor(Xtr)
-        yb = torch.tensor(ytr, dtype=torch.float32)
-        loss = F.binary_cross_entropy_with_logits(model(xb), yb)
-        opt.zero_grad(); loss.backward(); opt.step()
-        model.eval()
-        with torch.no_grad():
-            te = F.binary_cross_entropy_with_logits(
-                model(torch.tensor(Xte)), torch.tensor(yte, dtype=torch.float32)
-            )
-        rows.append((float(loss), float(te)))
-    return model, np.array(rows)
+# Same CloudWave table, now as tensors
+Xt = torch.tensor(np.asarray(X_tr_t, dtype=np.float32))
+yt = torch.tensor(y_tr.to_numpy(), dtype=torch.float32).unsqueeze(1)
+Xv = torch.tensor(np.asarray(X_test_t, dtype=np.float32))
+yv = torch.tensor(y_test.to_numpy(), dtype=torch.float32).unsqueeze(1)
 
-fig, ax = plt.subplots(figsize=(8, 3.6))
-for kind, color in [("rnn", "#64748b"), ("gru", "#1d4ed8")]:
-    _, hist = fit(kind)
-    ax.plot(hist[:, 0], ls="--", color=color, alpha=0.5)
-    ax.plot(hist[:, 1], color=color, label=f"{kind} test loss")
-ax.set_title("Dashed = train, solid = test — GRU should forget slower")
-ax.set_xlabel("epoch"); ax.legend()
+net = nn.Sequential(
+    nn.Linear(Xt.shape[1], 16),
+    nn.ReLU(),
+    nn.Linear(16, 1),          # one logit; sigmoid lives in the loss
+)
+opt = torch.optim.Adam(net.parameters(), lr=1e-2)
+loss_fn = nn.BCEWithLogitsLoss()
+
+train_losses, val_aucs = [], []
+net.train()
+for epoch in range(12):
+    opt.zero_grad()
+    logits = net(Xt)
+    loss = loss_fn(logits, yt)
+    loss.backward()
+    opt.step()
+    train_losses.append(float(loss))
+    with torch.no_grad():
+        scores = torch.sigmoid(net(Xv)).numpy().ravel()
+        val_aucs.append(roc_auc_score(y_test, scores))
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
+axes[0].plot(train_losses, color="#1d4ed8")
+axes[0].set_title("PyTorch train loss")
+axes[0].set_xlabel("epoch")
+axes[1].plot(val_aucs, color="#0f766e")
+axes[1].set_title("Holdout AUC while we train")
+axes[1].set_xlabel("epoch")
 plt.tight_layout()
 plt.show()
+print(f"Final holdout AUC: {val_aucs[-1]:.3f}")
+print("Remember the four calls: zero_grad → forward → backward → step.")
 ```
-
-## LSTM / GRU gates, in English
-
-| Gate | Plain English |
-|---|---|
-| Forget / reset | “Throw this bit of the clipboard away” |
-| Input / update | “Write the new week in” |
-| Output | “What part of the clipboard is the answer *this* step” |
-
-You do not tune gates by hand. The training loop learns when to lock.
-
-!!! engineer "Engineer mental model"
-
-    An RNN is a `for` loop you can backprop through. That loop is **sequential** — week 7 cannot start until week 6 is done — so GPUs hate long RNNs. Transformers (next week) look at every week at once. That is why industry moved.
-
 
 !!! warning "Watch out"
 
-    Teacher forcing, packed sequences, bidirectional RNNs — you will see the words. They are implementation details around the same clipboard. Do not start there. Start with “last hidden state → linear.”
+    Forget `optimizer.zero_grad()` and gradients *pile up* — the model walks off a cliff. Forget `model.eval()` later and dropout will stay on at serve time. A 32-16-8 net on 5 columns is still theatre: depth does not invent information that is not in the features.
 
 
 !!! success "Ship / don’t ship"
 
-    A small GRU is still fine for *short* sensor traces and on-device models. For language, search, and anything longer than a few dozen steps, ship a Transformer (or call an API that already is one).
+    **Tabular SaaS, < ~100k rows, mixed columns → gradient-boosted trees.**
+
+    **Images, text, audio, long sequences → deep learning.**
+
+    A net is not “more serious.” It is a different tool. Pick the one you can monitor at 3 a.m.
 
 
 ## ✍️ Exercise
@@ -200,10 +279,11 @@ When you can explain the week out loud, do the [exercises](exercises/week-14.md)
 
 ## 🤔 Reflection
 
-1. How is an RNN like a fold/reduce? How is it not (the body is learned)?
-2. Why did vanishing gradients hurt signup-week features more than last-week features?
-3. Why are RNNs slow on a GPU compared to a CNN or a Transformer?
+1. What problem is the activation function solving, in your own words?
+2. Who owns backprop on your team — you, or the library? What do you still own?
+3. Name one product surface at CloudWave where a net *would* be the right call (e.g. search ranking on ticket text).
+4. In one sentence: what does `loss.backward()` put on each weight?
 
 ## 🔗 Next week
 
-Transformers: throw away the clipboard. Every week (or word) looks at every other one, in parallel.
+Capstone for the *tabular* path. After that: CNNs, RNNs, and Transformers — the architectures you actually mean when you say “deep learning.”

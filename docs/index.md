@@ -10,7 +10,7 @@ Every idea starts as something you already know — a SQL join, an API contract,
 
     ---
 
-    Weeks 0–12 plus the job (16–20). Optional deep learning 13–15.
+    21 weeks (0–20). The job is 0–17. Deep learning 18–20 is optional.
 
     Analogies first. Formulas only as “math, translated.”
 

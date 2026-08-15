@@ -1,4 +1,4 @@
-"""Week 07 exercises — Week 7 — Regression: Predict a Number, Not a Category.
+"""Week 7 exercises — Week 7 — Classification: A Score, Then a Threshold.
 
 Run from the repo root:
 

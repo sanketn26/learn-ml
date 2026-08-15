@@ -1,23 +1,20 @@
-# Week 4 — “Is This Real, or Just Noise?”
+# Week 4 — Charts That Change a Decision
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who ship A/B tests and get asked “but is it significant?” You do not need a stats degree.
-
-We will **not** memorize a zoo of tests. We will make one decision carefully, then keep a flowchart for later.
+**Who this is for:** Engineers who will paste a chart into Slack or a board deck. Not a design class.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Translate a p-value into a sentence a PM cannot misuse
-- Run the actual “8 / 50 vs 12 / 60” launch question — and see it fail to reject
-- Draw a confidence interval as “a range of plausible true rates”
-- Know which test matches your column types
-- Refuse to ship on p &lt; 0.05 alone
+- Pick a chart the way you pick a data structure — by the *question*
+- Build a one-page CloudWave dashboard that actually renders
+- Read a cohort heatmap without being fooled by “new customers look loyal”
+- Spot a dishonest chart (truncated axis, rainbow pie)
 
-!!! think "Think of it like… a code review, or a courtroom."
+!!! think "Think of it like… picking an API response shape."
 
-    The **null hypothesis** is the boring default: “these two plans churn the same; the difference is luck.” You do *not* prove the new plan works. You ask: *if they were the same, how often would luck produce a gap this big?* That frequency is the p-value. Innocent until proven guilty. High bar to convict.
+    A line chart is a time series. A bar chart is a group-by. A scatter is a join between two metrics. A heatmap is a group-by on *two* keys. A pie chart is an unreadable JSON blob with a color theme.
 
 ```python
 from lib.course_data import find_data_dir, load_customer_360
@@ -28,174 +25,180 @@ DATA = find_data_dir()
 
 ## If you already write software
 
-A p-value is a flaky-test statistic, not a trophy.
+A chart is an API response. You pick the shape for the question, not because seaborn has a pretty default.
 
-You already know this feeling: a test failed once on CI. Is the build broken, or did the suite sneeze? You do not ship on one red run. You ask: *if the code were fine, how often would this fail anyway?*
+| Question | Chart | Same idea as |
+|---|---|---|
+| How is this changing? | line | a time-series metric |
+| Which group is worst? | bar | a `GROUP BY` |
+| Do these two numbers move together? | scatter | a join of two metrics |
+| Two keys at once (cohort × month)? | heatmap | a pivot table |
+| Share of a whole? | almost never a pie | an unreadable JSON blob |
 
-That frequency is the p-value.
+### What makes a chart honest
+
+Truncating a y-axis from 47% to 51% is the same as returning `{ "uptime": 99.99 }` while hiding that you redefined the denominator. The axis is part of the contract.
+
+A cohort heatmap fools people the same way a “new users are so engaged!” dashboard does: the newest column has not had time to churn yet. Always read a cohort *diagonally* — same age, different signup month.
+
+### Picture the dashboard as a PR
+
+If you would not ship a SQL query without a denominator, do not ship a chart without:
+
+1. a clear question in the title
+2. axes that start at a truthful place
+3. a sample size (n=) somewhere visible
+
+## 🏢 Scenario — one page for the CFO
+
+Your CFO wants, on one screen:
+
+1. Is churn getting worse?
+2. Which plan is the leak?
+3. Do engaged customers stay?
+4. Do older signup cohorts retain?
+
+!!! tip "Visual cue — chart chooser"
+
+    **Trend over time** → line. **Compare categories** → bar. **Relationship** → scatter. **Two categorical axes + a rate** → heatmap. **Distribution** → histogram or box. **Share of 100%** → still a bar, not a pie (people cannot compare slice angles).
+
+## Why not a pie chart
 
 ```
-Null hypothesis     “these two plans churn the same; the gap is luck”
-p-value             how often a no-difference world produces a gap this big
-0.05 threshold      a house style, not a law of nature
-significant         “weird enough that luck is an awkward explanation”
-NOT significant     “we do not know yet”  ← not “they are equal”
+Pie:     [/////####......]   which slice is bigger — #### or .....?
+Bar:     Pro         ████
+         Starter     ██████
+         Free        ████████████
 ```
 
-### What a p-value is not
-
-- Not “the probability we are wrong”
-- Not “the probability Premium is worse”
-- Not “how big the effect is” (that is the effect size / the interval)
-- Not permission to ship
-
-`8/50` vs `12/60` *looks* like Premium wins. With that few customers, coin-flips produce a 4-point gap all the time. The PM sees 16% vs 20%. You see a sample size.
-
-### Picture the courtroom
-
-Innocent until proven guilty. The null is the defendant. You need a high bar to convict. Failing to convict is not the same as proving innocence — it means “go get more data, or pick a bigger effect to care about.”
-
-## 🏢 Scenario — should we roll out Premium?
-
-Early data:
-
-| Plan | Churned | Customers | Rate |
-|---|---|---|---|
-| Premium | 8 | 50 | **16%** |
-| Standard | 12 | 60 | **20%** |
-
-A PM sees “Premium is better.” An engineer asks: **with this few customers, how often would a 4-point gap appear by coin-flip?**
-
-!!! engineer "Engineer mental model"
-
-    A p-value is *not* “the probability we are wrong.” It is not “the probability Premium is worse.” It is: **how often a world with no real difference produces a result this spicy.** Same idea as “how often would this flaky test fail on a green build?”
-
-## Visual: luck can look like a win
-
-We will fake 10,000 worlds where both plans truly churn at 18%. In each world, draw 50 + 60 customers. Plot the Premium − Standard gap. Then mark the gap we actually saw (−4 points).
+If the point is “free is the biggest bucket,” a sorted bar wins in 200ms of eye time.
 
 ```python
-rng = np.random.default_rng(42)
-true_rate = 0.18
-n_prem, n_std = 50, 60
-observed_gap = 8 / 50 - 12 / 60  # -0.04
+subs = pd.read_csv(DATA / "subscriptions.csv", parse_dates=["signup_date", "churn_date"])
+usage = pd.read_csv(DATA / "feature_usage.csv")
 
-sim_gaps = rng.binomial(n_prem, true_rate, 10_000) / n_prem - rng.binomial(n_std, true_rate, 10_000) / n_std
+subs["signup_month"] = subs["signup_date"].dt.to_period("M").dt.to_timestamp()
 
-fig, ax = plt.subplots(figsize=(9, 3.8))
-ax.hist(sim_gaps, bins=40, color="#93c5fd", edgecolor="white")
-ax.axvline(observed_gap, color="#b91c1c", lw=2, label=f"observed gap {observed_gap:.0%}")
-ax.axvline(0, color="#334155", ls="--", label="no difference")
-ax.set_title("If both plans were 18% churn, 4-point gaps happen all the time")
-ax.set_xlabel("Premium rate − Standard rate")
-ax.legend()
-plt.tight_layout()
-plt.show()
+usage_by_user = usage.groupby("user_id").agg(
+    total_usage=("usage_count", "sum"),
+    features_adopted=("feature_name", "nunique"),
+).reset_index()
+df = subs.merge(usage_by_user, on="user_id", how="left")
+df["total_usage"] = df["total_usage"].fillna(0)
+df["features_adopted"] = df["features_adopted"].fillna(0)
 
-p_two_sided = (np.abs(sim_gaps) >= abs(observed_gap)).mean()
-print(f"Share of fake worlds with a gap at least this big: {p_two_sided:.2f}")
-print("That is a p-value, built with a for-loop in your head instead of a formula.")
-```
+# 1) churn by plan
+churn_plan = df.groupby("plan_type")["is_churned"].mean().reindex(
+    ["free", "starter", "pro", "enterprise"]
+)
 
-## The same answer, with a library test
+# 2) churn by signup month (careful: recent months have had less time to churn)
+churn_month = df.groupby("signup_month")["is_churned"].mean()
 
-Chi-squared (or Fisher’s exact, for tiny counts) is the grown-up version of the histogram above.
+# 3) engagement vs outcome
+sample = df.sample(min(4000, len(df)), random_state=7)
 
-!!! math "Math, translated"
+fig, axes = plt.subplots(2, 2, figsize=(11, 8))
 
-    p ≈ 0.03 means: *in a no-difference world, about 3 in 100 reruns look this extreme.* It does **not** mean “there is a 3% chance Premium is a bad idea.”
+churn_plan.plot(kind="bar", ax=axes[0, 0], color="#6366f1", rot=0)
+axes[0, 0].set_title("Churn rate by plan — free is the leaky bucket")
+axes[0, 0].set_ylabel("churn rate")
+axes[0, 0].set_ylim(0, 0.15)
 
-```python
-table = np.array([[8, 42],   # premium: churned, retained
-                  [12, 48]])  # standard
-chi2, p, dof, expected = stats.chi2_contingency(table)
-print("Chi-squared p-value on the 8/50 vs 12/60 story:", round(p, 3))
-print("Expected counts if plans were equal:\n", expected.round(1))
-print("\nVerdict: p is large. We do NOT have enough evidence to declare Premium better.")
-print("Ship decision: keep collecting data. Do not rewrite billing based on 110 customers.")
-```
+churn_month.plot(ax=axes[0, 1], marker="o", color="#0f766e")
+axes[0, 1].set_title("Churn by signup month — recent months look 'better'")
+axes[0, 1].set_ylabel("churn rate")
+axes[0, 1].annotate("haven't had time\nto churn yet →",
+                    xy=(0.72, 0.2), xycoords="axes fraction", color="#b45309")
 
-## Now the full CloudWave table
+axes[1, 0].scatter(sample["features_adopted"], sample["is_churned"]
+                   + np.random.default_rng(0).normal(0, 0.03, len(sample)),
+                   alpha=0.15, s=12, c="#1d4ed8")
+axes[1, 0].set_title("Features adopted vs churned (jittered 0/1)")
+axes[1, 0].set_xlabel("distinct features used")
+axes[1, 0].set_ylabel("churned (jittered)")
 
-Same question, real `subscriptions.csv`. More customers → the same 4-point gap would be a much bigger deal.
+# 4) tenure distribution by outcome
+df.boxplot(column="tenure_days", by="is_churned", ax=axes[1, 1], grid=False)
+axes[1, 1].set_title("Tenure by churn flag — churners leave earlier")
+axes[1, 1].set_xlabel("is_churned")
+axes[1, 1].get_figure().suptitle("")
 
-!!! tip "Visual cue — which test?"
-
-    **Category vs category** (plan × churned) → chi-squared.
-
-    **Number vs 2 groups** (MRR for churned vs not) → t-test (or Mann-Whitney if the histogram is a whale-tail).
-
-    **Number vs 3+ groups** (usage by region) → ANOVA, then look at the picture before you trust the p.
-
-```python
-subs = pd.read_csv(DATA / "subscriptions.csv")
-
-ct = pd.crosstab(subs["plan_type"], subs["is_churned"])
-print("Counts:\n", ct)
-chi2, p, dof, expected = stats.chi2_contingency(ct)
-print(f"\nChi-squared p-value across all plans: {p:.2e}")
-
-rates = subs.groupby("plan_type")["is_churned"].agg(["mean", "count"])
-# Wilson-style interval via the binomial (good enough picture)
-cis = []
-for plan, row in rates.iterrows():
-    lo, hi = stats.binom.interval(0.95, int(row["count"]), row["mean"])
-    cis.append((plan, row["mean"], lo / row["count"], hi / row["count"], row["count"]))
-ci_df = pd.DataFrame(cis, columns=["plan", "rate", "lo", "hi", "n"]).set_index("plan")
-print("\n95% range of plausible churn rates:")
-print(ci_df.round(3))
-
-fig, ax = plt.subplots(figsize=(8, 3.6))
-y = np.arange(len(ci_df))
-ax.errorbar(ci_df["rate"], y,
-            xerr=[ci_df["rate"] - ci_df["lo"], ci_df["hi"] - ci_df["rate"]],
-            fmt="o", color="#1d4ed8", capsize=4)
-ax.set_yticks(y, ci_df.index)
-ax.set_xlabel("churn rate")
-ax.set_title("Confidence interval = plausible range for the true rate, not a vote of confidence")
 plt.tight_layout()
 plt.show()
 ```
 
-## A number vs two groups — do churners pay less?
+## Cohort heatmap — the chart that fools smart people
 
-T-test asks: “is the difference in average MRR bigger than the usual jitter in averages?”
-
-```python
-churned = subs.loc[subs["is_churned"] == 1, "mrr"]
-kept = subs.loc[subs["is_churned"] == 0, "mrr"]
-t, p = stats.ttest_ind(churned, kept, equal_var=False)
-print(f"Mean MRR churned={churned.mean():.1f}  kept={kept.mean():.1f}")
-print(f"Welch t-test p={p:.3g}")
-
-fig, ax = plt.subplots(figsize=(8, 3.4))
-ax.hist(kept.clip(upper=200), bins=40, alpha=0.6, label="kept", color="#22c55e")
-ax.hist(churned.clip(upper=200), bins=40, alpha=0.7, label="churned", color="#ef4444")
-ax.set_title("MRR distributions (clipped at $200) — look before you t-test")
-ax.set_xlabel("MRR")
-ax.legend()
-plt.tight_layout()
-plt.show()
-
-print("Free users have MRR = 0 and churn more. The t-test may just be rediscovering the free plan.")
-```
+**30-day retention** for the cohort that signed up *last week* is not comparable to the cohort from a year ago. Young cohorts have not had time to die.
 
 !!! warning "Watch out"
 
-    - **p-hacking:** 20 slices of the data will produce one “p < 0.05” by accident. Pre-register the question, or treat extra slices as exploration.
+    A heatmap that is bright-green in the bottom rows (newest signups) often means *they are still new*, not that you suddenly built a better product. Gray-out cells that have not reached that age.
 
-    - **Significance ≠ importance:** with 50,000 rows, a 0.2% churn gap can be “significant” and still not worth an engineering quarter.
 
-    - **CI overlap** is a sloppy shortcut. Look at the interval on the *difference*, or just look at dollars.
+!!! engineer "Engineer mental model"
 
+    A cohort chart is a two-key group-by: `(signup_month, age_bucket) → retained_rate`. Same as a SQL cube. The visual is optional; the grain is not.
+
+```python
+# Simple age-at-observation proxy using tenure_days + churn
+# Active customers: tenure is how long they have lived so far
+# Churned customers: tenure is how long they lived before leaving
+
+def retention_at(days: int, frame: pd.DataFrame) -> pd.Series:
+    # Eligible = old enough to have reached `days`.
+    # Still-active users with short tenure have not had time to churn — drop them.
+    eligible = frame.copy()
+    too_young = (eligible["is_churned"] == 0) & (eligible["tenure_days"] < days)
+    eligible = eligible[~too_young]
+    retained = eligible["tenure_days"] >= days
+    return eligible.assign(retained=retained).groupby("signup_month")["retained"].mean()
+
+months = sorted(df["signup_month"].dropna().unique())
+ages = [30, 60, 90]
+heat = pd.DataFrame({f"{d}d": retention_at(d, df) for d in ages})
+
+fig, ax = plt.subplots(figsize=(7, 6))
+sns.heatmap(heat.tail(18), annot=True, fmt=".2f", cmap="YlGnBu", ax=ax, vmin=0.7, vmax=1)
+ax.set_title("Retention by signup month × age — read across a row")
+ax.set_ylabel("signup month")
+plt.tight_layout()
+plt.show()
+
+print("Read a row: of people who signed up that month and are old enough,")
+print("what fraction lived at least 30 / 60 / 90 days.")
+```
+
+## Bad chart vs honest chart
+
+Same data. One lies with a truncated axis.
+
+```python
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+churn_plan.plot(kind="bar", ax=axes[0], color="#ef4444", rot=0)
+axes[0].set_ylim(0.03, 0.10)
+axes[0].set_title("❌ Dishonest: axis starts at 3%")
+axes[0].set_ylabel("churn rate")
+
+churn_plan.plot(kind="bar", ax=axes[1], color="#22c55e", rot=0)
+axes[1].set_ylim(0, 0.15)
+axes[1].set_title("✅ Honest: axis starts at 0")
+axes[1].set_ylabel("churn rate")
+plt.tight_layout()
+plt.show()
+
+print("The left chart makes starter vs pro look like a crisis.")
+print("The right chart says: all paid plans are similar; free is different.")
+```
 
 !!! success "Ship / don’t ship"
 
-    Ship when (1) the interval on the lift is mostly above your *business* threshold, (2) you have looked at the chart, (3) a second slice (another month, another region) rhymes. p < 0.05 is a filter, not a launch button.
+    - **Slack / debugging:** default Pandas/Seaborn is fine. Label axes. Start bars at 0.
 
-!!! warning "A ranker is not a lever"
+    - **Board deck:** one sentence title that is the insight, not the chart type. “Free churn is 2× paid,” not “Churn by plan.”
 
-    Later weeks will rank who looks like they will churn. That is **prediction**. “If we increase usage, they will stay” is **causation**. You get causation from an experiment (this week), not from a feature importance plot (Week 18).
+    - **Never:** dual axes, 3-D bars, pie-of-pies, rainbow on unordered categories.
 
 
 ## ✍️ Exercise
@@ -204,10 +207,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-04.md)
 
 ## 🤔 Reflection
 
-1. Explain a p-value to a PM in one sentence without the word “significant.”
-2. Why did 8/50 vs 12/60 fail, while the full table’s plan comparison did not?
-3. You ran 12 ad-hoc tests on one Friday. How many “wins” do you expect by luck at α = 0.05?
+1. A region’s churn *looks* high. List five non-product reasons (pricing, support hours, competitor, sales quality, data bug).
+2. Feature adoption correlates with lower churn. Draw the causation arrow both ways.
+3. Which one chart would you send the CEO, and which sentence sits above it?
 
 ## 🔗 Next week
 
-Feature engineering — turning Customer 360 columns into the **API contract** of a model, without leaking the future into the past.
+The CFO asks: “16% vs 20% churn — is that real?” We will answer without turning you into a statistician.

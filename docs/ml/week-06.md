@@ -1,54 +1,53 @@
-# Week 6 — Classification: A Score, Then a Threshold
+# Week 6 — Features Are the Model’s API
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a spam filter, a linter, or a “risk score.” Same shape.
+**Who this is for:** Engineers who have designed request payloads. Feature engineering is that, plus a timeline rule.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Explain a model as `f(features) → score in [0, 1]`, then a **threshold**
-- Always beat a **baseline** (predict “nobody churns”) before celebrating AUC
-- Read a confusion matrix in customers, not jargon
-- See why precision vs recall is a **staffing** problem
-- Glance at a decision tree — the only model you can literally read
-- Recognize **underfit (high bias)** vs **overfit (high variance)** on a picture
+- Treat a feature vector as a **versioned contract** the training job and the `/predict` handler must share
+- Scale numbers so “dollars” and “click counts” can sit in the same model
+- One-hot encode `plan_type` without treating free &lt; starter &lt; pro as a number line
+- **Fit the scaler on train only** — the leak that will follow you to production
+- Draw a wall between “known at score time” and “the future”
 
-!!! think "Think of it like… a code-review bot."
+!!! think "Think of it like… an API contract + a time machine rule."
 
-    The model does not “know” who will churn. It outputs a risk score, like a linter warning level. You choose the cutoff: flag everything above 0.3 (noisy, catch more) or only above 0.7 (quiet, miss more). The algorithm did not make that product decision. You did.
+    The model only sees the JSON you send it. If a field would not exist when you score a live user at noon on Tuesday, it cannot exist in training either. That is leakage: the model cheated on the exam by reading tomorrow’s answer key.
 
 ## If you already write software
 
-A classifier is not a fortune teller. It is a function that returns a **score**, and then *you* pick a **threshold** — exactly like a linter warning level or a WAF rule.
+A feature vector is an API contract.
+
+`/predict` accepts a JSON body. Training must build *that same body* from historical rows. If a field would not exist at noon on Tuesday when you score a live user, it cannot exist in the training table. That is leakage: the model read tomorrow’s answer key.
 
 ```
-features  →  model  →  score in [0, 1]  →  if score >= t: flag
-                                              ↑
-                                    this is a product decision
-                                    not an algorithm decision
+Training job                         Scoring service
+────────────                         ──────────────
+row → features → model.fit           request JSON → same features → model.predict
+scaler.fit(X_train)                  scaler.transform(X_live)   ← same scaler pickle
+never touch X_test to fit            never invent fields the client cannot send
 ```
 
-- Low threshold (0.3): noisy Slack channel, catch more real churn
-- High threshold (0.7): quiet channel, miss more real churn
+### The time-machine rule
 
-Precision vs recall is a **staffing** problem. High recall means the CS team gets more names. Can they call them? If not, you did not “improve the model.” You created a junk queue.
+Ask of every column: **would I have known this at score time?**
 
-### Always beat a dummy
+| Column | Known at score time? | Keep? |
+|---|---|---|
+| `plan_type`, `mrr`, `tenure_so_far` | yes | yes |
+| `usage_last_30d` | yes, if you compute it from events before now | yes |
+| `churn_date` / `is_churned` | that is the label | **target, not a feature** |
+| `days_until_churn` | future | leak, delete |
+| `avg_sentiment_after_cancel` | future | leak, delete |
 
-The dummy baseline here is “predict nobody churns” (or “predict the majority class”). If your fancy model cannot beat that, you built a weather app that says “today’s weather will be like yesterday” and lost to it.
+### Picture the scaler
 
-### Picture underfit vs overfit
+`StandardScaler` subtracts the mean and divides by the std. If you fit it on train+test, test information leaked into the transform. It is the same bug as using production traffic to tune a cache key, then being surprised the benchmark looks good.
 
-```
-Underfit (high bias)     a one-line linter that only flags `== null`
-                         misses almost everything, stable and useless
-
-Overfit (high variance)  a linter that memorized last Tuesday’s PR
-                         perfect on the training set, random on the next one
-```
-
-The picture you want: a model that is *slightly* wrong on train and *similarly* wrong on a held-out week. That is generalization. Memorizing the training customers is not intelligence.
+The scaler **is part of the model**. It ships in the same pickle. New data gets `transform` only.
 
 !!! tip "Laptop budget"
 
@@ -71,201 +70,126 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.dummy import DummyClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier, plot_tree
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import (roc_auc_score, roc_curve, confusion_matrix,
-                             precision_score, recall_score, ConfusionMatrixDisplay)
 ```
 
-## What “logistic regression” actually is
+## 🏢 Scenario — churn features the scoring service can actually compute
 
-Ignore the word *regression*. This is a classifier.
+We want to flag accounts that will cancel. At score time we know:
+
+- plan, MRR, tenure so far, usage so far, events so far
+
+We do **not** know `churn_date`. We must not sneak it in as `has_churn_flag`.
 
 ```
-score = sigmoid( w1*mrr + w2*usage + w3*tenure + ... + b )
-         └── squash any number into (0, 1), like a probability
+ timeline:  signup -------- now -------- churn?
+                       ▲
+                       └── score time. Nothing to the right of this wall
+                           may enter X. The label y may look right of the wall.
 ```
 
-If the weighted sum is large and positive → score near 1 (likely churn).  
-If it is large and negative → score near 0.
+!!! engineer "Engineer mental model"
 
-!!! math "Math, translated"
-
-    The sigmoid is just a soft on/off switch. You do not need its formula. You need: *weighted sum of features, then squeezed into a probability-like score.*
+    Features = request body. Scaler + encoder = middleware that *must ship next to the .pkl*. If production sends raw dollars and the model expects “standard deviations from the training mean,” every score is garbage and nobody gets a stack trace.
 
 ```python
 df = load_customer_360(DATA)
-numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
+print(df.shape)
+print(df[["user_id", "plan_type", "mrr", "tenure_days", "total_usage",
+          "features_adopted", "total_events", "is_churned"]].head())
+print("\nLabel rate (churned):", df["is_churned"].mean().round(3))
+```
+
+## Scaling — why trees shrug and linear models panic
+
+`mrr` is 0–500. `total_usage` can be tens of thousands. A linear model / k-means / neural net **adds** these numbers. The big column shouts down the small one.
+
+A tree only asks “is usage &gt; 40?” — units do not matter.
+
+!!! math "Math, translated"
+
+    `StandardScaler`: subtract the column’s mean, divide by its standard deviation. After that, “1” means “one typical-spread above average,” the same z-score idea from Week 1. `log1p(usage)` is “compress the whales so they do not own the axis.”
+
+```python
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.4))
+axes[0].hist(df["total_usage"].clip(upper=np.percentile(df["total_usage"], 99)),
+             bins=30, color="#6366f1")
+axes[0].set_title("Raw usage — whales squash the axis")
+
+axes[1].hist(df["log_usage"], bins=30, color="#0f766e")
+axes[1].set_title("log1p(usage) — readable shape")
+
+# WRONG: scaler fit on everyone. We show it only to picture the shape.
+demo = StandardScaler().fit_transform(df[["total_usage"]])
+axes[2].hist(demo, bins=30, color="#f59e0b")
+axes[2].set_title("StandardScaler(usage) — mean 0, still skewed")
+for ax in axes:
+    ax.set_ylabel("users")
+plt.tight_layout()
+plt.show()
+
+print("Trees: raw is fine.  Linear / k-means / nets: log then scale, and fit on TRAIN only.")
+```
+
+## Categories are not numbers
+
+`plan_type` is free / starter / pro / enterprise. If you map those to 0,1,2,3 you are telling the model “enterprise is three more than free” and “the step from free→starter equals starter→pro.” Sometimes that is true. Usually it is a lie.
+
+**One-hot:** four yes/no columns. Honest, a bit wide.
+
+!!! warning "Watch out — the scaler leak"
+
+    `scaler.fit_transform(X)` on the *full* table peeks at the test set’s mean and spread. That is a small leak that becomes a habit. Fit on train. Transform test. In production, the saved scaler *is* the fit.
+
+```python
+numeric = ["mrr", "tenure_days", "log_usage", "features_adopted",
+           "total_events", "n_devices", "n_support"]
 categorical = ["plan_type"]
+label = "is_churned"
+
 X = df[numeric + categorical]
-y = df["is_churned"].astype(int)
+y = df[label]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
 
-prep = ColumnTransformer([
-    ("num", StandardScaler(), numeric),
-    ("cat", OneHotEncoder(handle_unknown="ignore"), categorical),
-])
+# Time-based split is even better (Week 15). Stratified random is the honest starter.
 
-def pipe(model):
-    return Pipeline([("prep", prep), ("model", model)])
+prep = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), numeric),
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical),
+    ]
+)
+prep.fit(X_train)  # train only
 
-# Baseline first. Always.
-dummy = pipe(DummyClassifier(strategy="most_frequent"))
-dummy.fit(X_train, y_train)
-print(f"Majority-class accuracy: {dummy.score(X_test, y_test):.3f}")
-print(f"Majority-class AUC:      {roc_auc_score(y_test, dummy.predict_proba(X_test)[:,1]):.3f}  (0.5 = coin flip on ranking)")
-print("If your fancy model cannot beat this, it is not fancy.")
+X_train_t = prep.transform(X_train)
+X_test_t = prep.transform(X_test)
+names = numeric + list(prep.named_transformers_["cat"].get_feature_names_out(categorical))
+
+print("Train rows", X_train_t.shape, "Test rows", X_test_t.shape)
+print("Feature contract:")
+for n in names:
+    print(" ", n)
+
+print("\nScaled train means (numeric should sit near 0):")
+print(np.round(X_train_t[:, : len(numeric)].mean(axis=0), 3))
 ```
 
-## Train three models, read one of them
+## Leakage hall of shame (we will keep coming back)
 
-A shallow decision tree is a flowchart. Random forest is a committee of those flowcharts. Logistic regression is the weighted sum.
-
-```python
-logreg = pipe(LogisticRegression(max_iter=1000))
-tree = pipe(DecisionTreeClassifier(max_depth=3, min_samples_leaf=200, random_state=42))
-forest = pipe(RandomForestClassifier(n_estimators=40, max_depth=6, random_state=42, n_jobs=2))
-
-rows = []
-for name, model in [("logreg", logreg), ("tree", tree), ("forest", forest)]:
-    model.fit(X_train, y_train)
-    proba = model.predict_proba(X_test)[:, 1]
-    pred = (proba >= 0.5).astype(int)
-    rows.append({
-        "model": name,
-        "AUC": roc_auc_score(y_test, proba),
-        "precision": precision_score(y_test, pred, zero_division=0),
-        "recall": recall_score(y_test, pred, zero_division=0),
-    })
-print(pd.DataFrame(rows).round(3).to_string(index=False))
-
-fig, ax = plt.subplots(figsize=(10, 5))
-# plot the raw tree (need the trained DecisionTree inside the pipeline)
-ohe_names = list(tree.named_steps["prep"].named_transformers_["cat"].get_feature_names_out(categorical))
-plot_tree(tree.named_steps["model"], feature_names=numeric + ohe_names,
-          class_names=["stay", "churn"], filled=True, max_depth=3, fontsize=7, ax=ax)
-ax.set_title("A 3-level tree — read it like a product flowchart")
-plt.tight_layout()
-plt.show()
-```
-
-## Confusion matrix + threshold slider
-
-At threshold 0.5 the library yells “positive.” Your CS team can call 80 accounts a week. That is the real threshold.
-
-```
-                    predicted stay     predicted churn
-actually stay       true negative      false alarm      ← wasted CS time
-actually churned    miss               catch            ← saved revenue
-```
-
-!!! engineer "Engineer mental model"
-
-    Precision = “when we page CS, how often were we right?” Recall = “of everyone who churned, how many did we catch?” You cannot max both at a fixed staffing level. Pick the one that matches the cost of a miss vs a wasted call.
-
-```python
-proba = forest.predict_proba(X_test)[:, 1]
-
-fig, axes = plt.subplots(1, 3, figsize=(12, 3.6))
-for ax, thr in zip(axes, [0.2, 0.5, 0.7]):
-    pred = (proba >= thr).astype(int)
-    ConfusionMatrixDisplay(confusion_matrix(y_test, pred)).plot(ax=ax, colorbar=False)
-    prec = precision_score(y_test, pred, zero_division=0)
-    rec = recall_score(y_test, pred, zero_division=0)
-    ax.set_title(f"thr={thr}  P={prec:.2f} R={rec:.2f}\nflagged={pred.sum()}")
-plt.tight_layout()
-plt.show()
-
-fpr, tpr, _ = roc_curve(y_test, proba)
-fig, ax = plt.subplots(figsize=(5, 4))
-ax.plot(fpr, tpr, color="#1d4ed8", label=f"forest AUC={roc_auc_score(y_test, proba):.3f}")
-ax.plot([0, 1], [0, 1], ls="--", color="#94a3b8", label="coin flip AUC=0.50")
-ax.set_xlabel("false alarm rate")
-ax.set_ylabel("catch rate (recall)")
-ax.set_title("ROC: ranking quality, independent of one threshold")
-ax.legend()
-plt.tight_layout()
-plt.show()
-```
-
-!!! warning "Watch out"
-
-    - A random split is convenient and slightly dishonest for time-stamped customers. We fix that in Week 12.
-
-    - Never rank “top 20% risk” on the *training* rows and call it a holdout result.
-
-    - 0.5 is not a sacred threshold. It is sklearn’s default because someone had to pick a number.
-
+| Looks clever | Why it is cheating |
+|---|---|
+| `has_churn_flag` as a feature | That **is** the label |
+| `lifetime_value = mrr * tenure` as a target, `tenure` as a feature | The model multiplies two columns it was handed |
+| Fit scaler / target-encoder on all rows | Test set leaked into preprocessing |
+| Random split when the world is a time series | The model trains on “next month” and tests on “last month” |
 
 !!! success "Ship / don’t ship"
 
-    Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
+    A feature ships if a tired on-call engineer can compute it from *today’s* warehouses for a single `user_id` with no peek at the label table. If you cannot write that function, it is not a feature.
 
-    CloudWave’s lifetime churn is ~6.7%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 17](week-17.md) is labels, PR-AUC, and calibration. [Week 18](week-18.md) is the list CS actually uses.
-
-## Overfitting, bias, and variance — the three words on every ML interview
-
-A model can fail in two opposite ways:
-
-```
-UNDERFIT (high bias)              OVERFIT (high variance)
-a line through a curve            a scribble through every point
-too simple — misses the shape     too clingy — memorizes noise
-train error HIGH                  train error TINY
-test error HIGH                   test error HIGH  ← the tell
-```
-
-!!! think "Think of it like… studying for an exam."
-
-    **Bias** is showing up with only one idea (“everyone churns if they are free”). You are systematically wrong, even on the homework.
-
-    **Variance** is memorizing last year’s answer key, typos included. Homework is perfect. The real exam (new customers) is a mess.
-
-    **Overfitting** is the name for that second failure. **Underfitting** is the first.
-
-```python
-# Toy picture: a smooth truth, noisy homework, three students
-rng = np.random.default_rng(0)
-x = np.linspace(0, 1, 40)
-truth = np.sin(2 * np.pi * x)
-y = truth + rng.normal(0, 0.18, size=len(x))
-
-fig, axes = plt.subplots(1, 3, figsize=(12, 3.4), sharey=True)
-for ax, deg, title in [
-    (axes[0], 1, "Underfit — high bias"),
-    (axes[1], 3, "About right"),
-    (axes[2], 14, "Overfit — high variance"),
-]:
-    coef = np.polyfit(x, y, deg)
-    xx = np.linspace(0, 1, 200)
-    ax.scatter(x, y, s=12, color="#64748b", label="train points")
-    ax.plot(xx, np.sin(2 * np.pi * xx), color="#0f766e", lw=2, label="truth")
-    ax.plot(xx, np.polyval(coef, xx), color="#dc2626", lw=2, label=f"poly deg {deg}")
-    ax.set_title(title)
-    ax.set_ylim(-1.8, 1.8)
-axes[0].legend(fontsize=8, loc="lower left")
-plt.tight_layout()
-plt.show()
-print("Same data. Only the model's freedom changed. That freedom is 'capacity.'")
-```
-
-!!! math "Math, translated"
-
-    **Bias** ≈ how far the model’s average answer sits from the truth (systematic miss).
-
-    **Variance** ≈ how much the answer would jump if you retrained on a different sample of customers.
-
-    You cannot drive both to zero. A deeper tree / bigger net lowers bias and raises variance. Regularization, more data, and ensembles are how you buy the pair you can live with.
-
-
-!!! engineer "Engineer mental model"
-
-    Watch *two* curves: train vs holdout. If both are bad → underfit (add features, more capacity). If train is great and holdout is not → overfit (simpler model, more data, regularization). Never tune on the number you will report.
+    Email, name, ticket body, `user_id`, `churn_date`, and lifetime `tenure_days` do not go in `X`. `pipelines/contract.py` rejects unknown keys so PII cannot wander in. The one function that builds the row is `pipelines.features.build_features(as_of=...)` — Week 3 and 19 hang the job on it.
 
 
 ## ✍️ Exercise
@@ -274,10 +198,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-06.md)
 
 ## 🤔 Reflection
 
-1. Why can accuracy be 93% while the model is useless? (Hint: 6.7% of users churn.)
-2. A PM wants “both high precision and high recall.” What resource do they need to give you?
-3. Would you rather explain a depth-3 tree or a 150-tree forest to legal?
+1. Why is “churned in the next 30 days” a better label than “ever churned”?
+2. A teammate one-hot encodes `user_id`. What happens?
+3. Where does the scaler live in your repo — next to the model, or re-fit in the API process?
 
 ## 🔗 Next week
 
-Regression: same idea, but the answer is a number (dollars), not a yes/no. We will refuse to predict `mrr × tenure`.
+Classification: a model is a function `features → risk score`. We pick a threshold the sales team can staff.

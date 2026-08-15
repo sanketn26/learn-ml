@@ -1,4 +1,6 @@
-"""Week 18 — precision@k vs a SQL sort.
+"""Week 18 exercises — Week 18 — CNNs: Sliding Detectors.
+
+Run from the repo root:
 
     python exercises/ml/week-18/starter.py
 """
@@ -11,31 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-import numpy as np
-from sklearn.ensemble import GradientBoostingClassifier
+from lib.course_data import find_data_dir, load_customer_360
 
-from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features
-from pipelines.labels import drop_unlabelled, label_churn_in_horizon
-
-
-def precision_at_k(y, scores, k=80) -> float:
-    order = np.argsort(-np.asarray(scores))[:k]
-    return float(np.asarray(y)[order].mean())
+DATA = find_data_dir()
 
 
 def main() -> None:
-    df = build_features(as_of=AS_OF_DEFAULT, n=8000)
-    y = label_churn_in_horizon(df, AS_OF_DEFAULT)
-    df, y = drop_unlabelled(df, y)
-    cut = df["signup_date"].quantile(0.80)
-    train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
-    model = GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)
-    model.fit(train[FEATURE_COLS], y.loc[train.index])
-    scores = model.predict_proba(test[FEATURE_COLS])[:, 1]
-    y_test = y.loc[test.index]
-    print("model@80   ", precision_at_k(y_test, scores))
-    print("support@80 ", precision_at_k(y_test, test["n_support"]))
-    print("TODO: k in {20,80,200} and the PM causal trap")
+    print(f"data: {DATA}")
+    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
+    # TODO: implement the tasks in README.md
 
 
 if __name__ == "__main__":

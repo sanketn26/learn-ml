@@ -1,4 +1,4 @@
-"""Week 04 exercises — Week 4 — “Is This Real, or Just Noise?”.
+"""Week 4 exercises — Week 4 — Charts That Change a Decision.
 
 Run from the repo root:
 

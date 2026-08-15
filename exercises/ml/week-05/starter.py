@@ -1,4 +1,4 @@
-"""Week 05 exercises — Week 5 — Features Are the Model’s API.
+"""Week 5 exercises — Week 5 — “Is This Real, or Just Noise?”.
 
 Run from the repo root:
 

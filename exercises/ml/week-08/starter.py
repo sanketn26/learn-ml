@@ -1,6 +1,4 @@
-"""Week 08 exercises — Week 8 — Clustering: Sorting Without Labels.
-
-Run from the repo root:
+"""Week 8 — horizon labels vs lifetime flag.
 
     python exercises/ml/week-08/starter.py
 """
@@ -13,15 +11,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from lib.course_data import find_data_dir, load_customer_360
-
-DATA = find_data_dir()
+from pipelines.features import AS_OF_DEFAULT, build_features
+from pipelines.labels import drop_unlabelled, label_churn_in_horizon
 
 
 def main() -> None:
-    print(f"data: {DATA}")
-    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
-    # TODO: implement the tasks in README.md
+    df = build_features(as_of=AS_OF_DEFAULT, n=None)
+    y = label_churn_in_horizon(df, AS_OF_DEFAULT)
+    labelled, y = drop_unlabelled(df, y)
+    print("horizon rate", float(y.mean()))
+    print("lifetime rate", float(labelled["is_churned"].mean()))
+    print("TODO 3: GBT ROC-AUC vs PR-AUC vs precision@80")
+    print("TODO 5: calibration_curve picture")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Week 12 capstone — time split, predict() contract, capacity threshold.
+"""Week 12 exercises — Week 12 — PCA: JPEG for Tables.
 
 Run from the repo root:
 
@@ -13,17 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from lib.course_data import load_customer_360
+from lib.course_data import find_data_dir, load_customer_360
+
+DATA = find_data_dir()
 
 
 def main() -> None:
-    df = load_customer_360()
-    print(f"rows={len(df):,}  columns={list(df.columns)}")
-    print("TODO 1: time-based split on signup_date vs a shuffled split")
-    print("TODO 2: validate() + predict() with a version string")
-    print("TODO 3: threshold that flags at most 80 customers")
-    print("TODO 4: overlay train vs later-signup histograms")
-    print("TODO 5: one-page write-up in this folder as WRITEUP.md")
+    print(f"data: {DATA}")
+    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
+    # TODO: implement the tasks in README.md
 
 
 if __name__ == "__main__":

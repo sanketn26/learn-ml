@@ -2,7 +2,7 @@
 
 Four weeks on multi-agent setups as **staffing**: a role is a job description, a tool is an IAM policy, a task is a ticket, a crew is the sprint team.
 
-Add a second agent only when the work actually needs a second role. If Week 20’s ticket bot is one job, you do not need a crew. This track is optional ceremony on top of LangChain week 7.
+Add a second agent only when the work actually needs a second role. If ML week 17’s ticket bot is one job, you do not need a crew. This track is optional ceremony on top of LangChain week 7.
 
 | Week | Idea |
 |---|---|

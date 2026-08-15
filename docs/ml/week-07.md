@@ -1,21 +1,58 @@
-# Week 7 — Regression: Predict a Number, Not a Category
+# Week 7 — Classification: A Score, Then a Threshold
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Anyone who has dragged a trendline in a spreadsheet.
+**Who this is for:** Engineers who have written a spam filter, a linter, or a “risk score.” Same shape.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- See linear regression as “Excel trendline with more columns”
-- Score models with **MAE in dollars** (or usage units), not just R²
-- Always compare to the **mean baseline**
-- Read a residual plot: “where does the model systematically lie?”
-- Avoid the classic leak: predicting `mrr × tenure` using `tenure`
+- Explain a model as `f(features) → score in [0, 1]`, then a **threshold**
+- Always beat a **baseline** (predict “nobody churns”) before celebrating AUC
+- Read a confusion matrix in customers, not jargon
+- See why precision vs recall is a **staffing** problem
+- Glance at a decision tree — the only model you can literally read
+- Recognize **underfit (high bias)** vs **overfit (high variance)** on a picture
 
-!!! think "Think of it like… a trendline, then a pile of trees voting on a number."
+!!! think "Think of it like… a code-review bot."
 
-    Classification said yes/no. Regression says “how much.” Same training ritual: features in, a number out, a holdout set that the model must not have memorized.
+    The model does not “know” who will churn. It outputs a risk score, like a linter warning level. You choose the cutoff: flag everything above 0.3 (noisy, catch more) or only above 0.7 (quiet, miss more). The algorithm did not make that product decision. You did.
+
+## If you already write software
+
+A classifier is not a fortune teller. It is a function that returns a **score**, and then *you* pick a **threshold** — exactly like a linter warning level or a WAF rule.
+
+```
+features  →  model  →  score in [0, 1]  →  if score >= t: flag
+                                              ↑
+                                    this is a product decision
+                                    not an algorithm decision
+```
+
+- Low threshold (0.3): noisy Slack channel, catch more real churn
+- High threshold (0.7): quiet channel, miss more real churn
+
+Precision vs recall is a **staffing** problem. High recall means the CS team gets more names. Can they call them? If not, you did not “improve the model.” You created a junk queue.
+
+### Always beat a dummy
+
+The dummy baseline here is “predict nobody churns” (or “predict the majority class”). If your fancy model cannot beat that, you built a weather app that says “today’s weather will be like yesterday” and lost to it.
+
+### Picture underfit vs overfit
+
+```
+Underfit (high bias)     a one-line linter that only flags `== null`
+                         misses almost everything, stable and useless
+
+Overfit (high variance)  a linter that memorized last Tuesday’s PR
+                         perfect on the training set, random on the next one
+```
+
+The picture you want: a model that is *slightly* wrong on train and *similarly* wrong on a held-out week. That is generalization. Memorizing the training customers is not intelligence.
+
+!!! tip "Laptop budget"
+
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
 
 ```python
 import numpy as np
@@ -34,155 +71,201 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression, Ridge
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.dummy import DummyClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import (roc_auc_score, roc_curve, confusion_matrix,
+                             precision_score, recall_score, ConfusionMatrixDisplay)
 ```
 
-## If you already write software
+## What “logistic regression” actually is
 
-Regression answers “how many / how much,” not “which bucket.” Predicting next month’s MRR is regression. Predicting “will they churn” is classification. Do not encode a number as a category just because the dashboard has traffic-light colors.
-
-The metric that matters is in **product units**:
-
-- MAE = “on average we are off by $X”
-- RMSE = “we get punished extra for the rare $400 miss”
-
-R² is a nice homework number. A PM cannot staff from it.
-
-### The leak to refuse
-
-If you predict `mrr` using `mrr * tenure` or next month’s invoice, you built a calculator and called it ML. Same as “predicting” latency from a feature that is the latency itself.
-
-### Picture residuals
-
-A residual is `actual - predicted`. Plot them.
+Ignore the word *regression*. This is a classifier.
 
 ```
-healthy          a blob around zero, no shape
-trumpet          errors get bigger as the prediction gets bigger
-                 (the model is worse on whales — usually what you care about)
-curve            you are fitting a line to a bent world
-                 (log the target, or add a non-linear model)
+score = sigmoid( w1*mrr + w2*usage + w3*tenure + ... + b )
+         └── squash any number into (0, 1), like a probability
 ```
 
-A trumpet is not a stats curiosity. It means your error is largest on the accounts finance actually watches.
-
-## 🏢 Scenario — next-period usage, not fake CLV
-
-A common tutorial target is `lifetime_value = mrr * tenure_months` while also handing the model `mrr` and `tenure`. That is asking it to multiply two inputs. R² will look magical. You will have learned nothing.
-
-**Honest target:** `total_usage` from product data, using billing + event *counts* that are not the usage column itself. Still imperfect, but the model cannot just multiply two features you gave it.
-
-!!! warning "Watch out — target leakage"
-
-    If you can compute the label from the features with a calculator, you are not doing machine learning. You are doing QA on a formula.
-
-```python
-df = load_customer_360(DATA)
-# Predict product usage from billing + behavioral counts that are not total_usage
-features_num = ["mrr", "tenure_days", "features_adopted", "total_events", "avg_session", "n_support"]
-features_cat = ["plan_type"]
-target = "total_usage"
-
-work = df[features_num + features_cat + [target]].dropna()
-X = work[features_num + features_cat]
-y = work[target]
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-prep = ColumnTransformer([
-    ("num", StandardScaler(), features_num),
-    ("cat", OneHotEncoder(handle_unknown="ignore"), features_cat),
-])
-
-baseline = np.full_like(y_test, fill_value=y_train.mean(), dtype=float)
-print(f"Mean baseline MAE: {mean_absolute_error(y_test, baseline):,.1f} usage-units")
-print("Every real model has to beat this number.")
-```
-
-## Three models, one dollar-shaped scoreboard
+If the weighted sum is large and positive → score near 1 (likely churn).  
+If it is large and negative → score near 0.
 
 !!! math "Math, translated"
 
-    **MAE** = average miss, in the same units as the target. The number a PM understands.
-
-    **RMSE** = like MAE but whales get extra shame (squares the misses).
-
-    **R²** = “what fraction of the jitter did we explain vs just predicting the average?” 0 = baseline, 1 = perfect, negative = worse than the average.
+    The sigmoid is just a soft on/off switch. You do not need its formula. You need: *weighted sum of features, then squeezed into a probability-like score.*
 
 ```python
-def eval_model(name, model):
-    p = Pipeline([("prep", prep), ("m", model)])
-    p.fit(X_train, y_train)
-    pred = p.predict(X_test)
-    return p, {
-        "model": name,
-        "MAE": mean_absolute_error(y_test, pred),
-        "RMSE": mean_squared_error(y_test, pred) ** 0.5,
-        "R2": r2_score(y_test, pred),
-    }, pred
+df = load_customer_360(DATA)
+numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
+categorical = ["plan_type"]
+X = df[numeric + categorical]
+y = df["is_churned"].astype(int)
 
-fitted = {}
-rows = [{"model": "mean baseline", "MAE": mean_absolute_error(y_test, baseline),
-         "RMSE": mean_squared_error(y_test, baseline) ** 0.5, "R2": r2_score(y_test, baseline)}]
-preds = {"mean baseline": baseline}
-for name, mdl in [
-    ("linear", LinearRegression()),
-    ("ridge", Ridge(alpha=1.0)),
-    ("forest", RandomForestRegressor(n_estimators=40, max_depth=8, random_state=42, n_jobs=2)),
-]:
-    pipe, row, pred = eval_model(name, mdl)
-    fitted[name] = pipe
-    rows.append(row)
-    preds[name] = pred
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
 
-scoreboard = pd.DataFrame(rows).round(3)
-print(scoreboard.to_string(index=False))
+prep = ColumnTransformer([
+    ("num", StandardScaler(), numeric),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), categorical),
+])
+
+def pipe(model):
+    return Pipeline([("prep", prep), ("model", model)])
+
+# Baseline first. Always.
+dummy = pipe(DummyClassifier(strategy="most_frequent"))
+dummy.fit(X_train, y_train)
+print(f"Majority-class accuracy: {dummy.score(X_test, y_test):.3f}")
+print(f"Majority-class AUC:      {roc_auc_score(y_test, dummy.predict_proba(X_test)[:,1]):.3f}  (0.5 = coin flip on ranking)")
+print("If your fancy model cannot beat this, it is not fancy.")
 ```
 
-## The two plots that tell you if it is any good
+## Train three models, read one of them
 
-**Predicted vs actual:** dots on the diagonal = we got it.  
-**Residuals vs predicted:** a random cloud is healthy. A trumpet (errors grow as the prediction grows) means “we are worse on big accounts.” That trumpet is what textbooks call heteroscedasticity. You can just call it a trumpet.
+A shallow decision tree is a flowchart. Random forest is a committee of those flowcharts. Logistic regression is the weighted sum.
 
 ```python
-pred = preds["forest"]
-resid = y_test.to_numpy() - pred
+logreg = pipe(LogisticRegression(max_iter=1000))
+tree = pipe(DecisionTreeClassifier(max_depth=3, min_samples_leaf=200, random_state=42))
+forest = pipe(RandomForestClassifier(n_estimators=40, max_depth=6, random_state=42, n_jobs=2))
 
-fig, axes = plt.subplots(1, 2, figsize=(11, 4))
-axes[0].scatter(y_test, pred, alpha=0.15, s=10, c="#1d4ed8")
-mx = max(y_test.max(), pred.max())
-axes[0].plot([0, mx], [0, mx], color="#b91c1c", ls="--")
-axes[0].set_xlabel("actual usage")
-axes[0].set_ylabel("predicted usage")
-axes[0].set_title("Predicted vs actual — diagonal is truth")
+rows = []
+for name, model in [("logreg", logreg), ("tree", tree), ("forest", forest)]:
+    model.fit(X_train, y_train)
+    proba = model.predict_proba(X_test)[:, 1]
+    pred = (proba >= 0.5).astype(int)
+    rows.append({
+        "model": name,
+        "AUC": roc_auc_score(y_test, proba),
+        "precision": precision_score(y_test, pred, zero_division=0),
+        "recall": recall_score(y_test, pred, zero_division=0),
+    })
+print(pd.DataFrame(rows).round(3).to_string(index=False))
 
-axes[1].scatter(pred, resid, alpha=0.15, s=10, c="#0f766e")
-axes[1].axhline(0, color="#b91c1c", ls="--")
-axes[1].set_xlabel("predicted usage")
-axes[1].set_ylabel("actual − predicted")
-axes[1].set_title("Residuals — a trumpet means we miss the whales")
+fig, ax = plt.subplots(figsize=(10, 5))
+# plot the raw tree (need the trained DecisionTree inside the pipeline)
+ohe_names = list(tree.named_steps["prep"].named_transformers_["cat"].get_feature_names_out(categorical))
+plot_tree(tree.named_steps["model"], feature_names=numeric + ohe_names,
+          class_names=["stay", "churn"], filled=True, max_depth=3, fontsize=7, ax=ax)
+ax.set_title("A 3-level tree — read it like a product flowchart")
 plt.tight_layout()
 plt.show()
+```
 
-# Linear coefficients, in "after scaling" units
-lin = fitted["linear"].named_steps["m"]
-ohe = fitted["linear"].named_steps["prep"].named_transformers_["cat"]
-names = features_num + list(ohe.get_feature_names_out(features_cat))
-coef = pd.Series(lin.coef_, index=names).sort_values()
-print("Linear weights (on scaled features — compare signs, not raw dollars):")
-print(coef.round(2).to_string())
+## Confusion matrix + threshold slider
+
+At threshold 0.5 the library yells “positive.” Your CS team can call 80 accounts a week. That is the real threshold.
+
+```
+                    predicted stay     predicted churn
+actually stay       true negative      false alarm      ← wasted CS time
+actually churned    miss               catch            ← saved revenue
 ```
 
 !!! engineer "Engineer mental model"
 
-    Linear weights after scaling are “how much the prediction moves when this feature is one typical-spread higher, holding the others still.” Do not compare a weight on raw `mrr` to a weight on raw `events` — different units. That is why we scaled.
+    Precision = “when we page CS, how often were we right?” Recall = “of everyone who churned, how many did we catch?” You cannot max both at a fixed staffing level. Pick the one that matches the cost of a miss vs a wasted call.
+
+```python
+proba = forest.predict_proba(X_test)[:, 1]
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.6))
+for ax, thr in zip(axes, [0.2, 0.5, 0.7]):
+    pred = (proba >= thr).astype(int)
+    ConfusionMatrixDisplay(confusion_matrix(y_test, pred)).plot(ax=ax, colorbar=False)
+    prec = precision_score(y_test, pred, zero_division=0)
+    rec = recall_score(y_test, pred, zero_division=0)
+    ax.set_title(f"thr={thr}  P={prec:.2f} R={rec:.2f}\nflagged={pred.sum()}")
+plt.tight_layout()
+plt.show()
+
+fpr, tpr, _ = roc_curve(y_test, proba)
+fig, ax = plt.subplots(figsize=(5, 4))
+ax.plot(fpr, tpr, color="#1d4ed8", label=f"forest AUC={roc_auc_score(y_test, proba):.3f}")
+ax.plot([0, 1], [0, 1], ls="--", color="#94a3b8", label="coin flip AUC=0.50")
+ax.set_xlabel("false alarm rate")
+ax.set_ylabel("catch rate (recall)")
+ax.set_title("ROC: ranking quality, independent of one threshold")
+ax.legend()
+plt.tight_layout()
+plt.show()
+```
+
+!!! warning "Watch out"
+
+    - A random split is convenient and slightly dishonest for time-stamped customers. We fix that in Week 15.
+
+    - Never rank “top 20% risk” on the *training* rows and call it a holdout result.
+
+    - 0.5 is not a sacred threshold. It is sklearn’s default because someone had to pick a number.
 
 
 !!! success "Ship / don’t ship"
 
-    Use linear/Ridge when you need a sentence for finance (“each extra feature adopted is associated with +X usage”). Use a forest when the relationship is a staircase, not a line, and you can live with a less quotable model. Always print the mean baseline on the same slide.
+    Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
+
+    CloudWave’s lifetime churn is ~6.7%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
+
+## Overfitting, bias, and variance — the three words on every ML interview
+
+A model can fail in two opposite ways:
+
+```
+UNDERFIT (high bias)              OVERFIT (high variance)
+a line through a curve            a scribble through every point
+too simple — misses the shape     too clingy — memorizes noise
+train error HIGH                  train error TINY
+test error HIGH                   test error HIGH  ← the tell
+```
+
+!!! think "Think of it like… studying for an exam."
+
+    **Bias** is showing up with only one idea (“everyone churns if they are free”). You are systematically wrong, even on the homework.
+
+    **Variance** is memorizing last year’s answer key, typos included. Homework is perfect. The real exam (new customers) is a mess.
+
+    **Overfitting** is the name for that second failure. **Underfitting** is the first.
+
+```python
+# Toy picture: a smooth truth, noisy homework, three students
+rng = np.random.default_rng(0)
+x = np.linspace(0, 1, 40)
+truth = np.sin(2 * np.pi * x)
+y = truth + rng.normal(0, 0.18, size=len(x))
+
+fig, axes = plt.subplots(1, 3, figsize=(12, 3.4), sharey=True)
+for ax, deg, title in [
+    (axes[0], 1, "Underfit — high bias"),
+    (axes[1], 3, "About right"),
+    (axes[2], 14, "Overfit — high variance"),
+]:
+    coef = np.polyfit(x, y, deg)
+    xx = np.linspace(0, 1, 200)
+    ax.scatter(x, y, s=12, color="#64748b", label="train points")
+    ax.plot(xx, np.sin(2 * np.pi * xx), color="#0f766e", lw=2, label="truth")
+    ax.plot(xx, np.polyval(coef, xx), color="#dc2626", lw=2, label=f"poly deg {deg}")
+    ax.set_title(title)
+    ax.set_ylim(-1.8, 1.8)
+axes[0].legend(fontsize=8, loc="lower left")
+plt.tight_layout()
+plt.show()
+print("Same data. Only the model's freedom changed. That freedom is 'capacity.'")
+```
+
+!!! math "Math, translated"
+
+    **Bias** ≈ how far the model’s average answer sits from the truth (systematic miss).
+
+    **Variance** ≈ how much the answer would jump if you retrained on a different sample of customers.
+
+    You cannot drive both to zero. A deeper tree / bigger net lowers bias and raises variance. Regularization, more data, and ensembles are how you buy the pair you can live with.
+
+
+!!! engineer "Engineer mental model"
+
+    Watch *two* curves: train vs holdout. If both are bad → underfit (add features, more capacity). If train is great and holdout is not → overfit (simpler model, more data, regularization). Never tune on the number you will report.
 
 
 ## ✍️ Exercise
@@ -191,10 +274,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-07.md)
 
 ## 🤔 Reflection
 
-1. R² = 0.4. Is that good? (Depends: did you beat the baseline, and is a 40% jitter reduction worth the ops cost?)
-2. Why are unscaled linear coefficients a trap in a meeting?
-3. When is a “worse” MAE on whales acceptable? (If you only manage SMB accounts.)
+1. Why can accuracy be 93% while the model is useless? (Hint: 6.7% of users churn.)
+2. A PM wants “both high precision and high recall.” What resource do they need to give you?
+3. Would you rather explain a depth-3 tree or a 150-tree forest to legal?
 
 ## 🔗 Next week
 
-No labels. Clustering: sort the messy inbox when nobody tagged the tickets.
+Regression: same idea, but the answer is a number (dollars), not a yes/no. We will refuse to predict `mrr × tenure`.

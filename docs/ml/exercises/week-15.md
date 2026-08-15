@@ -1,9 +1,15 @@
-# Exercises — Week 15 — Transformers: Everything Looks at Everything
+# Exercises — Week 15 — Capstone
 
-Do these after reading [Week 15 — Transformers: Everything Looks at Everything](../week-15.md).
+Do these after reading [Week 15 — Capstone](../week-15.md).
 
-**1. Remove positions.** Comment out `+ self.pos(pos)`. What happens to accuracy? That is the “order is invisible” lesson.
+**1. Time wall.** Load Customer 360. Split on `signup_date` (train = earlier 80% of signups, test = later 20%). Train the same GBT on a *shuffled* split and on the time split. Report both AUCs. If they differ, write one sentence about why.
 
-**2. Attention map.** After training, run one sentence through `self.enc.layers[0].self_attn` (or print `weights` from the toy block). Which characters attend to the `!`?
+**2. `predict()` contract.** Write `validate(payload: dict) -> CustomerFeatures` that rejects unknown keys and missing required fields. Write `predict(payload) -> dict` that returns `{churn_score, model_version}`. Call it 80 times. Print p50 / p95 latency.
 
-**3. Architecture memo.** Four sentences to your VP: CNN vs RNN vs Transformer vs GBT, with one CloudWave example each.
+**3. Capacity, not 0.5.** From the time-split test set, pick the threshold that flags **at most 80** customers (CS budget). Report precision and recall at that cut. Compare to 0.5.
+
+**4. Drift sketch.** Overlay histograms of `mrr`, `log_usage`, `tenure_days` for train vs later signups. One sentence: did the world move?
+
+**5. One-page write-up.** (1) the time wall, (2) holdout AUC vs a dummy, (3) the 80-call precision, (4) one drift risk, (5) what you refused to over-claim.
+
+Starter: `python exercises/ml/week-15/starter.py` from the repo root.

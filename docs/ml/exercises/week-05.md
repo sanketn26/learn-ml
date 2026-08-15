@@ -1,9 +1,9 @@
-# Exercises — Week 5 — Features Are the Model’s API
+# Exercises — Week 5 — “Is This Real, or Just Noise?”
 
-Do these after reading [Week 5 — Features Are the Model’s API](../week-05.md).
+Do these after reading [Week 5 — “Is This Real, or Just Noise?”](../week-05.md).
 
-**1. Honest vs leaked scaler.** Fit a scaler on all rows, then only on train. Print the two means used for `mrr`. How far apart are they? (On 50k rows, tiny — the habit is still wrong.)
+**1. Paid-only chi-squared.** Drop `plan_type == "free"`. Is churn still different across starter / pro / enterprise? Predict the answer before you run it.
 
-**2. Missingness flag.** Add `has_usage = total_usage > 0`. Does churn differ? Would you keep the flag *and* the count?
+**2. Sentiment.** Load `feedback.json` (`lines=True`). Is mean `sentiment_score` different for `category == "bug"` vs `"praise"`? Which test? (Two groups, a number → t-test. Then look at the histogram.)
 
-**3. Contract test.** Write `assert_score_payload(payload: dict)` that checks required keys and types. This is more production-shaped than another transformer.
+**3. Sample size gut check.** Keep the 16% vs 20% rates. How many customers per plan (equal n) until a simulation p-value usually drops under 0.05? Try n = 100, 400, 1000.

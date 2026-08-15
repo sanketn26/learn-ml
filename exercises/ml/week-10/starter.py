@@ -1,4 +1,4 @@
-"""Week 10 exercises — Week 10 — Ensembles: A Room of Reviewers.
+"""Week 10 exercises — Week 10 — Clustering: Sorting Without Labels.
 
 Run from the repo root:
 

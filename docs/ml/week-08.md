@@ -1,179 +1,182 @@
-# Week 8 — Clustering: Sorting Without Labels
+# Week 8 — Labels Lie
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have bucketed users in SQL and wished the buckets invented themselves.
+**Who this is for:** Engineers who shipped Week 7’s classifier. Read this after Week 7. CloudWave’s lifetime `is_churned` flag is the wrong label.
+
+About **6.7%** of customers ever cancel in this file. A model that predicts “nobody churns” is 93% accurate and useless. A model that uses lifetime `is_churned` plus `tenure_days` is a tenure detector wearing a costume.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Contrast supervised (“tickets with tags”) vs unsupervised (“messy inbox”)
-- Run K-Means as **drop K pins, assign, scoot pins, repeat**
-- Read an elbow / silhouette as “how blob-like are we,” not as a sacred K
-- See why **unscaled** MRR hijacks the clusters
-- Use segments as *personas for marketing*, not as a production classifier
+- Replace “did they ever churn” with **“did they churn in the next 30 days, as of Monday”**
+- Name **censoring**: we have not watched them long enough to know
+- Read **PR-AUC** when the positive class is rare (ROC-AUC will flatter you)
+- Treat a 0.73 score as a **rank**, not “73% chance,” until you check calibration
+- Keep PII and the label out of `X`
 
-!!! think "Think of it like… dropping pins on a map."
+!!! think "Think of it like… a bug ticket’s status."
 
-    You pick K (say 4). Drop 4 pins at random. Every customer walks to the nearest pin. Then each pin moves to the average location of its people. Repeat until the pins stop wandering. Those final neighborhoods are your segments.
-
-```python
-from lib.course_data import find_data_dir, load_customer_360
-
-DATA = find_data_dir()
-```
-
+    `is_churned` is “this ticket is closed, ever.” You would not train “will this ticket close in 30 days” on that. You would take tickets that were **open on Monday**, look at **Monday’s fields only**, and see who closed by the end of the month. Tickets filed on Saturday are **censored** — the month is not over.
 
 ## If you already write software
 
-Clustering is sorting without labels. Nobody told you the names of the piles. You drop K pins on a map and every customer walks to the nearest pin. That is K-Means.
-
-It is **not** a recommendation API. It is **not** a truth about your users. It is a way to *propose* personas you then go verify with interviews and churn numbers.
-
 ```
-Supervised (weeks 6–7)     you have y: churned / not, or next MRR
-Unsupervised (this week)   you have no y; you are looking for piles
-```
-
-### Scale or MRR hijacks the map
-
-K-Means uses Euclidean distance. `mrr` is in tens of dollars. `n_support` is 0, 1, 2. Without scaling, the map is “who pays more,” and you will invent a persona called “the expensive ones.” That is just a sort.
-
-Always scale. Then look at the cluster *profiles* (mean of each column) — those sentences are the only part a PM can use.
-
-### Picture the pins
-
-```
-    ·  ·     ·
-  ·   ×₁   ·     × = a centroid (a pin you dropped)
-    ·   ·  ·
-              ·  ×₂  ·
-                 ·  ·
+Lifetime is_churned          “this user has a closed ticket, sometime”
+Horizon label                “open on as_of, closed within 30 days”
+Censored                     “as_of + 30d is after our last log”
+tenure_days (lifetime)       closed_at − opened_at   ← leak / circular
+tenure_so_far                as_of − signup          ← legal
+Accuracy                     “the server is up” on a page that is 93% fine
+PR-AUC                       precision of the rare class, across ranks
+Calibration                  if we say 0.2, about 20% should actually fire
 ```
 
-You pick K. The algorithm wiggles the pins until nobody wants to switch neighborhoods. Different random starts can give different neighborhoods. If the story changes every run, you do not have personas. You have noise.
-
-## Supervised vs unsupervised
+### Picture the time machine for the *label*
 
 ```
-Supervised (Weeks 6–7)          Unsupervised (this week)
-X ────────► model ──► y         X ────────► model ──► group id
-   you had labels                  you did not
-   spam / not spam                 "these users look like each other"
+timeline →
+
+signup        as_of              as_of+30d         later
+  |             |                    |               |
+  ●─────────────●────────────────────●───────────────●
+  features       ▲                    ▲
+  must stop      │                    │
+  here           already gone?        cancel in window?  → label = 1
+                 drop (not at risk)   still here?        → label = 0
+                                      window not over?   → drop (censored)
 ```
+
+Week 6 stopped *features* at the wall. This week stops the **answer key** at the wall too.
+
+```python
+from pipelines.features import AS_OF_DEFAULT, build_features
+from pipelines.labels import drop_unlabelled, label_churn_in_horizon
+
+as_of = AS_OF_DEFAULT  # 2024-06-01
+df = build_features(as_of=as_of, n=None, at_risk_only=True)
+y = label_churn_in_horizon(df, as_of)
+labelled, y = drop_unlabelled(df, y)
+
+print("at risk as of", as_of.date(), "n=", len(df))
+print("knowable labels", len(y), "horizon rate", float(y.mean()))
+print("lifetime is_churned on the same people", float(labelled["is_churned"].mean()))
+```
+
+The lifetime rate is higher. It counts people who cancel in 2026. You will not know that on 2024-06-01. Using it is cheating.
+
+This fixture only has **tens** of cancels in any given 30-day window. That is a data fact, not a math fact. The product question is still 30 days. The question the file can *supervise* is “do they cancel after `as_of` at all” (`label_eventual_churn`). Week 16’s job uses that stand-in and writes `"label": "eventual"` in `metrics.json` so you do not lie about it.
+
+!!! warning "Watch out — tenure_days"
+
+    Lifetime `tenure_days` is “how long they stayed.” Long tenure *means* they have not churned yet. Put it in `X` and the model learns a tautology. `tenure_so_far` is how long they have been around **as of Monday**. That is legal. It is also a weak feature — new users have not had time to leave. Do not confuse the two.
+
+## Imbalance is a staffing fact
+
+```
+1000 at-risk customers
+  ~ 60–80 will churn in 30 days     (depends on the as_of)
+  ~ 920 will not
+
+Accuracy of “predict 0”:  ~92%     looks great in a slide
+CS can call:              80 people
+The only number that pays: of those 80, how many actually left?
+```
+
+ROC-AUC asks “can you rank a random churner above a random non-churner?” With 92% negatives, a lazy model still looks fine.
+
+**PR-AUC** (average precision) asks “as you walk down the ranked list, how often were you right?” That matches the 80-call budget.
+
+```python
+from sklearn.metrics import average_precision_score, roc_auc_score
+import numpy as np
+
+# pretend scores — replace with your model
+rng = np.random.default_rng(0)
+dummy = np.full(len(y), float(y.mean()))
+noise = rng.random(len(y))
+
+print("dummy ROC-AUC", roc_auc_score(y, dummy).round(3),
+      "dummy PR-AUC", average_precision_score(y, dummy).round(3))
+print("noise ROC-AUC", roc_auc_score(y, noise).round(3),
+      "noise PR-AUC", average_precision_score(y, noise).round(3))
+print("base rate (this is the dummy PR-AUC, in one number)", float(y.mean()))
+```
+
+A coin-flip can sit near 0.5 ROC and still have PR-AUC ≈ the base rate. Report **both**. Ship on precision@80.
 
 !!! engineer "Engineer mental model"
 
-    Cluster *offline*. Write the persona (“whale, 3 features, high MRR”). Drive campaigns from the persona or from a simple rule. Do not call `KMeans.predict` on the request path unless you really mean it — pin locations drift every retrain and nobody will know why the user flipped from “champion” to “at risk.”
+    Accuracy is uptime on a site that is almost never down. PR-AUC is “when the pager fires, was it real.” `class_weight="balanced"` is a *training* trick, like retrying 5xx more often. It does not change the fact that CS has 80 slots. Always measure in slots.
 
-```python
-df = load_customer_360(DATA)
-# Keep the label on the side for storytelling — the algorithm does not get it
-cols = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events"]
-sample = df  # already laptop-sized from load_customer_360
-X_raw = sample[cols].to_numpy()
-X = StandardScaler().fit_transform(X_raw)
+## A score is not a probability
 
-print("We will pretend we never saw is_churned. After clustering we will peek.")
+Week 7’s 0.73 is a **rank**. It is not “73% chance they churn” unless you check.
+
 ```
-
-## Scale first, or MRR becomes the whole personality
-
-Without scaling, a $499 enterprise account is “farther” from a $29 starter than a power user is from a lurker. Distance thinks in raw units.
-
-```python
-# Tiny 2-D picture: MRR vs log usage, unscaled vs scaled
-fig, axes = plt.subplots(1, 2, figsize=(10, 4))
-axes[0].scatter(sample["mrr"], sample["log_usage"], s=8, alpha=0.25, c="#64748b")
-axes[0].set_title("Unscaled — horizontal axis in dollars dominates")
-axes[0].set_xlabel("mrr"); axes[0].set_ylabel("log usage")
-
-axes[1].scatter(X[:, 0], X[:, 2], s=8, alpha=0.25, c="#6366f1")
-axes[1].set_title("Scaled — both axes in 'typical spreads'")
-axes[1].set_xlabel("mrr (z)"); axes[1].set_ylabel("log usage (z)")
-plt.tight_layout()
-plt.show()
-```
-
-## Choosing K — elbow is a suggestion, the business can overrule
-
-**Inertia** = how far customers sit from their pin (lower is tighter).  
-**Silhouette** ≈ “am I closer to my blob than to the next blob?” (higher is cleaner, max 1).
-
-If marketing can only run 3 campaigns, you pick K=3 even if K=6 wins the silhouette contest.
-
-```python
-ks = range(2, 9)
-inertias, sils = [], []
-for k in ks:
-    km = KMeans(n_clusters=k, n_init=10, random_state=42)
-    labels = km.fit_predict(X)
-    inertias.append(km.inertia_)
-    sils.append(silhouette_score(X, labels, sample_size=3000, random_state=42))
-
-fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
-axes[0].plot(list(ks), inertias, marker="o")
-axes[0].set_title("Elbow (inertia) — look for the bend")
-axes[0].set_xlabel("K")
-axes[1].plot(list(ks), sils, marker="o", color="#0f766e")
-axes[1].set_title("Silhouette — higher = cleaner blobs")
-axes[1].set_xlabel("K")
-plt.tight_layout()
-plt.show()
-print(list(zip(ks, np.round(sils, 3))))
+calibration
+  predicted 0.1  →  about 10% of those people should actually churn
+  predicted 0.4  →  about 40%
+  a banana curve →  you are ranking fine and quoting odds like a liar
 ```
 
 ```python
-K = 4
-km = KMeans(n_clusters=K, n_init=10, random_state=42)
-sample = sample.copy()
-sample["cluster"] = km.fit_predict(X)
+from sklearn.calibration import calibration_curve
+from sklearn.ensemble import GradientBoostingClassifier
+from pipelines.features import FEATURE_COLS
 
-# 2-D view of the neighborhoods
-fig, ax = plt.subplots(figsize=(7, 4.2))
-for c in range(K):
-    sl = sample[sample["cluster"] == c]
-    ax.scatter(sl["mrr"], sl["log_usage"], s=10, alpha=0.35, label=f"cluster {c}")
-ax.set_xlabel("mrr"); ax.set_ylabel("log usage")
-ax.set_title("K=4 pins in a 2-D slice (the model actually used more columns)")
+cut = labelled["signup_date"].quantile(0.80)
+train = labelled[labelled["signup_date"] <= cut]
+test = labelled[labelled["signup_date"] > cut]
+model = GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)
+model.fit(train[FEATURE_COLS], y.loc[train.index])
+p = model.predict_proba(test[FEATURE_COLS])[:, 1]
+frac_pos, mean_pred = calibration_curve(y.loc[test.index], p, n_bins=8, strategy="quantile")
+
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(5.2, 4.2))
+ax.plot([0, 1], [0, 1], "--", color="#94a3b8", label="honest")
+ax.plot(mean_pred, frac_pos, "o-", color="#1d4ed8", label="model")
+ax.set_xlabel("mean predicted score in bin")
+ax.set_ylabel("actual churn rate in bin")
+ax.set_title("If the dots leave the dashed line, do not quote the score as %")
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-# Persona table — including churn, which we hid from the algorithm
-profile = sample.groupby("cluster").agg(
-    n=("user_id", "count"),
-    mrr=("mrr", "median"),
-    usage=("total_usage", "median"),
-    features=("features_adopted", "median"),
-    tenure=("tenure_days", "median"),
-    churn=("is_churned", "mean"),
-).round(3)
-print(profile.to_string())
-print("\nName the rows in a PR description. If you cannot name them, K is wrong.")
 ```
 
-## DBSCAN, in one picture
+If the curve bows, you may still **rank** well (keep the 80-call list). You may not multiply the score by MRR and call it expected loss.
 
-K-Means always fills K buckets, even if the data is a smear. **DBSCAN** says: “a cluster is a dense pocket; loners are noise.” You pick a radius (`eps`) and a minimum crowd (`min_samples`), not K.
+!!! math "Math, translated"
 
-On 5-D scaled data, `eps=0.5` is a guess. If everything is noise, raise `eps`. If everything is one blob, lower it.
+    Brier score is mean squared error between the score and the 0/1 label. Low is honest. You do not need the name in the stand-up. You need the picture.
+
+## PII does not go in X
+
+CloudWave’s fixture has no emails. Your real warehouse will. Rule:
+
+| Allowed in `X` | Forbidden in `X` |
+|---|---|
+| plan, MRR, tenure_so_far, usage counts | `user_id`, email, name, ticket body |
+| region as a *category you will have at score time* | `churn_date`, lifetime `is_churned`, lifetime `tenure_days` |
+| `n_support` | raw `feedback_text` (that is a different model, and a privacy review) |
+
+`validate()` in `pipelines/contract.py` rejects unknown keys. That is the PII fence: if it is not in the contract, it does not enter.
 
 !!! success "Ship / don’t ship"
 
-    Clustering is a workshop tool: personas, onboarding tracks, “who should see this email.” It is not a replacement for the Week 6 churn model. Do not put cluster ids into a legal document — they will move next Tuesday.
-
+    Ship a horizon label, PR-AUC + precision@budget, and a calibration glance. Do not ship lifetime `is_churned` + `tenure_days` + accuracy. Do not tell finance a 0.7 is a 70% chance until the dots sit on the dashed line.
 
 ## ✍️ Exercise
 
-When you can explain the week out loud, do the [exercises](exercises/week-08.md). Starter: `python exercises/ml/week-08/starter.py` from the repo root.
+[Exercises](exercises/week-08.md) — including `pytest tests/test_labels.py`.
 
 ## 🤔 Reflection
 
-1. Why is “the algorithm found our enterprise plan” a failure, not a success? (You already had that column.)
-2. Silhouette says K=2, marketing wants K=5. Who wins?
-3. What breaks if you re-fit K-Means nightly and email users based on last night’s id?
+1. A user signed up yesterday. Why is their 30-day label mostly noise even if you wait?
+2. Why can ROC-AUC look “fine” when the 80-call list is junk?
+3. CS asks “so this account is 80% likely to churn?” What do you actually know?
 
 ## 🔗 Next week
 
-Too many columns. PCA: JPEG for tabular data — keep the big shapes, drop the noise.
+Ranking. Most SaaS models are not “yes/no.” They are “who is at the top of the list.”

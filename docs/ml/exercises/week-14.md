@@ -1,9 +1,11 @@
-# Exercises — Week 14 — RNNs: A Clipboard That Walks the Sequence
+# Exercises — Week 14 — Neural Nets, Without the Mystique
 
-Do these after reading [Week 14 — RNNs: A Clipboard That Walks the Sequence](../week-14.md).
+Do these after reading [Week 14 — Neural Nets, Without the Mystique](../week-14.md).
 
-**1. Use the mean hidden state** instead of the last step (`out.mean(dim=1)`). Does a mid-sequence dip get more say?
+**1. Linear MLP.** Set `activation="identity"` (no ReLU). Compare AUC to logistic regression. They should rhyme.
 
-**2. Reverse the weeks** (`torch.flip`). If accuracy dies, the model was using *order*, not just the total.
+**2. Too much net.** `hidden_layer_sizes=(128, 128, 128)` on this data. What happens to train vs test?
 
-**3. One-sentence LSTM.** Explain a forget gate to a PM who has used a shopping cart.
+**3. Decision memo.** Write five lines to your VP: why CloudWave’s churn model will stay a GBT this quarter.
+
+**4. Break the loop.** Comment out `opt.zero_grad()` and rerun 5 epochs. What happens to the loss? (It should explode or thrash.)

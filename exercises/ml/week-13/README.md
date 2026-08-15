@@ -1,4 +1,4 @@
-# Exercise — Week 13 — CNNs: Sliding Detectors
+# Exercise — Week 13 — Ensembles: A Room of Reviewers
 
 Work in `starter.py`. Run from the repo root:
 
@@ -8,8 +8,8 @@ python exercises/ml/week-13/starter.py
 
 ## ✍️ Exercises
 
-**1. Kernel size.** Change `kernel_size` to 5. Does test accuracy move? What did you make the detector look at?
+**1. Feature importance.** From the fitted GBT, print `feature_importances_` next to the prepared feature names. Is it a story or a random shuffle?
 
-**2. Dense baseline.** Flatten the 12 weeks into a `nn.Linear(12, 1)` and compare. If they tie, the *shape* was not the signal — the *total* was.
+**2. Overfit on purpose.** `max_depth=8`, `n_estimators=80`. Compare train AUC vs test AUC. Write one sentence about what you see.
 
-**3. Draw it.** Sketch one user as 12 boxes and a 3-wide stencil in three positions. Circle the position you think fires on a late-week drop.
+**3. Naming quiz.** In a design doc, correct a teammate who wrote “we used a stacking classifier” for `VotingClassifier(voting="soft")`.

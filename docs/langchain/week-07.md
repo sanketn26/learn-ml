@@ -9,7 +9,7 @@ No API key is required for the exercises. The router in `eval/router.py` is the 
 
 ## 🎯 What you will be able to do
 
-- Put the churn score behind `get_churn_score` — the same function as Week 20
+- Put the churn score behind `get_churn_score` — the same function as ML Week 17
 - Fail the build when `eval/golden_tickets.jsonl` regresses
 - Treat “ignore previous instructions” as a request to a tool that **does not exist**
 - Chunk, retrieve, and *refuse* when the retrieved doc is off-topic

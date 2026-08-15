@@ -1,4 +1,4 @@
-"""Week 09 exercises — Week 9 — PCA: JPEG for Tables.
+"""Week 9 exercises — Week 9 — Regression: Predict a Number, Not a Category.
 
 Run from the repo root:
 

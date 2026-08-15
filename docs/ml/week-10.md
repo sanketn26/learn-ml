@@ -1,205 +1,167 @@
-# Week 10 — Ensembles: A Room of Reviewers
+# Week 10 — Clustering: Sorting Without Labels
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have run a design review or a CI matrix. Same idea: one opinion is brittle.
+**Who this is for:** Engineers who have bucketed users in SQL and wished the buckets invented themselves.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Separate **bagging**, **boosting**, **voting**, and **stacking** (they are not synonyms)
-- Default to a forest / gradient-boosted trees for tabular SaaS data
-- Read a learning-rate × n_estimators heatmap
-- Know when a committee is worth the ops cost
+- Contrast supervised (“tickets with tags”) vs unsupervised (“messy inbox”)
+- Run K-Means as **drop K pins, assign, scoot pins, repeat**
+- Read an elbow / silhouette as “how blob-like are we,” not as a sacred K
+- See why **unscaled** MRR hijacks the clusters
+- Use segments as *personas for marketing*, not as a production classifier
 
-!!! think "Think of it like… code review."
+!!! think "Think of it like… dropping pins on a map."
 
-    **Bagging** (Random Forest): several reviewers read *different random pages* of the PR and vote. Uncorrelated mistakes cancel. Good at calming a jittery model.
+    You pick K (say 4). Drop 4 pins at random. Every customer walks to the nearest pin. Then each pin moves to the average location of its people. Repeat until the pins stop wandering. Those final neighborhoods are your segments.
 
-    **Boosting** (Gradient Boosting / XGBoost): reviewer 2 is handed only the comments reviewer 1 missed, then reviewer 3 hunts what 2 missed. Great at squeezing the last points. Easier to overfit.
+```python
+from lib.course_data import find_data_dir, load_customer_360
 
-    **Voting**: different algorithms (linear + forest + booster) cast a vote tonight.
+DATA = find_data_dir()
+```
 
-    **Stacking**: a second model learns *how to listen* to those votes. Not the same as voting.
 
 ## If you already write software
 
-One reviewer is brittle. Ensembles are a code-review process.
+Clustering is sorting without labels. Nobody told you the names of the piles. You drop K pins on a map and every customer walks to the nearest pin. That is K-Means.
 
-| Ensemble | Review process | Default vibe |
-|---|---|---|
-| **Bagging** (Random Forest) | Several reviewers read *different random pages* and vote | Calms jitter. Hard to overfit. |
-| **Boosting** (GBT / XGBoost) | Reviewer 2 only sees what reviewer 1 missed | Squeezes the last points. Easier to overfit. |
-| **Voting** | Different algorithms cast a vote tonight | Cheap committee. |
-| **Stacking** | A second model learns *how to listen* to those votes | Extra pipeline. Rarely worth it on the first ship. |
-
-They are not synonyms. Saying “we use an ensemble” is like saying “we do reviews” — which kind?
-
-### Why trees win on SaaS tables
-
-Your Customer 360 is a spreadsheet: mixed types, missing values, no spatial structure. Gradient-boosted trees are the default for that shape the way Postgres is the default for a relational app. Neural nets (next week) win on images, text, and sequences — not on 15 numeric columns.
-
-### Picture the ops cost
-
-A 500-tree booster that is 0.4% better than a 80-tree one is a worse product if you now need 200ms extra on `/predict` and a 2 GB pickle. Measure the committee against a single good tree and against a linear model. Ship the simplest one that beats the baseline by enough to change a staffing decision.
-
-!!! tip "Laptop budget"
-
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
-
-```python
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
-
-DATA = find_data_dir()
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import (RandomForestClassifier, GradientBoostingClassifier,
-                              VotingClassifier)
-from sklearn.metrics import roc_auc_score
-from sklearn.model_selection import validation_curve
-```
-
-## Picture the two committees
+It is **not** a recommendation API. It is **not** a truth about your users. It is a way to *propose* personas you then go verify with interviews and churn numbers.
 
 ```
-BAGGING                         BOOSTING
- data ─┬─► tree ─┐               data ─► tree1 ─ misses ─► tree2 ─ misses ─► tree3
-       ├─► tree ─┼─ vote                           ↘ add ↗         ↘ add ↗
-       └─► tree ─┘               final = tree1 + tree2 + tree3
+Supervised (weeks 6–7)     you have y: churned / not, or next MRR
+Unsupervised (this week)   you have no y; you are looking for piles
+```
+
+### Scale or MRR hijacks the map
+
+K-Means uses Euclidean distance. `mrr` is in tens of dollars. `n_support` is 0, 1, 2. Without scaling, the map is “who pays more,” and you will invent a persona called “the expensive ones.” That is just a sort.
+
+Always scale. Then look at the cluster *profiles* (mean of each column) — those sentences are the only part a PM can use.
+
+### Picture the pins
+
+```
+    ·  ·     ·
+  ·   ×₁   ·     × = a centroid (a pin you dropped)
+    ·   ·  ·
+              ·  ×₂  ·
+                 ·  ·
+```
+
+You pick K. The algorithm wiggles the pins until nobody wants to switch neighborhoods. Different random starts can give different neighborhoods. If the story changes every run, you do not have personas. You have noise.
+
+## Supervised vs unsupervised
+
+```
+Supervised (Weeks 6–7)          Unsupervised (this week)
+X ────────► model ──► y         X ────────► model ──► group id
+   you had labels                  you did not
+   spam / not spam                 "these users look like each other"
 ```
 
 !!! engineer "Engineer mental model"
 
-    For CloudWave-sized *tables* (thousands to hundreds of thousands of rows, mixed numbers + categories), **gradient-boosted trees are the default workhorse** — XGBoost / LightGBM / sklearn’s GBT. Neural nets start to win on images, text, and sequences, not on a 7-column billing table.
+    Cluster *offline*. Write the persona (“whale, 3 features, high MRR”). Drive campaigns from the persona or from a simple rule. Do not call `KMeans.predict` on the request path unless you really mean it — pin locations drift every retrain and nobody will know why the user flipped from “champion” to “at risk.”
 
 ```python
 df = load_customer_360(DATA)
-numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
-X = df[numeric + ["plan_type"]]
-y = df["is_churned"].astype(int)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)
-prep = ColumnTransformer([
-    ("num", StandardScaler(), numeric),
-    ("cat", OneHotEncoder(handle_unknown="ignore"), ["plan_type"]),
-])
+# Keep the label on the side for storytelling — the algorithm does not get it
+cols = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events"]
+sample = df  # already laptop-sized from load_customer_360
+X_raw = sample[cols].to_numpy()
+X = StandardScaler().fit_transform(X_raw)
 
-def auc_of(model):
-    p = Pipeline([("prep", prep), ("m", model)])
-    p.fit(X_train, y_train)
-    return p, roc_auc_score(y_test, p.predict_proba(X_test)[:, 1])
-
-models = {
-    "logreg": LogisticRegression(max_iter=1000),
-    "forest (bagging)": RandomForestClassifier(n_estimators=40, max_depth=6, random_state=42, n_jobs=2),
-    "gbt (boosting)": GradientBoostingClassifier(n_estimators=40, learning_rate=0.1, max_depth=2, random_state=42),
-}
-fitted = {}
-print(f"{'model':<22} AUC")
-for name, m in models.items():
-    pipe, auc = auc_of(m)
-    fitted[name] = pipe
-    print(f"{name:<22} {auc:.3f}")
+print("We will pretend we never saw is_churned. After clustering we will peek.")
 ```
 
-## Soft voting ≠ stacking
+## Scale first, or MRR becomes the whole personality
 
-Soft voting averages predicted probabilities. Stacking would train a *meta-model* on those probabilities. We will do voting honestly, and name it correctly.
-
-```python
-vote = VotingClassifier(
-    estimators=[
-        ("lr", LogisticRegression(max_iter=1000)),
-        ("rf", RandomForestClassifier(n_estimators=30, max_depth=6, random_state=42, n_jobs=2)),
-        ("gb", GradientBoostingClassifier(n_estimators=30, max_depth=2, random_state=42)),
-    ],
-    voting="soft",
-)
-vote_pipe, vote_auc = auc_of(vote)
-print(f"soft voting AUC: {vote_auc:.3f}")
-print("A 0.002 lift that costs 3× latency is usually not a win.")
-```
-
-## The only hyperparameter picture you need this week
-
-`learning_rate` is how hard each new tree is allowed to shove the answer. More trees + smaller steps ≈ same work, often stabler. There is no magic pair — there is a ridge on a heatmap.
+Without scaling, a $499 enterprise account is “farther” from a $29 starter than a power user is from a lurker. Distance thinks in raw units.
 
 ```python
-rates = [0.05, 0.15]
-trees = [20, 40]
-grid = np.zeros((len(rates), len(trees)))
-for i, lr in enumerate(rates):
-    for j, n in enumerate(trees):
-        _, grid[i, j] = auc_of(
-            GradientBoostingClassifier(learning_rate=lr, n_estimators=n,
-                                       max_depth=2, random_state=42)
-        )
+# Tiny 2-D picture: MRR vs log usage, unscaled vs scaled
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+axes[0].scatter(sample["mrr"], sample["log_usage"], s=8, alpha=0.25, c="#64748b")
+axes[0].set_title("Unscaled — horizontal axis in dollars dominates")
+axes[0].set_xlabel("mrr"); axes[0].set_ylabel("log usage")
 
-fig, ax = plt.subplots(figsize=(6.2, 3.6))
-im = ax.imshow(grid, cmap="YlGn", vmin=grid.min() - 0.005, vmax=grid.max())
-ax.set_xticks(range(len(trees)), trees)
-ax.set_yticks(range(len(rates)), rates)
-ax.set_xlabel("n_estimators"); ax.set_ylabel("learning_rate")
-ax.set_title("Holdout AUC — look for a plateau, not a spike")
-for i in range(grid.shape[0]):
-    for j in range(grid.shape[1]):
-        ax.text(j, i, f"{grid[i, j]:.3f}", ha="center", va="center", fontsize=9)
-fig.colorbar(im, ax=ax, fraction=0.046)
+axes[1].scatter(X[:, 0], X[:, 2], s=8, alpha=0.25, c="#6366f1")
+axes[1].set_title("Scaled — both axes in 'typical spreads'")
+axes[1].set_xlabel("mrr (z)"); axes[1].set_ylabel("log usage (z)")
 plt.tight_layout()
 plt.show()
 ```
 
-## Bias–variance on purpose
+## Choosing K — elbow is a suggestion, the business can overrule
 
-Bagging (a forest) is a **variance reducer**: many jittery trees, averaged. Boosting is a **bias reducer**: each tree hunts what the last one still misses — and will overfit if you let it run forever.
+**Inertia** = how far customers sit from their pin (lower is tighter).  
+**Silhouette** ≈ “am I closer to my blob than to the next blob?” (higher is cleaner, max 1).
 
-The diagnostic is always the same pair of curves.
+If marketing can only run 3 campaigns, you pick K=3 even if K=6 wins the silhouette contest.
 
 ```python
-from sklearn.model_selection import validation_curve
+ks = range(2, 9)
+inertias, sils = [], []
+for k in ks:
+    km = KMeans(n_clusters=k, n_init=10, random_state=42)
+    labels = km.fit_predict(X)
+    inertias.append(km.inertia_)
+    sils.append(silhouette_score(X, labels, sample_size=3000, random_state=42))
 
-# 6k-row picture is enough to see the two curves; a 50k × 12-depth CV is a coffee break
-sample = np.random.default_rng(0).choice(len(X), size=min(2500, len(X)), replace=False)
-depths = np.arange(1, 8)
-train_s, test_s = validation_curve(
-    RandomForestClassifier(n_estimators=25, random_state=42, n_jobs=2),
-    prep.fit_transform(X.iloc[sample]), y.iloc[sample],
-    param_name="max_depth", param_range=depths,
-    cv=2, scoring="roc_auc", n_jobs=2,
-)
-fig, ax = plt.subplots(figsize=(8, 3.6))
-ax.plot(depths, train_s.mean(axis=1), marker="o", label="train AUC", color="#1d4ed8")
-ax.plot(depths, test_s.mean(axis=1), marker="o", label="holdout AUC", color="#b45309")
-ax.set_xlabel("max_depth (capacity)")
-ax.set_ylabel("AUC")
-ax.set_title("Left = underfit (both low). Right = overfit (train ↑ holdout ↓)")
+fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
+axes[0].plot(list(ks), inertias, marker="o")
+axes[0].set_title("Elbow (inertia) — look for the bend")
+axes[0].set_xlabel("K")
+axes[1].plot(list(ks), sils, marker="o", color="#0f766e")
+axes[1].set_title("Silhouette — higher = cleaner blobs")
+axes[1].set_xlabel("K")
+plt.tight_layout()
+plt.show()
+print(list(zip(ks, np.round(sils, 3))))
+```
+
+```python
+K = 4
+km = KMeans(n_clusters=K, n_init=10, random_state=42)
+sample = sample.copy()
+sample["cluster"] = km.fit_predict(X)
+
+# 2-D view of the neighborhoods
+fig, ax = plt.subplots(figsize=(7, 4.2))
+for c in range(K):
+    sl = sample[sample["cluster"] == c]
+    ax.scatter(sl["mrr"], sl["log_usage"], s=10, alpha=0.35, label=f"cluster {c}")
+ax.set_xlabel("mrr"); ax.set_ylabel("log usage")
+ax.set_title("K=4 pins in a 2-D slice (the model actually used more columns)")
 ax.legend()
 plt.tight_layout()
 plt.show()
-print("Pick the depth where orange peaks, not where blue is 1.0.")
+
+# Persona table — including churn, which we hid from the algorithm
+profile = sample.groupby("cluster").agg(
+    n=("user_id", "count"),
+    mrr=("mrr", "median"),
+    usage=("total_usage", "median"),
+    features=("features_adopted", "median"),
+    tenure=("tenure_days", "median"),
+    churn=("is_churned", "mean"),
+).round(3)
+print(profile.to_string())
+print("\nName the rows in a PR description. If you cannot name them, K is wrong.")
 ```
 
-!!! warning "Watch out"
+## DBSCAN, in one picture
 
-    Boosting will happily memorize noise if trees get deep and many. A validation curve that keeps rising on train and dies on test is not “more learning.” It is a student who memorized last year’s exam.
+K-Means always fills K buckets, even if the data is a smear. **DBSCAN** says: “a cluster is a dense pocket; loners are noise.” You pick a radius (`eps`) and a minimum crowd (`min_samples`), not K.
 
+On 5-D scaled data, `eps=0.5` is a guess. If everything is noise, raise `eps`. If everything is one blob, lower it.
 
 !!! success "Ship / don’t ship"
 
-    Start with a random forest (forgiving). Move to gradient boosting when you need the last points and can monitor it. Do not stack five models to brag. XGBoost is usually faster than sklearn’s GBT and similar in accuracy — “faster vs more accurate” is the wrong question.
+    Clustering is a workshop tool: personas, onboarding tracks, “who should see this email.” It is not a replacement for the Week 7 churn model. Do not put cluster ids into a legal document — they will move next Tuesday.
 
 
 ## ✍️ Exercise
@@ -208,10 +170,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-10.md)
 
 ## 🤔 Reflection
 
-1. Why do diverse models help a vote more than three copies of the same forest?
-2. What is the ops cost of an ensemble (latency, pickle size, explainability)?
-3. When would you keep logistic regression in production anyway? (regulated audit, need coefficients)
+1. Why is “the algorithm found our enterprise plan” a failure, not a success? (You already had that column.)
+2. Silhouette says K=2, marketing wants K=5. Who wins?
+3. What breaks if you re-fit K-Means nightly and email users based on last night’s id?
 
 ## 🔗 Next week
 
-Neural nets — and an honest answer about whether CloudWave should use one.
+Too many columns. PCA: JPEG for tabular data — keep the big shapes, drop the noise.

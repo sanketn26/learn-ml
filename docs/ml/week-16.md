@@ -1,165 +1,163 @@
-# Week 16 — SQL Is the Source of Truth
+# Week 16 — The Job Pipeline
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who already write `SELECT`. Read this after Week 2. The CSV in `data/` is a **fixture**. Production is a warehouse.
-
-A model trained on a file someone emailed you is a demo. A model trained on `as of midnight, this partition` is a job.
+**Who this is for:** Engineers who have a pickle (Week 15) and a legal label (Week 8). sklearn `Pipeline` is an object. This week is the **job**.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Treat CloudWave’s CSVs as tables you would query, not as “the data”
-- Write the Customer 360 as **SQL with a date bound**
-- Catch a grain bug with a test, the same way Week 2 caught an exploding join
-- Know when to stay in SQL / DuckDB and when to come back to Pandas
+- Draw extract → features → train → **gate** → register → score → monitor as a DAG
+- Run `python -m pipelines.train` and get `artifacts/<date>/`, not a file in `/tmp`
+- Refuse to promote a model that loses to the dummy or to current prod
+- Score tonight’s 80 names from the same `build_features()` training used
+- Explain Airflow as cron with retries
 
-!!! think "Think of it like… the database is git. The CSV is a checkout."
+!!! think "Think of it like… CI."
 
-    You would not ship from a zip file on someone’s laptop. You ship from `main`. The warehouse is `main`. `as_of` is the commit you checked out. Retraining on a new CSV you cannot reproduce is training on a dirty working tree.
+    `features.py` is the build. `train.py` is compile. `tests/` + `promote.py` are the required checks. `artifacts/prod` is the release. `score_batch.py` is the nightly deploy. Monitor is the dashboard. Airflow is a fancier `cron`. You already know this system.
 
 ## If you already write software
 
 ```
-Your backend                     This week
-────────────────────────         ──────────────────────────────
-Postgres / Snowflake             the warehouse (here: CSV + DuckDB)
-dbt model                        a SELECT that has a grain
-WHERE created_at < :as_of        the time-machine rule, in SQL
-unit test on a fixture row       COUNT(*) after the join
-ORM in the request path          Pandas after the extract
+CI                              This repo
+──────────────────────────      ──────────────────────────────
+git commit                      new day’s warehouse partition
+build                           pipelines/features.py  (as_of)
+unit tests                      tests/test_features.py
+package                         artifacts/20240601/model.joblib
+required status checks          pipelines/promote.py
+deploy                          pipelines/score_batch.py
+canary / rollback               keep yesterday’s artifacts/prod
+pager                           AUC / precision@80 dropped
 ```
 
-Week 2 built Customer 360 in Pandas. That is the ORM. This week is the query that should have produced it.
+Week 15’s `Pipeline([prep, model])` is the **binary**. This week is everything around it.
 
-!!! warning "Watch out — the CSV is a snapshot of *all time*"
-
-    `load_customer_360()` sums every usage row in the file, including next quarter. Fine for learning verbs. Illegal for a model you will score on Tuesday. The extract must take an **`as_of`**.
-
-## Picture the extract
+### Picture the DAG
 
 ```
-subscriptions          feature_usage           user_events
-one row = one user     one row = user×feat×day one row = one click
-        \                     |                      /
-         \                    | as_of = 2024-06-01  /
-          \                   | (drop later rows)  /
-           \                  ▼                   /
-            └────────►  customer_360_as_of  ◄────┘
-                       one row = one user
-                       tenure_so_far = as_of − signup
-                       usage only through as_of
+          02:00 cron
+              │
+              ▼
+        extract + features(as_of)     ← same function
+              │
+              ▼
+           train.py                   → artifacts/YYYYMMDD/
+              │                         model.joblib
+              │                         metrics.json
+              ▼
+          promote.py
+           /        \
+        fail        pass
+         │            │
+      keep prod     artifacts/prod = candidate
+                      │
+                      ▼
+                 score_batch.py  → tonight.csv (80 rows)
+                      │
+                      ▼
+                 next week: join labels, write a Slack
 ```
 
-## The same 360, in SQL
+Nothing in that picture is a vendor. It is four modules:
 
-DuckDB reads the files as if they were warehouse tables. The SQL is what you would schedule.
+```
+pipelines/
+  features.py      as_of → one row per at-risk user
+  labels.py        horizon label, censoring
+  train.py         writes artifacts/<version>/
+  contract.py      validate + predict
+  score_batch.py   tonight’s CSV
+  promote.py       copy to prod or refuse
+tests/
+  test_features.py test_labels.py test_contract.py test_gate.py
+```
+
+## Run it
+
+From the repo root:
+
+```bash
+pytest tests/test_contract.py tests/test_gate.py tests/test_labels.py
+python -m pipelines.train --as-of 2024-06-01 --label eventual
+python -m pipelines.promote --candidate artifacts/20240601
+python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
+```
+
+`train` never writes `prod`. A human or a green gate does. That is the whole difference between a script and a pipeline.
 
 ```python
-import duckdb
-from lib.course_data import find_data_dir
+from pipelines.train import train
+from pipelines.promote import gate
+from pathlib import Path
 
-DATA = find_data_dir()
-con = duckdb.connect()
-con.execute(f"""
-    CREATE OR REPLACE VIEW subscriptions AS
-    SELECT * FROM read_csv_auto('{(DATA / "subscriptions.csv").as_posix()}');
-    CREATE OR REPLACE VIEW feature_usage AS
-    SELECT * FROM read_csv_auto('{(DATA / "feature_usage.csv").as_posix()}');
-    CREATE OR REPLACE VIEW user_events AS
-    SELECT * FROM read_csv_auto('{(DATA / "user_events.csv").as_posix()}');
-""")
-
-as_of = "2024-06-01"
-sql_360 = f"""
-WITH at_risk AS (
-    SELECT user_id, plan_type, mrr, signup_date,
-           datediff('day', signup_date, DATE '{as_of}') AS tenure_so_far
-    FROM subscriptions
-    WHERE signup_date <= DATE '{as_of}'
-      AND (churn_date IS NULL OR churn_date > DATE '{as_of}')
-),
-usage_cut AS (
-    SELECT user_id,
-           SUM(usage_count) AS total_usage,
-           COUNT(DISTINCT feature_name) AS features_adopted
-    FROM feature_usage
-    WHERE date <= DATE '{as_of}'
-    GROUP BY 1
-),
-events_cut AS (
-    SELECT user_id,
-           COUNT(*) AS total_events,
-           SUM(CASE WHEN event_type = 'support_message' THEN 1 ELSE 0 END) AS n_support
-    FROM user_events
-    WHERE timestamp <= TIMESTAMP '{as_of}'
-    GROUP BY 1
-)
-SELECT a.user_id, a.plan_type, a.mrr, a.tenure_so_far,
-       COALESCE(u.total_usage, 0) AS total_usage,
-       COALESCE(u.features_adopted, 0) AS features_adopted,
-       COALESCE(e.total_events, 0) AS total_events,
-       COALESCE(e.n_support, 0) AS n_support
-FROM at_risk a
-LEFT JOIN usage_cut u USING (user_id)
-LEFT JOIN events_cut e USING (user_id)
-"""
-frame = con.execute(sql_360).df()
-print(frame.shape, frame.columns.tolist())
-print(frame.head(3))
+meta = train("2024-06-01", Path("artifacts"), n=4000)
+print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"])
+ok, reason = gate(Path("artifacts") / meta["model_version"], None)
+print("promote?", ok, reason)
 ```
-
-That query **is** `pipelines.features.build_features`. Pandas is allowed after this. Pandas is not allowed to be the only copy of the grain rules.
 
 !!! engineer "Engineer mental model"
 
-    One query, one grain, one `as_of`. If the warehouse team changes a column, the model job fails at extract — not three weeks later when CS notices the scores went weird. Put the SQL (or the Python that is the SQL) in git. Review it like an API.
+    Two directories: **candidate** and **prod**. The handler loads `prod`. The training job is not allowed to overwrite it. Same as you do not `scp` onto the live box from your laptop; you promote a build.
 
-## Grain tests are unit tests
+## The contract is a test, not a comment
 
-```python
-n_users = con.execute(f"""
-    SELECT COUNT(*) FROM subscriptions
-    WHERE signup_date <= DATE '{as_of}'
-      AND (churn_date IS NULL OR churn_date > DATE '{as_of}')
-""").fetchone()[0]
-assert len(frame) == n_users, "360 picked up extra rows — you joined the many-side raw"
-assert frame["user_id"].is_unique
-assert (frame["tenure_so_far"] >= 0).all()
+`predict()` and `build_features()` share `FEATURE_COLS`. `validate()` rejects extra keys (that is how `churn_date` and `email` stay out). If training adds a column and forgets the handler, the test in `tests/test_contract.py` fails before Tuesday’s cron.
+
+Training-serving skew that Week 6 could only lecture about:
+
+| Bug | What catches it |
+|---|---|
+| Train used all-time usage; score used last 30 days | `as_of` in `build_features`, one function |
+| Handler reimplemented `log1p` | handler calls `predict()`, no second math |
+| New plan type `internal` | `validate` raises; `handle_unknown="ignore"` in the pickle is a last resort |
+| Someone put `user_id` in X | `FORBIDDEN` ∩ `FEATURE_COLS` is empty, asserted |
+
+## Batch tonight vs `/predict`
+
+```
+Batch (ship this first)          Online (later)
+score everyone at 2am            score this payload now
+CSV / Slack to CS                POST /predict
+failure = a late email           failure = a 500 on a request
+same artifact                    same artifact
 ```
 
-Week 2’s exploding join was a print. Here it is a red CI.
+Week 15 was right: you may ship the batch list. You may not ship a public HTTP API until `contract.py` is imported by the handler, not copy-pasted into FastAPI.
 
-## Freshness
+## Monitor is last week’s labels
 
-Ask of every extract:
+Drift histograms (Week 15) are a smoke alarm. The actual page:
 
-1. What is the newest row I am allowed to see? (`as_of`)
-2. When did this table last land? (if `max(date)` is three days old, you are scoring on a weekend of silence)
-3. Can I rerun last Tuesday and get the same frame?
+1. Take last week’s `tonight.csv`
+2. Now that 30 days have passed, join the horizon label
+3. Print precision@80 vs what `metrics.json` promised
+4. If it fell off a cliff, do **not** auto-promote tomorrow’s train
 
-```python
-print(con.execute("SELECT min(date), max(date) FROM feature_usage").fetchall())
-print(con.execute("SELECT min(timestamp), max(timestamp) FROM user_events").fetchall())
-```
+That is a 20-line job. It is more valuable than a feature store.
 
-CloudWave events stop at **2024-11-30**. That is the observation end of this universe. A job with `as_of=2025-01-01` is asking questions the warehouse cannot answer. Week 17 calls that **censoring**.
+!!! warning "Watch out"
+
+    - Retraining daily on a 6.7% event is how you overfit the last noisy week. Weekly is a default.
+    - Auto-promote without a gate is `main` pushing to prod on red CI.
+    - Two copies of feature math is two products. You will not notice until a whale gets a 0.0.
 
 !!! success "Ship / don’t ship"
 
-    Ship a model whose training table is a query plus a date. Do not ship a model whose training table is `final_final_v3.csv` on a laptop. If you cannot answer “what `as_of` built this pickle?”, you do not have a pipeline. You have a souvenir.
+    Ship a cron, a candidate directory, a gate, and a CSV. Do not ship Kubeflow so you can say “we have a platform.” Do not let `train.py` overwrite `prod`. Do not add Airflow until a cron file is boring.
 
 ## ✍️ Exercise
 
-Do the [exercises](exercises/week-16.md). The SQL lives in your head and in `pipelines/features.py`.
+[Exercises](exercises/week-16.md). Run `pytest tests/` from the repo root.
 
 ## 🤔 Reflection
 
-1. Why is `tenure_days` on `subscriptions` the wrong column once you have an `as_of`?
-2. A PM emails you a new CSV “with extra features.” What is your first question?
-3. When would you *keep* the 360 in SQL (DuckDB, warehouse) instead of bringing it into Pandas?
+1. Who is allowed to write `artifacts/prod`? Who is allowed to read it?
+2. Tomorrow’s PR-AUC is 0.01 worse than prod. Promote? Wait? Page?
+3. Why is “we will clean the features up in the handler” a pipeline bug, not a style comment?
 
-## 🔗 Next
+## 🔗 Next week
 
-If you came from Week 2: go on to Week 3 (charts).  
-If you already finished classification: Week 17 is labels, delay, and why 6.7% churn is not “just use AUC.”
+You are on-call. A bad join, a leaked label, a silent NaN. Then a ticket bot that uses this score as a *tool*, not as a personality.

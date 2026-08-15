@@ -62,7 +62,7 @@ Your product code          Python (this week)
 tabular numbers            NumPy          ← Week 1
 tables, joins, dates       Pandas         ← Week 2
 classical ML               scikit-learn   ← Weeks 5–10
-gradients + GPU + nets     PyTorch        ← Weeks 11, 13–15
+gradients + GPU + nets     PyTorch        ← Weeks 14, 18–20
 ```
 
 !!! engineer "Engineer mental model"
@@ -130,7 +130,7 @@ print(add_tag({"id": "u2"}, "vip"))  # must NOT contain two 'vip' from a shared 
 
 ## Dataclasses — the feature payload
 
-A dataclass is a typed struct. Next week this becomes a Pandas row. In Week 12 it becomes the `/predict` JSON body.
+A dataclass is a typed struct. Next week this becomes a Pandas row. In Week 15 it becomes the `/predict` JSON body.
 
 ```python
 @dataclass
@@ -268,7 +268,7 @@ x * 2           x * 2            # same spelling
 —               x.to("cuda")     # NEW: same tensor, different device
 ```
 
-Week 11 writes a training loop. Weeks 13–15 put CNNs, RNNs, and Transformers on that loop.
+Week 14 writes a training loop. Weeks 18–20 put CNNs, RNNs, and Transformers on that loop.
 
 !!! tip "Visual cue — what “strong Python” means on an ML team"
 

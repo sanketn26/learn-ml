@@ -71,46 +71,46 @@ nav:
       - Week 0 — Strong Python: ml/week-00.md
       - Week 1 — NumPy: ml/week-01.md
       - Week 2 — Pandas: ml/week-02.md
-      - Week 16 — SQL / as_of: ml/week-16.md
-      - Week 3 — Charts: ml/week-03.md
-      - Week 4 — Signal vs noise: ml/week-04.md
-      - Week 5 — Features as API: ml/week-05.md
-      - Week 6 — Classification: ml/week-06.md
-      - Week 17 — Labels lie: ml/week-17.md
-      - Week 7 — Regression: ml/week-07.md
-      - Week 8 — Clustering: ml/week-08.md
-      - Week 18 — Rank a list: ml/week-18.md
-      - Week 9 — PCA: ml/week-09.md
-      - Week 10 — Ensembles: ml/week-10.md
-      - Week 11 — Neural nets: ml/week-11.md
-      - Week 12 — Capstone pickle: ml/week-12.md
-      - Week 19 — Job pipeline: ml/week-19.md
-      - Week 20 — On-call: ml/week-20.md
-      - Week 13 — CNNs (optional): ml/week-13.md
-      - Week 14 — RNNs (optional): ml/week-14.md
-      - Week 15 — Transformers (optional): ml/week-15.md
+      - Week 3 — SQL / as_of: ml/week-03.md
+      - Week 4 — Charts: ml/week-04.md
+      - Week 5 — Signal vs noise: ml/week-05.md
+      - Week 6 — Features as API: ml/week-06.md
+      - Week 7 — Classification: ml/week-07.md
+      - Week 8 — Labels lie: ml/week-08.md
+      - Week 9 — Regression: ml/week-09.md
+      - Week 10 — Clustering: ml/week-10.md
+      - Week 11 — Rank a list: ml/week-11.md
+      - Week 12 — PCA: ml/week-12.md
+      - Week 13 — Ensembles: ml/week-13.md
+      - Week 14 — Neural nets: ml/week-14.md
+      - Week 15 — Capstone pickle: ml/week-15.md
+      - Week 16 — Job pipeline: ml/week-16.md
+      - Week 17 — On-call: ml/week-17.md
+      - Week 18 — CNNs (optional): ml/week-18.md
+      - Week 19 — RNNs (optional): ml/week-19.md
+      - Week 20 — Transformers (optional): ml/week-20.md
       - Exercises:
           - Week 0: ml/exercises/week-00.md
           - Week 1: ml/exercises/week-01.md
           - Week 2: ml/exercises/week-02.md
-          - Week 16: ml/exercises/week-16.md
           - Week 3: ml/exercises/week-03.md
           - Week 4: ml/exercises/week-04.md
           - Week 5: ml/exercises/week-05.md
           - Week 6: ml/exercises/week-06.md
-          - Week 17: ml/exercises/week-17.md
           - Week 7: ml/exercises/week-07.md
           - Week 8: ml/exercises/week-08.md
-          - Week 18: ml/exercises/week-18.md
           - Week 9: ml/exercises/week-09.md
           - Week 10: ml/exercises/week-10.md
           - Week 11: ml/exercises/week-11.md
           - Week 12: ml/exercises/week-12.md
-          - Week 19: ml/exercises/week-19.md
-          - Week 20: ml/exercises/week-20.md
           - Week 13: ml/exercises/week-13.md
           - Week 14: ml/exercises/week-14.md
           - Week 15: ml/exercises/week-15.md
+          - Week 16: ml/exercises/week-16.md
+          - Week 17: ml/exercises/week-17.md
+          - Week 18: ml/exercises/week-18.md
+          - Week 19: ml/exercises/week-19.md
+          - Week 20: ml/exercises/week-20.md
   - LangChain:
       - Overview: langchain/index.md
       - Week 1 — Chains: langchain/week-01.md

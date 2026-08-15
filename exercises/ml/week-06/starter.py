@@ -1,4 +1,4 @@
-"""Week 06 exercises — Week 6 — Classification: A Score, Then a Threshold.
+"""Week 6 exercises — Week 6 — Features Are the Model’s API.
 
 Run from the repo root:
 

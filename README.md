@@ -6,7 +6,7 @@ Lessons are markdown. Exercises are ordinary Python. The site is GitHub Pages (M
 
 ## Courses
 
-1. **Applied ML Foundations for SaaS Analytics** (weeks 0–12, then 16–20; 13–15 optional)  
+1. **Applied ML Foundations for SaaS Analytics** (weeks 0–20; 18–20 optional DL)  
    Analogies, pictures, then code. Ends in a real job: `as_of` features, a gate, tonight’s CSV.
 
 2. **LangChain** (7 weeks) — prompts, tools, RAG, a golden file that can fail CI.

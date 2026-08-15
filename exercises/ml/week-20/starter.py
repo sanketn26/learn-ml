@@ -1,4 +1,6 @@
-"""Week 20 — golden router + a read-only score tool.
+"""Week 20 exercises — Week 20 — Transformers: Everything Looks at Everything.
+
+Run from the repo root:
 
     python exercises/ml/week-20/starter.py
 """
@@ -11,13 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from eval.router import evaluate
+from lib.course_data import find_data_dir, load_customer_360
+
+DATA = find_data_dir()
 
 
 def main() -> None:
-    print("golden failures", evaluate())
-    print("TODO: get_churn_score against artifacts/prod")
-    print("TODO: incident write-up")
+    print(f"data: {DATA}")
+    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
+    # TODO: implement the tasks in README.md
 
 
 if __name__ == "__main__":

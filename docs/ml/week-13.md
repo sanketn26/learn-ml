@@ -1,50 +1,47 @@
-# Week 13 — CNNs: Sliding Detectors
+# Week 13 — Ensembles: A Room of Reviewers
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a sliding-window loop, a regex, or an image filter.
-
-A **Convolutional Neural Network** is not “the image one.” It is: **reuse a tiny detector at every position.**
+**Who this is for:** Engineers who have run a design review or a CI matrix. Same idea: one opinion is brittle.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Picture a convolution as a small stencil sliding over a sequence or an image
-- Explain weight sharing (“one detector, many places”) in one sentence
-- Say what pooling does (downsample, keep the loudest hit)
-- Train a tiny **1-D CNN** on CloudWave usage-over-time to predict churn
-- Know when a CNN is the wrong tool (most SaaS tables)
+- Separate **bagging**, **boosting**, **voting**, and **stacking** (they are not synonyms)
+- Default to a forest / gradient-boosted trees for tabular SaaS data
+- Read a learning-rate × n_estimators heatmap
+- Know when a committee is worth the ops cost
 
-!!! think "Think of it like… Ctrl+F with a fuzzy stencil, or a antivirus signature scan."
+!!! think "Think of it like… code review."
 
-    You do not write a separate rule for “spike on Monday” and “spike on Thursday.” You write *one* “usage spike” detector and slide it along the week. The detector’s numbers are learned. That reuse is why CNNs have so few weights compared to a giant dense net on every pixel.
+    **Bagging** (Random Forest): several reviewers read *different random pages* of the PR and vote. Uncorrelated mistakes cancel. Good at calming a jittery model.
+
+    **Boosting** (Gradient Boosting / XGBoost): reviewer 2 is handed only the comments reviewer 1 missed, then reviewer 3 hunts what 2 missed. Great at squeezing the last points. Easier to overfit.
+
+    **Voting**: different algorithms (linear + forest + booster) cast a vote tonight.
+
+    **Stacking**: a second model learns *how to listen* to those votes. Not the same as voting.
 
 ## If you already write software
 
-A convolution is a sliding-window loop you have already written.
+One reviewer is brittle. Ensembles are a code-review process.
 
-```python
-# you have done this
-for i in range(len(signal) - k):
-    window = signal[i : i + k]
-    hits.append(dot(window, kernel))
-```
+| Ensemble | Review process | Default vibe |
+|---|---|---|
+| **Bagging** (Random Forest) | Several reviewers read *different random pages* and vote | Calms jitter. Hard to overfit. |
+| **Boosting** (GBT / XGBoost) | Reviewer 2 only sees what reviewer 1 missed | Squeezes the last points. Easier to overfit. |
+| **Voting** | Different algorithms cast a vote tonight | Cheap committee. |
+| **Stacking** | A second model learns *how to listen* to those votes | Extra pipeline. Rarely worth it on the first ship. |
 
-A CNN **learns the kernel** and **reuses it at every position**. One “usage spike” detector, stamped along the weeks. That reuse is why a CNN has so few weights compared to a dense net that gets its own parameter per pixel.
+They are not synonyms. Saying “we use an ensemble” is like saying “we do reviews” — which kind?
 
-```
-Ctrl+F / regex / antivirus signature     one pattern, many places
-image sharpen / blur kernel              one stencil, every pixel
-1-D conv on weekly usage                 one “spike / drop-off” detector, every week
-```
+### Why trees win on SaaS tables
 
-### When this is the wrong tool
+Your Customer 360 is a spreadsheet: mixed types, missing values, no spatial structure. Gradient-boosted trees are the default for that shape the way Postgres is the default for a relational app. Neural nets (next week) win on images, text, and sequences — not on 15 numeric columns.
 
-A Customer 360 row (`mrr`, `tenure`, `plan_type`) has no spatial axis. There is nothing to slide over. Use a tree. Use a CNN when the *order* or *position* matters: usage-over-weeks, a spectrogram, an image, a token sequence (and even then, Transformers often win on text — week 15).
+### Picture the ops cost
 
-### Picture weight sharing
-
-A dense layer on a 12-week series would learn a different rule for “week 1” and “week 7.” A conv layer says: a drop-off looks like a drop-off wherever it sits. That is the inductive bias. You are telling the model the world is translation-invariant, the same way a regex does not care whether the match starts at column 3 or column 30.
+A 500-tree booster that is 0.4% better than a 80-tree one is a worse product if you now need 200ms extra on `/predict` and a 2 GB pickle. Measure the committee against a single good tree and against a linear model. Ship the simplest one that beats the baseline by enough to change a staffing decision.
 
 !!! tip "Laptop budget"
 
@@ -63,147 +60,146 @@ from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 
-try:
-    import torch
-    import torch.nn as nn
-    import torch.nn.functional as F
-except ImportError as exc:
-    raise SystemExit("PyTorch is missing. Install with:  pip install torch") from exc
-
-torch.manual_seed(0)
-DEVICE = torch.device("cpu")
-print("torch", torch.__version__, "device", DEVICE)
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import (RandomForestClassifier, GradientBoostingClassifier,
+                              VotingClassifier)
+from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import validation_curve
 ```
 
-## Visual: a 1-D filter sliding
+## Picture the two committees
 
 ```
-usage by day:   [2, 2, 8, 9, 2, 2, 3]
-detector:          [−1, 2, −1]     “a spike relative to neighbors”
-slide:          pos0: 2·-1 + 2·2 + 8·-1 = -6
-                pos1: 2·-1 + 8·2 + 9·-1 =  5   ← hit
-                pos2: 8·-1 + 9·2 + 2·-1 =  8   ← hit
+BAGGING                         BOOSTING
+ data ─┬─► tree ─┐               data ─► tree1 ─ misses ─► tree2 ─ misses ─► tree3
+       ├─► tree ─┼─ vote                           ↘ add ↗         ↘ add ↗
+       └─► tree ─┘               final = tree1 + tree2 + tree3
 ```
-
-A **2-D CNN** is the same idea on a grid (a screenshot, a heatmap, an MRI). Same stencil, two axes.
 
 !!! engineer "Engineer mental model"
 
-    `nn.Conv1d` is a 1-D convolution over time. `nn.Conv2d` is over height×width. `in_channels` is “how many parallel traces” (RGB = 3, or many features per day). `out_channels` is “how many different detectors we learn.” Pooling is `max` in a window — keep the strongest hit, throw away the exact timestamp.
+    For CloudWave-sized *tables* (thousands to hundreds of thousands of rows, mixed numbers + categories), **gradient-boosted trees are the default workhorse** — XGBoost / LightGBM / sklearn’s GBT. Neural nets start to win on images, text, and sequences, not on a 7-column billing table.
 
 ```python
-# Hand-built spike detector — no learning yet
-signal = np.array([2, 2, 8, 9, 2, 2, 3], dtype=float)
-kernel = np.array([-1.0, 2.0, -1.0])
-hits = np.convolve(signal, kernel, mode="valid")
+df = load_customer_360(DATA)
+numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
+X = df[numeric + ["plan_type"]]
+y = df["is_churned"].astype(int)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+prep = ColumnTransformer([
+    ("num", StandardScaler(), numeric),
+    ("cat", OneHotEncoder(handle_unknown="ignore"), ["plan_type"]),
+])
 
-fig, axes = plt.subplots(2, 1, figsize=(8, 4), sharex=True)
-axes[0].stem(signal)
-axes[0].set_title("Daily usage")
-axes[1].stem(np.arange(1, 1 + len(hits)), hits, linefmt="#dc2626", markerfmt="ro")
-axes[1].axhline(0, color="#94a3b8", ls="--")
-axes[1].set_title("Detector response — peaks where the stencil matches a spike")
-axes[1].set_xlabel("day")
+def auc_of(model):
+    p = Pipeline([("prep", prep), ("m", model)])
+    p.fit(X_train, y_train)
+    return p, roc_auc_score(y_test, p.predict_proba(X_test)[:, 1])
+
+models = {
+    "logreg": LogisticRegression(max_iter=1000),
+    "forest (bagging)": RandomForestClassifier(n_estimators=40, max_depth=6, random_state=42, n_jobs=2),
+    "gbt (boosting)": GradientBoostingClassifier(n_estimators=40, learning_rate=0.1, max_depth=2, random_state=42),
+}
+fitted = {}
+print(f"{'model':<22} AUC")
+for name, m in models.items():
+    pipe, auc = auc_of(m)
+    fitted[name] = pipe
+    print(f"{name:<22} {auc:.3f}")
+```
+
+## Soft voting ≠ stacking
+
+Soft voting averages predicted probabilities. Stacking would train a *meta-model* on those probabilities. We will do voting honestly, and name it correctly.
+
+```python
+vote = VotingClassifier(
+    estimators=[
+        ("lr", LogisticRegression(max_iter=1000)),
+        ("rf", RandomForestClassifier(n_estimators=30, max_depth=6, random_state=42, n_jobs=2)),
+        ("gb", GradientBoostingClassifier(n_estimators=30, max_depth=2, random_state=42)),
+    ],
+    voting="soft",
+)
+vote_pipe, vote_auc = auc_of(vote)
+print(f"soft voting AUC: {vote_auc:.3f}")
+print("A 0.002 lift that costs 3× latency is usually not a win.")
+```
+
+## The only hyperparameter picture you need this week
+
+`learning_rate` is how hard each new tree is allowed to shove the answer. More trees + smaller steps ≈ same work, often stabler. There is no magic pair — there is a ridge on a heatmap.
+
+```python
+rates = [0.05, 0.15]
+trees = [20, 40]
+grid = np.zeros((len(rates), len(trees)))
+for i, lr in enumerate(rates):
+    for j, n in enumerate(trees):
+        _, grid[i, j] = auc_of(
+            GradientBoostingClassifier(learning_rate=lr, n_estimators=n,
+                                       max_depth=2, random_state=42)
+        )
+
+fig, ax = plt.subplots(figsize=(6.2, 3.6))
+im = ax.imshow(grid, cmap="YlGn", vmin=grid.min() - 0.005, vmax=grid.max())
+ax.set_xticks(range(len(trees)), trees)
+ax.set_yticks(range(len(rates)), rates)
+ax.set_xlabel("n_estimators"); ax.set_ylabel("learning_rate")
+ax.set_title("Holdout AUC — look for a plateau, not a spike")
+for i in range(grid.shape[0]):
+    for j in range(grid.shape[1]):
+        ax.text(j, i, f"{grid[i, j]:.3f}", ha="center", va="center", fontsize=9)
+fig.colorbar(im, ax=ax, fraction=0.046)
 plt.tight_layout()
 plt.show()
-print("hits", np.round(hits, 2))
 ```
 
-## CloudWave: usage as a short time series
+## Bias–variance on purpose
 
-Each user becomes a length-T vector of weekly usage. The CNN’s job: “does this *shape* look like someone about to churn?” — not “what is their total.”
+Bagging (a forest) is a **variance reducer**: many jittery trees, averaged. Boosting is a **bias reducer**: each tree hunts what the last one still misses — and will overfit if you let it run forever.
 
-```python
-X, y = load_weekly_usage_grid(DATA)  # ~3k users × 12 weeks, CPU-friendly
-print(f"users={len(X):,}  timesteps={X.shape[1]}  churn={y.mean():.3f}")
-
-rng = np.random.default_rng(0)
-idx = rng.permutation(len(X))
-cut = int(0.8 * len(X))
-tr, te = idx[:cut], idx[cut:]
-Xtr, Xte, ytr, yte = X[tr], X[te], y[tr], y[te]
-```
-
-## A tiny Conv1d in PyTorch
-
-`input` shape for Conv1d is `(batch, channels, time)`. We have one channel (usage).
+The diagnostic is always the same pair of curves.
 
 ```python
-class UsageCNN(nn.Module):
-    def __init__(self, t: int):
-        super().__init__()
-        self.conv = nn.Conv1d(in_channels=1, out_channels=8, kernel_size=3, padding=1)
-        self.pool = nn.AdaptiveMaxPool1d(1)   # loudest hit anywhere in the 12 weeks
-        self.head = nn.Linear(8, 1)
+from sklearn.model_selection import validation_curve
 
-    def forward(self, x):
-        # x: (B, T) → (B, 1, T)
-        h = F.relu(self.conv(x.unsqueeze(1)))
-        h = self.pool(h).squeeze(-1)         # (B, 8)
-        return self.head(h).squeeze(-1)      # (B,) logits
-
-def run_epoch(model, xb, yb, opt=None):
-    model.train(opt is not None)
-    xb = torch.tensor(xb, dtype=torch.float32)
-    yb = torch.tensor(yb, dtype=torch.float32)
-    logits = model(xb)
-    loss = F.binary_cross_entropy_with_logits(logits, yb)
-    if opt is not None:
-        opt.zero_grad()
-        loss.backward()
-        opt.step()
-    with torch.no_grad():
-        pred = (logits.sigmoid() > 0.5).float()
-        acc = float((pred == yb).float().mean())
-    return float(loss), acc
-
-model = UsageCNN(Xtr.shape[1])
-opt = torch.optim.Adam(model.parameters(), lr=1e-2)
-print(model)
-print("weights:", sum(p.numel() for p in model.parameters()))
-
-hist = []
-for epoch in range(12):
-    tr_loss, tr_acc = run_epoch(model, Xtr, ytr, opt)
-    te_loss, te_acc = run_epoch(model, Xte, yte, opt=None)
-    hist.append((tr_loss, te_loss, tr_acc, te_acc))
-
-hist = np.array(hist)
-fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
-axes[0].plot(hist[:, 0], label="train"); axes[0].plot(hist[:, 1], label="test")
-axes[0].set_title("loss"); axes[0].legend()
-axes[1].plot(hist[:, 2], label="train"); axes[1].plot(hist[:, 3], label="test")
-axes[1].set_title("accuracy"); axes[1].legend()
+# 6k-row picture is enough to see the two curves; a 50k × 12-depth CV is a coffee break
+sample = np.random.default_rng(0).choice(len(X), size=min(2500, len(X)), replace=False)
+depths = np.arange(1, 8)
+train_s, test_s = validation_curve(
+    RandomForestClassifier(n_estimators=25, random_state=42, n_jobs=2),
+    prep.fit_transform(X.iloc[sample]), y.iloc[sample],
+    param_name="max_depth", param_range=depths,
+    cv=2, scoring="roc_auc", n_jobs=2,
+)
+fig, ax = plt.subplots(figsize=(8, 3.6))
+ax.plot(depths, train_s.mean(axis=1), marker="o", label="train AUC", color="#1d4ed8")
+ax.plot(depths, test_s.mean(axis=1), marker="o", label="holdout AUC", color="#b45309")
+ax.set_xlabel("max_depth (capacity)")
+ax.set_ylabel("AUC")
+ax.set_title("Left = underfit (both low). Right = overfit (train ↑ holdout ↓)")
+ax.legend()
 plt.tight_layout()
 plt.show()
-print(f"final test acc={hist[-1, 3]:.3f}  (majority baseline ~{1 - yte.mean():.3f})")
+print("Pick the depth where orange peaks, not where blue is 1.0.")
 ```
-
-## 2-D picture (so “CNN” in papers makes sense)
-
-```
-image  28×28
-   │  3×3 stencil, 8 detectors
-   ▼
-feature maps  8 × 28 × 28     “where did detector #3 fire?”
-   │  max-pool 2×2
-   ▼
-8 × 14 × 14
-   │  flatten + linear
-   ▼
-class scores
-```
-
-Same four-line training step as Week 11. Only the *body* of `forward` changed.
 
 !!! warning "Watch out"
 
-    A CNN on 12 weekly totals is a teaching toy. Real CNNs earn their keep on *grids* (product screenshots, document scans) or long dense signals. For CloudWave’s 7-column table, last week’s GBT is still the right ship.
+    Boosting will happily memorize noise if trees get deep and many. A validation curve that keeps rising on train and dies on test is not “more learning.” It is a student who memorized last year’s exam.
 
 
 !!! success "Ship / don’t ship"
 
-    Ship a CNN when nearby positions *mean the same thing* (pixels, audio samples, equally spaced sensors). Do not ship one because a blog said “deep learning.”
+    Start with a random forest (forgiving). Move to gradient boosting when you need the last points and can monitor it. Do not stack five models to brag. XGBoost is usually faster than sklearn’s GBT and similar in accuracy — “faster vs more accurate” is the wrong question.
 
 
 ## ✍️ Exercise
@@ -212,10 +208,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-13.md)
 
 ## 🤔 Reflection
 
-1. Why does weight sharing beat “a separate weight per day” on images?
-2. What does max-pool throw away, and when is that a feature?
-3. Would you CNN a one-hot `plan_type`? Why not?
+1. Why do diverse models help a vote more than three copies of the same forest?
+2. What is the ops cost of an ensemble (latency, pickle size, explainability)?
+3. When would you keep logistic regression in production anyway? (regulated audit, need coefficients)
 
 ## 🔗 Next week
 
-RNNs: the stencil starts to have **memory**. We walk the sequence left to right and carry a clipboard.
+Neural nets — and an honest answer about whether CloudWave should use one.

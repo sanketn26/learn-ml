@@ -1,4 +1,4 @@
-"""Week 14 exercises — Week 14 — RNNs: A Clipboard That Walks the Sequence.
+"""Week 14 exercises — Week 14 — Neural Nets, Without the Mystique.
 
 Run from the repo root:
 

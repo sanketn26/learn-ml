@@ -40,7 +40,7 @@ Work from the repo root so `lib/course_data.py` can find `data/`.
 pip install numpy pandas scikit-learn matplotlib scipy
 ```
 
-**ML weeks 11, 13–15** (CPU is enough)
+**ML weeks 14, 18–20** (CPU is enough)
 
 ```bash
 pip install torch
