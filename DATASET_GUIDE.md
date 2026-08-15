@@ -110,24 +110,16 @@ cd learn-ml
 ls -lh data/
 ```
 
-### Using Datasets in Notebooks
-
-Datasets are loaded using relative paths:
+### Using datasets in exercises
 
 ```python
+from lib.course_data import find_data_dir, load_customer_360
 import pandas as pd
 
-# Load CSV files
-subscriptions = pd.read_csv('../data/subscriptions.csv')
-user_events = pd.read_csv('../data/user_events.csv')
-feature_usage = pd.read_csv('../data/feature_usage.csv')
-product_catalog = pd.read_csv('../data/product_catalog.csv')
-
-# Load JSON file
-import json
-with open('../data/feedback.json', 'r') as f:
-    feedback = json.load(f)
-feedback_df = pd.DataFrame(feedback)
+DATA = find_data_dir()
+subscriptions = pd.read_csv(DATA / "subscriptions.csv")
+feedback = pd.read_json(DATA / "feedback.json", lines=True)
+customers = load_customer_360()
 ```
 
 ### Data Characteristics
@@ -162,7 +154,7 @@ For larger implementations, consider:
 
 1. **AWS S3**
    - Host datasets on S3
-   - Link to raw data in notebooks
+   - Link to raw files from the lessons
    - Cost-effective for large volumes
 
 2. **Azure Blob Storage**
@@ -171,7 +163,7 @@ For larger implementations, consider:
 
 3. **Google Cloud Storage**
    - Alternative cloud option
-   - GCP integration with notebooks
+   - GCP integration if you later move data out of git
 
 4. **Data Package Services**
    - Zenodo (research data)

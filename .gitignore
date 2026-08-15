@@ -38,9 +38,12 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Training artifacts from the capstone notebook
-notebooks/artifacts/
+# Training artifacts from the capstone exercise
+exercises/**/artifacts/
 *.pkl
+
+# MkDocs
+site/
 
 # Project specific
 *.log

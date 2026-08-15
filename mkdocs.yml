@@ -1,0 +1,142 @@
+site_name: Learn ML
+site_description: Applied ML and AI-framework courses for software engineers — analogies first, then pictures, then code.
+site_url: https://sanketn26.github.io/learn-ml/
+repo_url: https://github.com/sanketn26/learn-ml
+repo_name: sanketn26/learn-ml
+edit_uri: edit/main/docs/
+copyright: CloudWave synthetic SaaS data · no GPU required
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - navigation.footer
+    - content.code.copy
+    - content.tabs.link
+    - toc.follow
+    - search.highlight
+    - search.suggest
+  icon:
+    repo: fontawesome/brands/github
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Getting started: getting-started.md
+  - Datasets: data.md
+  - ML Fundamentals:
+      - Overview: ml/index.md
+      - Week 0 — Strong Python: ml/week-00.md
+      - Week 1 — NumPy: ml/week-01.md
+      - Week 2 — Pandas: ml/week-02.md
+      - Week 3 — Charts: ml/week-03.md
+      - Week 4 — Signal vs noise: ml/week-04.md
+      - Week 5 — Features as API: ml/week-05.md
+      - Week 6 — Classification: ml/week-06.md
+      - Week 7 — Regression: ml/week-07.md
+      - Week 8 — Clustering: ml/week-08.md
+      - Week 9 — PCA: ml/week-09.md
+      - Week 10 — Ensembles: ml/week-10.md
+      - Week 11 — Neural nets: ml/week-11.md
+      - Week 12 — Capstone: ml/week-12.md
+      - Week 13 — CNNs: ml/week-13.md
+      - Week 14 — RNNs: ml/week-14.md
+      - Week 15 — Transformers: ml/week-15.md
+      - Exercises:
+          - Week 0: ml/exercises/week-00.md
+          - Week 1: ml/exercises/week-01.md
+          - Week 2: ml/exercises/week-02.md
+          - Week 3: ml/exercises/week-03.md
+          - Week 4: ml/exercises/week-04.md
+          - Week 5: ml/exercises/week-05.md
+          - Week 6: ml/exercises/week-06.md
+          - Week 7: ml/exercises/week-07.md
+          - Week 8: ml/exercises/week-08.md
+          - Week 9: ml/exercises/week-09.md
+          - Week 10: ml/exercises/week-10.md
+          - Week 11: ml/exercises/week-11.md
+          - Week 12: ml/exercises/week-12.md
+          - Week 13: ml/exercises/week-13.md
+          - Week 14: ml/exercises/week-14.md
+          - Week 15: ml/exercises/week-15.md
+  - LangChain:
+      - Overview: langchain/index.md
+      - Week 1 — Chains: langchain/week-01.md
+      - Week 2 — Memory: langchain/week-02.md
+      - Week 3 — Agents: langchain/week-03.md
+      - Week 4 — RAG: langchain/week-04.md
+      - Week 5 — Eval: langchain/week-05.md
+      - Week 6 — Production: langchain/week-06.md
+      - Exercises:
+          - Week 1: langchain/exercises/week-01.md
+          - Week 2: langchain/exercises/week-02.md
+          - Week 3: langchain/exercises/week-03.md
+          - Week 4: langchain/exercises/week-04.md
+          - Week 5: langchain/exercises/week-05.md
+          - Week 6: langchain/exercises/week-06.md
+  - LangGraph:
+      - Overview: langgraph/index.md
+      - Week 1 — Graphs: langgraph/week-01.md
+      - Week 2 — Workflows: langgraph/week-02.md
+      - Week 3 — Persistence: langgraph/week-03.md
+      - Week 4 — Human in the loop: langgraph/week-04.md
+      - Exercises:
+          - Week 1: langgraph/exercises/week-01.md
+          - Week 2: langgraph/exercises/week-02.md
+          - Week 3: langgraph/exercises/week-03.md
+          - Week 4: langgraph/exercises/week-04.md
+  - CrewAI:
+      - Overview: crewai/index.md
+      - Week 1 — Agents: crewai/week-01.md
+      - Week 2 — Tasks: crewai/week-02.md
+      - Week 3 — Teams: crewai/week-03.md
+      - Week 4 — Scale: crewai/week-04.md
+      - Exercises:
+          - Week 1: crewai/exercises/week-01.md
+          - Week 3: crewai/exercises/week-03.md
+          - Week 4: crewai/exercises/week-04.md
+
+plugins:
+  - search
