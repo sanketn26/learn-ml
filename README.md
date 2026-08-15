@@ -20,7 +20,7 @@ Lessons are markdown. Exercises are ordinary Python. The site is GitHub Pages (M
 
 [https://sanketn26.github.io/learn-ml/](https://sanketn26.github.io/learn-ml/)
 
-Pages must deploy the **`gh-pages`** branch (not `main`). See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md).
+Source is `main`. Actions builds the site. Pages source must be **GitHub Actions** (not a branch). See [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md).
 
 ```bash
 pip install mkdocs-material

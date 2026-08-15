@@ -1,26 +1,28 @@
 # GitHub Pages
 
-The course is an MkDocs Material site. Source is `docs/*.md`. CI builds it and pushes the HTML to the `gh-pages` branch.
+`main` is the only branch you edit. Markdown lives in `docs/`. GitHub Actions builds MkDocs and publishes the HTML. There is no `gh-pages` branch to maintain.
 
 ## What runs
 
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml) on every push to `main`:
 
 1. `pip install mkdocs-material`
-2. `mkdocs gh-deploy --force --strict` → updates `gh-pages`
-
-This does **not** use “GitHub Actions” as the Pages source. It uses the `gh-pages` branch, which matches a repo that was already “Deploy from a branch.”
+2. `mkdocs build --strict`
+3. Upload `site/` and deploy with `actions/deploy-pages`
 
 ## One-time repo setting
 
-**Settings → Pages**
+**Settings → Pages → Source: GitHub Actions**
 
-- Source: **Deploy from a branch**
-- Branch: **`gh-pages`** / **`/ (root)`**
+Not “Deploy from a branch.” If the source is `main` or `gh-pages`, GitHub ignores this workflow and Jekyll (or a stale branch) is what people see.
 
-Not `main`. `main` is the markdown source; Jekyll will render `README.md` and the raw `docs/*.md` files and the week URLs will 404.
+After the first green **Deploy course site** run, https://sanketn26.github.io/learn-ml/ is the Material site.
 
-The first successful run creates `gh-pages`. Flip the dropdown after that run, or create an empty `gh-pages` branch first.
+You can delete the old `gh-pages` branch once this is on.
+
+## Why not serve `main` as-is
+
+`main` is source (markdown, Python, CSVs). Pages needs the *built* HTML. Building on every push in Actions keeps generated files out of git.
 
 ## Local
 
