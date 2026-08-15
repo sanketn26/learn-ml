@@ -1,0 +1,59 @@
+:root {
+  --think: #b45309;
+  --think-bg: #fffbeb;
+  --eng: #1d4ed8;
+  --eng-bg: #eff6ff;
+  --math: #6d28d9;
+  --math-bg: #f5f3ff;
+}
+
+/* Engineer-first callouts from the old course.css */
+.md-typeset .admonition.think,
+.md-typeset details.think {
+  border-color: #f59e0b;
+}
+.md-typeset .think > .admonition-title,
+.md-typeset .think > summary {
+  background-color: var(--think-bg);
+  border-color: #f59e0b;
+}
+.md-typeset .think > .admonition-title::before,
+.md-typeset .think > summary::before {
+  background-color: var(--think);
+}
+
+.md-typeset .admonition.engineer,
+.md-typeset details.engineer {
+  border-color: #3b82f6;
+}
+.md-typeset .engineer > .admonition-title,
+.md-typeset .engineer > summary {
+  background-color: var(--eng-bg);
+  border-color: #3b82f6;
+}
+.md-typeset .engineer > .admonition-title::before,
+.md-typeset .engineer > summary::before {
+  background-color: var(--eng);
+}
+
+.md-typeset .admonition.math,
+.md-typeset details.math {
+  border-color: #a78bfa;
+}
+.md-typeset .math > .admonition-title,
+.md-typeset .math > summary {
+  background-color: var(--math-bg);
+  border-color: #a78bfa;
+}
+.md-typeset .math > .admonition-title::before,
+.md-typeset .math > summary::before {
+  background-color: var(--math);
+}
+
+.md-typeset pre, .md-typeset code {
+  font-variant-ligatures: none;
+}
+
+.md-typeset table {
+  font-size: 0.92em;
+}
