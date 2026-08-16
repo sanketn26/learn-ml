@@ -1,7 +1,7 @@
 # Week 4 — Production & Scaling
 
 **Course:** CrewAI for Multi-Agent Systems  
-**Week Focus:** Deploy agents to production, scale for high throughput, and monitor reliability.
+**Week Focus:** Understand what reliability, queues, and observability would require around a crew. This is an operational map, not a deployment recipe.
 
 ---
 

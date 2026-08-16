@@ -8,7 +8,7 @@ Do these after reading [Week 6 — Production & Deployment](../week-06.md).
 
     **🎯 Exercise 1: Build FastAPI Server**
 
-    Create a production-ready API:
+    Create a small API that demonstrates the production-facing shape:
 
     - Define request/response models
 
@@ -44,7 +44,7 @@ print("Your Dockerfile and deployment script!")
 
 ## 📝 Week 6 Project: Production Deployment
 
-**Deploy a complete LangChain application to production with full monitoring.**
+**Sketch and run the operational shell around a small LangChain application.** Local execution is enough; cloud deployment is an optional extension.
 
 ### Requirements:
 
@@ -97,7 +97,7 @@ print("Your Dockerfile and deployment script!")
 # TODO: Deploy to cloud platform
 # TODO: Document deployment process
 
-print("🎯 Your complete production deployment here!")
+print("🎯 Your local operational sketch here!")
 ```
 
 ## 🎓 Key Takeaways
@@ -125,9 +125,9 @@ print("🎯 Your complete production deployment here!")
 - Cost management
 - Continuous deployment
 
-## 🏆 Capstone: Your Complete LangChain Mastery
+## Capstone: prove the introductory mental model
 
-**You've now mastered the complete LangChain journey:**
+**You have now seen the main LangChain application path:**
 
 - ✅ Week 1-2: Fundamentals & memory
 - ✅ Week 3: Agents & tools
@@ -136,10 +136,10 @@ print("🎯 Your complete production deployment here!")
 - ✅ Week 6: Production & deployment
 
 **Build your final capstone project:**
-- A complete, production-ready LLM application
+- A small LLM application with explicit contracts, evaluation, and operational boundaries
 - Tested, evaluated, and monitored
 - Deployed and scaling in the cloud
 
 ---
 
-**🎉 Congratulations on completing LangChain Mastery!** You're now ready to build production LLM applications. 🚀
+You should now be able to build and inspect a small LangChain application, recognize its major failure boundaries, and continue independently with the official documentation. Production readiness still depends on your system, traffic, security, evaluation, and operations.

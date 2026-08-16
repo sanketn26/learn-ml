@@ -1,6 +1,6 @@
 # Applied ML Foundations for SaaS Analytics
 
-Written for engineers. You do not need calculus, linear algebra, or a stats degree.
+Written for working engineers. You do not need calculus, linear algebra, or a stats degree, but you do need programming fluency. This is an introduction to ML, not an introduction to coding. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.
 
 CloudWave is a fake B2B SaaS company. You will use the same customers from “what is a Python dataclass” through a nightly scoring job — then, if you want, the pictures behind CNNs and Transformers.
 

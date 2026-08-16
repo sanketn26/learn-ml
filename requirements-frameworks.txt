@@ -1,0 +1,9 @@
+# Reference environment for the API generation shown in the lessons.
+# Use a dedicated virtual environment. See docs/framework-tracks.md.
+# Python 3.11 is the course reference interpreter.
+langchain==0.2.17
+langchain-community==0.2.19
+langgraph==0.2.76
+python-dotenv==1.0.1
+requests==2.32.3
+pydantic==2.10.6

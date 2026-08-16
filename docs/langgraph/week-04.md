@@ -1,7 +1,7 @@
 # Week 4 — Human-in-the-Loop & Production
 
 **Course:** LangGraph for Complex Workflows  
-**Week Focus:** Pause workflows for human decisions and deploy to production.
+**Week Focus:** Pause workflows for human decisions and understand the boundary between a working graph and an operated service.
 
 ---
 

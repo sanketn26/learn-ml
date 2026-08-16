@@ -256,4 +256,4 @@ In Week 2, we'll build advanced workflows with:
 
 ---
 
-**Congratulations on completing Week 1!** You now know how to build sophisticated, production-ready workflows with LangGraph. See you next week!
+You can now build and inspect a small state graph. The remaining weeks add the failure behavior that a durable workflow needs.

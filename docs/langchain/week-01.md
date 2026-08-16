@@ -1,7 +1,7 @@
 # Week 1 — LangChain Fundamentals & Basic Chains
 
 **Course:** LangChain for AI Applications  
-**Week Focus:** Master LLM fundamentals, prompt engineering, and chain composition to build production-ready AI applications.
+**Week Focus:** Understand prompt templates, structured output, and chain composition well enough to build and modify a small application.
 
 ---
 
@@ -104,7 +104,7 @@ print("5. No standardization across providers (OpenAI vs Anthropic vs Llama)")
 print("\n💡 Solution: LangChain abstracts these complexities!")
 ```
 
-### The LangChain Way (Clean, Composable, Production-Ready)
+### The LangChain way: cleaner composition
 
 LangChain provides:
 1. **Abstraction**: Unified interface for all LLM providers

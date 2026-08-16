@@ -113,4 +113,4 @@ print("🎯 Your expense report approval system here!")
 
 ---
 
-**🎉 Congratulations on completing LangGraph!** You can now build sophisticated, resilient, human-centered AI workflows. See you in the next course! 🚀
+You can now model and test a human decision inside a graph. Week 5 adds the idempotency rule needed before a resumed graph may repeat external work.

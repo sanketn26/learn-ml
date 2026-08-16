@@ -1,6 +1,6 @@
 # Learn ML
 
-Courses for software engineers who want to ship ML and LLM systems without a math degree.
+Courses for working software engineers who want to ship ML and LLM systems without a math degree. This is not a beginner programming course.
 
 Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.
 
@@ -77,3 +77,5 @@ Laptop mode samples ~8k customers so a week finishes in a few minutes on 8 GB RA
 
 [How to run the exercises →](getting-started.md){ .md-button .md-button--primary }
 [Dataset schemas →](data.md){ .md-button }
+
+Before beginning, read [who this course is—and is not—for](getting-started.md#this-is-not-beginner-study-material).

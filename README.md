@@ -1,6 +1,6 @@
 # Learn ML
 
-Courses for software engineers who want to ship ML and LLM systems without a math degree.
+Courses for working software engineers who want to ship ML and LLM systems without a math degree. This is not a beginner programming course.
 
 Lessons are markdown. Exercises are ordinary Python. The site is GitHub Pages (MkDocs). There are no Jupyter notebooks.
 
@@ -40,6 +40,12 @@ python exercises/ml/week-00/starter.py
 Each ML week is `exercises/ml/week-XX/starter.py`. Run from the repo root.
 
 No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM.
+
+## Before you start
+
+You should already be able to write and debug a small program, use a terminal, install dependencies in a virtual environment, read a stack trace, work with Git, and understand basic data ideas such as rows, columns, types, joins, and APIs. Prior Python, ML, calculus, and linear algebra are not required; programming fluency is.
+
+Read the candid [readiness checklist](docs/getting-started.md#this-is-not-beginner-study-material) before committing to the course. If the checklist is unfamiliar, learn those foundations first. Otherwise you will spend your time fighting Python, SQL, Git, and the shell instead of learning ML.
 
 ## Repo layout
 

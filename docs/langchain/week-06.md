@@ -1,7 +1,7 @@
 # Week 6 — Production & Deployment
 
 **Course:** LangChain for AI Applications  
-**Week Focus:** Deploy LangChain applications to production at scale.
+**Week Focus:** Recognize the API, container, timeout, cache, and monitoring pieces that surround a LangChain application. This is an architectural introduction, not a production deployment recipe.
 
 ---
 
@@ -70,7 +70,7 @@ By the end of this week, you will:
 ## 🚀 Part 1: Building REST APIs with FastAPI
 
 <div class="api-box">
-<strong>FastAPI:</strong> Modern, fast Python web framework for building production-ready APIs.
+<strong>FastAPI:</strong> A Python web framework that supplies validation, routing, and API documentation. Production readiness depends on the service around it.
 </div>
 
 ### Why FastAPI?

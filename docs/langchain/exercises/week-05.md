@@ -122,4 +122,4 @@ In Week 6, we'll take your tested, debugged applications and deploy them at scal
 
 ---
 
-**🎉 Great job on Week 5!** Your applications are now bulletproof and debuggable. See you next week! 🚀
+You now have the beginning of a repeatable evaluation loop. It is useful only while the golden set represents failures you actually care about.

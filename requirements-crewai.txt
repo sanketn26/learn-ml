@@ -1,0 +1,6 @@
+# CrewAI is intentionally isolated from the LangChain/LangGraph environment.
+# This pin preserves the lesson's Agent/Task/Crew API generation.
+# Python 3.11 is the course reference interpreter.
+crewai==0.80.0
+python-dotenv==1.0.1
+pydantic==2.10.6

@@ -113,7 +113,7 @@ print("🎯 Your software design review team here!")
 
 ## 🔜 Next Week: Production & Scaling
 
-In Week 4, we'll deploy agents to production:
+In Week 4, we'll map the operational concerns around agents:
 - Monitoring and observability
 - Error handling and recovery
 - Scaling strategies

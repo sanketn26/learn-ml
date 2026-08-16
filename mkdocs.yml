@@ -65,6 +65,7 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting started: getting-started.md
+  - Framework track guide: framework-tracks.md
   - Datasets: data.md
   - ML Fundamentals:
       - Overview: ml/index.md
@@ -149,6 +150,7 @@ nav:
       - Week 4 — Scale: crewai/week-04.md
       - Exercises:
           - Week 1: crewai/exercises/week-01.md
+          - Week 2: crewai/exercises/week-02.md
           - Week 3: crewai/exercises/week-03.md
           - Week 4: crewai/exercises/week-04.md
 

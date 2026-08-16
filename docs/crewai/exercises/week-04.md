@@ -50,7 +50,7 @@ print("Your task queue system here!")
 
 ## 📝 Week 4 Project: Production Agent System
 
-**Deploy agents to production with full observability.**
+**Build a local operational sketch and identify what a real deployment would still require.**
 
 ### Requirements:
 
@@ -140,4 +140,4 @@ print("🎯 Your production agent system here!")
 
 ---
 
-**🎉 Congratulations on completing the CrewAI course!** You can now build, deploy, and operate production agent systems. Go build something amazing! 🚀
+You should now understand CrewAI's core abstractions, be able to build a bounded crew, and know what to investigate next in the official documentation. Operating a production agent system remains a separate engineering project.
