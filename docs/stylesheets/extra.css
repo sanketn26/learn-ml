@@ -50,6 +50,41 @@
   background-color: var(--math);
 }
 
+/* Dark mode: the light pastel title bars above are unreadable on slate.
+   Swap to translucent tints over the page background instead of solid pale colors. */
+[data-md-color-scheme="slate"] .md-typeset .admonition.think,
+[data-md-color-scheme="slate"] .md-typeset details.think {
+  background-color: rgba(245, 158, 11, 0.07);
+  color: var(--md-typeset-color);
+}
+[data-md-color-scheme="slate"] .md-typeset .think > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .think > summary {
+  background-color: rgba(245, 158, 11, 0.16);
+  color: #fef3c7;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.engineer,
+[data-md-color-scheme="slate"] .md-typeset details.engineer {
+  background-color: rgba(59, 130, 246, 0.07);
+  color: var(--md-typeset-color);
+}
+[data-md-color-scheme="slate"] .md-typeset .engineer > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .engineer > summary {
+  background-color: rgba(59, 130, 246, 0.16);
+  color: #dbeafe;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.math,
+[data-md-color-scheme="slate"] .md-typeset details.math {
+  background-color: rgba(167, 139, 250, 0.07);
+  color: var(--md-typeset-color);
+}
+[data-md-color-scheme="slate"] .md-typeset .math > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset .math > summary {
+  background-color: rgba(167, 139, 250, 0.16);
+  color: #ede9fe;
+}
+
 .md-typeset pre, .md-typeset code {
   font-variant-ligatures: none;
 }
