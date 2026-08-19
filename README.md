@@ -1,5 +1,7 @@
 # Learn ML
 
+[![Buy Me A Coffee](https://img.shields.io/badge/☕-Buy%20me%20a%20coffee-FFDD00?style=flat-square)](https://buymeacoffee.com/sanketn)
+
 Courses for working software engineers who want to ship ML and LLM systems without a math degree. This is not a beginner programming course.
 
 Lessons are markdown. Exercises are ordinary Python. The site is GitHub Pages (MkDocs). There are no Jupyter notebooks.

@@ -12,7 +12,7 @@ hide:
       <a class="course-button course-button--primary" href="ml/week-00/">Start week 0 <span aria-hidden="true">→</span></a>
       <a class="course-button course-button--secondary" href="getting-started/">How to run the exercises</a>
     </div>
-    <p class="course-hero__note">21 weeks of ML fundamentals · 15 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows</p>
+    <p class="course-hero__note">21 weeks of ML fundamentals · 15 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows · <a href="https://buymeacoffee.com/sanketn">☕ Support this course</a></p>
   </div>
   <div class="course-terminal" aria-label="Course roadmap">
     <div class="course-terminal__bar"><i></i><i></i><i></i><span>learn-ml / roadmap</span></div>
