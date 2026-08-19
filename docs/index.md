@@ -1,8 +1,34 @@
-# Learn ML
+<div class="course-hero">
+  <div class="course-hero__content">
+    <span class="course-eyebrow">Analogies first · Then a picture · Then code</span>
+    <h1>Ship ML and LLM systems<br><span>without a math degree.</span></h1>
+    <p class="course-hero__lead">Courses for working software engineers. Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.</p>
+    <div class="course-actions">
+      <a class="course-button course-button--primary" href="ml/week-00.md">Start week 0 <span aria-hidden="true">→</span></a>
+      <a class="course-button course-button--secondary" href="getting-started.md">How to run the exercises</a>
+    </div>
+    <p class="course-hero__note">21 weeks of ML fundamentals · 15 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows</p>
+  </div>
+  <div class="course-terminal" aria-label="Course roadmap">
+    <div class="course-terminal__bar"><i></i><i></i><i></i><span>learn-ml / roadmap</span></div>
+    <div class="course-terminal__body">
+      <p><span class="terminal-muted">00</span> Python as glue, NumPy as a typed column</p>
+      <p><span class="terminal-muted">07</span> Classification, regression, ranking</p>
+      <p><span class="terminal-muted">16</span> The job pipeline — gate, prod dir, tonight's CSV</p>
+      <p><span class="terminal-muted">LC</span> LangChain, LangGraph, CrewAI — optional frameworks</p>
+      <div class="terminal-status"><span></span> CloudWave data, one company throughout</div>
+    </div>
+  </div>
+</div>
 
-Courses for working software engineers who want to ship ML and LLM systems without a math degree. This is not a beginner programming course.
+<div class="course-proof" aria-label="Course overview">
+  <div><strong>21</strong><span>Weeks of ML fundamentals</span></div>
+  <div><strong>15</strong><span>Weeks of framework tracks</span></div>
+  <div><strong>0</strong><span>GPU required (job path)</span></div>
+  <div><strong>8k</strong><span>Rows sampled on a laptop</span></div>
+</div>
 
-Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.
+## Pick your track
 
 <div class="grid cards" markdown>
 

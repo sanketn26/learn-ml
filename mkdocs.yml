@@ -11,18 +11,22 @@ theme:
   palette:
     - scheme: default
       primary: indigo
-      accent: amber
+      accent: teal
       toggle:
-        icon: material/weather-night
-        name: Dark mode
+        icon: material/brightness-7
+        name: Switch to dark mode
     - scheme: slate
       primary: indigo
-      accent: amber
+      accent: teal
       toggle:
-        icon: material/weather-sunny
-        name: Light mode
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Inter
+    code: JetBrains Mono
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - navigation.top
