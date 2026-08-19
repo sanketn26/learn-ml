@@ -29,8 +29,9 @@ CloudWave is a fake B2B SaaS company. You will use the same customers from “wh
 | 18 | Optional: CNNs as a sliding detector. |
 | 19 | Optional: RNNs as a clipboard that walks. |
 | 20 | Optional: Transformers as a soft join. |
+| Capstone | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
 
-Required job path is **0–17**. Weeks **18–20** are pictures, not how CloudWave ships churn.
+Required job path is **0–17**. Weeks **18–20** are pictures, not how CloudWave ships churn. The [capstone](capstone.md) is further still — the only page in this course that needs a GPU.
 
 ## How to take it
 

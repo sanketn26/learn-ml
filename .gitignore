@@ -45,6 +45,9 @@ artifacts/
 *.joblib
 tonight.csv
 
+# Generated trajectory splits from the LLM capstone (capstone/teacher.py)
+capstone/data/
+
 # MkDocs
 site/
 

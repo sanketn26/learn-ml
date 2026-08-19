@@ -8,6 +8,7 @@ An AI-frameworks learning platform. **Markdown lessons + separate Python exercis
 
 - **ML Fundamentals** (weeks 0–12 required tabular, 16–20 the job, 18–20 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
 - **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full 50k.
+- **Capstone** (optional, `ml/capstone.md`): the one page that needs a GPU — fine-tunes a small coding-tool-use specialist. The harness (`capstone/`) itself runs CPU-only; only Phase 3 (Colab fine-tune) breaks the no-GPU rule.
 - **LangChain** (7 weeks), **LangGraph** (5), **CrewAI** (4, optional).
 
 Synthetic SaaS data in `data/`. CloudWave is the through-line.
@@ -20,7 +21,9 @@ docs/                 MkDocs source = the course
   ml/exercises/       exercise pages
   langchain/ langgraph/ crewai/
 exercises/ml/week-XX/ starter.py the learner runs
+exercises/ml/capstone/ starter.py for the optional capstone
 pipelines/            train / score / promote / contract
+capstone/             tool contract, teacher, reliability, eval (capstone)
 tests/                pytest gates
 eval/                 golden tickets for the bot
 lib/course_data.py    loaders (no IPython)

@@ -1,0 +1,10 @@
+# Capstone Phase 3 only — install this in a Colab GPU runtime, not on your
+# laptop. Phases 1/2/4/5 (capstone/ package, exercises/ml/capstone/starter.py)
+# need no extra dependencies beyond requirements.txt. See docs/ml/capstone.md.
+unsloth
+peft
+trl
+bitsandbytes
+transformers
+accelerate
+datasets
