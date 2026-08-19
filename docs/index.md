@@ -1,11 +1,16 @@
+---
+hide:
+  - toc
+---
+
 <div class="course-hero">
   <div class="course-hero__content">
     <span class="course-eyebrow">Analogies first · Then a picture · Then code</span>
     <h1>Ship ML and LLM systems<br><span>without a math degree.</span></h1>
     <p class="course-hero__lead">Courses for working software engineers. Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.</p>
     <div class="course-actions">
-      <a class="course-button course-button--primary" href="ml/week-00.md">Start week 0 <span aria-hidden="true">→</span></a>
-      <a class="course-button course-button--secondary" href="getting-started.md">How to run the exercises</a>
+      <a class="course-button course-button--primary" href="ml/week-00/">Start week 0 <span aria-hidden="true">→</span></a>
+      <a class="course-button course-button--secondary" href="getting-started/">How to run the exercises</a>
     </div>
     <p class="course-hero__note">21 weeks of ML fundamentals · 15 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows</p>
   </div>
