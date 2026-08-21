@@ -8,6 +8,7 @@ copyright: CloudWave synthetic SaaS data · no GPU required
 
 theme:
   name: material
+  custom_dir: overrides
   palette:
     - scheme: default
       primary: indigo
