@@ -1,340 +1,132 @@
-# Week 4 — Human-in-the-Loop & Production
+# Week 4 — Interrupt for a human
 
-**Course:** LangGraph for Complex Workflows  
-**Week Focus:** Pause workflows for human decisions and understand the boundary between a working graph and an operated service.
+**Course:** LangGraph  
+**Who this is for:** Engineers who have put a ticket in `pending_approval` and waited for a Slack reaction.
+
+A homemade `ApprovalRequest` class is a to-do list. LangGraph’s version is the same `StateGraph` + `MemorySaver`, paused with `interrupt_before=["approve"]`. Resume with `invoke(None, config)` after `update_state`.
 
 ---
 
-## If you already write software
+## 🎯 What you will be able to do
 
-LangGraph is a **state machine**. Nodes are functions. Edges are control flow. State is the request-scoped object you thread through.
+- Pause a CloudWave refund graph before the write
+- Resume three tested paths: **approve**, **reject**, **needs-info**
+- Keep the graph small (draft → approve gate → act)
+- Know that week 5 still has to key the write
 
-You have written this as:
+!!! think "Think of it like… a GitHub required reviewer."
 
-- a workflow engine
-- a Redux store + reducers
-- a CI pipeline with conditional jobs
-- an XState chart
-- a saga
+    CI is green; merge is blocked until a human hits approve. `interrupt_before=["approve"]` is that required check. The checkpoint is the PR. `thread_id` is the PR number.
 
-```
-graph = StateGraph(State)
-graph.add_node("parse", parse)       # a function: State -> partial State
-graph.add_node("act", act)
-graph.add_edge("parse", "act")       # always
-graph.add_conditional_edges("act", route)   # if / else
-```
-
-The payoff versus a pile of `if` statements: you can **checkpoint**, **replay**, and **pause for a human** because the runtime owns the state. That is the point of the next three weeks. If your flow is three sequential LLM calls with no branch, a chain is enough — do not pay for a graph yet.
-
-## 🎯 Learning Objectives
-
-By the end of this week, you will:
-- Pause workflows for human decisions
-- Implement approval gates and feedback loops
-- Route workflow based on human input
-- Deploy interactive workflows at scale
-- Handle SLA/timeout requirements
-- Monitor human-in-the-loop metrics
-
-## 📊 Real-World Context
-
-**The Problem:**
-- Fully automated workflows sometimes make wrong decisions
-- High-stakes decisions need human review
-- No good way to integrate humans into LLM workflows
-
-**Human-in-the-Loop Solutions:**
-1. **Approval Gates:** Pause before critical actions
-2. **Feedback Loops:** Humans provide guidance
-3. **Conditional Routing:** Different paths based on human decision
-4. **Priority Escalation:** Complex cases go to senior reviewers
-
-**Business Impact:**
-- 🛡️ Risk mitigation: Prevent costly automated errors
-- ⚖️ Compliance: Meet regulatory requirements (finance, healthcare)
-- 💼 Trust: Users understand decisions are reviewed
-- ⏱️ Efficiency: 80% fully automated + 20% manual = best of both
-- 📊 Improvement: Learn from human rejections to improve AI
-
-
-## 🔍 Part 1: Approval Gates
-
-<div class="approval-box">
-<strong>Approval Gate:</strong> A workflow pause point where a human must review and approve/reject before continuing.
-</div>
-
-### Fully Automated (Fast but Risky)
+## Picture the gate
 
 ```
-Request → Evaluate → Approve → Execute → Done
-(no checks)       (instant)
-
-Risk: Wrong decisions go live immediately
+START → draft → ⏸ interrupt_before approve
+                     │
+              update_state(decision=...)
+                     │
+                     ▼
+                  approve node
+                 /     |      \
+           execute   cancel   ask
+              │        │       │
+             END      END     END
 ```
 
-### With Approval Gate (Safer)
-
-```
-Request → Evaluate → 🔴 PAUSE → Human Reviews
-                                    ↓
-                            Approve / Reject / Ask Questions
-                                    ↓
-                              Execute / Cancel
-
-Key benefit: Catch problems before they impact users
-```
+## One small approval graph
 
 ```python
-from datetime import datetime, timedelta
-from enum import Enum
-from typing import Dict, Any, Optional
-import uuid
+from typing import Annotated, Literal, TypedDict
+import operator
 
-class ApprovalStatus(Enum):
-    PENDING = "pending"
-    APPROVED = "approved"
-    REJECTED = "rejected"
-    NEEDS_INFO = "needs_info"
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
 
-class ApprovalRequest:
-    """Represents a workflow pause awaiting human approval."""
-    
-    def __init__(self, action: str, details: Dict[str, Any], requester: str):
-        self.id = str(uuid.uuid4())[:8]
-        self.action = action
-        self.details = details
-        self.requester = requester
-        self.status = ApprovalStatus.PENDING
-        self.created_at = datetime.now()
-        self.approved_at: Optional[datetime] = None
-        self.approver: Optional[str] = None
-        self.comments: list[str] = []
-        self.sla_deadline = self.created_at + timedelta(hours=24)
-    
-    def approve(self, approver: str, comment: str = ""):
-        self.status = ApprovalStatus.APPROVED
-        self.approver = approver
-        self.approved_at = datetime.now()
-        if comment:
-            self.comments.append(f"✅ {approver}: {comment}")
-    
-    def reject(self, approver: str, reason: str):
-        self.status = ApprovalStatus.REJECTED
-        self.approver = approver
-        self.approved_at = datetime.now()
-        self.comments.append(f"❌ {approver}: {reason}")
-    
-    def request_info(self, approver: str, question: str):
-        self.status = ApprovalStatus.NEEDS_INFO
-        self.approver = approver
-        self.comments.append(f"❓ {approver}: {question}")
-    
-    def is_sla_breached(self) -> bool:
-        return datetime.now() > self.sla_deadline
-    
-    def time_pending(self) -> str:
-        delta = datetime.now() - self.created_at
-        mins = delta.total_seconds() / 60
-        if mins < 60:
-            return f"{int(mins)}m"
-        return f"{int(mins/60)}h {int(mins%60)}m"
 
-# Demo: Approval workflow
-print("🔴 APPROVAL GATE DEMO")
-print("="*70)
+class Refund(TypedDict):
+    request: str
+    decision: str  # "", "approve", "reject", "needs_info"
+    log: Annotated[list[str], operator.add]
 
-# 1. Workflow generates action to approve
-request = ApprovalRequest(
-    action="charge_customer_card",
-    details={
-        "customer": "Acme Corp",
-        "amount": "$50,000",
-        "reason": "Monthly subscription (unusual amount)",
-        "risk_score": 0.87  # High risk
-    },
-    requester="billing_agent"
-)
 
-print(f"\n1️⃣ WORKFLOW PAUSES FOR APPROVAL")
-print(f"   Request ID: {request.id}")
-print(f"   Action: {request.action}")
-print(f"   Details: {request.details}")
-print(f"   Status: {request.status.value}")
-print(f"   SLA Deadline: {request.sla_deadline.strftime('%Y-%m-%d %H:%M')}")
+def draft(state: Refund) -> dict:
+    return {"log": [f"drafted:{state['request']}"]}
 
-print(f"\n2️⃣ HUMAN REVIEWS")
-print(f"   ⏳ Waiting for approval...")
 
-print(f"\n3️⃣ HUMAN PROVIDES FEEDBACK")
-request.request_info("alice@company.com", "Is this customer known to us? Check previous orders.")
-print(f"   Alice asks: {request.comments[-1]}")
-print(f"   Status: {request.status.value}")
+def apply(state: Refund) -> dict:
+    d = state["decision"]
+    if d == "approve":
+        return {"log": ["executed"]}
+    if d == "reject":
+        return {"log": ["cancelled"]}
+    return {"log": ["asked-for-info"]}
 
-print(f"\n4️⃣ WORKFLOW PROVIDES INFO")
-request.comments.append(f"ℹ️ System: Found 50+ previous orders, total value $2M+")
-print(f"   {request.comments[-1]}")
 
-print(f"\n5️⃣ HUMAN APPROVES")
-request.approve("alice@company.com", "Customer is trusted. Proceed.")
-print(f"   {request.comments[-1]}")
-print(f"   Status: {request.status.value}")
-print(f"   Time pending: {request.time_pending()}")
+def after_gate(state: Refund) -> Literal["apply"]:
+    return "apply"
 
-print(f"\n✅ WORKFLOW CONTINUES")
-print(f"   Execute action: charge_customer_card")
-print(f"   Result: Transaction successful")
+
+g = StateGraph(Refund)
+g.add_node("draft", draft)
+g.add_node("approve", apply)
+g.add_edge(START, "draft")
+g.add_edge("draft", "approve")
+g.add_edge("approve", END)
+
+app = g.compile(checkpointer=MemorySaver(), interrupt_before=["approve"])
+
+
+def run_path(thread_id: str, decision: str) -> list[str]:
+    config = {"configurable": {"thread_id": thread_id}}
+    app.invoke(
+        {"request": "refund $50 user_0001", "decision": "", "log": []},
+        config,
+    )
+    paused = app.get_state(config)
+    assert paused.next == ("approve",) or "approve" in paused.next
+    app.update_state(config, {"decision": decision})
+    final = app.invoke(None, config)
+    return final["log"]
+
+
+assert run_path("t-approve", "approve")[-1] == "executed"
+assert run_path("t-reject", "reject")[-1] == "cancelled"
+assert run_path("t-info", "needs_info")[-1] == "asked-for-info"
 ```
 
-## 🤝 Part 2: Human Feedback Integration
+Three `thread_id`s, three decisions, three last log lines. That is the week.
 
-<div class="human-box">
-<strong>Feedback Loop:</strong> Humans provide guidance that shapes workflow behavior.
-</div>
+If `get_state(...).next` is empty, the interrupt did not fire — you compiled without `interrupt_before`.
 
-### Patterns of Human Feedback
+!!! warning "Watch out — update_state is the human"
 
-**1. Validation:** "Is your decision correct?"
-```
-AI decides → Human validates → Proceed or reconsider
-```
+    Putting `decision="approve"` in the **first** `invoke` skips the point of the gate. The human (or a test) writes the decision after the pause. Also: interrupting does not make `executed` idempotent. Week 5.
 
-**2. Steering:** "Try this approach instead"
-```
-AI tries approach A → Human suggests B → AI re-runs with B
-```
+!!! success "Ship / don’t ship"
 
-**3. Escalation:** "This needs senior review"
-```
-AI + Local reviewer → Complex case → Escalate to director
-```
+    **Ship** a pause in front of refunds, deletes, and mail that cannot be unsent, with tests for approve / reject / needs-info. **Don’t ship** an `ApprovalRequest` class that is not the graph, and don’t combine this week with a loan-underwriting mega-project.
 
-```python
-# Multi-level approval workflow
+## Weeks 1–4 together (not “all 4 weeks” as a capstone)
 
-class ApprovalWorkflow:
-    """Simulate a workflow with escalation rules."""
-    
-    def __init__(self):
-        self.requests: Dict[str, ApprovalRequest] = {}
-        self.history: list[str] = []
-    
-    def submit_for_approval(self, request: ApprovalRequest):
-        self.requests[request.id] = request
-        self.history.append(f"📤 Submitted: {request.id} ({request.action})")
-    
-    def escalate_if_needed(self, request: ApprovalRequest, reason: str) -> bool:
-        """Check if request should escalate to higher authority."""
-        # Escalate if high risk or high value
-        if request.details.get("risk_score", 0) > 0.8:
-            self.history.append(f"🔺 Escalated: {reason} (risk_score={request.details['risk_score']})")
-            return True
-        if "$" in str(request.details.get("amount", "")):
-            amount = float(request.details["amount"].replace("$", "").replace(",", ""))
-            if amount > 100000:
-                self.history.append(f"🔺 Escalated: High value transaction (${amount:,.0f})")
-                return True
-        return False
-    
-    def get_status(self):
-        return self.history
+A small refund graph already uses:
 
-# Demo: Multi-level approval
-print("\n🤝 MULTI-LEVEL APPROVAL WORKFLOW")
-print("="*70)
+1. Branching state (week 1)
+2. A join or extra notify node if you add one (week 2)
+3. `MemorySaver` (week 3)
+4. `interrupt_before` (week 4)
 
-workflow = ApprovalWorkflow()
+Week 5 (idempotency) is **not** done. Mention it on the write: resume will re-enter `approve` if the process dies after the HTTP 200.
 
-# Create diverse requests
-requests_to_process = [
-    ApprovalRequest(
-        action="grant_refund",
-        details={"amount": "$50", "reason": "defective product", "risk_score": 0.2},
-        requester="support_agent"
-    ),
-    ApprovalRequest(
-        action="grant_refund",
-        details={"amount": "$250000", "reason": "bulk order", "risk_score": 0.9},
-        requester="sales_agent"
-    ),
-]
+## ✍️ Exercise
 
-for req in requests_to_process:
-    workflow.submit_for_approval(req)
-    
-    if workflow.escalate_if_needed(req, "High-risk or high-value transaction"):
-        print(f"\n📌 Request {req.id}:")
-        print(f"   Action: {req.action}")
-        print(f"   Amount: {req.details.get('amount', 'N/A')}")
-        print(f"   Risk: {req.details.get('risk_score', 0):.1f}")
-        print(f"   ⚠️ ESCALATED TO SENIOR REVIEWER")
-    else:
-        req.approve("auto_approver", "Auto-approved")
-        print(f"\n📌 Request {req.id}: ✅ AUTO-APPROVED")
+[Exercises](exercises/week-04.md).
 
-print("\n" + "="*70)
-print("📊 WORKFLOW HISTORY:")
-for item in workflow.get_status():
-    print(f"  {item}")
-```
+## 🤔 Reflection
 
-## 🎯 Part 3: Conditional Routing
+1. Who is allowed to call `update_state` in a real service (which authz)?
+2. `needs_info` — do you loop back to `draft` or END with a question ticket?
+3. Why is a loan-approval “platform” the wrong exercise for this interrupt?
 
-### Decision Tree Based on Human Input
+## 🔗 Next week
 
-```
-Request
-  ↓
-AI Evaluates
-  ↓
-🔴 Human Reviews
-  ├─ ✅ Approved → Execute
-  ├─ ❌ Rejected → Cancel + Notify
-  ├─ ❓ Needs Info → Request Details → Re-evaluate
-  └─ 🔺 Escalated → Send to Senior → Their Decision
-```
-
-```python
-# Conditional routing based on approval decision
-
-class DecisionRouter:
-    """Route workflow based on approval decision."""
-    
-    @staticmethod
-    def route(approval: ApprovalRequest) -> str:
-        """Determine next action based on approval status."""
-        
-        if approval.status == ApprovalStatus.APPROVED:
-            return "execute_action"
-        
-        elif approval.status == ApprovalStatus.REJECTED:
-            return "cancel_and_notify"
-        
-        elif approval.status == ApprovalStatus.NEEDS_INFO:
-            return "request_more_info"
-        
-        else:
-            return "wait_for_decision"
-
-# Demo: Routing
-print("\n🛤️ CONDITIONAL ROUTING")
-print("="*70)
-
-# Example 1: Approved
-req1 = ApprovalRequest("process_order", {"order_id": "ORD123"}, "system")
-req1.approve("admin", "Looks good")
-print(f"\n📤 Decision: {req1.status.value}")
-print(f"   Next step: {DecisionRouter.route(req1)} → Process order immediately")
-
-# Example 2: Rejected
-req2 = ApprovalRequest("refund_request", {"amount": "$10000", "count": 50}, "system")
-req2.reject("manager", "Too many refunds this week")
-print(f"\n📤 Decision: {req2.status.value}")
-print(f"   Next step: {DecisionRouter.route(req2)} → Notify customer of rejection")
-
-# Example 3: Needs info
-req3 = ApprovalRequest("account_merge", {"accounts": 2}, "system")
-req3.request_info("security_team", "Same person owns both accounts?")
-print(f"\n📤 Decision: {req3.status.value}")
-print(f"   Next step: {DecisionRouter.route(req3)} → Collect additional information")
-```
+Resume is at-least-once. Keys make the charge happen once.

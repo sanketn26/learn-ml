@@ -1,59 +1,30 @@
-# Exercises — Week 2 — Complex Workflows: Subgraphs & Conditional Routing
+# Exercises — Week 2 — Fan-out, subgraph, retry
 
-Do these after reading [Week 2 — Complex Workflows: Subgraphs & Conditional Routing](../week-02.md).
+Do these after reading [Week 2](../week-02.md). Compile the examples; do not leave retry as a comment.
 
-## Hands-On Exercises
+## 1. Fan-out + reducer
 
-### Exercise 1: Conditional Routing
-Build a workflow that routes requests based on priority:
-- High priority → expedited path (2 reviewers)
-- Normal priority → standard path (1 reviewer)
-- Low priority → async processing
+Compile the lesson’s email + slack + join graph (or the same shape for CloudWave: `notify_user` + `notify_csm`).
 
-### Exercise 2: Parallel Tasks
-Implement customer onboarding with parallel steps:
-- Send welcome email
-- Create dashboard
-- Assign account manager
-- All run simultaneously, then notify operations
+**Checks:**
 
-```python
-# TODO: Build conditional routing workflow
-# TODO: Implement parallel execution pattern
-# TODO: Create reusable subgraph
-# TODO: Add retry logic with exponential backoff
-```
+- `set(result["notes"])` contains both branch strings
+- If you temporarily drop `operator.add`, you can show that one note disappears (optional)
 
-## Assignment: Multi-Branch Workflow
+## 2. Subgraph as a node
 
-**Build:** Customer support routing system
+Compile a one-node inner graph (`kyc_check`) and add `inner.compile()` as a node of an outer graph.
 
-**Features:**
-1. **Conditional routing:**
-   - Technical issues → engineering team
-   - Billing issues → finance team
-   - Feature requests → product team
+**Checks:**
 
-2. **Parallel operations:**
-   - Send auto-response
-   - Create ticket
-   - Notify team
-   - Update knowledge base
+- `outer.invoke(...)` returns the inner node’s log line
+- The inner graph is passed to `add_node`, not copy-pasted as five functions
 
-3. **Dynamic escalation:**
-   - High-urgency → immediate escalation
-   - Old unresolved → escalate to manager
-   - Customer is VIP → priority handling
+## 3. Retry
 
-## Key Takeaways
+Use `RetryPolicy` on a node **or** the lesson’s `with_retry` wrapper (label it concept demo). Fail twice, succeed third.
 
-✅ Conditional routing based on state  
-✅ Parallel execution patterns  
-✅ Subgraphs for modularity  
-✅ Retry logic with backoff  
-✅ Dynamic workflow structure  
-✅ Error handling strategies  
+**Checks:**
 
-## 🔜 Next Week: Persistence & Replay
-
-Save workflow state, resume from checkpoints, replay for debugging
+- Call counter is 3
+- A node that only formats a string is **not** retried (it is not wrapped)

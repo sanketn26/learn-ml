@@ -1,71 +1,37 @@
-# Exercises — Week 4 — RAG & Embeddings
+# Exercises — Week 4 — RAG (retrieve, then generate)
 
-Do these after reading [Week 4 — RAG & Embeddings](../week-04.md).
-
-## ✍️ Hands-On Exercises
-
-!!! example "Exercise"
-
-    **🎯 Exercise 1: Document Chunking Optimization**
-
-    Experiment with different chunking strategies:
-
-    - Fixed size chunks (500, 1000, 2000 chars)
-
-    - Chunks with different overlap (0%, 20%, 50%)
-
-    - Semantic chunking at section boundaries
-
-    **Measure:** Which strategy gives best retrieval accuracy?
-
-
+Do these after reading [Week 4](../week-04.md). Use **keyword overlap** retrieval. Do not treat random hash vectors as semantic search. No `llm.predict(context=..., question=...)`.
 
 ```python
-# Your implementation here!
-# Test different chunk sizes and overlaps
-# Measure retrieval quality
-
-print("Your chunking optimization here!")
+from langchain_community.llms import FakeListLLM
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 ```
 
-!!! example "Exercise"
+## 1. Overlap retrieve
 
-    **🎯 Exercise 2: Build a Documentation Assistant**
+Chunk the three CloudWave runbooks from the lesson (API keys, password reset, plans). Implement `retrieve(question, k=2)` with token overlap.
 
-    Create a RAG system for your own documentation:
+**Checks:**
 
-    - Load your own documents (markdown, PDF, or text files)
+- `"How do I get an API key?"` returns a hit whose `metadata["source"]` is `api-keys`
+- `"export 150k rows timeout"` returns `[]` (or score 0) — no runbook for that
 
-    - Chunk them intelligently
+## 2. Chain, not `.predict`
 
-    - Create embeddings
+`chain = rag_prompt | llm | StrOutputParser()`. `chain.invoke({"context": ..., "question": ...})`.
 
-    - Test with 5+ queries
+**Checks:**
 
-    - Measure answer accuracy
+- A miss (`hits == []`) returns `refuse is True` and does not call the llm (or ignores its output)
+- A hit includes `doc_ids` from retrieval, not invented ids
 
+## 3. Five labeled queries
 
+Run q1–q5 from the lesson. Print a table: `id, retrieved_ok, refuse, gold_source`.
 
-```python
-# Your implementation here!
-print("Your documentation assistant here!")
-```
+**Checks:**
 
-!!! example "Exercise"
-
-    **🎯 Exercise 3: RAG with Hybrid Search**
-
-    Improve retrieval with hybrid search:
-
-    - Semantic search (vector similarity)
-
-    - Keyword search (BM25)
-
-    - Combine both for better results
-
-
-
-```python
-# Your implementation here!
-print("Your hybrid search implementation here!")
-```
+- q1–q3: gold source is in the retrieved ids
+- q4: retrieval miss and `refuse is True`
+- q5: you record a **generation** check (no invented Enterprise discount), separate from retrieval

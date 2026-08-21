@@ -42,9 +42,9 @@ metric would change your mind?
    six teaching examples, or wire a real teacher model behind
    `capstone/teacher.py` using the schema from `capstone.tools.tool_schema()`.
 2. Open a Colab notebook with a T4/L4 GPU runtime. Install `unsloth`, `peft`,
-   `trl`, `bitsandbytes` (see `requirements-capstone.txt` for pinned
-   dependencies — install it in Colab, not on your laptop).
-3. Fine-tune FunctionGemma-270M (or your chosen alternative) on
+   `trl`, `bitsandbytes` (see `requirements-capstone.txt` for minimum versions
+   — install it in Colab, not on your laptop).
+3. Fine-tune `google/functiongemma-270m-it` (or your chosen alternative) on
    `capstone/data/train.jsonl`, following the sketch in the
    [Capstone Phase 3](../capstone.md#phase-3-fine-tune-on-colab) section.
 4. Export to GGUF, download it, and run it locally with `llama.cpp` or `ollama`.

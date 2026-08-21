@@ -1,7 +1,7 @@
 # Week 11 — Rank a List
 
 **Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a search ranking, a “priority queue,” or a “top of the inbox.” Read after Week 7 or 17.
+**Who this is for:** Engineers who have written a search ranking, a “priority queue,” or a “top of the inbox.” Read after Week 8.
 
 CloudWave CS cannot call everyone. They can call **80**. The product is not a yes/no. It is an **ordered list**.
 
@@ -49,20 +49,29 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import roc_auc_score
+from sklearn.pipeline import Pipeline
 
-from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features
-from pipelines.labels import drop_unlabelled, label_churn_in_horizon
+from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
+from pipelines.labels import drop_unlabelled, label_eventual_churn
 
 as_of = AS_OF_DEFAULT
-df = build_features(as_of=as_of, n=8000, at_risk_only=True)
-y = label_churn_in_horizon(df, as_of)
+# n=None + eventual-after-as_of: this fixture only has tens of 30-day cancels,
+# so precision@80 on the horizon label is 0–2 positives and a coin flip.
+df = build_features(as_of=as_of, n=None, at_risk_only=True)
+y = label_eventual_churn(df, as_of)
 df, y = drop_unlabelled(df, y)
 
 cut = df["signup_date"].quantile(0.80)
 test = df[df["signup_date"] > cut]
 y_test = y.loc[test.index]
+print("positives in test", int(y_test.sum()), "of", len(y_test))
 
-model = GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)
+model = Pipeline(
+    [
+        ("prep", make_preprocessor()),
+        ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
+    ]
+)
 train = df[df["signup_date"] <= cut]
 model.fit(train[FEATURE_COLS], y.loc[train.index])
 score = model.predict_proba(test[FEATURE_COLS])[:, 1]

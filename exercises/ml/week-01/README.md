@@ -6,7 +6,7 @@ Work in `starter.py`. Run from the repo root:
 python exercises/ml/week-01/starter.py
 ```
 
-## ✍️ Exercises (use the real files — no fake 90×50 DAU grid)
+## ✍️ Exercises (use the real files — the lesson’s DAU picture is 7 days × 4 regions)
 
 **1. Feature ranking.** Load `feature_usage.csv`. For each `feature_name`, compute total `usage_count` with a group-by, then convert the totals to a NumPy array and print mean / median / p90 of *those feature totals*.
 

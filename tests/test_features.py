@@ -28,3 +28,11 @@ def test_matrix_columns_are_the_contract():
     X = df[FEATURE_COLS]
     assert list(X.columns) == FEATURE_COLS
     assert X.isna().sum().sum() == 0
+
+
+def test_one_row_per_at_risk_user():
+    as_of = AS_OF_DEFAULT
+    df = build_features(as_of=as_of, n=None, at_risk_only=True)
+    assert df["user_id"].is_unique
+    assert (df["signup_date"] <= as_of).all()
+    assert not bool(df["already_churned"].any())

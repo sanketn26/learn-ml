@@ -12,4 +12,4 @@ python exercises/ml/week-07/starter.py
 
 **2. Threshold sweep.** For thresholds 0.1, 0.2, … 0.9 print flagged, precision, recall. Circle the row you would ship.
 
-**3. Ablation.** Retrain the forest without `tenure_days`. How much AUC dies? (Tenure is powerful and a little circular — long-lived users have not churned yet.)
+**3. Ablation.** Retrain the forest without `tenure_so_far`. How much AUC dies? (Tenure-so-far is powerful and a little circular-ish for new users — they have not had time to churn. Lifetime `tenure_days` is the real leak; Week 8 kills it.)

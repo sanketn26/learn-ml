@@ -33,3 +33,8 @@ def test_validate_rejects_missing_and_extra():
 def test_validate_rejects_pii_shaped_fields():
     with pytest.raises(ValueError, match="unknown"):
         validate(_ok(email="ada@cloudwave.test"))
+
+
+def test_validate_rejects_nan():
+    with pytest.raises(ValueError, match="missing"):
+        validate(_ok(n_support=float("nan")))

@@ -40,7 +40,7 @@ image sharpen / blur kernel              one stencil, every pixel
 
 ### When this is the wrong tool
 
-A Customer 360 row (`mrr`, `tenure`, `plan_type`) has no spatial axis. There is nothing to slide over. Use a tree. Use a CNN when the *order* or *position* matters: usage-over-weeks, a spectrogram, an image, a token sequence (and even then, Transformers often win on text — week 15).
+A Customer 360 row (`mrr`, `tenure`, `plan_type`) has no spatial axis. There is nothing to slide over. Use a tree. Use a CNN when the *order* or *position* matters: usage-over-weeks, a spectrogram, an image, a token sequence (and even then, Transformers often win on text — Week 20).
 
 ### Picture weight sharing
 
@@ -48,18 +48,14 @@ A dense layer on a 12-week series would learn a different rule for “week 1” 
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
+from lib.course_data import find_data_dir, load_weekly_usage_grid
 
 DATA = find_data_dir()
 
@@ -95,7 +91,7 @@ A **2-D CNN** is the same idea on a grid (a screenshot, a heatmap, an MRI). Same
 # Hand-built spike detector — no learning yet
 signal = np.array([2, 2, 8, 9, 2, 2, 3], dtype=float)
 kernel = np.array([-1.0, 2.0, -1.0])
-hits = np.convolve(signal, kernel, mode="valid")
+hits = np.convolve(signal, kernel, mode="valid")  # no pad: output is shorter, like padding=0
 
 fig, axes = plt.subplots(2, 1, figsize=(8, 4), sharex=True)
 axes[0].stem(signal)
@@ -115,6 +111,7 @@ Each user becomes a length-T vector of weekly usage. The CNN’s job: “does th
 
 ```python
 X, y = load_weekly_usage_grid(DATA)  # ~3k users × 12 weeks, CPU-friendly
+# y is lifetime is_churned — a sequence *toy*. Not the Week 8 horizon label.
 print(f"users={len(X):,}  timesteps={X.shape[1]}  churn={y.mean():.3f}")
 
 rng = np.random.default_rng(0)
@@ -130,10 +127,12 @@ Xtr, Xte, ytr, yte = X[tr], X[te], y[tr], y[te]
 
 ```python
 class UsageCNN(nn.Module):
-    def __init__(self, t: int):
+    def __init__(self):
         super().__init__()
-        self.conv = nn.Conv1d(in_channels=1, out_channels=8, kernel_size=3, padding=1)
-        self.pool = nn.AdaptiveMaxPool1d(1)   # loudest hit anywhere in the 12 weeks
+        # padding=0 matches the stem plot (mode="valid"): 12 weeks → 10 hits.
+        # padding=1 would keep length 12 ("same"). Pick one and say which.
+        self.conv = nn.Conv1d(in_channels=1, out_channels=8, kernel_size=3, padding=0)
+        self.pool = nn.AdaptiveMaxPool1d(1)   # loudest hit anywhere in the weeks
         self.head = nn.Linear(8, 1)
 
     def forward(self, x):
@@ -146,10 +145,11 @@ def run_epoch(model, xb, yb, opt=None):
     model.train(opt is not None)
     xb = torch.tensor(xb, dtype=torch.float32)
     yb = torch.tensor(yb, dtype=torch.float32)
+    if opt is not None:
+        opt.zero_grad()
     logits = model(xb)
     loss = F.binary_cross_entropy_with_logits(logits, yb)
     if opt is not None:
-        opt.zero_grad()
         loss.backward()
         opt.step()
     with torch.no_grad():
@@ -157,7 +157,7 @@ def run_epoch(model, xb, yb, opt=None):
         acc = float((pred == yb).float().mean())
     return float(loss), acc
 
-model = UsageCNN(Xtr.shape[1])
+model = UsageCNN()
 opt = torch.optim.Adam(model.parameters(), lr=1e-2)
 print(model)
 print("weights:", sum(p.numel() for p in model.parameters()))

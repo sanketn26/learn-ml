@@ -41,7 +41,7 @@ python exercises/ml/week-00/starter.py
 
 Each ML week is `exercises/ml/week-XX/starter.py`. Run from the repo root.
 
-No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM.
+No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM. The billing table has ~49k customers (observation end 2024-11-30).
 
 ## Before you start
 

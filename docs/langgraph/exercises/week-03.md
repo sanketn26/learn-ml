@@ -1,112 +1,38 @@
-# Exercises — Week 3 — Persistence & Replay
+# Exercises — Week 3 — MemorySaver resume
 
-Do these after reading [Week 3 — Persistence & Replay](../week-03.md).
-
-## ✍️ Hands-On Exercises
-
-!!! example "Exercise"
-
-    **🎯 Exercise 1: Implement Persistent Workflow**
-
-    Build a workflow with automatic checkpointing:
-
-    - Save state after each node completes
-
-    - Resume from latest checkpoint on restart
-
-    - Log checkpoint history
-
-
+Do these after reading [Week 3](../week-03.md). Use LangGraph 0.2’s checkpointer, not a homemade `Checkpoint` class.
 
 ```python
-# Your implementation here!
-print("Your persistent workflow here!")
+from langgraph.checkpoint.memory import MemorySaver
+
+app = graph.compile(checkpointer=MemorySaver())
+config = {"configurable": {"thread_id": "t1"}}
 ```
 
-!!! example "Exercise"
+## 1. Crash after node 2
 
-    **🎯 Exercise 2: Build Replay System**
+Three nodes. Node 3 raises when `crash is True`. Invoke once, catch the error.
 
-    Enable replay from any checkpoint:
+**Checks:**
 
-    - List all checkpoints for a workflow
+- `RUNS["n1"] == 1` and `RUNS["n2"] == 1` after the crash
+- `app.get_state(config).values["log"]` contains `n1` and `n2`, not a successful `n3`
 
-    - Resume from specific checkpoint
+## 2. Resume
 
-    - Compare results between checkpoints
+`update_state(config, {"crash": False})` then `invoke(None, config)`.
 
+**Checks:**
 
+- `RUNS["n1"]` and `RUNS["n2"]` are still 1
+- `RUNS["n3"] == 2` (failed + succeeded)
+- Final log ends with `n3`
 
-```python
-# Your implementation here!
-print("Your replay system here!")
-```
+## 3. Wrong thread
 
-## 📝 Week 3 Project: Resilient Data Pipeline
+Invoke a **different** `thread_id` after the crash (do not resume `t1`).
 
-**Build a data processing pipeline with full persistence and replay.**
+**Checks:**
 
-### Requirements:
-
-**Pipeline Stages:**
-1. Extract (fetch data from API)
-2. Validate (check data quality)
-3. Transform (clean and normalize)
-4. Enrich (add metadata)
-5. Load (save to database)
-
-**Persistence Features:**
-- Checkpoint after each stage
-- Resume from checkpoint if interrupted
-- Skip already-completed stages
-
-**Replay Capabilities:**
-- List all checkpoints
-- Replay from specific checkpoint
-- Change transformation logic and re-run
-
-### Test Scenarios:
-1. **Complete run:** All stages succeed
-2. **Failure recovery:** Fail at stage 3, resume from checkpoint
-3. **Logic change:** Fix bug in Transform stage, replay
-4. **What-if:** Test different Enrich strategies
-
-```python
-# Week 3 Project Starter
-
-# TODO: Build 5-stage pipeline
-# TODO: Implement persistence at each stage  
-# TODO: Support resume from checkpoint
-# TODO: Build replay mechanism
-# TODO: Test with failure scenarios
-
-print("🎯 Your resilient data pipeline here!")
-```
-
-## 🎓 Key Takeaways
-
-**What you learned this week:**
-
-✅ **Checkpointing:**
-- Save state after each workflow step
-- Enable fast recovery from failures
-
-✅ **Persistence:**
-- Database vs in-memory vs file storage
-- Trade-offs between speed and durability
-
-✅ **Replay:**
-- Resume from checkpoints
-- Replay with modified logic
-- Debug and test efficiently
-
-## 🔜 Next Week: Human-in-the-Loop
-
-In Week 4, we'll add humans to workflows:
-- Pause for human approval
-- Implement feedback loops
-- Build interactive workflows
-
----
-
-**🎉 Congratulations on completing Week 3!** Your workflows can now survive failures and be debugged efficiently. See you next week! 🚀
+- The new thread starts at node 1 (`RUNS["n1"]` increments)
+- You can explain in one sentence why `thread_id` is the resume key

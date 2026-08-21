@@ -6,8 +6,8 @@ Guidance for working in this repository.
 
 An AI-frameworks learning platform. **Markdown lessons + separate Python exercises**, served with MkDocs on GitHub Pages. No Jupyter.
 
-- **ML Fundamentals** (weeks 0–12 required tabular, 16–20 the job, 18–20 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
-- **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full 50k.
+- **ML Fundamentals** (weeks 0–17 required job path, 18–20 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
+- **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full ~49k.
 - **Capstone** (optional, `ml/capstone.md`): the one page that needs a GPU — fine-tunes a small coding-tool-use specialist. The harness (`capstone/`) itself runs CPU-only; only Phase 3 (Colab fine-tune) breaks the no-GPU rule.
 - **LangChain** (7 weeks), **LangGraph** (5), **CrewAI** (4, optional).
 
@@ -64,4 +64,4 @@ Callout CSS lives in `docs/stylesheets/extra.css`. Admonition types: `think`, `e
 
 ## Datasets
 
-`data/subscriptions.csv` (50k), `user_events.csv` (220k), `feature_usage.csv` (160k), `feedback.json` (10k JSON Lines), `product_catalog.csv` (300). Load via `lib.course_data.find_data_dir` / `load_customer_360`. See `DATASET_GUIDE.md`.
+`data/subscriptions.csv` (~49k), `user_events.csv` (220k), `feature_usage.csv` (160k), `feedback.json` (10k JSON Lines), `product_catalog.csv` (300). Load via `lib.course_data.find_data_dir` / `load_customer_360`. See `DATASET_GUIDE.md`.

@@ -20,6 +20,12 @@
     Or: **JPEG for a table**. Keep the big blobs of ink, drop the speckle. You cannot read a pixel-perfect original, but you can still tell it is a face (or a whale customer).
 
 ```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+
 from lib.course_data import find_data_dir, load_customer_360
 
 DATA = find_data_dir()
@@ -63,8 +69,9 @@ Textbooks scare you with 10,000 columns. CloudWave’s customer table has ~7 num
 
 ```python
 df = load_customer_360(DATA)
+# Snapshot 360 for a map. Production scoring still uses tenure_so_far (Week 8).
 cols = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "avg_session", "n_support"]
-sample = df.sample(6000, random_state=0)
+sample = df.sample(min(6000, len(df)), random_state=0)
 X = StandardScaler().fit_transform(sample[cols])
 
 # Cartoon: a diagonal cloud, then the axes PCA would pick

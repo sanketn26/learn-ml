@@ -1,178 +1,175 @@
-# Week 2 — Workflows: Branches, Fan-out, Subgraphs
+# Week 2 — Fan-out, subgraph, retry
 
 **Course:** LangGraph  
-**Who this is for:** Engineers who have written a CI pipeline with `if:` jobs, or a saga that fans out to three services and waits.
+**Who this is for:** Engineers who have written a CI workflow with `if:` jobs, or `asyncio.gather` three calls and a join.
 
-Week 1 was a straight line. This week is everything that makes a graph worth the ceremony: **if/else**, **do these in parallel**, **reuse a subgraph**, **retry without losing the state**.
+Week 1 branched. This week: **do independent work in parallel**, **reuse a subgraph like a function**, **retry the node that talks to the world**.
 
 ---
 
-## If you already write software
-
-LangGraph is a **state machine**. Nodes are functions. Edges are control flow. State is the request-scoped object you thread through.
-
-You have written this as:
-
-- a workflow engine
-- a Redux store + reducers
-- a CI pipeline with conditional jobs
-- an XState chart
-- a saga
-
-```
-graph = StateGraph(State)
-graph.add_node("parse", parse)       # a function: State -> partial State
-graph.add_node("act", act)
-graph.add_edge("parse", "act")       # always
-graph.add_conditional_edges("act", route)   # if / else
-```
-
-The payoff versus a pile of `if` statements: you can **checkpoint**, **replay**, and **pause for a human** because the runtime owns the state. That is the point of the next two weeks. If your flow is three sequential LLM calls with no branch, a chain is enough — do not pay for a graph yet.
-
 ## 🎯 What you will be able to do
 
-- Route on state (`if urgent → fast path else → slow path`)
-- Fan-out work that does not depend on itself, then fan-in
-- Extract a subgraph you can reuse like a function
-- Retry a node without replaying the whole request from zero
-- Know when a branch is a real product decision vs. prompt spaghetti
+- Compile a fan-out whose reducer **merges** partial list updates
+- Drop a compiled subgraph in as one node
+- Retry a flaky node (library `RetryPolicy`, or a labeled Python wrapper)
+- Keep routing predicates in functions you can unit-test
 
-!!! think "Think of it like… a CI workflow.yml"
-    `add_edge` is `needs: [build]`. `add_conditional_edges` is `if: github.event_name == 'push'`. A subgraph is a reusable workflow you `uses:`. The `State` object is the artifact bag that every job can read.
+!!! think "Think of it like… a CI `workflow.yml`."
 
-## Conditional routing
+    `add_edge` is `needs: [build]`. `add_conditional_edges` is `if:`. A subgraph is `uses:`. Fan-out is three jobs with no `needs:` on each other, then a join job.
 
-Not every ticket takes the same path. That is not “AI.” That is an `if`.
+## Conditional routing (from week 1, kept short)
 
 ```
-                 analyze
-                    │
-                    ▼
-              is_urgent(state)
-               /           \
-            yes             no
-             │               │
-             ▼               ▼
-        priority_q       standard_q
-             \               /
-              \             /
-               ▼           ▼
-                  respond
+analyze → is_urgent? → priority_q | standard_q → END
 ```
+
+`route` is a pure function of state. “Use your judgment to escalate” is not a route.
+
+## Fan-out + reducer (compiles)
+
+Independent CloudWave side-work: email the user, post to the on-call channel. Both write `notes`. Without `operator.add`, the last node wins and you “lose” the email.
 
 ```python
-from typing import Literal, TypedDict
+import operator
+from typing import Annotated, TypedDict
+
 from langgraph.graph import END, START, StateGraph
 
 
 class Ticket(TypedDict):
     text: str
-    urgent: bool
-    answer: str
+    notes: Annotated[list[str], operator.add]
 
 
-def analyze(state: Ticket) -> Ticket:
-    text = state["text"].lower()
-    return {"urgent": "down" in text or "refund" in text}
+def email(state: Ticket) -> dict:
+    return {"notes": ["email: queued"]}
 
 
-def priority(state: Ticket) -> Ticket:
-    return {"answer": "paging on-call"}
+def slack(state: Ticket) -> dict:
+    return {"notes": ["slack: on-call"]}
 
 
-def standard(state: Ticket) -> Ticket:
-    return {"answer": "queued for next business day"}
+def join(state: Ticket) -> dict:
+    return {}
 
 
-def route(state: Ticket) -> Literal["priority", "standard"]:
-    return "priority" if state["urgent"] else "standard"
+fan = StateGraph(Ticket)
+fan.add_node("email", email)
+fan.add_node("slack", slack)
+fan.add_node("join", join)
+fan.add_edge(START, "email")
+fan.add_edge(START, "slack")
+fan.add_edge("email", "join")
+fan.add_edge("slack", "join")
+fan.add_edge("join", END)
+fan_app = fan.compile()
 
-
-graph = StateGraph(Ticket)
-graph.add_node("analyze", analyze)
-graph.add_node("priority", priority)
-graph.add_node("standard", standard)
-graph.add_edge(START, "analyze")
-graph.add_conditional_edges("analyze", route)
-graph.add_edge("priority", END)
-graph.add_edge("standard", END)
-app = graph.compile()
+out = fan_app.invoke({"text": "dashboard down", "notes": []})
+assert set(out["notes"]) == {"email: queued", "slack: on-call"}
 ```
-
-`route` is a **pure function of state**. Keep it boring. If the routing rule lives in a 40-line prompt, you will not be able to test it.
-
-!!! warning "Watch out — hidden branches in the prompt"
-    “Use your judgment to escalate if needed” is not a route. It is a coin flip. Put the rule in `route()`. Log the decision. If product wants a different rule tomorrow, you change a function, not a paragraph.
-
-## Fan-out / fan-in
-
-Independent work should not sit in a queue behind itself.
-
-```
-            start
-              │
-     ┌────────┼────────┐
-     ▼        ▼        ▼
-   email   dashboard  assign_csm
-     └────────┼────────┘
-              ▼
-            notify
-```
-
-In a backend you would `asyncio.gather` three calls. In LangGraph you add three edges from the same node and a join later. The state reducer must **merge** the partial updates (week 1) or the last writer wins and you “lose” the email.
 
 !!! engineer "Engineer mental model"
-    Fan-out is cheap only if the branches do not share a mutable side effect. Three nodes that each `UPDATE users SET ...` without a version column is a race, graph or not. Treat branches like microservices: disjoint writes, merge in the join node.
 
-## Subgraphs are functions
+    Fan-out is cheap only if the branches do not share a mutable write. Three nodes that `UPDATE users SET ...` without a version column is a race, graph or not.
 
-A “KYC check” of five nodes will show up in onboarding *and* in a limit-raise flow. That is a subgraph: compile a graph, drop it in as one node of a bigger graph.
+## Subgraph as a node
 
-```
-onboarding
-  parse → kyc_subgraph → provision → welcome
-
-limit_raise
-  parse → kyc_subgraph → decide_limit
-```
-
-Same contract as extracting a function. Same test: the subgraph has a typed state in, a typed state out, and no secret globals.
-
-## Retries
-
-A node that calls billing will 503. You do not restart the whole ticket. You retry **that node**, with the checkpointed state from just before it (week 3 makes this real).
-
-```
-analyze  →  charge  →  email
-              ▲  │
-              └──┘  retry 3×, then fail the graph
-```
+A five-step KYC check that shows up in onboarding *and* a limit-raise is a subgraph: compile it, add it as one node.
 
 ```python
-# sketch — exact API moves; the idea does not
-# attach a retry policy to the node that talks to the world
-# do not retry the node that already sent the email
+class Kyc(TypedDict):
+    user_id: str
+    notes: Annotated[list[str], operator.add]
+
+
+def kyc_check(state: Kyc) -> dict:
+    return {"notes": [f"kyc:{state['user_id']}"]}
+
+
+inner = StateGraph(Kyc)
+inner.add_node("kyc_check", kyc_check)
+inner.add_edge(START, "kyc_check")
+inner.add_edge("kyc_check", END)
+kyc_app = inner.compile()
+
+outer = StateGraph(Kyc)
+outer.add_node("kyc", kyc_app)  # compiled graph as a node
+outer.add_edge(START, "kyc")
+outer.add_edge("kyc", END)
+outer_app = outer.compile()
+
+got = outer_app.invoke({"user_id": "user_0001", "notes": []})
+assert got["notes"] == ["kyc:user_0001"]
 ```
 
+Same contract as extracting a function: typed in, typed out, no secret globals.
+
+## Retry: library spelling + concept demo
+
+A billing GET will 503. Retry **that node**, not the email you already sent.
+
+**Library spelling** (langgraph 0.2):
+
+```python
+from langgraph.pregel import RetryPolicy
+
+# graph.add_node("charge", charge, retry=RetryPolicy(max_attempts=3))
+```
+
+**Concept demo** (no API key, proves the policy with ordinary Python):
+
+```python
+from typing import Callable
+
+
+def with_retry(fn: Callable[[dict], dict], max_attempts: int = 3) -> Callable[[dict], dict]:
+    def wrapped(state: dict) -> dict:
+        last: Exception | None = None
+        for attempt in range(1, max_attempts + 1):
+            try:
+                return fn({**state, "attempt": attempt})
+            except Exception as e:
+                last = e
+        raise last  # type: ignore[misc]
+    return wrapped
+
+
+calls = {"n": 0}
+
+
+def flaky(state: dict) -> dict:
+    calls["n"] += 1
+    if calls["n"] < 3:
+        raise RuntimeError("billing 503")
+    return {"notes": ["charged"]}
+
+
+stable = with_retry(flaky, max_attempts=3)
+assert stable({"notes": []})["notes"] == ["charged"]
+assert calls["n"] == 3
+```
+
+Do not retry the node that already sent mail unless that send is keyed (week 5).
+
+!!! warning "Watch out — hidden branches in the prompt"
+
+    “Escalate if needed” is a coin flip. Put the rule in `route()`. Log it.
+
 !!! success "Ship / don’t ship"
-    **Ship** a branch when you can write the predicate in five lines and unit-test it. **Ship** fan-out when the branches cannot stomp each other. **Don’t ship** a graph that “decides dynamically how many agents to spawn” as a first version. That is a fork bomb with a system prompt.
 
-## Picture the review comment
+    **Ship** a branch whose predicate is five lines and tested; **ship** fan-out when writes cannot stomp each other. **Don’t ship** “spawn N agents dynamically” as v1. That is a fork bomb with a system prompt.
 
-When you read a teammate’s graph, ask the same three questions you ask of a workflow.yml:
+## ✍️ Exercise
 
-1. What is the state, and who is allowed to write each field?
-2. Which edges are unconditional, which are predicates, and are the predicates tested?
-3. If this dies after node 3 of 6, can we resume without double-charging?
-
-If they cannot answer #3, you are not ready for week 3 — you are ready to go add checkpoints.
+[Exercises](exercises/week-02.md).
 
 ## 🤔 Reflection
 
-1. Draw the CloudWave “refund request” flow as a graph. Which nodes talk to the world? Which are pure?
-2. When is a subgraph better than copy-pasting five nodes? When is it premature?
-3. A fan-out of “email + slack + ticket” failed on slack. Do you retry all three, or only slack? Why?
+1. Draw CloudWave “refund request” as a graph. Which nodes talk to the world?
+2. Fan-out of email + slack failed on slack. Retry all three, or only slack?
+3. When is a subgraph premature copy-paste insurance?
 
 ## 🔗 Next week
 
-Persistence: the runtime writes the state after every node so a crash is a resume, not a restart. That is the actual reason to use a graph.
+Checkpoints: crash after node 2, resume without repeating node 1.

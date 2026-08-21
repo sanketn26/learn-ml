@@ -12,4 +12,4 @@ python exercises/ml/week-09/starter.py
 
 **2. Residual slices.** MAE for `free` vs `enterprise`. Where is the model actually bad?
 
-**3. Forbidden target.** Create `fake_clv = mrr * (tenure_days / 30)` and train a linear model using `mrr` and `tenure_days`. Marvel at R². Then delete it and never do this at work.
+**3. Forbidden target.** Create `fake_clv = mrr * (tenure_so_far / 30)` and train a linear model using `mrr` and `tenure_so_far`. Marvel at R². Then delete it and never do this at work. (Lifetime `tenure_days` is even worse — it already knows who left.)

@@ -28,7 +28,11 @@ Every week uses the same colored boxes:
 | **Math, translated** | One formula, immediately in English. |
 
 ```python
-from lib.course_data import find_data_dir, load_customer_360
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 ```
@@ -161,6 +165,24 @@ ax.legend()
 plt.tight_layout()
 plt.show()
 ```
+
+## Five lines of Pandas you need this week
+
+Exercise 1 is a group-by. Exercise 2 is a pivot. Week 2 is the full SQL-in-Python course. This is the 5-line version so you are not surprised:
+
+```python
+by_feature = usage.groupby("feature_name")["usage_count"].sum()
+print(by_feature.sort_values(ascending=False).head())
+
+sample_ids = usage["user_id"].drop_duplicates().head(12)
+grid = usage.loc[usage["user_id"].isin(sample_ids)].pivot_table(
+    index="user_id", columns="feature_name",
+    values="usage_count", aggfunc="sum", fill_value=0,
+)
+print(grid.shape)  # users × features — a 2-D slab you can hand to NumPy
+```
+
+`groupby` collapses many rows that share a key. `pivot_table` is a group-by on *two* keys, spread into a matrix. Broadcasting (next) is what you do once the matrix exists.
 
 ## Broadcasting — stamping a row down a table
 

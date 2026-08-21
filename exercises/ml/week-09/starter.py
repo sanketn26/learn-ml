@@ -13,15 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from lib.course_data import find_data_dir, load_customer_360
-
-DATA = find_data_dir()
+from pipelines.features import AS_OF_DEFAULT, build_features
 
 
 def main() -> None:
-    print(f"data: {DATA}")
-    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
-    # TODO: implement the tasks in README.md
+    df = build_features(as_of=AS_OF_DEFAULT, n=8000, at_risk_only=True)
+    print("as-of rows", len(df), "cols", ["tenure_so_far", "total_usage", "plan_type"])
+    print("TODO 1: forest on log1p(total_usage), expm1 the predictions")
+    print("TODO 2: MAE sliced by plan_type")
+    print("TODO 3: fake_clv = mrr * (tenure_so_far / 30) — then delete it")
 
 
 if __name__ == "__main__":

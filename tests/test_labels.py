@@ -25,3 +25,39 @@ def test_already_churned_are_unlabelled():
     )
     y = label_churn_in_horizon(gone, as_of)
     assert y.isna().all()
+
+
+def test_short_observation_window_keeps_seen_cancels():
+    as_of = pd.Timestamp("2024-06-01")
+    frame = pd.DataFrame(
+        {
+            "churn_date": [
+                as_of + pd.Timedelta(days=5),
+                pd.NaT,
+            ]
+        }
+    )
+    y = label_churn_in_horizon(
+        frame, as_of, horizon_days=30, observation_end=as_of + pd.Timedelta(days=10)
+    )
+    assert float(y.iloc[0]) == 1.0
+    assert pd.isna(y.iloc[1])
+
+
+def test_eventual_churn_ignores_people_already_gone():
+    from pipelines.labels import label_eventual_churn
+
+    as_of = pd.Timestamp("2024-06-01")
+    frame = pd.DataFrame(
+        {
+            "churn_date": [
+                as_of - pd.Timedelta(days=3),
+                as_of + pd.Timedelta(days=40),
+                pd.NaT,
+            ]
+        }
+    )
+    y = label_eventual_churn(frame, as_of)
+    assert pd.isna(y.iloc[0])
+    assert float(y.iloc[1]) == 1.0
+    assert float(y.iloc[2]) == 0.0

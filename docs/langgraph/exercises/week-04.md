@@ -1,116 +1,39 @@
-# Exercises — Week 4 — Human-in-the-Loop & Production
+# Exercises — Week 4 — Approve / reject / needs-info
 
-Do these after reading [Week 4 — Human-in-the-Loop & Production](../week-04.md).
-
-## ✍️ Hands-On Exercises
-
-!!! example "Exercise"
-
-    **🎯 Exercise 1: Build Simple Approval System**
-
-    Create a workflow with basic approval gate:
-
-    - Submit request for approval
-
-    - Human approves/rejects
-
-    - Route to appropriate next step
-
-
+Do these after reading [Week 4](../week-04.md). One small approval graph. Weeks 1–4; week 5 (idempotency) is next — mention it, do not skip it later.
 
 ```python
-# Exercise 1: Your simple approval system here!
-print("Your approval system implementation here!")
+app = graph.compile(checkpointer=MemorySaver(), interrupt_before=["approve"])
+# ...
+app.invoke(payload, config)          # pauses
+app.update_state(config, {"decision": ...})
+app.invoke(None, config)             # continues
 ```
 
-!!! example "Exercise"
+## 1. Pause
 
-    **🎯 Exercise 2: Implement SLA Monitoring**
+CloudWave refund: `draft` then `approve`. Compile with `interrupt_before=["approve"]`.
 
-    Monitor approval SLAs:
+**Checks:**
 
-    - Track pending approvals
+- After the first `invoke`, `get_state(config).next` includes `approve`
+- `log` has the draft line and **not** `executed`
 
-    - Alert if SLA breached
+## 2. Three paths
 
-    - Auto-escalate stale requests
+Separate `thread_id`s for `approve`, `reject`, `needs_info`.
 
+**Checks:**
 
+- approve → last log `executed`
+- reject → last log `cancelled`
+- needs-info → last log `asked-for-info` (or your equivalent)
 
-```python
-# Exercise 2: Your SLA monitoring here!
-print("Your SLA monitoring implementation here!")
-```
+## 3. Weeks 1–4, not a loan platform
 
-## 📝 Week 4 Project: Expense Report Approval System
+In five lines, list which week each piece is (branch / reducer, optional extra node, MemorySaver, interrupt). Add one sentence: the write is still at-least-once until week 5 keys it.
 
-**Build a complete human-in-the-loop workflow for expense reports.**
+**Checks:**
 
-### Requirements:
-
-**Workflow Stages:**
-1. **Submit:** Employee submits expenses with receipts
-2. **Validate:** AI checks policy compliance
-3. **Review:** Manager approves/rejects
-4. **Escalate:** High-value or suspicious go to director
-5. **Process:** Approved expenses → payment
-6. **Notify:** Inform employee of outcome
-
-**Human-in-the-Loop Features:**
-- Managers can approve, reject, or request clarification
-- Auto-escalate: >$5000 or risk_score>0.7
-- SLA: Manager approval within 48 hours
-- Appeal: Employee can ask for reconsideration
-
-**Metrics to Track:**
-- Approval time (average, p95)
-- Approval rate (% approved)
-- Escalation rate
-- Appeal rate
-
-```python
-# Week 4 Project Starter
-
-# TODO: Build expense report submission
-# TODO: AI validation of policy compliance
-# TODO: Manager review workflow
-# TODO: Auto-escalation rules
-# TODO: Track SLA metrics
-# TODO: Test various approval paths
-
-print("🎯 Your expense report approval system here!")
-```
-
-## 🎓 Key Takeaways
-
-**What you learned this week:**
-
-✅ **Approval Gates:**
-- Pause workflows for human review
-- Prevent automated errors in critical paths
-
-✅ **Human Feedback:**
-- Integrate human input into workflow logic
-- Escalation rules for complex decisions
-
-✅ **Conditional Routing:**
-- Different paths for approve/reject/needs-info
-- Dynamic workflow behavior
-
-✅ **Production Deployment:**
-- SLA management
-- Metrics and monitoring
-- Scalable approval infrastructure
-
-## 🚀 Final Capstone Challenge
-
-**Build an AI-Powered Loan Approval System** combining all 4 weeks:
-
-1. **Week 1:** State graphs define approval workflow
-2. **Week 2:** Conditional routing based on loan amount
-3. **Week 3:** Persist application state, allow resumption
-4. **Week 4:** Human underwriters approve/deny with feedback
-
----
-
-You can now model and test a human decision inside a graph. Week 5 adds the idempotency rule needed before a resumed graph may repeat external work.
+- No `ApprovalRequest` class
+- No loan-underwriting project

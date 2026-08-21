@@ -1,258 +1,127 @@
-# Week 3 — Persistence & Replay
+# Week 3 — Checkpoint, crash, resume
 
-**Course:** LangGraph for Complex Workflows  
-**Week Focus:** Save, resume, and replay workflow executions for reliability and debugging.
+**Course:** LangGraph  
+**Who this is for:** Engineers who have lost 20 minutes of a job because step 3 died and they reran from step 1.
+
+The reason to use a graph is that the **runtime owns the state**. LangGraph 0.2’s in-memory checkpointer is `MemorySaver`. A homemade dict of snapshots is useful intuition; it is not what you compile.
 
 ---
 
-## If you already write software
+## 🎯 What you will be able to do
 
-LangGraph is a **state machine**. Nodes are functions. Edges are control flow. State is the request-scoped object you thread through.
+- Compile with `MemorySaver` and a `thread_id`
+- Run until a node fails **after node 2**
+- Resume the same thread so nodes 1–2 do not run again
+- Know that resume is at-least-once for the failed node (week 5 keys the write)
 
-You have written this as:
+!!! think "Think of it like… a debugger’s snapshot, not a backup disk."
 
-- a workflow engine
-- a Redux store + reducers
-- a CI pipeline with conditional jobs
-- an XState chart
-- a saga
+    `thread_id` is the workflow id. Each completed node writes a checkpoint. Crash = restore that row and continue. `MemorySaver` lives in process RAM — enough to prove resume. Durable production stores are a different class (Postgres, etc.) and out of this week’s scope.
 
-```
-graph = StateGraph(State)
-graph.add_node("parse", parse)       # a function: State -> partial State
-graph.add_node("act", act)
-graph.add_edge("parse", "act")       # always
-graph.add_conditional_edges("act", route)   # if / else
-```
-
-The payoff versus a pile of `if` statements: you can **checkpoint**, **replay**, and **pause for a human** because the runtime owns the state. That is the point of the next three weeks. If your flow is three sequential LLM calls with no branch, a chain is enough — do not pay for a graph yet.
-
-## 🎯 Learning Objectives
-
-By the end of this week, you will:
-- Understand state persistence and checkpointing
-- Implement workflow save/resume mechanisms
-- Replay workflows for debugging
-- Handle long-running workflows (hours/days)
-- Audit and trace workflow execution
-- Build fault-tolerant systems
-
-## 📊 Real-World Context
-
-**The Problem:**
-- Workflow runs for 30 minutes, fails at step 27
-- Restart from beginning = waste 27 minutes
-- What if intermediate results were saved?
-
-**Persistence Solutions:**
-1. **Checkpointing:** Save state every step
-2. **Resume:** Start from last checkpoint, not beginning
-3. **Replay:** Re-run from any checkpoint for testing
-4. **History:** See what happened at each step
-
-**Business Impact:**
-- ⏱️ Long-running workflows: 10 min → 1 min recovery
-- 🐛 Debugging: Replay specific scenarios instantly
-- 📊 Audit: Full execution trail for compliance
-- 🔄 Resilience: Survive infrastructure failures
-- 💰 Save millions in compute costs (no repeated work)
-
-
-## 🔍 Part 1: Understanding Checkpointing
-
-<div class="checkpoint-box">
-<strong>Checkpoint:</strong> A saved snapshot of workflow state at a specific point.
-</div>
-
-### Without Checkpointing (Naive)
+## Picture the crash
 
 ```
-Node A (30s) → Node B (20s) → Node C (25s) → Node D (fail)
-│              │              │              │
-done           done           done           ERROR!
-│              │              │              │
-Restart ───────────────────────────────────→ 
-75 seconds wasted!
+node1  →  ✓ checkpoint
+node2  →  ✓ checkpoint
+node3  →  boom
+              │
+              ▼
+         resume(thread_id)
+              │
+              ▼
+         node3 again     ← node1 and node2 must not re-run
 ```
 
-### With Checkpointing (Smart)
-
-```
-Node A (30s) → ✓ Checkpoint A
-Node B (20s) → ✓ Checkpoint B  
-Node C (25s) → ✓ Checkpoint C
-Node D (fail) → ✗ ERROR
-
-Resume from Checkpoint C → 
-Node D (retry) → Success!
-
-Only 25 seconds of recomputation!
-```
-
-## 📚 Part 2: Implementing Persistence
-
-### Checkpoint Storage Options
-
-| Store | Cost | Speed | Scale | Use Case |
-|-------|------|-------|-------|----------|
-| In-Memory | Free | Fastest | 1 machine | Development |
-| Database | Low | Fast | Any | Production |
-| Redis | Low | Very fast | Millions | High-throughput |
-| S3/GCS | Very low | Slower | Unlimited | Long-term archive |
-
-**Best Practice:** Use database for production (durable, queryable, scalable)
+## MemorySaver, not a homemade store
 
 ```python
-# Implement a simple checkpoint system
+from typing import Annotated, TypedDict
+import operator
 
-from datetime import datetime
-from typing import Any, Dict, Optional
-import json
-import uuid
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
 
-class Checkpoint:
-    """Represents a saved workflow state."""
-    
-    def __init__(self, node_name: str, state: Dict[str, Any]):
-        self.id = str(uuid.uuid4())[:8]
-        self.node_name = node_name
-        self.state = state.copy()
-        self.timestamp = datetime.now()
-    
-    def __repr__(self):
-        return f"Checkpoint({self.node_name}, {self.timestamp.strftime('%H:%M:%S')})"
+RUNS = {"n1": 0, "n2": 0, "n3": 0}
 
-class PersistenceStore:
-    """Store checkpoints in memory (demo) or database (production)."""
-    
-    def __init__(self):
-        self.checkpoints: Dict[str, list[Checkpoint]] = {}
-    
-    def save_checkpoint(self, workflow_id: str, checkpoint: Checkpoint) -> str:
-        """Save a checkpoint."""
-        if workflow_id not in self.checkpoints:
-            self.checkpoints[workflow_id] = []
-        
-        self.checkpoints[workflow_id].append(checkpoint)
-        return checkpoint.id
-    
-    def get_latest_checkpoint(self, workflow_id: str) -> Optional[Checkpoint]:
-        """Get the most recent checkpoint."""
-        if workflow_id in self.checkpoints and self.checkpoints[workflow_id]:
-            return self.checkpoints[workflow_id][-1]
-        return None
-    
-    def get_checkpoint_at_node(self, workflow_id: str, node_name: str) -> Optional[Checkpoint]:
-        """Get checkpoint for a specific node."""
-        if workflow_id in self.checkpoints:
-            for cp in reversed(self.checkpoints[workflow_id]):
-                if cp.node_name == node_name:
-                    return cp
-        return None
-    
-    def list_checkpoints(self, workflow_id: str):
-        """List all checkpoints for a workflow."""
-        return self.checkpoints.get(workflow_id, [])
 
-# Demo: Creating checkpoints
-store = PersistenceStore()
-workflow_id = "report-2024-001"
+class Job(TypedDict):
+    log: Annotated[list[str], operator.add]
+    crash: bool
 
-print("💾 Creating Checkpoints")
-print("="*70)
 
-# Simulate workflow progression
-state = {"data": [], "status": "starting"}
+def node1(state: Job) -> dict:
+    RUNS["n1"] += 1
+    return {"log": ["n1"]}
 
-# Node 1: Extract Data
-print("\n→ Node 1: Extracting data...")
-state["data"] = ["record1", "record2", "record3"]
-state["status"] = "extracted"
-cp1 = Checkpoint("extract_data", state)
-store.save_checkpoint(workflow_id, cp1)
-print(f"  ✓ Saved checkpoint: {cp1}")
 
-# Node 2: Clean Data
-print("\n→ Node 2: Cleaning data...")
-state["data"] = [r.upper() for r in state["data"]]
-state["status"] = "cleaned"
-cp2 = Checkpoint("clean_data", state)
-store.save_checkpoint(workflow_id, cp2)
-print(f"  ✓ Saved checkpoint: {cp2}")
+def node2(state: Job) -> dict:
+    RUNS["n2"] += 1
+    return {"log": ["n2"]}
 
-# Node 3: Analyze Data
-print("\n→ Node 3: Analyzing data...")
-state["statistics"] = {"count": len(state["data"]), "sample": state["data"][0]}
-state["status"] = "analyzed"
-cp3 = Checkpoint("analyze_data", state)
-store.save_checkpoint(workflow_id, cp3)
-print(f"  ✓ Saved checkpoint: {cp3}")
 
-print("\n" + "="*70)
-print("\n📊 Checkpoint History:")
-for i, cp in enumerate(store.list_checkpoints(workflow_id), 1):
-    print(f"  {i}. {cp.node_name:20} | State keys: {list(cp.state.keys())}")
+def node3(state: Job) -> dict:
+    RUNS["n3"] += 1
+    if state["crash"]:
+        raise RuntimeError("node3 exploded")
+    return {"log": ["n3"]}
 
-print(f"\nLatest checkpoint: {store.get_latest_checkpoint(workflow_id)}")
+
+g = StateGraph(Job)
+g.add_node("node1", node1)
+g.add_node("node2", node2)
+g.add_node("node3", node3)
+g.add_edge(START, "node1")
+g.add_edge("node1", "node2")
+g.add_edge("node2", "node3")
+g.add_edge("node3", END)
+
+app = g.compile(checkpointer=MemorySaver())
+config = {"configurable": {"thread_id": "t1"}}
+
+try:
+    app.invoke({"log": [], "crash": True}, config)
+except RuntimeError:
+    pass
+
+assert RUNS == {"n1": 1, "n2": 1, "n3": 1}
+snap = app.get_state(config)
+assert "n1" in snap.values["log"] and "n2" in snap.values["log"]
+assert "n3" not in snap.values["log"]
+
+app.update_state(config, {"crash": False})
+final = app.invoke(None, config)
+
+assert final["log"][-1] == "n3"
+assert RUNS["n1"] == 1 and RUNS["n2"] == 1
+assert RUNS["n3"] == 2  # failed once, succeeded once — did not replay n1/n2
 ```
 
-## 🔄 Part 3: Replay & Debugging
+`invoke(None, config)` means “continue this thread.” It is not a new run.
 
-<div class="replay-box">
-<strong>Replay:</strong> Re-run workflow from a saved checkpoint (with possibly different logic).
-</div>
+!!! warning "Watch out — resume re-enters the failed node"
 
-### Use Cases for Replay
+    Node 3 ran, threw, and will run again. If node 3 had charged a card before raising, you now have a double charge. Checkpoints are necessary and **not sufficient**. Week 5 puts an idempotency key on the write.
 
-**1. Debugging:** "Why did Node D fail?"
-```
-Original run: A → B → C → D ✗
+!!! success "Ship / don’t ship"
 
-Debug run: Resume from C, trace D execution step-by-step
-```
+    **Ship** a `thread_id` + checkpointer when a crash must not replay completed **pure** work. **Don’t ship** a homemade `Checkpoint` class as if it were LangGraph, and don’t tell anyone resume is exactly-once.
 
-**2. Testing Changes:** "Will the fix work?"
-```
-Original run: A → B → C → D ✗
-Replay: Resume from C with fixed Node D code
-```
+## What this week is not
 
-**3. What-If Analysis:** "What if we changed Node B?"
-```
-Original run: A → B (variant 1) → C → D
-What-if run: Resume from A, use B (variant 2) → C → D
-```
+- Not Postgres. `MemorySaver` dies with the process — that is fine for the concept demo.
+- Not human approval (week 4 uses the same `MemorySaver` + `interrupt_before`).
+- Not a 30-minute Spark job. The three-node graph is the whole point.
 
-```python
-# Demonstrate replay capability
+## ✍️ Exercise
 
-print("\n🔄 Replay: Resume from Checkpoint")
-print("="*70)
+[Exercises](exercises/week-03.md).
 
-# Get checkpoint to resume from
-resume_checkpoint = store.get_checkpoint_at_node(workflow_id, "clean_data")
+## 🤔 Reflection
 
-if resume_checkpoint:
-    print(f"\n✓ Resuming from checkpoint: {resume_checkpoint.node_name}")
-    print(f"  Timestamp: {resume_checkpoint.timestamp.strftime('%H:%M:%S')}")
-    print(f"  State: {resume_checkpoint.state}")
-    
-    # Continue from this state
-    state = resume_checkpoint.state.copy()
-    
-    print(f"\n→ Continuing from here...")
-    
-    # Skip Node 3 (already done), go to Node 4
-    print(f"  Node 3: Skipped (already completed)")
-    
-    # Node 4: Generate Report (NEW)
-    print(f"  Node 4: Generating report...")
-    state["report"] = f"Analysis of {len(state['data'])} records"
-    state["status"] = "completed"
-    cp_final = Checkpoint("generate_report", state)
-    store.save_checkpoint(workflow_id, cp_final)
-    print(f"  ✓ Saved checkpoint: {cp_final}")
-    
-    print(f"\n✅ Workflow completed!")
-    print(f"   Final state: {state}")
-```
+1. After the crash, which node is next? How do you know without printing `RUNS`?
+2. Why must `thread_id` be stable across the crash?
+3. What happens if you `invoke({...}, config)` with a **new** dict instead of `invoke(None, config)`?
+
+## 🔗 Next week
+
+Pause before a write: `interrupt_before=["approve"]`, then approve / reject / needs-info.

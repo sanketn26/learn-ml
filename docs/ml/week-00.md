@@ -46,10 +46,10 @@ null-safe copy                 a.copy()  /  copy.deepcopy
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
-from lib.course_data import find_data_dir, load_customer_360
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 ```
@@ -61,7 +61,7 @@ DATA = find_data_dir()
 Your product code          Python (this week)
 tabular numbers            NumPy          ← Week 1
 tables, joins, dates       Pandas         ← Week 2
-classical ML               scikit-learn   ← Weeks 5–10
+classical ML               scikit-learn   ← Weeks 7–13
 gradients + GPU + nets     PyTorch        ← Weeks 14, 18–20
 ```
 
@@ -220,8 +220,12 @@ churned = sum(r["is_churned"] == "1" for r in rows)
 print("plans:", dict(plans))
 print(f"churn rate: {churned / len(rows):.3f}")
 
-# This loop is fine for 50k rows. It is the thing NumPy/Pandas will replace when
+# This loop is fine for ~49k rows. It is the thing NumPy/Pandas will replace when
 # the work is 'mean of a numeric column' or 'join three files.'
+
+# Pandas contrast (Week 2 is the full course):
+import pandas as pd
+print(pd.read_csv(path)["plan_type"].value_counts())
 ```
 
 ## Errors, context managers, and “fail loud”

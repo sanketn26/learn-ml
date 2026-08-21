@@ -17,7 +17,11 @@
     A line chart is a time series. A bar chart is a group-by. A scatter is a join between two metrics. A heatmap is a group-by on *two* keys. A pie chart is an unreadable JSON blob with a color theme.
 
 ```python
-from lib.course_data import find_data_dir, load_customer_360
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 ```
@@ -25,21 +29,21 @@ DATA = find_data_dir()
 
 ## If you already write software
 
-A chart is an API response. You pick the shape for the question, not because seaborn has a pretty default.
+A chart is an API response. You pick the shape for the question, not because a library has a pretty default.
 
 | Question | Chart | Same idea as |
 |---|---|---|
 | How is this changing? | line | a time-series metric |
 | Which group is worst? | bar | a `GROUP BY` |
 | Do these two numbers move together? | scatter | a join of two metrics |
-| Two keys at once (cohort × month)? | heatmap | a pivot table |
+| Two keys at once (signup month × age)? | heatmap | a pivot table |
 | Share of a whole? | almost never a pie | an unreadable JSON blob |
 
 ### What makes a chart honest
 
 Truncating a y-axis from 47% to 51% is the same as returning `{ "uptime": 99.99 }` while hiding that you redefined the denominator. The axis is part of the contract.
 
-A cohort heatmap fools people the same way a “new users are so engaged!” dashboard does: the newest column has not had time to churn yet. Always read a cohort *diagonally* — same age, different signup month.
+A cohort heatmap fools people the same way a “new users are so engaged!” dashboard does: the newest signups have not had time to churn yet. This week’s grid is signup month × {30d, 60d, 90d}. Read **across a row** (same signup month, different ages). To compare product quality, read **down a column** (same age, different signup months). A classic month-by-calendar-month grid is what people read diagonally — that is not this picture.
 
 ### Picture the dashboard as a PR
 
@@ -118,7 +122,7 @@ axes[1, 0].set_title("Features adopted vs churned (jittered 0/1)")
 axes[1, 0].set_xlabel("distinct features used")
 axes[1, 0].set_ylabel("churned (jittered)")
 
-# 4) tenure distribution by outcome
+# 4) tenure is a real clock: signup → churn, or signup → 2024-11-30 if still around
 df.boxplot(column="tenure_days", by="is_churned", ax=axes[1, 1], grid=False)
 axes[1, 1].set_title("Tenure by churn flag — churners leave earlier")
 axes[1, 1].set_xlabel("is_churned")
@@ -142,9 +146,7 @@ plt.show()
     A cohort chart is a two-key group-by: `(signup_month, age_bucket) → retained_rate`. Same as a SQL cube. The visual is optional; the grain is not.
 
 ```python
-# Simple age-at-observation proxy using tenure_days + churn
-# Active customers: tenure is how long they have lived so far
-# Churned customers: tenure is how long they lived before leaving
+# tenure_days is a real clock: signup → churn, or signup → 2024-11-30 if still around.
 
 def retention_at(days: int, frame: pd.DataFrame) -> pd.Series:
     # Eligible = old enough to have reached `days`.
@@ -155,14 +157,27 @@ def retention_at(days: int, frame: pd.DataFrame) -> pd.Series:
     retained = eligible["tenure_days"] >= days
     return eligible.assign(retained=retained).groupby("signup_month")["retained"].mean()
 
-months = sorted(df["signup_month"].dropna().unique())
 ages = [30, 60, 90]
 heat = pd.DataFrame({f"{d}d": retention_at(d, df) for d in ages})
 
+show = heat.tail(18)
 fig, ax = plt.subplots(figsize=(7, 6))
-sns.heatmap(heat.tail(18), annot=True, fmt=".2f", cmap="YlGnBu", ax=ax, vmin=0.7, vmax=1)
+im = ax.imshow(np.ma.masked_invalid(show.to_numpy()), aspect="auto",
+               cmap="YlGnBu", vmin=0.7, vmax=1)
+ax.set_xticks(range(show.shape[1]), show.columns)
+ax.set_yticks(
+    range(show.shape[0]),
+    [pd.Timestamp(i).strftime("%Y-%m") for i in show.index],
+    fontsize=8,
+)
+for i in range(show.shape[0]):
+    for j in range(show.shape[1]):
+        val = show.iloc[i, j]
+        if pd.notna(val):
+            ax.text(j, i, f"{val:.2f}", ha="center", va="center", fontsize=7)
 ax.set_title("Retention by signup month × age — read across a row")
 ax.set_ylabel("signup month")
+fig.colorbar(im, ax=ax, fraction=0.046)
 plt.tight_layout()
 plt.show()
 
@@ -194,7 +209,7 @@ print("The right chart says: all paid plans are similar; free is different.")
 
 !!! success "Ship / don’t ship"
 
-    - **Slack / debugging:** default Pandas/Seaborn is fine. Label axes. Start bars at 0.
+    - **Slack / debugging:** default Pandas/matplotlib is fine. Label axes. Start bars at 0.
 
     - **Board deck:** one sentence title that is the insight, not the chart type. “Free churn is 2× paid,” not “Churn by plan.”
 

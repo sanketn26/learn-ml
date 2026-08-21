@@ -1,10 +1,11 @@
 # Capstone Phase 3 only — install this in a Colab GPU runtime, not on your
-# laptop. Phases 1/2/4/5 (capstone/ package, exercises/ml/capstone/starter.py)
-# need no extra dependencies beyond requirements.txt. See docs/ml/capstone.md.
-unsloth
-peft
-trl
-bitsandbytes
-transformers
-accelerate
-datasets
+# laptop. These are minimum versions, not a frozen lockfile; Unsloth pins
+# its own stack. Phases 1/2/4/5 need only requirements.txt.
+# See docs/ml/capstone.md. Model id: google/functiongemma-270m-it
+unsloth>=2024.12
+peft>=0.13
+trl>=0.12
+bitsandbytes>=0.44
+transformers>=4.46
+accelerate>=1.1
+datasets>=3.0

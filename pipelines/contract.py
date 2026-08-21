@@ -34,6 +34,8 @@ def validate(payload: dict) -> None:
     for key, types in REQUIRED.items():
         if not isinstance(payload[key], types):
             raise TypeError(f"{key} should be {types}, got {type(payload[key])}")
+        if key != "plan_type" and pd.isna(payload[key]):
+            raise ValueError(f"{key} is missing")
     if payload["plan_type"] not in PLANS:
         raise ValueError(f"unknown plan_type {payload['plan_type']}")
 

@@ -7,7 +7,7 @@
 
 ## 🎯 What you will be able to do
 
-- Draw extract → features → train → **gate** → register → score → monitor as a DAG
+- Draw extract → features → train → **gate** → promote → score → monitor as a DAG
 - Run `python -m pipelines.train` and get `artifacts/<date>/`, not a file in `/tmp`
 - Refuse to promote a model that loses to the dummy or to current prod
 - Score tonight’s 80 names from the same `build_features()` training used
@@ -80,21 +80,24 @@ From the repo root:
 
 ```bash
 pytest tests/test_contract.py tests/test_gate.py tests/test_labels.py
-python -m pipelines.train --as-of 2024-06-01 --label eventual
+python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 ```
 
+`--label eventual` (default) is “did they cancel *after* `as_of`.” This fixture only has tens of 30-day events, so that is the question the file can supervise. `--label horizon` is the product question (cancel in 30 days). It will often refuse to train: one class in the fold. Both write `"label"` into `metrics.json` so you do not lie about which one you shipped.
+
 `train` never writes `prod`. A human or a green gate does. That is the whole difference between a script and a pipeline.
 
 ```python
-from pipelines.train import train
-from pipelines.promote import gate
 from pathlib import Path
 
-meta = train("2024-06-01", Path("artifacts"), n=4000)
-print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"])
-ok, reason = gate(Path("artifacts") / meta["model_version"], None)
+from pipelines.promote import gate
+from pipelines.train import train
+
+meta = train("2024-06-01", Path("artifacts"), n=8000, label="eventual")
+print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"], meta["base_rate"])
+ok, reason = gate(Path("artifacts") / meta["model_version"], Path("artifacts") / "prod")
 print("promote?", ok, reason)
 ```
 
@@ -136,11 +139,30 @@ Drift histograms (Week 15) are a smoke alarm. The actual page:
 3. Print precision@80 vs what `metrics.json` promised
 4. If it fell off a cliff, do **not** auto-promote tomorrow’s train
 
-That is a 20-line job. It is more valuable than a feature store.
+That is a 15-line job. It is more valuable than a feature store.
+
+```python
+import pandas as pd
+
+from pipelines.features import build_features
+from pipelines.labels import label_churn_in_horizon
+
+as_of = "2024-06-01"  # the night we scored
+tonight = pd.read_csv("tonight.csv")
+frame = build_features(as_of=as_of, n=None, at_risk_only=True)
+frame = frame.assign(y=label_churn_in_horizon(frame, as_of))
+joined = tonight.merge(frame[["user_id", "y"]], on="user_id", how="left")
+knowable = joined.dropna(subset=["y"])
+print("n flagged", len(tonight), "with labels", len(knowable))
+print("precision@80", float(knowable["y"].mean()) if len(knowable) else "still censored")
+# compare to metrics.json["precision_at_80"] and metrics.json["base_rate"]
+```
+
+`score_batch` already `validate`s every row it scores. You do not need a second loop.
 
 !!! warning "Watch out"
 
-    - Retraining daily on a 6.7% event is how you overfit the last noisy week. Weekly is a default.
+    - Retraining daily on a ~0.1% 30-day event (or whatever `base_rate` you wrote in `metrics.json`) is how you overfit the last noisy week. Weekly is a default.
     - Auto-promote without a gate is `main` pushing to prod on red CI.
     - Two copies of feature math is two products. You will not notice until a whale gets a 0.0.
 

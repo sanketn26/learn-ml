@@ -52,20 +52,14 @@ The picture you want: a model that is *slightly* wrong on train and *similarly* 
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
-
-DATA = find_data_dir()
+from pipelines.features import build_features
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -95,12 +89,14 @@ If it is large and negative → score near 0.
 
     The sigmoid is just a soft on/off switch. You do not need its formula. You need: *weighted sum of features, then squeezed into a probability-like score.*
 
+**AUC** (area under the ROC curve) is ranking quality: if you sort users by score, do the actual churners tend to sit at the top? **0.5 is a coin flip.** 1.0 is a perfect ranking. It is not accuracy, and it is not “percent chance they churn.”
+
 ```python
-df = load_customer_360(DATA)
-numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
+df = build_features(as_of="2024-06-01")  # ~8k laptop sample; features stop at as_of
+numeric = ["mrr", "tenure_so_far", "log_usage", "features_adopted", "total_events", "n_support"]
 categorical = ["plan_type"]
 X = df[numeric + categorical]
-y = df["is_churned"].astype(int)
+y = df["is_churned"].astype(int)  # lifetime flag — Week 8 replaces this label
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
@@ -206,7 +202,7 @@ plt.show()
 
     Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
 
-    CloudWave’s lifetime churn is ~6.7%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
+    CloudWave’s lifetime churn is ~6.4%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
 
 ## Overfitting, bias, and variance — the three words on every ML interview
 
@@ -274,10 +270,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-07.md)
 
 ## 🤔 Reflection
 
-1. Why can accuracy be 93% while the model is useless? (Hint: 6.7% of users churn.)
+1. Why can accuracy be ~94% while the model is useless? (Hint: ~6.4% of users churn.)
 2. A PM wants “both high precision and high recall.” What resource do they need to give you?
 3. Would you rather explain a depth-3 tree or a 150-tree forest to legal?
 
 ## 🔗 Next week
 
-Regression: same idea, but the answer is a number (dollars), not a yes/no. We will refuse to predict `mrr × tenure`.
+[Week 8](week-08.md) — labels. Lifetime `is_churned` plus lifetime `tenure_days` is a tenure detector. We will cut the answer key at `as_of` the same way Week 6 cut the features. Regression is Week 9.

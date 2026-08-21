@@ -20,7 +20,12 @@ We will **not** memorize a zoo of tests. We will make one decision carefully, th
     The **null hypothesis** is the boring default: “these two plans churn the same; the difference is luck.” You do *not* prove the new plan works. You ask: *if they were the same, how often would luck produce a gap this big?* That frequency is the p-value. Innocent until proven guilty. High bar to convict.
 
 ```python
-from lib.course_data import find_data_dir, load_customer_360
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 ```
@@ -103,7 +108,7 @@ Chi-squared (or Fisher’s exact, for tiny counts) is the grown-up version of th
 
 !!! math "Math, translated"
 
-    p ≈ 0.03 means: *in a no-difference world, about 3 in 100 reruns look this extreme.* It does **not** mean “there is a 3% chance Premium is a bad idea.”
+    A p-value of 0.03 would mean: *in a no-difference world, about 3 in 100 reruns look this extreme.* It does **not** mean “there is a 3% chance Premium is a bad idea.” The 8/50 vs 12/60 launch story is *not* that world — its p is large, so luck still explains a 4-point gap at this sample size.
 
 ```python
 table = np.array([[8, 42],   # premium: churned, retained
@@ -136,7 +141,7 @@ chi2, p, dof, expected = stats.chi2_contingency(ct)
 print(f"\nChi-squared p-value across all plans: {p:.2e}")
 
 rates = subs.groupby("plan_type")["is_churned"].agg(["mean", "count"])
-# Wilson-style interval via the binomial (good enough picture)
+# Exact binomial (Clopper–Pearson-style) interval — not a Wilson interval
 cis = []
 for plan, row in rates.iterrows():
     lo, hi = stats.binom.interval(0.95, int(row["count"]), row["mean"])
@@ -184,7 +189,7 @@ print("Free users have MRR = 0 and churn more. The t-test may just be rediscover
 
     - **p-hacking:** 20 slices of the data will produce one “p < 0.05” by accident. Pre-register the question, or treat extra slices as exploration.
 
-    - **Significance ≠ importance:** with 50,000 rows, a 0.2% churn gap can be “significant” and still not worth an engineering quarter.
+    - **Significance ≠ importance:** with ~49k rows, a 0.2% churn gap can be “significant” and still not worth an engineering quarter.
 
     - **CI overlap** is a sloppy shortcut. Look at the interval on the *difference*, or just look at dollars.
 
@@ -195,7 +200,7 @@ print("Free users have MRR = 0 and churn more. The t-test may just be rediscover
 
 !!! warning "A ranker is not a lever"
 
-    Later weeks will rank who looks like they will churn. That is **prediction**. “If we increase usage, they will stay” is **causation**. You get causation from an experiment (this week), not from a feature importance plot (Week 11).
+    Later weeks will rank who looks like they will churn. That is **prediction**. “If we increase usage, they will stay” is **causation**. Plan × churn in this file is **observational** — people chose their plan. A chi-squared p-value does not make it an experiment. Causation still needs a randomized experiment, not a feature-importance plot (Week 11).
 
 
 ## ✍️ Exercise

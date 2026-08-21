@@ -41,7 +41,7 @@ Use the lessons in this order:
 
 ## What “done” means
 
-You are done with a week when the artifact behaves as described in the track overview—not when a cell or snippet merely runs. Prefer assertions, traces, fixtures, and recorded outputs over “looks reasonable.”
+You are done with a week when the artifact behaves as described in the track overview—not when a snippet merely runs. Prefer assertions, traces, fixtures, and recorded outputs over “looks reasonable.”
 
 The final week of each track is the reference exercise for that introduction:
 

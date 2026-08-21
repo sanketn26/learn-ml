@@ -13,15 +13,16 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from lib.course_data import find_data_dir, load_customer_360
+from lib.course_data import find_data_dir, load_weekly_usage_grid
 
 DATA = find_data_dir()
 
 
 def main() -> None:
     print(f"data: {DATA}")
-    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
-    # TODO: implement the tasks in README.md
+    X, y = load_weekly_usage_grid(n_users=500)
+    print("usage grid", X.shape, "churn rate", float(y.mean()))
+    print("TODO: paste UsageCNN from the lesson, then change kernel_size")
 
 
 if __name__ == "__main__":

@@ -115,7 +115,7 @@ This is the one phase that does not run on your laptop. Open a Colab notebook wi
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
-    model_name="google/functiongemma-270m",  # or your chosen alternative — see below
+    model_name="google/functiongemma-270m-it",  # instruction-tuned; Unsloth: unsloth/functiongemma-270m-it
     max_seq_length=2048,
     load_in_4bit=True,
 )
@@ -152,7 +152,17 @@ A rejected call should become "I couldn't confidently call a tool for this — h
 
 ## Phase 5 — evaluate: specialist vs. general baseline
 
-`capstone/evaluate.py` runs both a specialist and a general-model stand-in against the same six scenarios and scores five outcomes: `correct`, `wrong_tool`, `hallucinated_tool`, `unstructured_output`, `invalid_schema`.
+`capstone/evaluate.py` runs both a specialist and a general-model stand-in against the same six scenarios. `score_one` emits one of:
+
+| Outcome | When |
+|---|---|
+| `correct` | right tool, or correctly no tool |
+| `wrong_tool` | a known tool, but not the one the scenario wanted |
+| `hallucinated_tool` | a name that is not in the five-tool surface |
+| `hallucinated_call` | scenario wanted no tool; the model called one anyway |
+| `missing_call` | scenario wanted a tool; the model returned `None` |
+| `unstructured_output` | a string instead of a `{name, arguments}` dict |
+| `invalid_schema` | known tool, `validate_call` rejected the args |
 
 ```bash
 python -m capstone.evaluate
@@ -168,7 +178,7 @@ Out of the box, `specialist_call` returns the golden answer — a *placeholder c
 
 !!! math "Math, translated"
 
-    Tool-call accuracy is just precision at k=1 on a 6-way (or N-way) classification, the same metric shape as Week 11's ranking precision. Hallucination rate = `hallucinated_tool` count / n. Nothing here needs BLEU or perplexity — count outcomes on a golden set, same as `eval/router.py` already does for the LangChain ticket bot.
+    Tool-call accuracy is the share of scenarios where the chosen tool (or `none`) is right — five tools plus “call nothing.” That is not Week 11’s precision@k on a ranked list. Hallucination rate = (`hallucinated_tool` + `hallucinated_call`) / n. Count outcomes on a golden set, same as `eval/router.py`.
 
 ## Ship / don't ship
 

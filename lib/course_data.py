@@ -26,7 +26,7 @@ def find_data_dir() -> Path:
 
 
 def load_customer_360(data=None, n: int | None = LAPTOP_N, random_state: int = 42):
-    """One row per user. Samples for laptop time. Set n=None for all 50k."""
+    """One row per user. Samples for laptop time. Set n=None for all ~49k."""
     import numpy as np
     import pandas as pd
 
@@ -59,8 +59,17 @@ def load_customer_360(data=None, n: int | None = LAPTOP_N, random_state: int = 4
         n_support=("is_support", "sum"),
         n_cancels=("is_cancel", "sum"),
     )
+    feedback = pd.read_json(data / "feedback.json", lines=True)
+    feedback_u = feedback.groupby("user_id", sort=False).agg(
+        n_feedback=("feedback_text", "count"),
+        avg_sentiment=("sentiment_score", "mean"),
+    )
 
-    df = subs.merge(usage_u, on="user_id", how="left").merge(events_u, on="user_id", how="left")
+    df = (
+        subs.merge(usage_u, on="user_id", how="left")
+        .merge(events_u, on="user_id", how="left")
+        .merge(feedback_u, on="user_id", how="left")
+    )
     for col in [
         "total_usage",
         "features_adopted",
@@ -70,8 +79,10 @@ def load_customer_360(data=None, n: int | None = LAPTOP_N, random_state: int = 4
         "n_regions",
         "n_cancels",
         "n_support",
+        "n_feedback",
     ]:
         df[col] = df[col].fillna(0)
+    df["has_feedback"] = df["n_feedback"].gt(0).astype(int)
     df["log_usage"] = np.log1p(df["total_usage"])
     if n is not None and len(df) > n:
         df = df.sample(n, random_state=random_state).reset_index(drop=True)
@@ -79,7 +90,10 @@ def load_customer_360(data=None, n: int | None = LAPTOP_N, random_state: int = 4
 
 
 def load_weekly_usage_grid(data=None, n_users: int = LAPTOP_SEQ_N, n_weeks: int = 12, random_state: int = 0):
-    """Users × last-N-weeks usage matrix + churn labels."""
+    """Users × last-N-weeks usage matrix + lifetime churn flags.
+
+    Teaching toy for CNNs/RNNs (shape of a sequence). Not an as_of label.
+    """
     import numpy as np
     import pandas as pd
 

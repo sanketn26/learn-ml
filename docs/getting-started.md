@@ -46,7 +46,7 @@ python3 -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 python exercises/ml/week-00/starter.py
-pytest tests/                 # from week 16 on
+pytest tests/test_features.py # from week 3; full tests/ from week 16
 ```
 
 Each ML week has:
@@ -63,10 +63,10 @@ Work from the repo root so `lib/course_data.py` can find `data/`.
 
 ## What to install
 
-**ML weeks 0–10**
+**ML weeks 0–10** (or just `pip install -r requirements.txt`)
 
 ```bash
-pip install numpy pandas scikit-learn matplotlib scipy
+pip install numpy pandas scikit-learn matplotlib scipy duckdb joblib
 ```
 
 **ML weeks 14, 18–20** (CPU is enough)
@@ -91,6 +91,8 @@ source .venv-crewai/bin/activate
 pip install -r requirements-crewai.txt
 ```
 
+Lesson charts are matplotlib you run locally — they do not render on the static site. The ASCII picture in the lesson is the one you can read in the browser.
+
 Concept demos use ordinary Python or fake models and do not need an API key. Integration demos do:
 
 ```
@@ -108,4 +110,4 @@ Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 ## Laptop budget
 
-No GPU. Models use a sample of ~8,000 customers (sequences: ~3,000 users) so each week finishes in a few minutes on an 8 GB machine. Pass `n=None` to `load_customer_360` only if you want the full 50k.
+No GPU. Models use a sample of ~8,000 customers (sequences: ~3,000 users) so each week finishes in a few minutes on an 8 GB machine. Pass `n=None` to `load_customer_360` only if you want the full ~49k.

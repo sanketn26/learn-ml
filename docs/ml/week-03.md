@@ -111,6 +111,10 @@ print(frame.head(3))
 
 That query **is** `pipelines.features.build_features`. Pandas is allowed after this. Pandas is not allowed to be the only copy of the grain rules.
 
+!!! warning "Watch out — `DATE` vs `TIMESTAMP`"
+
+    Usage `date <= DATE '2024-06-01'` includes **all of June 1** (the column is a calendar day). Events `timestamp <= TIMESTAMP '2024-06-01'` is **midnight** on June 1 — later that day’s clicks are dropped. Same `as_of` string, two clocks.
+
 !!! engineer "Engineer mental model"
 
     One query, one grain, one `as_of`. If the warehouse team changes a column, the model job fails at extract — not three weeks later when CS notices the scores went weird. Put the SQL (or the Python that is the SQL) in git. Review it like an API.
@@ -143,7 +147,7 @@ print(con.execute("SELECT min(date), max(date) FROM feature_usage").fetchall())
 print(con.execute("SELECT min(timestamp), max(timestamp) FROM user_events").fetchall())
 ```
 
-CloudWave events stop at **2024-11-30**. That is the observation end of this universe. A job with `as_of=2025-01-01` is asking questions the warehouse cannot answer. Week 8 calls that **censoring**.
+CloudWave usage and events stop at **2024-11-30**. Billing is clipped there too (~49k customers). That is the observation end of this universe. An `as_of` after that date is asking questions the warehouse cannot answer. Week 8 calls running past the last log **censoring**.
 
 !!! success "Ship / don’t ship"
 
@@ -162,4 +166,4 @@ Do the [exercises](exercises/week-03.md). The SQL lives in your head and in `pip
 ## 🔗 Next
 
 If you came from Week 2: go on to Week 4 (charts).  
-If you already finished classification: Week 8 is labels, delay, and why 6.7% churn is not “just use AUC.”
+If you already finished classification: Week 8 is labels, delay, and why ~6.4% churn is not “just use AUC.”

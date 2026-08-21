@@ -37,38 +37,32 @@ They are not synonyms. Saying “we use an ensemble” is like saying “we do r
 
 ### Why trees win on SaaS tables
 
-Your Customer 360 is a spreadsheet: mixed types, missing values, no spatial structure. Gradient-boosted trees are the default for that shape the way Postgres is the default for a relational app. Neural nets (next week) win on images, text, and sequences — not on 15 numeric columns.
+Your Customer 360 is a spreadsheet: mixed types, missing values, no spatial structure. Gradient-boosted trees are the default for that shape the way Postgres is the default for a relational app. Neural nets (next week) win on images, text, and sequences — not on the 7 columns in `FEATURE_COLS`.
 
 ### Picture the ops cost
 
-A 500-tree booster that is 0.4% better than a 80-tree one is a worse product if you now need 200ms extra on `/predict` and a 2 GB pickle. Measure the committee against a single good tree and against a linear model. Ship the simplest one that beats the baseline by enough to change a staffing decision.
+A 500-tree booster that is 0.4% better than an 80-tree one is a worse product if you now need 200ms extra on `/predict` and a 40 MB pickle instead of a 2 MB one. Measure the committee against a single good tree and against a linear model. Ship the simplest one that beats the baseline by enough to change a staffing decision.
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
-
-DATA = find_data_dir()
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
+from sklearn.ensemble import (
+    GradientBoostingClassifier,
+    RandomForestClassifier,
+    VotingClassifier,
+)
 from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import (RandomForestClassifier, GradientBoostingClassifier,
-                              VotingClassifier)
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import validation_curve
+from sklearn.pipeline import Pipeline
+
+from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
+from pipelines.labels import drop_unlabelled, label_eventual_churn
 ```
 
 ## Picture the two committees
@@ -82,20 +76,17 @@ BAGGING                         BOOSTING
 
 !!! engineer "Engineer mental model"
 
-    For CloudWave-sized *tables* (thousands to hundreds of thousands of rows, mixed numbers + categories), **gradient-boosted trees are the default workhorse** — XGBoost / LightGBM / sklearn’s GBT. Neural nets start to win on images, text, and sequences, not on a 7-column billing table.
+    For CloudWave-sized *tables* (thousands to hundreds of thousands of rows, mixed numbers + categories), **gradient-boosted trees are the default workhorse** — XGBoost / LightGBM / sklearn’s GBT. Neural nets start to win on images, text, and sequences, not on the 7-column `FEATURE_COLS` table.
 
 ```python
-df = load_customer_360(DATA)
-numeric = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events", "n_support"]
-X = df[numeric + ["plan_type"]]
-y = df["is_churned"].astype(int)
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42, stratify=y
-)
-prep = ColumnTransformer([
-    ("num", StandardScaler(), numeric),
-    ("cat", OneHotEncoder(handle_unknown="ignore"), ["plan_type"]),
-])
+df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
+y = label_eventual_churn(df, AS_OF_DEFAULT)
+df, y = drop_unlabelled(df, y)
+X = df[FEATURE_COLS]
+cut = df["signup_date"].quantile(0.80)
+X_train, y_train = X[df["signup_date"] <= cut], y[df["signup_date"] <= cut]
+X_test, y_test = X[df["signup_date"] > cut], y[df["signup_date"] > cut]
+prep = make_preprocessor()
 
 def auc_of(model):
     p = Pipeline([("prep", prep), ("m", model)])
@@ -131,6 +122,11 @@ vote = VotingClassifier(
 vote_pipe, vote_auc = auc_of(vote)
 print(f"soft voting AUC: {vote_auc:.3f}")
 print("A 0.002 lift that costs 3× latency is usually not a win.")
+
+gbt = fitted["gbt (boosting)"]
+names = gbt.named_steps["prep"].get_feature_names_out()
+imp = pd.Series(gbt.named_steps["m"].feature_importances_, index=names)
+print(imp.sort_values(ascending=False).round(3).to_string())
 ```
 
 ## The only hyperparameter picture you need this week
@@ -169,9 +165,7 @@ Bagging (a forest) is a **variance reducer**: many jittery trees, averaged. Boos
 The diagnostic is always the same pair of curves.
 
 ```python
-from sklearn.model_selection import validation_curve
-
-# 6k-row picture is enough to see the two curves; a 50k × 12-depth CV is a coffee break
+# 2.5k-row picture is enough to see the two curves; a full-file × 12-depth CV is a coffee break
 sample = np.random.default_rng(0).choice(len(X), size=min(2500, len(X)), replace=False)
 depths = np.arange(1, 8)
 train_s, test_s = validation_curve(

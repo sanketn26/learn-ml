@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from pipelines.features import AS_OF_DEFAULT, build_features
+from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
 from pipelines.labels import drop_unlabelled, label_churn_in_horizon
 
 
@@ -21,7 +21,8 @@ def main() -> None:
     labelled, y = drop_unlabelled(df, y)
     print("horizon rate", float(y.mean()))
     print("lifetime rate", float(labelled["is_churned"].mean()))
-    print("TODO 3: GBT ROC-AUC vs PR-AUC vs precision@80")
+    print("TODO 3: GBT via make_preprocessor() (plan_type is a string) — ROC vs PR vs precision@80")
+    print("prep", make_preprocessor(), "cols", FEATURE_COLS)
     print("TODO 5: calibration_curve picture")
 
 

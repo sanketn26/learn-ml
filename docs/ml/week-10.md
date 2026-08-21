@@ -18,6 +18,13 @@
     You pick K (say 4). Drop 4 pins at random. Every customer walks to the nearest pin. Then each pin moves to the average location of its people. Repeat until the pins stop wandering. Those final neighborhoods are your segments.
 
 ```python
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN, KMeans
+from sklearn.metrics import silhouette_score
+from sklearn.preprocessing import StandardScaler
+
 from lib.course_data import find_data_dir, load_customer_360
 
 DATA = find_data_dir()
@@ -68,7 +75,9 @@ X ────────► model ──► y         X ───────�
 
 ```python
 df = load_customer_360(DATA)
-# Keep the label on the side for storytelling — the algorithm does not get it
+# Snapshot 360: tenure_days is honest here (how long they have been around in
+# this file). Do not ship this matrix as the Week 8 production path —
+# that path is build_features + tenure_so_far.
 cols = ["mrr", "tenure_days", "log_usage", "features_adopted", "total_events"]
 sample = df  # already laptop-sized from load_customer_360
 X_raw = sample[cols].to_numpy()
@@ -94,6 +103,10 @@ axes[1].set_xlabel("mrr (z)"); axes[1].set_ylabel("log usage (z)")
 plt.tight_layout()
 plt.show()
 ```
+
+!!! warning "Watch out — unscaled K-Means"
+
+    Skip `StandardScaler` and the pins sit on the dollar axis. You will invent a persona called “the expensive ones.” That is `ORDER BY mrr`. Always scale, then name the clusters from the profile table — not from a scatter of raw MRR.
 
 ## Choosing K — elbow is a suggestion, the business can overrule
 
@@ -157,7 +170,34 @@ print("\nName the rows in a PR description. If you cannot name them, K is wrong.
 
 K-Means always fills K buckets, even if the data is a smear. **DBSCAN** says: “a cluster is a dense pocket; loners are noise.” You pick a radius (`eps`) and a minimum crowd (`min_samples`), not K.
 
-On 5-D scaled data, `eps=0.5` is a guess. If everything is noise, raise `eps`. If everything is one blob, lower it.
+```
+K-Means                         DBSCAN
+ every point gets a pin          dense pockets get a name
+ loners join the nearest blob    loners stay noise (−1)
+ you pick K                      you pick eps + min_samples
+```
+
+On 5-D scaled data, `eps=0.5` is a guess. If everything is noise, raise `eps`. If everything is one blob, lower it. The 2-D sketch below is the picture you can actually see.
+
+```python
+xy = StandardScaler().fit_transform(sample[["mrr", "log_usage"]])
+db = DBSCAN(eps=0.4, min_samples=25)
+db_labels = db.fit_predict(xy)
+n_noise = int((db_labels == -1).sum())
+print("DBSCAN clusters", len(set(db_labels) - {-1}), "noise points", n_noise)
+
+fig, ax = plt.subplots(figsize=(6.2, 4.2))
+ax.scatter(xy[db_labels == -1, 0], xy[db_labels == -1, 1],
+           s=8, c="#94a3b8", alpha=0.4, label="noise")
+for c in sorted(set(db_labels) - {-1}):
+    sl = db_labels == c
+    ax.scatter(xy[sl, 0], xy[sl, 1], s=10, alpha=0.4, label=f"dense {c}")
+ax.set_xlabel("mrr (z)"); ax.set_ylabel("log usage (z)")
+ax.set_title("DBSCAN — loners stay noise, not a forced 4th blob")
+ax.legend(fontsize=8)
+plt.tight_layout()
+plt.show()
+```
 
 !!! success "Ship / don’t ship"
 

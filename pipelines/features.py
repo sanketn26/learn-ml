@@ -102,6 +102,19 @@ def build_features(
     return df
 
 
+def make_preprocessor():
+    """Scaler + one-hot. Trees don't need the scaler; the contract stays one object."""
+    from sklearn.compose import ColumnTransformer
+    from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+    return ColumnTransformer(
+        [
+            ("num", StandardScaler(), NUMERIC),
+            ("cat", OneHotEncoder(handle_unknown="ignore"), CATEGORICAL),
+        ]
+    )
+
+
 def assert_no_forbidden(frame: pd.DataFrame) -> None:
     leaked = [c for c in FORBIDDEN if c in frame.columns and c in FEATURE_COLS]
     if leaked:

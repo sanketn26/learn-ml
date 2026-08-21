@@ -51,20 +51,14 @@ The scaler **is part of the model**. It ships in the same pickle. New data gets 
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
-
-DATA = find_data_dir()
+from pipelines.features import build_features
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
@@ -92,11 +86,13 @@ We do **not** know `churn_date`. We must not sneak it in as `has_churn_flag`.
     Features = request body. Scaler + encoder = middleware that *must ship next to the .pkl*. If production sends raw dollars and the model expects “standard deviations from the training mean,” every score is garbage and nobody gets a stack trace.
 
 ```python
-df = load_customer_360(DATA)
+df = build_features(as_of="2024-06-01")  # laptop sample is ~8k; n=None for the full extract
 print(df.shape)
-print(df[["user_id", "plan_type", "mrr", "tenure_days", "total_usage",
+print(df[["user_id", "plan_type", "mrr", "tenure_so_far", "total_usage",
           "features_adopted", "total_events", "is_churned"]].head())
-print("\nLabel rate (churned):", df["is_churned"].mean().round(3))
+print("\nLabel rate (ever-churned among people still around at as_of):",
+      df["is_churned"].mean().round(3))
+print("That lifetime flag is still the wrong label — Week 8. The *features* are honest.")
 ```
 
 ## Scaling — why trees shrug and linear models panic
@@ -141,8 +137,8 @@ print("Trees: raw is fine.  Linear / k-means / nets: log then scale, and fit on 
     `scaler.fit_transform(X)` on the *full* table peeks at the test set’s mean and spread. That is a small leak that becomes a habit. Fit on train. Transform test. In production, the saved scaler *is* the fit.
 
 ```python
-numeric = ["mrr", "tenure_days", "log_usage", "features_adopted",
-           "total_events", "n_devices", "n_support"]
+numeric = ["mrr", "tenure_so_far", "log_usage", "features_adopted",
+           "total_events", "n_support"]
 categorical = ["plan_type"]
 label = "is_churned"
 
@@ -182,14 +178,14 @@ print(np.round(X_train_t[:, : len(numeric)].mean(axis=0), 3))
 |---|---|
 | `has_churn_flag` as a feature | That **is** the label |
 | `lifetime_value = mrr * tenure` as a target, `tenure` as a feature | The model multiplies two columns it was handed |
-| Fit scaler / target-encoder on all rows | Test set leaked into preprocessing |
+| Fit scaler / one-hot encoder on all rows | Test set leaked into preprocessing |
 | Random split when the world is a time series | The model trains on “next month” and tests on “last month” |
 
 !!! success "Ship / don’t ship"
 
     A feature ships if a tired on-call engineer can compute it from *today’s* warehouses for a single `user_id` with no peek at the label table. If you cannot write that function, it is not a feature.
 
-    Email, name, ticket body, `user_id`, `churn_date`, and lifetime `tenure_days` do not go in `X`. `pipelines/contract.py` rejects unknown keys so PII cannot wander in. The one function that builds the row is `pipelines.features.build_features(as_of=...)` — Week 3 and 19 hang the job on it.
+    Email, name, ticket body, `user_id`, `churn_date`, and lifetime `tenure_days` do not go in `X`. `pipelines/contract.py` rejects unknown keys so PII cannot wander in. The one function that builds the row is `pipelines.features.build_features(as_of=...)` — Week 3 and Week 16 hang the job on it.
 
 
 ## ✍️ Exercise

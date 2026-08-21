@@ -63,17 +63,13 @@ The same word “charge” means different things next to “battery” vs “cr
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
 from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
@@ -142,11 +138,12 @@ A Transformer is a bag of lookups. `"the movie was not good"` and `"the movie wa
 
 ## CloudWave: classify feedback text
 
-We will bag-of-words the comments into a short token id sequence and run a toy encoder. This is **not** BERT. It is the moving parts, small enough to train on a laptop in a minute.
+We will encode the comments as **character ids** (not bag-of-words) and run a toy encoder. This is **not** BERT. It is the moving parts, small enough to train on a laptop in a minute.
 
 ```python
 feedback = pd.read_json(DATA / "feedback.json", lines=True)
-# Binary: praise vs everything else (or bug vs not)
+# Binary: praise vs everything else. category now matches the text
+# (praise rows actually say something nice).
 feedback["y"] = (feedback["category"].str.lower() == "praise").astype(int)
 print(feedback["category"].value_counts().head())
 print("praise rate", feedback["y"].mean().round(3))
@@ -203,8 +200,10 @@ for epoch in range(4):
     tr_loss = 0.0
     n = 0
     for xb, yb in batch(Xtr, ytr):
+        opt.zero_grad()
         loss = F.binary_cross_entropy_with_logits(model(xb), yb)
-        opt.zero_grad(); loss.backward(); opt.step()
+        loss.backward()
+        opt.step()
         tr_loss += float(loss) * len(xb); n += len(xb)
     model.eval()
     with torch.no_grad():
@@ -228,7 +227,7 @@ print("majority acc", 1 - yte.mean())
 
 | Shape | What it does | You have used it as |
 |---|---|---|
-| **Encoder** (this week) | Read a whole sequence, emit a representation | BERT, embedding models, Week 5 RAG later |
+| **Encoder** (this week) | Read a whole sequence, emit a representation | BERT, embedding models, [LangChain week 4](../langchain/week-04.md) RAG |
 | **Decoder** | Generate the next token, one at a time, looking left | GPT, chat models |
 | **Encoder–decoder** | Read a source, write a target | translation, summarization |
 
@@ -241,7 +240,7 @@ The four-line training step is unchanged. The `forward` is “stack of attention
 
 !!! warning "Watch out"
 
-    This lesson is a teaching Transformer, not a product. Do not scrape a tiny encoder and call it “we built GPT.” Production language models are pretrained on a planet of text. Your job is usually: pick a model, prompt it, fine-tune lightly, or embed + retrieve (the LangChain course).
+    This lesson is a teaching Transformer, not a product. Do not scrape a tiny encoder and call it “we built GPT.” Production language models are pretrained on a planet of text. Your job is usually: pick a model, prompt it, fine-tune lightly, or embed + retrieve ([LangChain week 4](../langchain/week-04.md)).
 
 
 !!! success "Ship / don’t ship"
@@ -269,7 +268,7 @@ When you can explain the week out loud, do the [exercises](exercises/week-20.md)
 
 | Pillar | Where |
 |---|---|
-| **Strong Python + NumPy + Pandas + PyTorch** | Weeks 0–2, 11 |
+| **Strong Python + NumPy + Pandas + PyTorch** | Weeks 0–2, 14 |
 | **ML fundamentals** (regression, classification, overfit, bias, variance) | Weeks 6–10 |
 | **Deep learning** (nets, CNN, RNN, Transformer, the training loop) | Weeks 14, 18–20 |
 

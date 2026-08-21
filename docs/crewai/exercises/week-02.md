@@ -2,7 +2,7 @@
 
 Do these after reading [Week 2 — Task Management & Dependencies](../week-02.md).
 
-This is a **concept exercise**. A fake or deterministic model is enough; the point is the task contract and dependency, not prose quality.
+This is a **concept exercise**. Ordinary Python functions are enough — do not import `langchain` or `crewai_tools`. The point is the task contract and dependency, not prose quality.
 
 ## 1. Two tasks, one artifact
 

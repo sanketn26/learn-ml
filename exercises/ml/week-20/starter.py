@@ -13,15 +13,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from lib.course_data import find_data_dir, load_customer_360
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 
 
 def main() -> None:
     print(f"data: {DATA}")
-    print("Customer 360 sample rows:", len(load_customer_360(n=20)))
-    # TODO: implement the tasks in README.md
+    print("TODO: paste the 3-token self-attention block from the lesson")
+    print("TODO: classify feedback.json with character ids (category matches the text)")
 
 
 if __name__ == "__main__":

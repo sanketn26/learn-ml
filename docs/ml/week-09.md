@@ -21,22 +21,14 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
-
-DATA = find_data_dir()
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression, Ridge
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+from pipelines.features import AS_OF_DEFAULT, build_features
 ```
 
 ## If you already write software
@@ -79,17 +71,20 @@ A common tutorial target is `lifetime_value = mrr * tenure_months` while also ha
     If you can compute the label from the features with a calculator, you are not doing machine learning. You are doing QA on a formula.
 
 ```python
-df = load_customer_360(DATA)
-# Predict product usage from billing + behavioral counts that are not total_usage
-features_num = ["mrr", "tenure_days", "features_adopted", "total_events", "avg_session", "n_support"]
+df = build_features(as_of=AS_OF_DEFAULT, n=8000, at_risk_only=True)
+# Predict product usage from billing + event counts. Do not hand it log_usage —
+# that is log1p(total_usage), a calculator, not a model.
+features_num = ["mrr", "tenure_so_far", "features_adopted", "total_events", "n_support"]
 features_cat = ["plan_type"]
 target = "total_usage"
 
-work = df[features_num + features_cat + [target]].dropna()
+work = df[features_num + features_cat + [target, "signup_date"]].dropna()
 X = work[features_num + features_cat]
 y = work[target]
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+cut = work["signup_date"].quantile(0.80)
+X_train, y_train = X[work["signup_date"] <= cut], y[work["signup_date"] <= cut]
+X_test, y_test = X[work["signup_date"] > cut], y[work["signup_date"] > cut]
 
 prep = ColumnTransformer([
     ("num", StandardScaler(), features_num),

@@ -43,7 +43,7 @@ a bug where you forget        vanishing gradient (memory fades)
 
 A vanilla RNN multiplies the clipboard by a matrix at every step. Multiply a number by 0.9 twelve times and it is basically gone. Early weeks of usage never reach the churn decision. That is vanishing gradient, in one sentence.
 
-LSTM / GRU add **locks** on the clipboard: forget gate, input gate, output gate. They are not a new philosophy. They are valves so the clipboard can *keep* a fact (“this user was a whale in week 1”) for a long time.
+LSTM / GRU add **locks** on the clipboard. LSTM has three: forget, input, output. GRU has two: reset and update — no output gate. They are not a new philosophy. They are valves so the clipboard can *keep* a fact (“this user was a whale in week 1”) for a long time.
 
 ### When this is the wrong tool
 
@@ -51,18 +51,14 @@ If you only have a single row per user, there is no sequence. If the sequence is
 
 !!! tip "Laptop budget"
 
-    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all 50k rows.
+    No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Make the shared style kit importable from the repo root
-
-from pathlib import Path
-import sys
-from lib.course_data import find_data_dir
+from lib.course_data import find_data_dir, load_weekly_usage_grid
 
 DATA = find_data_dir()
 
@@ -114,6 +110,7 @@ plt.show()
 
 ```python
 X, y = load_weekly_usage_grid(DATA, random_state=1)
+# y is lifetime is_churned — sequence toy, not the Week 8 horizon.
 rng = np.random.default_rng(1)
 idx = rng.permutation(len(X))
 cut = int(0.8 * len(X))
@@ -148,8 +145,10 @@ def fit(kind, epochs=8):
         model.train()
         xb = torch.tensor(Xtr)
         yb = torch.tensor(ytr, dtype=torch.float32)
+        opt.zero_grad()
         loss = F.binary_cross_entropy_with_logits(model(xb), yb)
-        opt.zero_grad(); loss.backward(); opt.step()
+        loss.backward()
+        opt.step()
         model.eval()
         with torch.no_grad():
             te = F.binary_cross_entropy_with_logits(
@@ -171,11 +170,11 @@ plt.show()
 
 ## LSTM / GRU gates, in English
 
-| Gate | Plain English |
-|---|---|
-| Forget / reset | “Throw this bit of the clipboard away” |
-| Input / update | “Write the new week in” |
-| Output | “What part of the clipboard is the answer *this* step” |
+| LSTM | GRU | Plain English |
+|---|---|---|
+| Forget | Reset | “Throw this bit of the clipboard away” |
+| Input | Update | “Write the new week in” |
+| Output | — | LSTM only: “what part of the clipboard is the answer *this* step.” GRU exposes the whole updated state. |
 
 You do not tune gates by hand. The training loop learns when to lock.
 

@@ -8,7 +8,7 @@ All datasets are included in the repository and available for download in multip
 
 | Dataset | Records | Size | Format | Download |
 |---------|---------|------|--------|----------|
-| `subscriptions.csv` | 50,000 | 8 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/subscriptions.csv) |
+| `subscriptions.csv` | 48,991 | 8 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/subscriptions.csv) |
 | `user_events.csv` | 220,000 | 15 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/user_events.csv) |
 | `feature_usage.csv` | 160,000 | 12 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feature_usage.csv) |
 | `feedback.json` | 10,000 | 3 MB | JSON | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feedback.json) |
@@ -26,7 +26,7 @@ All datasets are included in the repository and available for download in multip
 - `signup_date` — Date the subscription started
 - `churn_date` — Date of cancellation (empty if still active)
 - `is_churned` — `1` if the customer cancelled, else `0`
-- `tenure_days` — Days between signup and churn (or last observation)
+- `tenure_days` — Days between signup and churn, or signup → 2024-11-30 if still active
 
 **Use Cases:**
 - Customer retention analysis
@@ -40,7 +40,7 @@ All datasets are included in the repository and available for download in multip
 **Columns:**
 - `event_id` — Unique event identifier
 - `user_id` — User who performed the event
-- `event_type` — e.g. `login`, `page_view`, `click`, `feature_use`, `payment`, `upgrade`, `cancel`
+- `event_type` — e.g. `login`, `page_view`, `click`, `feature_use`, `payment`, `support_message`, `upgrade`, `downgrade`, `cancel`
 - `timestamp` — Event timestamp
 - `device` — `web`, `ios`, or `android`
 - `region` — `NA`, `EMEA`, `APAC`, or `LATAM`

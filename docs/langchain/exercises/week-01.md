@@ -1,103 +1,41 @@
-# Exercises — Week 1 — LangChain Fundamentals & Basic Chains
+# Exercises — Week 1 — Chains
 
-Do these after reading [Week 1 — LangChain Fundamentals & Basic Chains](../week-01.md).
-
-## ✍️ Hands-On Exercises
-
-!!! example "Exercise"
-
-    **🎯 Exercise 1: Build a Custom Triage Chain**
-
-    Create a triage system for a **different domain**:
-
-    - **Healthcare:** Triage patient symptoms (urgent/non-urgent)
-
-    - **E-commerce:** Classify product reviews (return/refund/praise)
-
-    - **HR:** Screen job applications (qualified/interview/reject)
-
-    **Requirements:**
-
-    - Define a Pydantic model for your domain
-
-    - Create a prompt template with domain-specific instructions
-
-    - Build a chain: Prompt → LLM → Parser
-
-    - Test with 3 different inputs
-
-
+Do these after reading [Week 1](../week-01.md). Concept demo: `FakeListLLM`, no API key.
 
 ```python
-# Your solution here!
-# Hint: Start by defining your Pydantic model
-
-# class YourTriageModel(BaseModel):
-#     category: str = Field(...)
-#     priority: int = Field(...)
-#     # ... add more fields
-
-# Then create your prompt, LLM, and chain
+from langchain_community.llms import FakeListLLM
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
+from langchain_core.runnables import RunnableBranch, RunnableLambda
+from pydantic import BaseModel, Field
 ```
 
-!!! example "Exercise"
+## 1. Five-field triage dict
 
-    **🎯 Exercise 2: Error Handling and Retries**
+Define a Pydantic model with **five** fields (`category`, `priority`, `assign_to`, `escalate`, `draft`). Build `prompt | FakeListLLM | JsonOutputParser`. Invoke three CloudWave tickets (bug, billing, question).
 
-    Real LLM APIs can fail. Enhance the triage chain with:
+**Checks:**
 
-    - Try/except error handling
+- `isinstance(result, dict)` is True (JsonOutputParser does not return the Pydantic instance).
+- Each result has exactly those keys you care about (`category` in the expected set).
+- A second scripted JSON blob with `"category": "billing"` parses without raising.
 
-    - Retry logic (max 3 attempts)
+## 2. Retry then fallback
 
-    - Fallback responses when LLM fails
+Wrap `chain.invoke` in a loop: max 3 attempts, then return `{"category": "unknown", "escalate": True, "draft": "human"}`. Force the first two calls to raise.
 
-    - Logging for debugging
+**Checks:**
 
-    **Hint:** Use `try/except` and `time.sleep()` for exponential backoff.
+- After two failures and one success, you return the success dict.
+- After three failures, `escalate is True` and no exception escapes.
 
+## 3. Classify, then route
 
+Step 1 classifies `bug` / `feature` / `question`. Step 2 picks a canned reply. Use a Python `if` **or** the lesson’s `RunnableBranch` (they are the same idea).
 
-```python
-# Your solution here!
-import time
+**Checks:**
 
-# def triage_with_retry(ticket_input, max_retries=3):
-#     for attempt in range(max_retries):
-#         try:
-#             result = triage_chain.invoke(ticket_input)
-#             return result
-#         except Exception as e:
-#             # Log error, wait, retry
-#             pass
-#     # Return fallback
-#     return {"category": "unknown", "escalate_to_human": True}
-```
+- `bug` → troubleshooting string; `question` → docs string.
+- `branch.invoke({"category": "bug"})` (or your `if`) is deterministic — no extra model call for the route.
 
-!!! example "Exercise"
-
-    **🎯 Exercise 3: Multi-Step Chain**
-
-    Build a 2-step workflow:
-
-    - **Step 1:** Classify ticket (bug/feature/question)
-
-    - **Step 2:** Based on classification, generate specialized response:
-
-        Bug → Technical troubleshooting steps
-
-        - Feature → Product roadmap information
-
-        - Question → Knowledge base article
-
-
-
-    **Hint:** Use `RunnableBranch` or conditional logic to route based on step 1 output.
-
-
-
-```python
-# Your solution here!
-# Step 1: Classify
-# Step 2: Route to specialized chain based on category
-```
+Do not invent a 14-field schema. Do not call a live provider.

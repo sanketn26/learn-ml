@@ -1,357 +1,136 @@
-# Week 4 — Production & Scaling
+# Week 4 — One worker vs a crew
 
-**Course:** CrewAI for Multi-Agent Systems  
-**Week Focus:** Understand what reliability, queues, and observability would require around a crew. This is an operational map, not a deployment recipe.
+**Course:** CrewAI  
+**Who this is for:** Engineers who have been asked to “add more agents” the way people add more microservices.
+
+The track’s “done when” is a **bounded comparison**: one worker versus a small crew, on quality, latency, and call count. Kubernetes, 500 RPS, and Prometheus are not this week.
+
+This venv has **no LangChain**. Compare ordinary functions that stand in for workers. A real `kickoff()` would add provider latency on top of the same shape.
 
 ---
 
-## If you already write software
+## 🎯 What you will be able to do
 
-CrewAI is **jobs + role descriptions + a shared ticket queue**. An “agent” is a worker with a system prompt (its job description), tools (its IAM permissions), and a task (a ticket). A “crew” is the team you put on the sprint.
+- Run the same CloudWave changelog job as **one function** and as **three role functions**
+- Record quality (required keys present), elapsed time, and call count
+- Decide whether the extra roles paid for themselves
+- Leave worker pools and Docker out of the required path
+
+!!! think "Think of it like… one senior vs a three-person squad on a one-page note."
+
+    Sometimes the squad catches a missing `risks` field. Sometimes it triples latency and still drops it. Measure; don’t staff by vibe.
+
+## Picture the comparison
 
 ```
-Job description          agent role + backstory + goal
-IAM policy               tools the agent is allowed to call
-Ticket                   Task(description, expected_output, agent=)
-Sprint team              Crew(agents, tasks, process=sequential|hierarchical)
-Standup notes            the shared result / memory the next task reads
+ONE WORKER                         CREW (simulated)
+ticket → write_all                 t1 summarize  (1 call)
+      1 call                             │
+      1 latency                      t2 draft    (1 call)
+                                         │
+                                     t3 qa       (1 call)
+                                   3 calls, 3 latencies
+quality = keys present             quality = keys present
 ```
 
-This is useful when the work actually needs different roles (researcher vs writer vs reviewer). It is ceremony when one function would do. Staff a crew the way you staff a project: few roles, clear tickets, an output contract. “Add more agents” is not an architecture.
-
-## 🎯 Learning Objectives
-
-By the end of this week, you will:
-- Design production-grade agent systems
-- Implement robust error handling and recovery
-- Deploy agents as APIs and services
-- Monitor agent performance and health
-- Scale for high throughput and concurrency
-- Handle failures gracefully
-- Build a real-world production system
-
-## 📊 Real-World Context
-
-**The Challenge:** Taking agents from notebook to production:
-- Agents can fail (LLM timeouts, rate limits, API errors)
-- Need to handle 10,000+ requests/day
-- Must maintain 99.9% uptime
-- Need to debug failures quickly
-- Scale as demand grows
-
-**Production Requirements:**
-1. **Reliability**: Retry failed tasks, circuit breakers
-2. **Scalability**: Queue-based architecture, load balancing
-3. **Observability**: Logging, metrics, tracing
-4. **Security**: API authentication, rate limiting, input validation
-5. **Performance**: Caching, async processing, optimization
-
-**Business Impact:**
-- ⏱️ Achieve 99.9% uptime SLA (vs 70% in development)
-- 📈 Scale from 100 → 10,000 requests/day
-- 💰 Reduce operational costs by 40% (efficient resource use)
-- 🚨 MTTR (Mean Time to Resolution): 30 mins → 5 mins
-- 📊 Gain visibility into system behavior
-
-**Deployment Targets:**
-- Cloud: AWS, GCP, Azure
-- Container: Docker + Kubernetes
-- Serverless: AWS Lambda, Google Cloud Functions
-- On-premises: Private data centers
-
-
-## 🔍 Part 1: Production Architecture
-
-### Development vs Production
-
-**Development (Week 1-3):**
-```
-Notebook → Agent → Print output
-Simple, fast iteration
-```
-
-**Production:**
-```
-Client API Request
-        ↓
-   API Gateway (auth, rate limit, validate)
-        ↓
-   Task Queue (Redis/RabbitMQ)
-        ↓
-Worker Pool (10+ agents running)
-        ↓
-  Database (store results)
-        ↓
-   Monitoring (Prometheus, CloudWatch)
-        ↓
-Client Gets Result (via webhook or polling)
-```
-
-### Key Production Concerns
-
-| Concern | Development | Production |
-|---------|-------------|------------|
-| **Error Handling** | Print error ❌ | Retry, fallback, escalate ✅ |
-| **Concurrency** | 1 request at a time | 100+ concurrent requests |
-| **Latency** | 30 seconds ok | 5 seconds max |
-| **Availability** | 50% uptime ok | 99.9% uptime required |
-| **Monitoring** | None | Comprehensive logging |
-| **Cost** | Doesn't matter | Every $$ counts |
-| **Security** | Ignore | Critical |
-| **Data** | In-memory | Persistent, replicated |
-
-## 📚 Part 2: Error Handling & Reliability
-
-<div class="reliability-box">
-<strong>🔄 Reliability Patterns:</strong>
-<ul>
-<li><strong>Retry:</strong> Try again (with exponential backoff)</li>
-<li><strong>Fallback:</strong> Use alternative agent/approach</li>
-<li><strong>Circuit Breaker:</strong> Stop calling failing service</li>
-<li><strong>Timeout:</strong> Don't wait forever</li>
-<li><strong>Bulkhead:</strong> Isolate failures</li>
-</ul>
-</div>
-
-### Retry Strategy
-
-```python
-# Exponential backoff with jitter
-attempt 1: wait 1s (fail)
-attempt 2: wait 2s (fail)
-attempt 3: wait 4s (fail)
-attempt 4: wait 8s (success!) ✓
-
-# Add randomness to avoid thundering herd
-wait 1s + random(0-1s)
-wait 2s + random(0-2s)
-wait 4s + random(0-4s)
-```
+## The measurement (concept demo)
 
 ```python
 import time
-import random
-from typing import Callable, Any
-from functools import wraps
 
-def retry_with_backoff(max_attempts: int = 3, base_wait: float = 1.0):
-    """Decorator for retry logic with exponential backoff."""
-    def decorator(func: Callable) -> Callable:
-        @wraps(func)
-        def wrapper(*args, **kwargs) -> Any:
-            last_exception = None
-            
-            for attempt in range(1, max_attempts + 1):
-                try:
-                    return func(*args, **kwargs)
-                except Exception as e:
-                    last_exception = e
-                    
-                    if attempt < max_attempts:
-                        # Exponential backoff with jitter
-                        wait_time = base_wait * (2 ** (attempt - 1))
-                        jitter = random.uniform(0, wait_time * 0.1)
-                        total_wait = wait_time + jitter
-                        
-                        print(f"  ⚠️ Attempt {attempt} failed: {str(e)[:50]}...")
-                        print(f"     Retrying in {total_wait:.1f}s...")
-                        time.sleep(total_wait)
-                    else:
-                        print(f"  ❌ All {max_attempts} attempts failed")
-            
-            raise last_exception
-        
-        return wrapper
-    return decorator
+REQUIRED_NOTE = ("title", "body", "review_required")
+REQUIRED_SUM = ("customer_changes", "operator_changes", "risks")
+ROWS = ["export timeout on 150k rows", "raised worker memory"]
 
-# Example: Unreliable API call
-call_count = 0
 
-@retry_with_backoff(max_attempts=3, base_wait=0.5)
-def flaky_api_call():
-    global call_count
-    call_count += 1
-    
-    # Fails first 2 times, succeeds on 3rd
-    if call_count < 3:
-        raise Exception(f"API temporary unavailable (attempt {call_count})")
-    
-    return {"status": "success", "data": "Important data"}
+def one_worker(rows: list[str]) -> dict:
+    # One pass: summary + note. Fast. Easy to drop risks.
+    return {
+        "title": "Export retry",
+        "body": "We retry timed-out exports.",
+        "review_required": False,
+        # risks omitted on purpose — the bug a second role might catch
+        "calls": 1,
+    }
 
-print("Testing retry with backoff:")
-print()
 
-result = flaky_api_call()
-print(f"\n✅ Success! Result: {result}")
+def crew(rows: list[str]) -> dict:
+    calls = 0
+    t0 = time.perf_counter()
+    calls += 1
+    summary = {
+        "customer_changes": ["export retry"],
+        "operator_changes": ["worker memory"],
+        "risks": ["still fails >200k rows"],
+    }
+    calls += 1
+    note = {
+        "title": "Export retry",
+        "body": f"{summary['customer_changes']}. Risk: {summary['risks']}",
+        "review_required": True,
+    }
+    calls += 1
+    missing = [k for k in REQUIRED_SUM if k not in summary] + [
+        k for k in REQUIRED_NOTE if k not in note
+    ]
+    elapsed = time.perf_counter() - t0
+    note.update({"calls": calls, "missing": missing, "elapsed": elapsed})
+    return note
+
+
+def quality(result: dict) -> bool:
+    if "risks" in result:
+        return True
+    return "Risk:" in result.get("body", "") or "risks" in result.get("body", "").lower()
+
+
+solo = one_worker(ROWS)
+squad = crew(ROWS)
+
+print("one_worker", "calls", solo["calls"], "quality", quality(solo), "keys", set(solo))
+print("crew", "calls", squad["calls"], "quality", quality(squad), "missing", squad["missing"])
+
+assert solo["calls"] == 1
+assert squad["calls"] == 3
+assert quality(solo) is False
+assert quality(squad) is True
 ```
 
-## 🚀 Part 3: Scaling Agents
+Fill a table (the exercise asks for this on a real or simulated crew):
 
-<div class="scaling-box">
-<strong>Scaling Strategies:</strong>
-<ul>
-<li><strong>Vertical:</strong> Bigger machines (limit: cost and physics)</li>
-<li><strong>Horizontal:</strong> More machines (load balance requests)</li>
-<li><strong>Async:</strong> Queue + workers (handle bursts)</li>
-<li><strong>Caching:</strong> Avoid recomputing results</li>
-<li><strong>Batching:</strong> Process multiple requests together</li>
-</ul>
-</div>
+| Measure | One worker | Crew |
+|---|---:|---:|
+| Model / function calls | 1 | 3 |
+| Elapsed (this process) | lower | higher |
+| Required keys / risks present | often no | if QA exists, yes |
+| Trace easy to read? | one stack | three tickets |
 
-### Queue-Based Architecture
+A crew that is slower *and* still drops `risks` loses. Two functions with a validator (week 2) may beat both.
 
-```
-Client 1 ─→ ┐
-Client 2 ─→ ├→ API Gateway ─→ Task Queue ─→ Worker Pool ─→ Database
-Client 3 ─→ └→ (validates)     (Redis)       (10+ procs)    (results)
+!!! warning "Watch out — more workers ≠ more quality"
 
-Without queue: "I have 3 requests, but only 1 agent. Wait in line!"
-With queue: "I have 3 requests. Distribute to 3 different agents. Done!"
-```
+    Extra roles add calls and merge bugs. Quality is “did the contract hold,” not “did we have a researcher persona.” p95 at 500 RPS is a different job; this week does not measure it.
 
-```python
-# Simple in-memory task queue example
-from datetime import datetime
-from enum import Enum
-from typing import Optional
-import uuid
+!!! success "Ship / don’t ship"
 
-class TaskStatus(str, Enum):
-    PENDING = "pending"
-    RUNNING = "running"
-    COMPLETED = "completed"
-    FAILED = "failed"
+    **Ship** a crew when the comparison shows a quality win you can name (QA caught `risks`) and the extra calls are acceptable. **Don’t ship** a worker pool, a Docker chart, or a Prometheus board as the proof you staffed well. The conclusion “use one function” is allowed.
 
-class Task:
-    def __init__(self, agent_role: str, input_data: dict):
-        self.id = str(uuid.uuid4())[:8]
-        self.agent_role = agent_role
-        self.input_data = input_data
-        self.status = TaskStatus.PENDING
-        self.result = None
-        self.error = None
-        self.created_at = datetime.now()
-        self.completed_at: Optional[datetime] = None
-    
-    def duration_seconds(self) -> float:
-        end = self.completed_at or datetime.now()
-        return (end - self.created_at).total_seconds()
+## What this week is not
 
-class TaskQueue:
-    def __init__(self):
-        self.tasks: dict[str, Task] = {}
-        self.pending_queue: list[Task] = []
-    
-    def enqueue(self, task: Task) -> str:
-        """Add task to queue."""
-        self.tasks[task.id] = task
-        self.pending_queue.append(task)
-        return task.id
-    
-    def dequeue(self) -> Optional[Task]:
-        """Get next task from queue."""
-        if self.pending_queue:
-            task = self.pending_queue.pop(0)
-            task.status = TaskStatus.RUNNING
-            return task
-        return None
-    
-    def mark_completed(self, task_id: str, result: dict):
-        """Mark task as completed."""
-        task = self.tasks[task_id]
-        task.status = TaskStatus.COMPLETED
-        task.result = result
-        task.completed_at = datetime.now()
-    
-    def stats(self) -> dict:
-        """Get queue statistics."""
-        statuses = {"pending": 0, "running": 0, "completed": 0, "failed": 0}
-        for task in self.tasks.values():
-            statuses[task.status.value] += 1
-        
-        return {
-            "total_tasks": len(self.tasks),
-            "pending_in_queue": len(self.pending_queue),
-            "status_breakdown": statuses,
-            "average_duration_s": sum(
-                t.duration_seconds() for t in self.tasks.values()
-            ) / max(len(self.tasks), 1)
-        }
+- Not Kubernetes, not 500 RPS, not 99.9%.
+- Not a required Docker/worker-pool exercise.
+- Not LangGraph persistence. If the write needs a human, go there.
 
-# Simulate queue with multiple workers
-queue = TaskQueue()
+## ✍️ Exercise
 
-# Enqueue multiple tasks
-print("📊 Simulating Production Task Queue")
-print("="*70)
-print()
+[Exercises](exercises/week-04.md).
 
-# 10 incoming requests
-print("➕ Enqueuing 10 tasks...")
-for i in range(10):
-    task = Task(
-        agent_role="ContentWriter",
-        input_data={"topic": f"topic_{i}", "priority": "high" if i % 2 == 0 else "normal"}
-    )
-    queue.enqueue(task)
+## 🤔 Reflection
 
-print(f"   Queue stats: {queue.stats()}")
-print()
+1. Which extra call in the crew actually changed `quality`?
+2. If latency triples and quality is unchanged, what do you delete?
+3. Where does this comparison live in CI so “add more agents” has to beat a baseline?
 
-# Simulate 3 workers processing tasks
-print("👷 Processing with 3 workers...")
-workers_completed = 0
+## 🔗 After
 
-for worker_id in range(1, 4):  # 3 workers
-    print(f"\nWorker {worker_id}:")
-    while True:
-        task = queue.dequeue()
-        if not task:
-            print("  ✓ Queue empty, waiting for more work...")
-            break
-        
-        # Simulate work
-        print(f"  Processing task {task.id}...")
-        time.sleep(0.1)  # Simulate work
-        
-        # Mark completed
-        queue.mark_completed(task.id, {"status": "written"})
-        workers_completed += 1
-        print(f"  ✓ Completed (duration: {task.duration_seconds():.2f}s)")
-
-print()
-print("📈 Final Queue Stats:")
-stats = queue.stats()
-print(f"   Total tasks: {stats['total_tasks']}")
-print(f"   Status breakdown: {stats['status_breakdown']}")
-print(f"   Avg duration: {stats['average_duration_s']:.2f}s")
-```
-
-## 📊 Part 4: Monitoring & Observability
-
-<div class="production-box">
-<strong>What to Monitor:</strong>
-<ul>
-<li><strong>Availability:</strong> Is the service up? (uptime %)</li>
-<li><strong>Latency:</strong> How fast? (p50, p95, p99 milliseconds)</li>
-<li><strong>Throughput:</strong> How many requests/second?</li>
-<li><strong>Errors:</strong> What failed and why? (error rate %)</li>
-<li><strong>Cost:</strong> How much did this request cost? (per request)</li>
-</ul>
-</div>
-
-### Key Metrics
-
-**SLO (Service Level Objective):**
-- Availability: 99.9% ("three nines")
-- Latency: p95 < 500ms
-- Error rate: < 0.1%
-
-**Example Dashboard:**
-```
-Uptime: 99.95% ✓ (target: 99.9%)
-Latency (p95): 450ms ✓ (target: 500ms)
-Error Rate: 0.08% ✓ (target: 0.1%)
-Throughput: 1,200 req/s ✓ (capacity: 2,000)
-Cost: $8.50/1000 req ($0.0085 per request)
-```
+You have the CrewAI introduction: role, ticket, process, a comparison. Official docs for the rest. LangGraph week 5 if a write must not run twice.

@@ -10,7 +10,7 @@ Use a graph when you need branches, retries, pause-for-a-human, or replay. Three
 
 | Week | Idea | You are done when… |
 |---|---|---|
-| [1 — Graphs](week-01.md) | `StateGraph`, reducers, a tiny linear flow. | Two inputs take different visible paths through the graph. |
+| [1 — Graphs](week-01.md) | `StateGraph`, reducers, a graph that **branches**. | Two inputs take different visible paths through the graph. |
 | [2 — Workflows](week-02.md) | Conditional edges, fan-out, subgraphs. | Parallel branches join into one validated state. |
 | [3 — Persistence](week-03.md) | Checkpoints. Replay after a crash. | A failed run resumes without repeating completed pure work. |
 | [4 — Human in the loop](week-04.md) | Interrupt, resume, the approval node. | Approve, reject, and needs-info follow distinct tested paths. |

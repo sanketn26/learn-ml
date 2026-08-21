@@ -104,6 +104,15 @@ raise RuntimeError("agent hit MAX_STEPS")
 
 If you cannot write that loop on a whiteboard, do not debug “the agent is being weird” by tweaking the persona paragraph. Debug which tool was chosen, with which args, and what it returned.
 
+Library spelling (optional — same loop, more ceremony). Concept demo; do not expect a fake LLM to drive a real ReAct trace:
+
+```python
+# from langgraph.prebuilt import create_react_agent
+# agent = create_react_agent(model, tools=[get_account_balance, get_billing_date])
+```
+
+The import is LangGraph’s prebuilt helper. This week still owns the loop, `max_iterations`, and the tool contract.
+
 ## ReAct is a prompt pattern, not autonomy
 
 ```

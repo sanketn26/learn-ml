@@ -4,7 +4,7 @@ Do these after reading [Week 16](../week-16.md).
 
 ```bash
 pytest tests/
-python -m pipelines.train --as-of 2024-06-01 --n 4000
+python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 head tonight.csv

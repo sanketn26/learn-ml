@@ -44,9 +44,10 @@ SCENARIOS: list[Scenario] = [
         context="Week 17 incident #3 — the silent NaN, seen as a scoring anomaly.",
         input_text=(
             "Traceback (most recent call last):\n"
-            "  File \"pipelines/score_batch.py\", line 41, in <module>\n"
-            "    scores = pipe.predict_proba(rows)[:, 1]\n"
-            "ValueError: Input contains NaN, infinity or a value too large for dtype('float64').\n"
+            "  File \"pipelines/score_batch.py\", line 34, in score_batch\n"
+            "    validate(_payload(rec))\n"
+            "ValueError: n_support is missing\n"
+            "# tonight.csv: half the scores were 0.5 before validate() started rejecting NaN.\n"
         ),
     ),
     Scenario(

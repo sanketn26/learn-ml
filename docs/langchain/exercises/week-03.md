@@ -1,6 +1,6 @@
 # Exercises — Week 3 — Agents & Tools
 
-Do these after reading [Week 3 — Agents & Tools](../week-03.md).
+Do these after reading [Week 3 — Agents & Tools](../week-03.md). The loop in the lesson is the assignment. `create_react_agent` is optional library spelling — you may mention it; you do not have to use it.
 
 !!! example "1. Two tools, one question"
     Write `get_account_balance` and `get_billing_date` as ordinary functions (dict lookups are fine). Then write the *loop* from the lesson by hand — no agent class — that answers: “What’s my balance and when do you bill me?” for `user_0001`. Print the trace (thought / action / observation).

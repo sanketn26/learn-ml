@@ -54,8 +54,8 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventua
         y_all = label_churn_in_horizon(raw, as_of_ts)
         frame, y = drop_unlabelled(raw, y_all)
     elif label == "eventual":
-        y = label_eventual_churn(raw)
-        frame = raw
+        y_all = label_eventual_churn(raw, as_of_ts)
+        frame, y = drop_unlabelled(raw, y_all)
     else:
         raise ValueError("label must be 'eventual' or 'horizon'")
 

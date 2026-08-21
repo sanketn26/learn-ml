@@ -1,325 +1,171 @@
-# Week 5 — Evaluation & Debugging
+# Week 5 — Eval is a golden file
 
-**Course:** LangChain for AI Applications  
-**Week Focus:** Test, evaluate, and debug LangChain applications scientifically.
+**Course:** LangChain  
+**Who this is for:** Engineers who already write pytest fixtures and do not ship on “it looked good in the playground.”
+
+You cannot ship what you cannot fail. A LangChain app is a function: input in, dict out. Score the dict.
 
 ---
 
-## If you already write software
+## 🎯 What you will be able to do
 
-LangChain is an orchestration library, not a model. The model is the remote API (or the local weights). LangChain is the **middleware**: prompts as templates, outputs as parsers, tools as functions, memory as a store, chains as your call graph.
+- Write a tiny golden set (query, expected tool, expected substring)
+- Score **accuracy** and **tool choice** separately from **latency**
+- Record a local **trace dict** (no vendor account)
+- Force one realistic failure and watch the suite go red
+- Know when you are measuring the wrong thing
+
+!!! think "Think of it like… pytest, not a dashboard."
+
+    `expected_tool` is the assertion. A trace is the captured log. Latency is an SLO, not a relevance score. Mixing them is how a slow-but-correct escalate looks “worse” than a fast wrong answer.
+
+## Picture a run
 
 ```
-Your backend                        LangChain
-─────────────────────────────       ──────────────────────────────
-HTTP handler                        a chain / agent entrypoint
-string template + params            PromptTemplate
-JSON schema / zod / pydantic        output parser
-service client                      a Tool (function + docstring)
-session store / Redis               memory
-try / catch + retries               callbacks, fallbacks
+golden.jsonl
+    │
+    ▼
+for case in cases:
+    t0 = now()
+    out, tool, trace = app(case.query)     # your function
+    latency_ms = now() - t0
+    accuracy  = substring / overlap on output     # quality
+    tool_ok   = (tool == case.expected_tool)      # quality
+    sla_ok    = latency_ms <= case.max_latency_ms # operations
+    pass      = accuracy high AND tool_ok         # do not AND sla into "relevance"
 ```
 
-Read every abstraction as something you have already shipped. If you cannot say what the chain does as a sequence of function calls, the abstraction is hiding a bug.
+No LangSmith required. If you later want a hosted tracer, that is an env var and a vendor — not this week’s objective.
 
-## 🎯 Learning Objectives
-
-By the end of this week, you will:
-- Design and implement evaluation metrics for LLM outputs
-- Use LangSmith for distributed tracing and debugging
-- Build comprehensive test datasets and suites
-- Handle edge cases and failure modes
-- Monitor application performance in production
-- Identify and fix hallucinations and errors
-
-## 📊 Real-World Context
-
-**The Problem:**
-- Your support bot works 95% of the time
-- But what about the other 5%?
-- How do you know which cases fail?
-- How do you fix them systematically?
-
-**Failures to Catch:**
-1. **Hallucinations:** Confident but wrong answers
-2. **Wrong Tool Selection:** Using search when it should escalate
-3. **Slow Responses:** Timeouts or excessive latency
-4. **Missing Context:** Insufficient information retrieved
-5. **Escalation Failures:** Not recognizing when to hand off to humans
-
-**Solutions:**
-- Define quantitative metrics (accuracy, relevance, latency)
-- Trace execution with LangSmith
-- Create golden datasets for regression testing
-- Monitor production continuously
-- Build feedback loops from user interactions
-
-**Business Impact:**
-- 📈 Quality: Catch issues before users do (95% → 99%+)
-- 🔍 Visibility: Understand exactly what went wrong
-- ⚡ Speed: Debug in minutes, not days
-- 💰 Cost: Reduce wasted API calls on failures
-- 📊 Continuous improvement: Data-driven optimizations
-
-
-## 🔍 Part 1: Evaluation Metrics
-
-<div class="metric-box">
-<strong>Evaluation Metric:</strong> A quantitative measure of LLM application quality.
-</div>
-
-### Key Metrics for LLM Applications
-
-| Metric | Measures | Example |
-|--------|----------|----------|
-| **Accuracy** | % correct answers | Support bot: Does it solve the problem? |
-| **Relevance** | Info matches query | Retrieval: Are results on-topic? |
-| **Latency** | Response time | API: Respond in < 2 seconds |
-| **Toxicity** | Harmful language | Safety: Flag inappropriate content |
-| **Hallucination** | False confidence | Fact-checking: Verify claims |
-| **Tool Use** | Correct tool selection | Agents: Use right tool first try? |
-
-### Ground Truth Datasets
-
-You need a **golden dataset** of known good outputs:
+## A local trace dict is enough
 
 ```python
-test_cases = [
+from dataclasses import dataclass, field
+import time
+
+@dataclass
+class Trace:
+    query: str
+    steps: list[dict] = field(default_factory=list)
+
+    def span(self, name: str, **data):
+        self.steps.append({"name": name, **data})
+
+
+def handle(query: str) -> tuple[str, str, Trace, float]:
+    """Stand-in CloudWave handler. Concept demo — no API key."""
+    tr = Trace(query=query)
+    t0 = time.perf_counter()
+    q = query.lower()
+    if "billing" in q or "angry" in q:
+        tool, output = "escalate_to_human", "Escalate to human support"
+    elif "password" in q:
+        tool, output = "documentation_search", "Go to Settings > Security > Change Password"
+    else:
+        tool, output = "documentation_search", "See the docs"
+    tr.span("route", tool=tool)
+    tr.span("generate", output=output)
+    latency_ms = (time.perf_counter() - t0) * 1000
+    return output, tool, tr, latency_ms
+```
+
+## Score the right thing
+
+```python
+GOLDEN = [
     {
-        "input": "How do I reset my password?",
-        "expected_output": "Go to Settings > Security > Change Password",
+        "id": "g1",
+        "query": "How do I reset my password?",
+        "expected_output": "Settings > Security > Change Password",
         "expected_tool": "documentation_search",
         "max_latency_ms": 2000,
     },
     {
-        "input": "I'm extremely angry about my billing",
-        "expected_output": "Escalate to human agent",
+        "id": "g2",
+        "query": "I'm extremely angry about billing",
+        "expected_output": "Escalate to human support",
         "expected_tool": "escalate_to_human",
         "max_latency_ms": 500,
     },
 ]
+
+
+def overlap(expected: str, actual: str) -> float:
+    e, a = set(expected.lower().split()), set(actual.lower().split())
+    return len(e & a) / len(e) if e else 0.0
+
+
+def evaluate(cases=GOLDEN):
+    rows = []
+    for case in cases:
+        output, tool, tr, latency_ms = handle(case["query"])
+        accuracy = overlap(case["expected_output"], output)
+        tool_ok = tool == case["expected_tool"]
+        sla_ok = latency_ms <= case["max_latency_ms"]
+        quality_pass = tool_ok and accuracy >= 0.5
+        rows.append({
+            "id": case["id"],
+            "quality_pass": quality_pass,
+            "accuracy": accuracy,
+            "tool_ok": tool_ok,
+            "latency_ms": latency_ms,
+            "sla_ok": sla_ok,          # reported, not folded into accuracy
+            "trace": tr.steps,
+        })
+    return rows
+
+rows = evaluate()
+assert rows[0]["quality_pass"] is True
+assert rows[0]["tool_ok"] is True
+print(rows[0]["trace"])
 ```
+
+Latency can fail the **SLA** column while quality still passes. Do not rename `sla_ok` to `relevance`.
+
+## Forced failure
+
+Break the router on purpose. The suite must go red.
 
 ```python
-# Implement evaluation system
+def broken_handle(query: str):
+    # Always search the docs — even for angry billing. This is the bug.
+    return "See the docs", "documentation_search", Trace(query), 1.0
 
-from typing import Dict, List, Any
-from dataclasses import dataclass
-from enum import Enum
-import time
-
-class EvaluationResult(Enum):
-    PASS = "pass"
-    FAIL = "fail"
-    PARTIAL = "partial"
-
-@dataclass
-class TestCase:
-    """Represents a single test case for evaluation."""
-    input_query: str
-    expected_output: str
-    expected_tool: str
-    max_latency_ms: int = 2000
-    metadata: Dict[str, Any] = None
-
-@dataclass
-class EvaluationScore:
-    """Stores evaluation results for a test run."""
-    test_case: TestCase
-    actual_output: str
-    actual_tool: str
-    latency_ms: float
-    result: EvaluationResult
-    accuracy_score: float  # 0-1
-    relevance_score: float  # 0-1
-    reasoning: str
-
-class ApplicationEvaluator:
-    """Evaluate LLM application quality systematically."""
-    
-    def __init__(self):
-        self.test_results: List[EvaluationScore] = []
-    
-    def evaluate_output_match(self, expected: str, actual: str) -> float:
-        """Calculate how closely actual matches expected (0-1)."""
-        # Simple word overlap scoring
-        expected_words = set(expected.lower().split())
-        actual_words = set(actual.lower().split())
-        
-        if not expected_words:
-            return 1.0 if not actual_words else 0.0
-        
-        overlap = len(expected_words & actual_words)
-        return overlap / len(expected_words)
-    
-    def evaluate_tool_selection(self, expected: str, actual: str) -> bool:
-        """Check if correct tool was selected."""
-        return expected.lower() == actual.lower()
-    
-    def evaluate_latency(self, latency_ms: float, max_ms: int) -> bool:
-        """Check if latency is within SLA."""
-        return latency_ms <= max_ms
-    
-    def run_test(self, test_case: TestCase, actual_output: str, 
-                actual_tool: str, latency_ms: float) -> EvaluationScore:
-        """Run a single test case evaluation."""
-        
-        # Score accuracy
-        accuracy = self.evaluate_output_match(test_case.expected_output, actual_output)
-        
-        # Score tool selection
-        tool_correct = self.evaluate_tool_selection(test_case.expected_tool, actual_tool)
-        
-        # Score latency
-        latency_ok = self.evaluate_latency(latency_ms, test_case.max_latency_ms)
-        
-        # Determine overall result
-        if tool_correct and accuracy > 0.8 and latency_ok:
-            result = EvaluationResult.PASS
-        elif tool_correct or accuracy > 0.6:
-            result = EvaluationResult.PARTIAL
-        else:
-            result = EvaluationResult.FAIL
-        
-        reasoning = f"Accuracy: {accuracy:.1%}, Tool: {'✓' if tool_correct else '✗'}, Latency: {latency_ms:.0f}ms"
-        
-        score = EvaluationScore(
-            test_case=test_case,
-            actual_output=actual_output,
-            actual_tool=actual_tool,
-            latency_ms=latency_ms,
-            result=result,
-            accuracy_score=accuracy,
-            relevance_score=1.0 if latency_ok else 0.5,
-            reasoning=reasoning
-        )
-        
-        self.test_results.append(score)
-        return score
-    
-    def get_summary(self) -> Dict[str, Any]:
-        """Get evaluation summary statistics."""
-        if not self.test_results:
-            return {"error": "No test results"}
-        
-        passes = sum(1 for r in self.test_results if r.result == EvaluationResult.PASS)
-        partials = sum(1 for r in self.test_results if r.result == EvaluationResult.PARTIAL)
-        fails = sum(1 for r in self.test_results if r.result == EvaluationResult.FAIL)
-        
-        avg_accuracy = sum(r.accuracy_score for r in self.test_results) / len(self.test_results)
-        avg_latency = sum(r.latency_ms for r in self.test_results) / len(self.test_results)
-        
-        return {
-            "total_tests": len(self.test_results),
-            "passed": passes,
-            "partial": partials,
-            "failed": fails,
-            "pass_rate": f"{100 * passes / len(self.test_results):.0f}%",
-            "avg_accuracy": f"{100 * avg_accuracy:.0f}%",
-            "avg_latency_ms": f"{avg_latency:.0f}ms"
-        }
-
-# Demo: Evaluation in action
-print("📊 EVALUATION SYSTEM DEMO")
-print("="*70)
-
-evaluator = ApplicationEvaluator()
-
-# Create test cases
-test_cases = [
-    TestCase(
-        input_query="How do I reset my password?",
-        expected_output="Go to Settings > Security > Change Password",
-        expected_tool="documentation_search",
-        max_latency_ms=2000
-    ),
-    TestCase(
-        input_query="I'm extremely angry about billing",
-        expected_output="Escalate to human support",
-        expected_tool="escalate_to_human",
-        max_latency_ms=500
-    ),
-]
-
-# Simulate app responses
-print("\n🧪 Running Test Suite...\n")
-
-# Test 1: Good response
-result1 = evaluator.run_test(
-    test_cases[0],
-    actual_output="Go to Settings, then Security, then Change Password",
-    actual_tool="documentation_search",
-    latency_ms=1250
-)
-print(f"Test 1: {result1.result.value.upper()}")
-print(f"  {result1.reasoning}")
-
-# Test 2: Slow escalation
-result2 = evaluator.run_test(
-    test_cases[1],
-    actual_output="Escalating to our support team",
-    actual_tool="escalate_to_human",
-    latency_ms=3500  # Too slow!
-)
-print(f"\nTest 2: {result2.result.value.upper()}")
-print(f"  {result2.reasoning}")
-
-print(f"\n" + "="*70)
-print("\n📈 SUMMARY:")
-summary = evaluator.get_summary()
-for key, value in summary.items():
-    print(f"  {key:20} {value}")
+output, tool, _, _ = broken_handle(GOLDEN[1]["query"])
+assert tool != GOLDEN[1]["expected_tool"], "suite should fail when escalate is skipped"
 ```
 
-## 🐛 Part 2: Debugging with Tracing
+That red is the point. Fix the router, re-run, watch g2 go green. A dashboard that only charts p95 will not catch this.
 
-<div class="debug-box">
-<strong>Tracing:</strong> Recording detailed execution path of LLM application for debugging.
-</div>
+Optional 10-line env sketch if you later add a hosted tracer (not required):
 
-### Execution Trace Example
-
-```
-User Query: "Help with my order"
-  ├─ 🎯 Router: Determine category
-  │  └─ LLM: "This is about orders"
-  │  └─ Selected Tool: order_lookup
-  │  └─ Latency: 125ms
-  │
-  ├─ 🔍 Order Lookup Tool
-  │  └─ Query: "SELECT * FROM orders WHERE user_id=123"
-  │  └─ Result: Order #ORD456 found
-  │  └─ Latency: 45ms
-  │
-  └─ 📝 Response Generator
-     └─ Template: "Your order {{order_id}} is {{status}}"
-     └─ Output: "Your order ORD456 is shipped"
-     └─ Latency: 87ms
-
-Total Time: 257ms ✓
+```python
+# import os
+# os.environ["LANGCHAIN_TRACING_V2"] = "true"
+# os.environ["LANGCHAIN_API_KEY"] = "..."   # not in this repo
+# os.environ["LANGCHAIN_PROJECT"] = "cloudwave-week5"
 ```
 
-## 🎯 Part 3: Handling Edge Cases
+The local `Trace` dict is what the exercise grades.
 
-### Common Failure Modes
+!!! warning "Watch out — overlap is a blunt instrument"
 
-**1. Hallucinations**
-```
-Input: "What's in my account?"
-AI Response: "Your account has $999.99" (❌ We have no data for this user)
-Fix: Validate AI output against retrieved data
-```
+    Word overlap will pass “Escalate to human support” vs “Escalating to our support team” and fail a correct paraphrase that uses different words. For this week, keep gold short and literal. For week 7, the golden file checks **tools**, not prose.
 
-**2. Incorrect Tool Selection**
-```
-Input: "I'm canceling my subscription"
-AI chooses: "documentation_search" (❌ Should be "request_cancellation")
-Fix: Validate tool selection matches intent
-```
+!!! success "Ship / don’t ship"
 
-**3. Timeout/Slow Responses**
-```
-Input: "Analyze my usage data"
-Response time: 8 seconds (❌ SLA is 2 seconds)
-Fix: Add circuit breaker, fallback to summary
-```
+    **Ship** a golden set that fails when the wrong tool fires, with latency as a separate SLO. **Don’t ship** “95% quality” that mixes speed into relevance, and don’t block the week on a LangSmith account.
+
+## ✍️ Exercise
+
+[Exercises](exercises/week-05.md).
+
+## 🤔 Reflection
+
+1. A correct escalate takes 3 seconds; SLA is 500ms. Pass or fail? On which column?
+2. What is one CloudWave query you would add that the overlap scorer would mishandle?
+3. Where does the trace live if the process crashes before you print it?
+
+## 🔗 Next week
+
+Timeouts, fallbacks, a local FastAPI wrapper. A golden file still beats a Dockerfile.

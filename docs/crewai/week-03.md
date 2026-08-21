@@ -1,263 +1,96 @@
-# Week 3 — Team Collaboration & Communication
+# Week 3 — Sequential vs hierarchical
 
-**Course:** CrewAI for Multi-Agent Systems  
-**Week Focus:** Master inter-agent communication, delegation strategies, and consensus-building for complex collaborative workflows.
+**Course:** CrewAI  
+**Who this is for:** Engineers who have chosen “list of jobs” vs “manager assigns work.”
+
+CrewAI’s `Process` flag is the whole week: **sequential** (tickets in order) vs **hierarchical** (a manager LLM assigns). That is a staffing choice. It is not a board meeting and it is not a consensus algorithm.
+
+This venv has **no LangChain**. Sketch both process types. Do not run a voting/CEO theatre that never executes.
 
 ---
 
-## If you already write software
+## 🎯 What you will be able to do
 
-CrewAI is **jobs + role descriptions + a shared ticket queue**. An “agent” is a worker with a system prompt (its job description), tools (its IAM permissions), and a task (a ticket). A “crew” is the team you put on the sprint.
+- Point at `Process.sequential` vs `Process.hierarchical` on a tiny CloudWave crew
+- Say who owns the final ticket in each mode
+- Skip fake voting unless you can actually run it
+- Know when a manager LLM is extra latency for one job
 
-```
-Job description          agent role + backstory + goal
-IAM policy               tools the agent is allowed to call
-Ticket                   Task(description, expected_output, agent=)
-Sprint team              Crew(agents, tasks, process=sequential|hierarchical)
-Standup notes            the shared result / memory the next task reads
-```
+!!! think "Think of it like… Makefile vs a tech-lead standup."
 
-This is useful when the work actually needs different roles (researcher vs writer vs reviewer). It is ceremony when one function would do. Staff a crew the way you staff a project: few roles, clear tickets, an output contract. “Add more agents” is not an architecture.
+    Sequential = the Makefile order. Hierarchical = a lead reads the tickets and pokes people. Consensus-by-vote is a third thing this library does not prove for you in a concept demo.
 
-## 🎯 Learning Objectives
-
-By the end of this week, you will:
-- Implement agent delegation and role-based communication
-- Build consensus mechanisms for disagreeing agents
-- Create hierarchical team structures (CEO, leads, specialists)
-- Handle agent conflicts and decision-making
-- Implement feedback loops and iterative refinement
-- Build a real-world software development team
-
-## 📊 Real-World Context
-
-**The Challenge:** Building software requires multiple perspectives:
-- **Product Manager**: "This feature must do X"
-- **Architect**: "We need microservices architecture"
-- **Security Lead**: "We must add authentication"
-- **Dev Lead**: "We have 2 weeks for this"
-- **QA Lead**: "We need 95% test coverage"
-
-**Without collaboration:**
-- Team works in silos (no alignment)
-- Conflicting requirements cause delays
-- Poor quality (no peer review)
-- Missed security/performance considerations
-
-**With AI Team Collaboration:**
-1. **Communication**: Agents discuss requirements and constraints
-2. **Consensus**: Reach agreement on technical approach
-3. **Specialization**: Each agent contributes expertise
-4. **Conflict Resolution**: Handle disagreements systematically
-5. **Iteration**: Refine decisions based on feedback
-
-**Business Impact:**
-- ⏱️ Reduce design review meetings from 20 hrs → 2 hrs
-- ✅ Catch 40% more issues (security, architecture, performance)
-- 📈 Faster time-to-market (better decisions = fewer rewrites)
-- 💰 Save $200K/year in review/rework cycles
-
-Companies like **Google, GitHub, Anthropic** use collaborative agent patterns internally.
-
-
-## 🔍 Part 1: Communication Patterns
-
-### Agent Communication Types
-
-**Direct Communication:**
-```
-Agent A → Task Output → Agent B
-         (context parameter)
-```
-Agent B uses Agent A's output as input.
-
-**Via Shared State:**
-```
-Agent A → Update Database ← Agent B
-         ↓
-      Central Repository
-```
-Agents write and read from shared knowledge base.
-
-**Hierarchical (CEO Pattern):**
-```
-         ┌─ Product Agent
-         │
-    [CEO Agent] ─ Architecture Agent
-         │
-         └─ Security Agent
-
-CEO makes final decisions after hearing from all specialists.
-```
-
-**Peer Review (Consensus):**
-```
-Agent A suggests solution → All agents vote
-                         ↓
-                    Consensus reached or
-                    Escalate to CEO
-```
-
-## 📚 Part 2: Delegation Strategies
-
-### 2.1 When to Delegate
-
-**Delegate if:**
-- Another agent has specific expertise
-- Task requires specialized knowledge
-- Parallel execution possible
-- Subtask is well-defined
-
-**Don't delegate if:**
-- Task requires real-time feedback
-- Decision is critical (CEO should decide)
-- Agent would just repeat your work
-- Output isn't clear (ambiguous task)
-
-### 2.2 Effective Delegation Pattern
+## Picture the two processes
 
 ```
-1. CLARIFY: "Here's what I need and why"
-2. SPECIFY: "Here are detailed requirements"
-3. DELEGATE: "Task: {task}, Context: {context}, Success criteria: {criteria}"
-4. RECEIVE: Get output from delegated agent
-5. REVIEW: Check if output meets criteria
-6. ITERATE: If not satisfied, provide feedback and retry
+SEQUENTIAL                         HIERARCHICAL
+t1 researcher                      manager (LLM)
+     │                                │
+     ▼                         assigns / reviews
+t2 writer                          /     \
+     │                         t1 res   t2 writer
+     ▼                                │
+t3 qa                                 ▼
+     │                           manager output
+     ▼
+   result
 ```
+
+## Sequential sketch
 
 ```python
-from crewai import Agent, Task, Crew, Process
-from langchain.llms.fake import FakeListLLM
+from crewai import Agent, Crew, Process, Task
 
-# Create specialized agents
-product_llm = FakeListLLM(responses=[
-    "From product perspective: Users need real-time notifications, offline support, and mobile app. Core requirement: notification system with 99.9% uptime SLA."
-])
+researcher = Agent(role="researcher", goal="facts", backstory="extract", verbose=False)
+writer = Agent(role="writer", goal="draft", backstory="from facts only", verbose=False)
 
-architect_llm = FakeListLLM(responses=[
-    "Architecture recommendation: Microservices (API, Notifications, Auth, Analytics). Use Kafka for async messaging. RDS for persistence. Redis for caching."
-])
+t1 = Task(description="List three churn reasons from tickets.", expected_output="bullet list", agent=researcher)
+t2 = Task(description="Write a 5-line summary.", expected_output="five lines", agent=writer, context=[t1])
 
-security_llm = FakeListLLM(responses=[
-    "Security requirements: OAuth2 for auth, TLS 1.3 for comms, encrypt PII at rest, SOC2 compliance, rate limiting, API key rotation."
-])
-
-# Product Manager Agent
-product_agent = Agent(
-    role="Product Manager",
-    goal="Define user requirements and business success criteria",
-    backstory="Seasoned PM with 8 years at Stripe. Obsessed with user needs and product-market fit.",
-    llm=product_llm,
-    verbose=True
+seq = Crew(
+    agents=[researcher, writer],
+    tasks=[t1, t2],
+    process=Process.sequential,
 )
-
-# Architect Agent
-architect_agent = Agent(
-    role="Technical Architect",
-    goal="Design scalable, maintainable technical architecture",
-    backstory="Former Netflix infrastructure engineer. Expert in microservices and cloud systems.",
-    llm=architect_llm,
-    verbose=True
-)
-
-# Security Lead Agent
-security_agent = Agent(
-    role="Security Lead",
-    goal="Ensure system meets enterprise security requirements",
-    backstory="Security researcher with 10 years experience. Led security at Amazon. Paranoid about attacks.",
-    llm=security_llm,
-    verbose=True
-)
-
-print("✅ Created specialized agents:")
-print(f"  1. {product_agent.role}")
-print(f"  2. {architect_agent.role}")
-print(f"  3. {security_agent.role}")
+assert seq.process == Process.sequential
+assert t2.context == [t1]
+# order is the task list. no manager LLM.
 ```
 
-## 🏗️ Part 3: Building Hierarchical Teams
+## Hierarchical sketch
 
-### The CEO Pattern
-
-<div class="team-box">
-<strong>👔 CEO Agent:</strong> Makes final decisions after consulting specialists
-</div>
-
-CEO responsibilities:
-1. **Gather Input**: Ask each specialist for their perspective
-2. **Identify Conflicts**: Find areas of disagreement
-3. **Facilitate Discussion**: Have specialists address each other's concerns
-4. **Make Decision**: Apply business judgment to resolve conflicts
-5. **Communicate**: Explain decision to team
+`Process.hierarchical` expects a manager (in 0.80, a `manager_llm` or a manager agent — see the pin’s constructor). You can **construct** the crew and assert the process without `kickoff()`.
 
 ```python
-# CEO Agent coordinates the team
-ceo_llm = FakeListLLM(responses=[
-    """DESIGN DECISION SUMMARY:
-
-After consulting Product, Architecture, and Security:
-
-✅ APPROVED:
-- Microservices architecture (Address, Notifications, Auth, Analytics)
-- Real-time notification system with Kafka
-- OAuth2 + TLS 1.3 security
-- Offline support via local DB sync
-
-⚠️ CONSTRAINTS:
-- Timeline: 6 weeks (Phase 1: Core API, Phase 2: Mobile, Phase 3: Analytics)
-- Budget: $80K infrastructure/month
-- Team: 2 leads + 6 engineers
-
-🎯 CRITICAL PATH:
-1. Week 1-2: Auth + Notification service
-2. Week 3-4: API Gateway + main services
-3. Week 5-6: Mobile app + offline sync
-
-NEXT: Dev Lead to create detailed sprint plan.
-"""
-])
-
-ceo_agent = Agent(
-    role="Engineering Director (CEO)",
-    goal="Make architecture decisions that balance product needs, technical excellence, and security",
-    backstory="Former CTO at Series B startup. Excellent at consensus-building. Cares deeply about team health.",
-    llm=ceo_llm,
-    verbose=True,
-    allow_delegation=True
+hier = Crew(
+    agents=[researcher, writer],
+    tasks=[t1, t2],
+    process=Process.hierarchical,
+    # manager_llm=...  # required to *run*; omit rather than pass a LangChain fake
 )
-
-print("✅ CEO Agent created")
+assert hier.process == Process.hierarchical
 ```
 
-## 💬 Part 4: Conflict Resolution
+Who owns the final string? The manager’s last message, not `t2`’s, if the manager rewrites. That is extra tokens and a second chance to drop `risks`. Sequential is the default until you can say what the manager decides that `context=` does not.
 
-### Common Conflicts in Teams
+!!! warning "Watch out — voting theatre"
 
-<div class="conflict-box">
-<strong>Example Conflict:</strong><br>
-<strong>Architect:</strong> "We need 3 months for proper microservices architecture"<br>
-<strong>Product:</strong> "Users need this in 4 weeks or we lose competitive advantage"<br>
-<strong>Security:</strong> "Rushing leads to security vulnerabilities"
-</div>
+    “Each specialist votes, CEO aggregates, re-vote on objections” is a play. It does not run in this concept demo, it is not `Process`, and it will not show up in a trace you can test. If you need a human decision, that is LangGraph week 4’s interrupt, not a CrewAI ballot.
 
-### Resolution Framework
+!!! success "Ship / don’t ship"
 
-**Step 1: Understand each position**
-- Architect: Quality and long-term maintainability
-- Product: User needs and time-to-market
-- Security: Risk mitigation
+    **Ship** sequential when the dependency graph is already the order. **Ship** hierarchical only when you can name the manager’s job (pick an owner, not rewrite the artifact). **Don’t ship** a six-role design-review panel that never `kickoff()`s.
 
-**Step 2: Find middle ground**
-- Phase approach: MVP (core only) in 4 weeks, then full platform
-- Security in-built from start (not added later)
-- Architecture allows future scalability
+## ✍️ Exercise
 
-**Step 3: Clear trade-offs**
-- "We sacrifice some features (Phase 2) to hit market window"
-- "We prioritize security even in MVP"
-- "Core architecture designed for scale"
+[Exercises](exercises/week-03.md).
 
-**Step 4: Document decision**
-- Why this approach
-- Who agrees/disagrees
-- How we'll revisit if needed
+## 🤔 Reflection
+
+1. In sequential mode, who is blamed if `risks` go missing — writer or QA?
+2. What does the manager add that `context=[t1]` did not already pass?
+3. Where would you put a human instead of a CEO agent?
+
+## 🔗 Next week
+
+The actual “done when”: one worker vs a crew on quality, latency, and call count.

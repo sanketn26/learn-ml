@@ -17,7 +17,9 @@
     A Series is a column. An index is a primary key (sometimes sloppy). `merge` is `JOIN`. `groupby` is `GROUP BY`. If you can write the query, you can write the Pandas.
 
 ```python
-from lib.course_data import find_data_dir, load_customer_360
+import pandas as pd
+
+from lib.course_data import find_data_dir
 
 DATA = find_data_dir()
 ```
@@ -38,7 +40,7 @@ GROUP BY plan                  subs.groupby("plan_type").agg(...)
 COUNT(*)                       .size()
 ```
 
-The habit that saves careers: **aggregate the many-side before you join.** Joining a 50k customer table to 160k usage rows is the same bug as a SQL join that blows up a report and then you `SUM(mrr)` on the exploded grain.
+The habit that saves careers: **aggregate the many-side before you join.** Joining a ~49k customer table to 160k usage rows is the same bug as a SQL join that blows up a report and then you `SUM(mrr)` on the exploded grain.
 
 ### Picture the grain
 
@@ -184,7 +186,7 @@ If you join subscriptions to **raw** feature_usage (many rows per user), you dup
 
 !!! warning "Watch out — fan-out"
 
-    A 50,000-row customer table joined to 160,000 usage rows becomes ~160,000 rows, and `mrr.sum()` will lie by a factor of ~3. Always aggregate the many-side first. Always print `len(left)` vs `len(result)`.
+    A ~49k-row customer table joined to 160,000 usage rows becomes ~160,000 rows, and `mrr.sum()` will lie by a factor of ~3. Always aggregate the many-side first. Always print `len(left)` vs `len(result)`.
 
 ```python
 exploded = subs.merge(usage[["user_id", "usage_count"]], on="user_id", how="left")
