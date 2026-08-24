@@ -61,7 +61,7 @@ If you only have 8 columns and they already mean something, skip PCA. Compressio
 
 ## Honesty first: the “curse of dimensionality”
 
-Textbooks scare you with 10,000 columns. CloudWave’s customer table has ~7 numeric fields. PCA will still **draw a useful map**. It will not demonstrate the curse. If you one-hot 200 countries + 500 feature flags, *then* distances die and k-NN / K-Means get dizzy. That is the curse: in high dimensions everyone is far from everyone, so “nearest” stops meaning “similar.”
+Textbooks scare you with 10,000 columns. CloudWave’s customer table has ~7 numeric fields. PCA will still **draw a useful map**. It will not demonstrate the curse. If you one-hot 200 countries + 500 feature flags, *then* distances start to die: as columns pile up, the gap between your nearest and farthest neighbor shrinks relative to the distances themselves, so “nearest” stops meaning “similar” and k-NN / K-Means get dizzy. How fast that happens depends on the *intrinsic* dimensionality (are those 500 flags really independent, or mostly redundant?), how sparse the data is, and which distance metric you used — it is not a fixed column count where a switch flips.
 
 !!! engineer "Engineer mental model"
 
@@ -148,6 +148,8 @@ print(sample.nlargest(8, "recon_error")[["user_id", "plan_type", "mrr", "total_u
 !!! warning "Watch out"
 
     PCA axes are not causes. An anomaly is “does not compress well,” which might be a new customer type, a data bug, or a whale. Do not auto-ban them.
+
+    Reconstruction error only catches oddballs that fall **off** the kept axes. A customer who is extreme but extreme *along* PC1 (say, a real whale — huge `mrr` and `total_usage` together) compresses fine and will not show up as high-residual. Treat reconstruction error as one anomaly signal, not the whole detector — pair it with a look at the raw columns.
 
 
 !!! success "Ship / don’t ship"

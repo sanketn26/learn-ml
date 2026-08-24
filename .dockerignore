@@ -1,0 +1,14 @@
+.git
+.venv
+venv
+env
+ENV
+__pycache__
+*.pyc
+.pytest_cache
+site
+.tmp
+temp
+*.log
+exercises/**/artifacts
+artifacts

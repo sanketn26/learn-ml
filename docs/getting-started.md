@@ -61,6 +61,43 @@ The same tasks are also on the site under **ML Fundamentals → Exercises**.
 
 Work from the repo root so `lib/course_data.py` can find `data/`.
 
+## Optional: run it in Docker instead
+
+Skip this if `pip install -r requirements.txt` already worked. It exists for two situations: your local Python/`pip` fights you (version conflicts, a broken `torch` install, Windows path issues), or you use VS Code and want an isolated environment without touching your machine's Python at all.
+
+The repo ships one [`Dockerfile`](https://github.com/sanketn26/learn-ml/blob/main/Dockerfile) at the root. It installs `requirements.txt` (torch from the **CPU-only** wheel index — the default PyPI resolve can otherwise drag in a multi-GB CUDA stack you will never use on a laptop) into `python:3.11-slim`, then bakes in the whole repo: lessons, `exercises/` (the labs), and the `data/` CSVs. The image is self-contained — no bind mount required to start working.
+
+### Plain Docker
+
+```bash
+git clone https://github.com/sanketn26/learn-ml.git
+cd learn-ml
+docker build -t learn-ml .
+docker run --rm -it -p 8000:8000 learn-ml
+```
+
+That drops you into a shell inside the container, at `/workspace`, with the course, the labs, the data, and every dependency already there. Run exercises exactly as above:
+
+```bash
+python exercises/ml/week-00/starter.py
+pytest tests/test_features.py
+mkdocs serve --dev-addr 0.0.0.0:8000   # then open http://127.0.0.1:8000 on your host
+```
+
+Anything you write inside that container (filled-in TODOs, notes) disappears when it exits, because `--rm` throws the container away. If you want your edits to persist on your host instead, bind-mount the repo over the baked-in copy: `docker run --rm -it -v "$(pwd)":/workspace -p 8000:8000 learn-ml`.
+
+### VS Code Dev Container
+
+The same `Dockerfile` is wired up as a [Dev Container](https://containers.dev/) via `.devcontainer/devcontainer.json`, which bind-mounts your local clone so edits save to your machine, not the container. With the *Dev Containers* extension installed:
+
+1. Open the cloned repo folder in VS Code.
+2. Command palette → **Dev Containers: Reopen in Container**.
+3. VS Code builds the image, mounts the repo at `/workspace`, and forwards port 8000.
+
+This also works unmodified in **GitHub Codespaces** — open the repo on github.com, click **Code → Codespaces → Create codespace**, and the same container comes up in the browser.
+
+Either path gets you the exact dependency set in `requirements.txt` (numpy/pandas/sklearn/scipy/matplotlib/torch-cpu/duckdb/pytest/mkdocs-material). The framework tracks (`requirements-frameworks.txt`, `requirements-crewai.txt`) are not baked in — install them inside the running container the same way the venv instructions below do.
+
 ## What to install
 
 **ML weeks 0–10** (or just `pip install -r requirements.txt`)

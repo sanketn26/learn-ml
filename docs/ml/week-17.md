@@ -58,6 +58,22 @@ Fix: fill in **one** place (`build_features`). The handler does not fill. `valid
 
     Incidents 1–3 are not “ML bugs.” They are a bad join, a leaked spec, and an implicit default. Your ordinary debugging tools apply. Start with row counts, then schemas, then a single fixture user.
 
+### 4. The general shape: great offline, dead in prod
+
+Every pager story above is one instance of the same page: *holdout ROC-AUC 0.94, production ROC-AUC 0.61.* Before you touch the model, work down this list — in order, cheapest checks first:
+
+```
+1. Leakage           does a forbidden column sneak into X? (incident 2's shape)
+2. Temporal leakage  do features or labels peek past as_of? (Week 6 / Week 8's wall)
+3. Pipeline bug      did a join fan out, or did a fill-value diverge? (incidents 1, 3)
+4. Training-serving skew   does the batch job compute a feature differently than training did?
+5. Population shift  did the customer mix change since the training window?
+6. Delayed labels    is "prod ROC-AUC" being scored against labels that are still censored?
+7. Feature instability    did an upstream source change units, schema, or a null-fill default?
+```
+
+Items 1–3 are things *you* did — grep the code, diff the two feature-building paths, `pytest tests/test_contract.py`. Items 4–7 are things *the world* did — compare this week's feature histograms to training's, and check whether the labels you are scoring against have actually finished their horizon window. A dashboard that only shows one AUC number cannot tell these apart; that is why Week 15/16 ship feature histograms alongside the metric, not instead of it.
+
 ## Part B — the score is a tool
 
 Support asks: “this customer is yelling — are they about to cancel?”

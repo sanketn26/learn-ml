@@ -102,6 +102,16 @@ tokens:     [  "login" , "failed" , "again" ]
 
     `weights = softmax(Q @ K.T / sqrt(d))` → a row of positive numbers that sum to 1, one row per token. Divide by `sqrt(d)` so the dot products do not explode when the vectors are long. Then `output = weights @ V`. That is attention. Multi-head = several of these lookups in parallel, then concatenated — several reviewers reading for different things.
 
+`Q`, `K`, `V` are not three different pieces of the token — they are the **same embedding `X`**, run through three learned weight matrices: `Q = X·Wq`, `K = X·Wk`, `V = X·Wv`. Training is what decides what each matrix pays attention to.
+
+```
+representation X
+
+        ┌── Wq → what am I searching for?
+X ──────┼── Wk → what do I match against?
+        └── Wv → what information do I contribute?
+```
+
 ```python
 # Tiny self-attention you can print
 torch.manual_seed(0)

@@ -41,6 +41,8 @@ python exercises/ml/week-00/starter.py
 
 Each ML week is `exercises/ml/week-XX/starter.py`. Run from the repo root.
 
+Python fighting you, or prefer an isolated environment? `docker build -t learn-ml . && docker run --rm -it -p 8000:8000 learn-ml` gets you a shell with the course, labs, and data already baked in — no `pip install` needed. Or open the repo in VS Code and **Reopen in Container**. See [docs/getting-started.md](docs/getting-started.md#optional-run-it-in-docker-instead).
+
 No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM. The billing table has ~49k customers (observation end 2024-11-30).
 
 ## Before you start

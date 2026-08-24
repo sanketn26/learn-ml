@@ -87,9 +87,47 @@ If it is large and negative → score near 0.
 
 !!! math "Math, translated"
 
-    The sigmoid is just a soft on/off switch. You do not need its formula. You need: *weighted sum of features, then squeezed into a probability-like score.*
+    The sigmoid is just a soft on/off switch. In symbols: `z = w·x + b` is the weighted sum (same `z` as any linear model), and `p = σ(z) = 1 / (1 + e^-z)` squashes it into (0, 1). Training picks `w` and `b` to minimize **log loss** — `-(y·log(p) + (1-y)·log(1-p))` — which is just "how surprised was the model, on average, given what actually happened." A confident wrong answer (`p=0.99` on a customer who stayed) costs a lot; a wobbly `p=0.5` costs a little either way.
 
-**AUC** (area under the ROC curve) is ranking quality: if you sort users by score, do the actual churners tend to sit at the top? **0.5 is a coin flip.** 1.0 is a perfect ranking. It is not accuracy, and it is not “percent chance they churn.”
+Before reaching for sklearn, here is the whole thing in NumPy — one score, one loss, one gradient step:
+
+```python
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+# 3 toy customers, 2 features each (scaled mrr, scaled usage), plus a bias column of 1s
+X_toy = np.array([[1.0, 0.2, 1.0], [0.1, 0.9, 1.0], [0.8, 0.7, 1.0]])
+y_toy = np.array([0, 1, 1])
+w = np.zeros(3)  # start with "no opinion" — every score is 0.5
+
+p = sigmoid(X_toy @ w)
+loss = -np.mean(y_toy * np.log(p) + (1 - y_toy) * np.log(1 - p))
+grad = X_toy.T @ (p - y_toy) / len(y_toy)  # (prediction - truth), averaged, fed back through X
+w = w - 0.5 * grad  # one gradient-descent step: nudge w opposite the gradient
+
+print("start loss:", round(loss, 3))
+print("weights after one step:", w.round(3))
+```
+
+That `p - y_toy` term is the whole engine: score too high on a churner → push weights down; score too low → push up. `LogisticRegression.fit()` below just repeats this thousands of times on real features until the gradient is ~0.
+
+```
+loss
+ ^
+ |   ● start (random w)         prediction error
+ |    \                               ↓
+ |     ●                             loss
+ |      \                             ↓
+ |       ●                        gradient  (which way is downhill?)
+ |        \                           ↓
+ |         ● minimum (fit w)    parameter update  (w = w - lr * grad)
+ +----------------------→ w            ↓
+                                  new prediction (repeat)
+```
+
+Same loop every epoch: score the batch, turn errors into a loss number, use the gradient to find downhill, nudge every weight a little, re-score. `max_iter=1000` below is just "how many trips around that loop before we give up."
+
+**AUC** (area under the ROC curve) is ranking quality: if you sort users by score, do the actual churners tend to sit at the top? Formally, it is the probability that a randomly chosen churner scores higher than a randomly chosen non-churner (ties split their credit 50/50). **0.5 is a coin flip.** 1.0 is a perfect ranking. It is not accuracy, and it is not “percent chance they churn.”
 
 ```python
 df = build_features(as_of="2024-06-01")  # ~8k laptop sample; features stop at as_of
