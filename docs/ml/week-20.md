@@ -47,7 +47,7 @@ Pipeline (same thing, left to right):
 QKᵀ  →  divide by √dₖ  →  softmax  →  weights  →  weighted V
 ```
 
-Canonical equation: **Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V** (Vaswani et al., *Attention Is All You Need*). **Where this stops being true:** masking, multi-head, and rotary positions — still the same scaled-dot core.
+Canonical equation: **Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V** (Vaswani et al., *Attention Is All You Need*). Masking, multi-head, and rotary positions wrap that same scaled-dot core; they do not drop `/ √dₖ`.
 
 Because there is no left-to-right clipboard, the model does not know order unless you **add positions** (positional encodings). That is the whole trick: attention for content, positions for order.
 
@@ -134,11 +134,11 @@ Predict:
 
 1. Will each row of `weights` sum to 1?
 2. Will `"failed"` look mostly at itself, or at `"login"` / `"again"`?
-3. Why divide the scores by `sqrt(d)` before softmax — what would go wrong without it?
+3. Why divide the scores by `sqrt(d)` before softmax — what would go wrong without it? Check the unscaled panel against the scaled one.
 
 ## Run it
 
-Compare the heatmap with your prediction.
+Compare both heatmaps with your prediction.
 
 ## Explain the difference
 
@@ -153,22 +153,31 @@ X = torch.randn(len(tokens), d)          # pretend embeddings
 Wq = torch.randn(d, d); Wk = torch.randn(d, d); Wv = torch.randn(d, d)  # W_Q, W_K, W_V
 Q, K, V = X @ Wq, X @ Wk, X @ Wv
 d_k = d
-scores = Q @ K.T / d_k ** 0.5  # scale: QKᵀ / √dₖ
+scores_raw = Q @ K.T
+scores = scores_raw / d_k ** 0.5  # scale: QKᵀ / √dₖ
+weights_raw = torch.softmax(scores_raw, dim=-1)
 weights = torch.softmax(scores, dim=-1)
 out = weights @ V
 
-fig, ax = plt.subplots(figsize=(4.8, 4))
-im = ax.imshow(weights.detach().numpy(), cmap="YlOrRd", vmin=0, vmax=1)
-ax.set_xticks(range(3), tokens); ax.set_yticks(range(3), tokens)
-ax.set_xlabel("looking at"); ax.set_ylabel("token")
-ax.set_title("Attention weights (rows sum to 1)")
-for i in range(3):
-    for j in range(3):
-        ax.text(j, i, f"{weights[i, j]:.2f}", ha="center", va="center")
-fig.colorbar(im, ax=ax, fraction=0.046)
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 4))
+for ax, W, title in (
+    (axes[0], weights_raw, "Unscaled softmax(QKᵀ)"),
+    (axes[1], weights, "Scaled softmax(QKᵀ / √dₖ)"),
+):
+    im = ax.imshow(W.detach().numpy(), cmap="YlOrRd", vmin=0, vmax=1)
+    ax.set_xticks(range(3), tokens)
+    ax.set_yticks(range(3), tokens)
+    ax.set_xlabel("looking at")
+    ax.set_ylabel("token")
+    ax.set_title(title)
+    for i in range(3):
+        for j in range(3):
+            ax.text(j, i, f"{W[i, j]:.2f}", ha="center", va="center")
+    fig.colorbar(im, ax=ax, fraction=0.046)
 plt.tight_layout()
 plt.show()
 print("Each row is a probability distribution over who to read.")
+print("Without /√dₖ the unscaled panel saturates; scaled stays usable.")
 ```
 
 ## Why position encodings exist

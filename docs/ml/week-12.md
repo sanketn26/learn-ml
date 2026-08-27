@@ -167,7 +167,7 @@ print(sample.nlargest(8, "recon_error")[["user_id", "plan_type", "mrr", "total_u
 
 !!! warning "Watch out"
 
-    PCA axes are not causes. An anomaly is “does not compress well,” which might be a new customer type, a data bug, or a whale. Do not auto-ban them.
+    PCA axes are not causes. An anomaly here is “does not compress well,” which might be a new customer type or a data bug. Do not auto-ban them.
 
     Reconstruction residual only flags observations that fall **off** the kept axes — poorly represented by the retained subspace. A customer who is extreme but extreme *along* PC1 (say, a real whale — huge `mrr` and `total_usage` together) compresses fine and will not show up as high-residual. Treat reconstruction error as one anomaly signal, not a universal detector — pair it with a look at the raw columns.
 
