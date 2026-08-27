@@ -119,12 +119,35 @@ A coin-flip can sit near 0.5 ROC and still have PR-AUC ≈ the base rate. Report
 
 Week 7’s 0.73 is a **rank**. It is not “73% chance they churn” unless you check.
 
+!!! warning "A number in [0, 1] is not a calibrated probability"
+
+    A classifier can output a number in [0, 1] without that number being empirically calibrated.
+    For a calibrated model: predictions near 0.8 → about 80% actually positive.
+    Ranking well (AUC) does not imply the scores are honest percents. That is what [scikit-learn Probability Calibration](https://scikit-learn.org/stable/modules/calibration.html) is checking.
+
 ```
 calibration
   predicted 0.1  →  about 10% of those people should actually churn
   predicted 0.4  →  about 40%
+  predicted 0.8  →  about 80%   ← only if the model is calibrated
   a banana curve →  you are ranking fine and quoting odds like a liar
 ```
+
+## Before you run this
+
+Predict:
+
+1. Will the GBT’s dots sit on the dashed “honest” line?
+2. If they bow away, can the model still rank well?
+3. Why is a score of 0.8 not automatically “80% will churn”?
+
+## Run it
+
+Compare the reliability curve with your prediction.
+
+## Explain the difference
+
+If your prediction was wrong, what assumption was wrong?
 
 ```python
 # Horizon labels leave ~8 train positives after a time split — empty calibration bins.

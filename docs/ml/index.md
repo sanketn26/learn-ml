@@ -35,9 +35,32 @@ Required job path is **0–17**. Weeks **18–20** are pictures, not how CloudWa
 
 ## How to take it
 
+The recurring cycle:
+
+**analogy → visual → math → predict → run → compare → explain**
+
 1. Read the week on this site. Start at **Think of it like…** and **If you already write software**.
 2. Only then look at the code. It is there to prove the picture, not to be copied blindly.
-3. Do the [exercise](exercises/week-00.md) in `exercises/ml/week-XX/starter.py`.
-4. Answer the reflection prompts in a note to yourself. If you cannot explain the week to another engineer in five minutes, reread the analogy, not the formula.
+3. Before you run a block, write a prediction (what will move, what will not, why). Then run it and compare. If you were wrong, name the assumption that failed.
+4. Do the [exercise](exercises/week-00.md) in `exercises/ml/week-XX/starter.py`.
+5. Answer the reflection prompts in a note to yourself. If you cannot explain the week to another engineer in five minutes, reread the analogy, not the formula.
+
+On weeks that already have a **Before you run this** box, use it as written:
+
+```
+## Before you run this
+Predict:
+1. Which metric will improve?
+2. Which metric will worsen?
+3. Why?
+
+## Run it
+Compare your result with your prediction.
+
+## Explain the difference
+If your prediction was wrong, what assumption was wrong?
+```
+
+Not every week has “metrics.” Adapt the three questions to the picture (weights, residuals, a curve) — the cycle stays the same.
 
 [Week 0 — Strong Python →](week-00.md){ .md-button .md-button--primary }
