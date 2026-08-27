@@ -5,7 +5,7 @@ hide:
 
 <div class="course-hero">
   <div class="course-hero__content">
-    <span class="course-eyebrow">Analogies first · Then a picture · Then code</span>
+    <span class="course-eyebrow">Analogy · visual · math · predict · run · compare · explain</span>
     <h1>Ship ML and LLM systems<br><span>without a math degree.</span></h1>
     <p class="course-hero__lead">Courses for working software engineers. Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.</p>
     <div class="course-actions">
@@ -88,6 +88,7 @@ hide:
 | **If you already write software** | The mapping to APIs, SQL, reviews, CI. |
 | **Engineer mental model** | How this shows up in a codebase. |
 | **Watch out** | The foot-gun of the week. |
+| **Before you run this** | Predict which metric moves, then compare. |
 | **Ship / don’t ship** | A decision rule, not theory. |
 | **Exercise** | A separate page + a `starter.py` you run in a terminal. |
 

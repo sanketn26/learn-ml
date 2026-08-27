@@ -79,11 +79,17 @@ Ignore the word *regression*. This is a classifier.
 
 ```
 score = sigmoid( w1*mrr + w2*usage + w3*tenure + ... + b )
-         └── squash any number into (0, 1), like a probability
+         └── squash any number into (0, 1)  — a score, not a calibrated chance
 ```
 
 If the weighted sum is large and positive → score near 1 (likely churn).  
 If it is large and negative → score near 0.
+
+!!! warning "A number in [0, 1] is not a calibrated probability"
+
+    A classifier can output a number in [0, 1] without that number being empirically calibrated.
+    For a calibrated model: predictions near 0.8 → about 80% actually positive.
+    Until you check ([Week 8](week-08.md), [scikit-learn Probability Calibration](https://scikit-learn.org/stable/modules/calibration.html)), treat the score as a **rank**, not “80% chance they churn.”
 
 !!! math "Math, translated"
 
@@ -201,6 +207,22 @@ actually churned    miss               catch            ← saved revenue
 !!! engineer "Engineer mental model"
 
     Precision = “when we page CS, how often were we right?” Recall = “of everyone who churned, how many did we catch?” You cannot max both at a fixed staffing level. Pick the one that matches the cost of a miss vs a wasted call.
+
+## Before you run this
+
+Predict:
+
+1. If you raise the threshold from 0.2 to 0.7, which metric will improve (precision or recall)?
+2. Which will worsen?
+3. Why?
+
+## Run it
+
+Compare the three confusion matrices with your prediction.
+
+## Explain the difference
+
+If your prediction was wrong, what assumption was wrong?
 
 ```python
 proba = forest.predict_proba(X_test)[:, 1]

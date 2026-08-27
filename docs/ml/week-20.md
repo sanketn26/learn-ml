@@ -21,13 +21,15 @@
 
     **Values (V)** = the payload you actually mix in if the key matched.
 
-    Attention weights are a softmax over “how well does my query match each key.” Then you take the weighted sum of values. No clipboard. No left-to-right bottleneck. Every token does this *in parallel*.
+    Attention weights are a softmax over *scaled* query–key match: divide the dots by √dₖ so long vectors do not explode, then mix values. No clipboard. No left-to-right bottleneck. Every token does this *in parallel*.
+
+    Canonical: **Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V** (Vaswani et al., *Attention Is All You Need*).
 
 ## If you already write software
 
 A Transformer has **no loop**. Every token looks at every other token, in parallel, and decides who matters. That “who matters” is **attention**.
 
-Think of it as a **soft join**.
+Think of it as a **soft join**. **Mental model:** a query probes keys and mixes in values. **Simplification:** SQL has no scale factor. The similarity that actually ships is **scaled** dot-product attention.
 
 ```
 SQL                             Attention
@@ -35,9 +37,17 @@ SQL                             Attention
 probe row (query)               Q  — what am I looking for?
 table keys                      K  — what does each token advertise?
 table values                    V  — what does each token actually carry?
-JOIN ON similarity              softmax(QKᵀ)  — a distribution over partners
+JOIN ON similarity              softmax(QKᵀ / √dₖ)  — a distribution over partners
 SELECT values                   weighted sum of V
 ```
+
+Pipeline (same thing, left to right):
+
+```
+QKᵀ  →  divide by √dₖ  →  softmax  →  weights  →  weighted V
+```
+
+Canonical equation: **Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V** (Vaswani et al., *Attention Is All You Need*). Masking, multi-head, and rotary positions wrap that same scaled-dot core; they do not drop `/ √dₖ`.
 
 Because there is no left-to-right clipboard, the model does not know order unless you **add positions** (positional encodings). That is the whole trick: attention for content, positions for order.
 
@@ -93,24 +103,46 @@ tokens:     [  "login" , "failed" , "again" ]
                Q K V      Q K V      Q K V
                  \         |         /
                   \        |        /
-                   softmax(Q · Kᵀ)   ← who should I read?
-                         │
-                    mix of V's
+         QKᵀ → ÷ √dₖ → softmax → weights → mix of V
+                         ↑
+                  who should I read?
 ```
 
 !!! math "Math, translated"
 
-    `weights = softmax(Q @ K.T / sqrt(d))` → a row of positive numbers that sum to 1, one row per token. Divide by `sqrt(d)` so the dot products do not explode when the vectors are long. Then `output = weights @ V`. That is attention. Multi-head = several of these lookups in parallel, then concatenated — several reviewers reading for different things.
+    Canonical (Vaswani et al., *Attention Is All You Need*):
 
-`Q`, `K`, `V` are not three different pieces of the token — they are the **same embedding `X`**, run through three learned weight matrices: `Q = X·Wq`, `K = X·Wk`, `V = X·Wv`. Training is what decides what each matrix pays attention to.
+    **Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V**
+
+    Pipeline: `QKᵀ` → divide by `√dₖ` → softmax → weights → weighted `V`.
+
+    In code: `weights = softmax(Q @ K.T / sqrt(d_k))` → a row of positive numbers that sum to 1, one row per token. Divide by `sqrt(d_k)` so the dot products do not explode when the vectors are long. Then `output = weights @ V`. That is attention. Multi-head = several of these lookups in parallel, then concatenated — several reviewers reading for different things.
+
+`Q`, `K`, `V` are not three different pieces of the token — they are the **same embedding `X`**, run through three learned weight matrices: `Q = XW_Q`, `K = XW_K`, `V = XW_V`. Training is what decides what each matrix pays attention to.
 
 ```
 representation X
 
-        ┌── Wq → what am I searching for?
-X ──────┼── Wk → what do I match against?
-        └── Wv → what information do I contribute?
+        ┌── W_Q → Q = XW_Q  (what am I searching for?)
+X ──────┼── W_K → K = XW_K  (what do I match against?)
+        └── W_V → V = XW_V  (what information do I contribute?)
 ```
+
+## Before you run this
+
+Predict:
+
+1. Will each row of `weights` sum to 1?
+2. Will `"failed"` look mostly at itself, or at `"login"` / `"again"`?
+3. Why divide the scores by `sqrt(d)` before softmax — what would go wrong without it? Check the unscaled panel against the scaled one.
+
+## Run it
+
+Compare both heatmaps with your prediction.
+
+## Explain the difference
+
+If your prediction was wrong, what assumption was wrong?
 
 ```python
 # Tiny self-attention you can print
@@ -118,24 +150,34 @@ torch.manual_seed(0)
 tokens = ["login", "failed", "again"]
 d = 4
 X = torch.randn(len(tokens), d)          # pretend embeddings
-Wq = torch.randn(d, d); Wk = torch.randn(d, d); Wv = torch.randn(d, d)
+Wq = torch.randn(d, d); Wk = torch.randn(d, d); Wv = torch.randn(d, d)  # W_Q, W_K, W_V
 Q, K, V = X @ Wq, X @ Wk, X @ Wv
-scores = Q @ K.T / d ** 0.5
+d_k = d
+scores_raw = Q @ K.T
+scores = scores_raw / d_k ** 0.5  # scale: QKᵀ / √dₖ
+weights_raw = torch.softmax(scores_raw, dim=-1)
 weights = torch.softmax(scores, dim=-1)
 out = weights @ V
 
-fig, ax = plt.subplots(figsize=(4.8, 4))
-im = ax.imshow(weights.detach().numpy(), cmap="YlOrRd", vmin=0, vmax=1)
-ax.set_xticks(range(3), tokens); ax.set_yticks(range(3), tokens)
-ax.set_xlabel("looking at"); ax.set_ylabel("token")
-ax.set_title("Attention weights (rows sum to 1)")
-for i in range(3):
-    for j in range(3):
-        ax.text(j, i, f"{weights[i, j]:.2f}", ha="center", va="center")
-fig.colorbar(im, ax=ax, fraction=0.046)
+fig, axes = plt.subplots(1, 2, figsize=(9.2, 4))
+for ax, W, title in (
+    (axes[0], weights_raw, "Unscaled softmax(QKᵀ)"),
+    (axes[1], weights, "Scaled softmax(QKᵀ / √dₖ)"),
+):
+    im = ax.imshow(W.detach().numpy(), cmap="YlOrRd", vmin=0, vmax=1)
+    ax.set_xticks(range(3), tokens)
+    ax.set_yticks(range(3), tokens)
+    ax.set_xlabel("looking at")
+    ax.set_ylabel("token")
+    ax.set_title(title)
+    for i in range(3):
+        for j in range(3):
+            ax.text(j, i, f"{W[i, j]:.2f}", ha="center", va="center")
+    fig.colorbar(im, ax=ax, fraction=0.046)
 plt.tight_layout()
 plt.show()
 print("Each row is a probability distribution over who to read.")
+print("Without /√dₖ the unscaled panel saturates; scaled stays usable.")
 ```
 
 ## Why position encodings exist

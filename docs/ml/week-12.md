@@ -10,7 +10,7 @@
 - Picture PCA as **rotating the cloud** so the first axis points along the stretch
 - Read a scree plot: “how many axes until the leftover is noise?”
 - Use 2-D PCA as a map, not as a causal feature named “growth”
-- Spot odd customers via reconstruction error
+- Use PCA reconstruction residuals as one anomaly signal for observations poorly represented by the retained subspace
 - Know when *not* to bother (we only have a handful of columns)
 
 !!! think "Think of it like… photographing a dinner plate from above vs from the edge."
@@ -46,7 +46,9 @@ You already do a cheap version of this: `SELECT` five of two hundred correlated 
         │
         ▼
 a 2-D scatter you can actually look at
-+ a reconstruction error that flags oddballs
++ reconstruction residuals: one anomaly signal for points
+  poorly represented by the retained subspace
+  (not a universal oddball detector)
 ```
 
 ### What you must not do
@@ -134,22 +136,40 @@ A **loading** is how much each original column leans on that axis. Large absolut
 loadings = pd.DataFrame(pca.components_[:3].T, index=cols, columns=["PC1", "PC2", "PC3"])
 print(loadings.round(2).to_string())
 print("\nRead the biggest numbers in PC1 and name it in a Slack message.")
+```
 
-# Reconstruction error as 'does not fit the usual recipe'
+## Before you run this
+
+Predict:
+
+1. Will the highest reconstruction residuals be the customers with the largest `mrr`?
+2. Could a whale who is extreme *along* PC1 still reconstruct well?
+3. Why?
+
+## Run it
+
+Compare the high-residual rows with your prediction.
+
+## Explain the difference
+
+If your prediction was wrong, what assumption was wrong? Residual is one anomaly signal for points poorly represented by the retained subspace — not a universal detector.
+
+```python
+# Residual = how poorly this row is represented by the 3-PC subspace
 pca3 = PCA(n_components=3).fit(X)
 recon = pca3.inverse_transform(pca3.transform(X))
 err = ((X - recon) ** 2).sum(axis=1)
 sample = sample.copy()
 sample["recon_error"] = err
-print("\nOddballs (high reconstruction error):")
+print("\nHigh reconstruction residual (poorly represented by 3 PCs):")
 print(sample.nlargest(8, "recon_error")[["user_id", "plan_type", "mrr", "total_usage", "recon_error"]].to_string(index=False))
 ```
 
 !!! warning "Watch out"
 
-    PCA axes are not causes. An anomaly is “does not compress well,” which might be a new customer type, a data bug, or a whale. Do not auto-ban them.
+    PCA axes are not causes. An anomaly here is “does not compress well,” which might be a new customer type or a data bug. Do not auto-ban them.
 
-    Reconstruction error only catches oddballs that fall **off** the kept axes. A customer who is extreme but extreme *along* PC1 (say, a real whale — huge `mrr` and `total_usage` together) compresses fine and will not show up as high-residual. Treat reconstruction error as one anomaly signal, not the whole detector — pair it with a look at the raw columns.
+    Reconstruction residual only flags observations that fall **off** the kept axes — poorly represented by the retained subspace. A customer who is extreme but extreme *along* PC1 (say, a real whale — huge `mrr` and `total_usage` together) compresses fine and will not show up as high-residual. Treat reconstruction error as one anomaly signal, not a universal detector — pair it with a look at the raw columns.
 
 
 !!! success "Ship / don’t ship"

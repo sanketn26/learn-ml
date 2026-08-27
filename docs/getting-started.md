@@ -33,9 +33,9 @@ You do **not** need prior ML, calculus, linear algebra, a statistics degree, Jup
 
 ## Read the lessons
 
-This site *is* the course. Open a week, read the analogy, look at the picture, then the code block.
+This site *is* the course. Open a week and follow **analogy → visual → math → predict → run → compare → explain**. Read the analogy, look at the picture, predict what the next code block will do, then run it and compare.
 
-If you only want the intuition, stop there. The code is proof, not a ritual.
+If you only want the intuition, stop at the picture. The code is proof, not a ritual.
 
 ## Run the exercises
 
