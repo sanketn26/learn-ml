@@ -36,3 +36,23 @@ Fill:
 - Both rows filled
 - The conclusion may be “keep the one worker” or “keep two functions from week 2”
 - No Kubernetes / Prometheus / Docker requirement
+
+## Predict before you run
+
+Will the crew of three beat one worker on *elapsed time*, or only on “risks present”? Is `calls == 3` a win?
+
+## Runnable command
+
+```bash
+python your_one_vs_crew.py
+```
+
+Time both with `time.perf_counter`. No Docker, no 500 RPS.
+
+## Expected observation
+
+Table filled: calls, elapsed, risks present, keep-this-version. Conclusion may be “keep the one worker.”
+
+## Self-check
+
+The “done when” is the comparison, not a worker pool. No Kubernetes.

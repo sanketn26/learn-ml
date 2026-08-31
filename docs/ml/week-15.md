@@ -272,6 +272,10 @@ In one page: (1) the time wall you used, (2) holdout AUC vs a dummy, (3) the 80-
 
 When you can explain the week out loud, do the [exercises](exercises/week-15.md). Starter: `python exercises/ml/week-15/starter.py` from the repo root.
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-15-the-pickle) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next: the job, then (optionally) deep learning
 
 You can refuse a leak, demand a baseline, and staff a threshold. Next:

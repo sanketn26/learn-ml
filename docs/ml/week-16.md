@@ -180,6 +180,10 @@ print("precision@80", float(knowable["y"].mean()) if len(knowable) else "still c
 2. Tomorrow’s PR-AUC is 0.01 worse than prod. Promote? Wait? Page?
 3. Why is “we will clean the features up in the handler” a pipeline bug, not a style comment?
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-16-the-job) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next week
 
 You are on-call. A bad join, a leaked label, a silent NaN. Then a ticket bot that uses this score as a *tool*, not as a personality.

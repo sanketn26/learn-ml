@@ -36,3 +36,23 @@ Invoke a **different** `thread_id` after the crash (do not resume `t1`).
 
 - The new thread starts at node 1 (`RUNS["n1"]` increments)
 - You can explain in one sentence why `thread_id` is the resume key
+
+## Predict before you run
+
+After a crash in node 3, are `RUNS["n1"]` and `RUNS["n2"]` still 1? A new `thread_id` — does it resume n3 or start at n1?
+
+## Runnable command
+
+```bash
+python your_memorysaver_resume.py
+```
+
+Use LangGraph 0.2's `MemorySaver`, not a homemade `Checkpoint` class.
+
+## Expected observation
+
+Crash leaves n1/n2 at 1. Resume with `crash=False` runs n3 (count 2). A different thread increments n1.
+
+## Self-check
+
+`thread_id` is the resume key. `invoke(None, config)` continues; a new thread does not.

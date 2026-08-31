@@ -61,6 +61,10 @@ The same tasks are also on the site under **ML Fundamentals → Exercises**.
 
 Work from the repo root so `lib/course_data.py` can find `data/`.
 
+!!! tip "CloudWave files"
+
+    Column-by-column schemas: [Datasets](data.md). Download links and extra access notes: [`DATASET_GUIDE.md`](https://github.com/sanketn26/learn-ml/blob/main/DATASET_GUIDE.md) in the repo. Everything you need is already in `data/` after clone — `find_data_dir()` / `load_customer_360()` (laptop sample ~8k) or `build_features` (the as-of path).
+
 ## Optional: run it in Docker instead
 
 Skip this if `pip install -r requirements.txt` already worked. It exists for two situations: your local Python/`pip` fights you (version conflicts, a broken `torch` install, Windows path issues), or you use VS Code and want an isolated environment without touching your machine's Python at all.

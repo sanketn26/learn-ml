@@ -33,3 +33,21 @@ Do **not** add vote/re-vote/CEO-aggregate code.
 
 - The file has no `votes =` / `consensus` loop
 - One sentence: a human gate is LangGraph week 4, not a CrewAI poll
+
+## Predict before you run
+
+Does building a `Crew(..., process=Process.sequential)` call an LLM? Who owns the final string in sequential vs hierarchical?
+
+## Runnable command
+
+```bash
+python your_crew_process.py   # construct only — no kickoff()
+```
+
+## Expected observation
+
+`crew.process == Process.sequential` and `t2.context == [t1]`. Hierarchical flag set without a fake manager LLM.
+
+## Self-check
+
+No vote/re-vote/CEO loop. A human gate is LangGraph week 4, not a CrewAI poll.

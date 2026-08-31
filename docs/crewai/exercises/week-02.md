@@ -37,3 +37,25 @@ Write three sentences explaining which version you would keep for this job and w
 - The downstream task consumes the upstream artifact rather than hidden global state.
 - The comparison reports calls and elapsed time for both implementations.
 - The conclusion is allowed to be “use two functions.”
+
+## Predict before you run
+
+If `summarize_changes` drops `risks`, does `draft_release_note` still run? Which version — functions or crew — makes fewer model calls?
+
+## Starter / TODO
+
+Ordinary Python functions are enough. Do not import `langchain` or `crewai_tools`.
+
+## Runnable command
+
+```bash
+python your_task_contract.py
+```
+
+## Expected observation
+
+Happy path has all six fields. Missing `risks` stops the writer. Comparison table has calls and elapsed time.
+
+## Self-check
+
+The downstream task consumes the upstream artifact, not a hidden global. “Use two functions” is an allowed conclusion.

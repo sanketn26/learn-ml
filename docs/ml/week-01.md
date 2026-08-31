@@ -294,6 +294,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-01.md)
 2. Why can the **mean** of CloudWave usage lie to a PM, while the **median** and **p90** tell a better story?
 3. Broadcasting failed with `operands could not be broadcast`. What do you inspect first? (Print `.shape`. Align from the right.)
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-1-numpy) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next week
 
 Pandas: joins, group-bys, and building a Customer 360 table — the bread and butter of SaaS analytics. NumPy stays underneath.

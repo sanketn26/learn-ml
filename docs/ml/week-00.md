@@ -289,6 +289,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-00.md)
 2. Why is `MeanBaseline` a class instead of a function?
 3. Which of the five foot-guns have you already shipped in another language?
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-0-strong-python) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next week
 
 NumPy: the same CloudWave numbers, but as a typed column the CPU can chew in one gulp.

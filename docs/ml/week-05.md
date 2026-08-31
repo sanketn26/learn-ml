@@ -213,6 +213,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-05.md)
 2. Why did 8/50 vs 12/60 fail, while the full table’s plan comparison did not?
 3. You ran 12 ad-hoc tests on one Friday. How many “wins” do you expect by luck at α = 0.05?
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-5-signal-vs-noise) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next week
 
 Feature engineering — turning Customer 360 columns into the **API contract** of a model, without leaking the future into the past.

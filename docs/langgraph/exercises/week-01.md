@@ -34,3 +34,31 @@ A node that only knows the decision returns `{"decision": "docs"}` and does not 
 
 - `classify(...)` returns a dict whose keys are a subset of the state schema
 - Two invokes do not share a list object (no leaked labels from ticket 1 into ticket 2)
+
+## Predict before you run
+
+Does `"I want a refund"` ever enter the docs node? After a docs ticket, is `log` `["classified", "docs"]` or did you `.append` in place?
+
+## Starter / TODO
+
+```python
+import operator
+from typing import Annotated, Literal, TypedDict
+from langgraph.graph import END, START, StateGraph
+# TODO: classify → route → docs OR refund_queue
+# TODO: log: Annotated[list[str], operator.add]
+```
+
+## Runnable command
+
+```bash
+python your_ticket_graph.py   # compile + invoke, no API key
+```
+
+## Expected observation
+
+Two inputs, two paths. Refund path never increments a docs counter. Partial updates return a subset of the state keys.
+
+## Self-check
+
+Return **partial** dicts. Use a list reducer. Two invokes do not share a list object.

@@ -37,3 +37,21 @@ In five lines, list which week each piece is (branch / reducer, optional extra n
 
 - No `ApprovalRequest` class
 - No loan-underwriting project
+
+## Predict before you run
+
+After the first `invoke` with `interrupt_before=["approve"]`, does `get_state(config).next` include `approve`? Has `executed` already been logged?
+
+## Runnable command
+
+```bash
+python your_refund_approval.py
+```
+
+## Expected observation
+
+Pause before approve. Three `thread_id`s: executed / cancelled / asked-for-info. No `ApprovalRequest` class.
+
+## Self-check
+
+Weeks 1–4 pieces named. The write is still at-least-once until week 5 keys it.

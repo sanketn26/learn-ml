@@ -108,6 +108,10 @@ The ML course uses one fake SaaS company. Same customers all the way through.
 
 Laptop mode samples ~8k customers so a week finishes in a few minutes on 8 GB RAM. Billing is clipped at 2024-11-30 (~49k customers).
 
+!!! tip "Where the files live"
+
+    Schemas, grain, and download links: [CloudWave datasets](data.md). The same tables, with extra access notes, are in [`DATASET_GUIDE.md`](https://github.com/sanketn26/learn-ml/blob/main/DATASET_GUIDE.md) at the repo root. Load them with `lib.course_data.find_data_dir` / `load_customer_360` — do not hunt for a Kaggle zip.
+
 [How to run the exercises →](getting-started.md){ .md-button .md-button--primary }
 [Dataset schemas →](data.md){ .md-button }
 
