@@ -5,6 +5,20 @@
 
 A **Convolutional Neural Network** is not “the image one.” It is: **reuse a tiny detector at every position.**
 
+!!! warning "Weeks 18–20 are intuition, not a research lab"
+
+    They build the pictures required to understand modern ML systems. They do **not** teach research-level neural-network or transformer training from scratch.
+
+    After week 20 you should be able to:
+
+    - explain convolution, recurrence, and attention as software analogies
+    - know when a tree still wins on SaaS tables
+    - read a high-level transformer block diagram
+
+    You should **not** expect to implement FlashAttention, train GPT from scratch, or debug CUDA kernels.
+
+    Next step (short list): [Karpathy, Zero to Hero](https://karpathy.ai/zero-to-hero.html), [fast.ai](https://www.fast.ai/), a standard DL book/course. Not this syllabus.
+
 ---
 
 ## 🎯 What you will be able to do
@@ -215,6 +229,10 @@ When you can explain the week out loud, do the [exercises](exercises/week-18.md)
 1. Why does weight sharing beat “a separate weight per day” on images?
 2. What does max-pool throw away, and when is that a feature?
 3. Would you CNN a one-hot `plan_type`? Why not?
+
+## Before you leave
+
+Try one item from [self-checks — weeks 18–20](self-checks.md#weeks-18-20-dl-pictures-optional). These weeks are pictures, not a research lab.
 
 ## 🔗 Next week
 

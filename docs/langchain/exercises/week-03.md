@@ -13,3 +13,26 @@ Do these after reading [Week 3 — Agents & Tools](../week-03.md). The loop in t
 
 !!! example "4. Docstring as API"
     Give `get_account_balance` a useless docstring (`"gets stuff"`). Call the same question. Then write the docstring you actually want. What changed in the trace?
+
+## Predict before you run
+
+If the loop picks a missing tool name, do you spin forever or stop at `MAX_STEPS`? Does a useless docstring change the *trace*, or only your feelings?
+
+## Starter / TODO
+
+Write ordinary functions (`get_account_balance`, `get_billing_date`). Then the lesson's thought/action/observation **loop** by hand — no agent class. Leave `issue_refund` unhooked.
+
+## Runnable command
+
+```bash
+# no API key — this is a Python loop with dict lookups
+python your_week03_loop.py
+```
+
+## Expected observation
+
+A printed trace for `user_0001` with a balance and a billing date. A missing tool name stops at `MAX_STEPS` with a clear error.
+
+## Self-check
+
+`issue_refund` is not reachable from the loop. A docstring of `"gets stuff"` is an API bug, not a prompt-engineering flex.

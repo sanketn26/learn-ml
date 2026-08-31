@@ -35,3 +35,23 @@ Run q1–q5 from the lesson. Print a table: `id, retrieved_ok, refuse, gold_sour
 - q1–q3: gold source is in the retrieved ids
 - q4: retrieval miss and `refuse is True`
 - q5: you record a **generation** check (no invented Enterprise discount), separate from retrieval
+
+## Predict before you run
+
+Does `"export 150k rows timeout"` retrieve a runbook or a miss? On a miss, do you still call the LLM?
+
+## Runnable command
+
+```bash
+python -c "from langchain_core.prompts import ChatPromptTemplate; print('ok')"
+```
+
+Your overlap retriever is plain Python. Run it from the repo root. No embeddings API.
+
+## Expected observation
+
+API-key question hits `api-keys`. The export question returns `[]` and `refuse is True`. q1–q3 gold sources are in the retrieved ids.
+
+## Self-check
+
+You did not treat random hash vectors as semantic search. Retrieval miss ≠ “let the model improvise.”

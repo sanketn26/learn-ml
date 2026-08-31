@@ -28,3 +28,21 @@ Use `RetryPolicy` on a node **or** the lesson’s `with_retry` wrapper (label it
 
 - Call counter is 3
 - A node that only formats a string is **not** retried (it is not wrapped)
+
+## Predict before you run
+
+If you drop `operator.add` on the notes list, does one branch's string disappear? Does a string-formatting node get retried?
+
+## Runnable command
+
+```bash
+python your_fanout_graph.py   # compile the graph; fail twice, succeed third
+```
+
+## Expected observation
+
+`set(result["notes"])` has both branch strings. Retry call counter is 3. Inner `kyc_check` graph is passed to `add_node`.
+
+## Self-check
+
+Retry is compiled, not a comment. You did not copy-paste five functions instead of a subgraph.

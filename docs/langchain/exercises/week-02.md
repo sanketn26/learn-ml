@@ -34,3 +34,23 @@ Create one `ConversationBufferMemory()`, `save_context` twice, and note in two c
 
 - `load_memory_variables({})["history"]` is non-empty
 - You did **not** use that single object as the store for both Alice and Bob
+
+## Predict before you run
+
+After 6 turns with `history[-4:]`, is turn 1 still in Alice's list? If Alice and Bob share one `ConversationBufferMemory`, whose laptop shows up in Bob's history?
+
+## Runnable command
+
+```bash
+python -c "from langchain_core.messages import HumanMessage; print(HumanMessage(content='hi').content)"
+```
+
+Paste your `chat(session_id, text)` into a `.py` file and run it from the repo root. No API key.
+
+## Expected observation
+
+Two keys in `sessions`. Alice mentions a laptop; Bob does not. After the trim, `len(sessions['alice']) == 4`.
+
+## Self-check
+
+`isinstance(sessions["alice"][0], HumanMessage)` is True. You did not use one legacy memory object for both people.

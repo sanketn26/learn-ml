@@ -44,9 +44,13 @@ artifacts/
 *.pkl
 *.joblib
 tonight.csv
+solutions/**/*.png
 
 # Generated trajectory splits from the LLM capstone (capstone/teacher.py)
 capstone/data/
+
+# Formatted LoRA files / adapters (Phase 3)
+capstone/finetune/artifacts/
 
 # MkDocs
 site/

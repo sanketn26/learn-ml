@@ -74,6 +74,7 @@ nav:
   - Datasets: data.md
   - ML Fundamentals:
       - Overview: ml/index.md
+      - Self-checks: ml/self-checks.md
       - Week 0 — Strong Python: ml/week-00.md
       - Week 1 — NumPy: ml/week-01.md
       - Week 2 — Pandas: ml/week-02.md

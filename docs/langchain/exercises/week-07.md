@@ -11,3 +11,22 @@ Do these after reading [Week 7](../week-07.md).
 **4. Cost line.** Assume 800 tokens in, 200 out, $0.75 / 1M in, $4.50 / 1M out, 2,000 asks/day. Print dollars/day. If you add a second serial call that doubles tokens, print the new number.
 
 Starter: there is no model to install. The firewall is the point.
+
+## Predict before you run
+
+Does `python -m eval.router` exit 0 *before* you add the sixth golden line? After you add “Will user_041906 leave us next month?” without touching `allowed_tools`, what fails?
+
+## Runnable command
+
+```bash
+python -m eval.router
+pytest tests/test_eval_router.py
+```
+
+## Expected observation
+
+`failures 0` once the allowlist maps the new churn phrasing to `get_churn_score`. Ticket `t2` still calls nothing even if `issue_refund` exists as a Python function.
+
+## Self-check
+
+`allowed_tools` is a keyword firewall, not a prompt. Empty `hits` + non-churn question → `refuse is True`. Print dollars/day for the cost line.

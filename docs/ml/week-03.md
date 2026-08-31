@@ -163,6 +163,10 @@ Do the [exercises](exercises/week-03.md). The SQL lives in your head and in `pip
 2. A PM emails you a new CSV “with extra features.” What is your first question?
 3. When would you *keep* the 360 in SQL (DuckDB, warehouse) instead of bringing it into Pandas?
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-3-as_of) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next
 
 If you came from Week 2: go on to Week 4 (charts).  

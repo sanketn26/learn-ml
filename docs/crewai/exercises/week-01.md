@@ -34,3 +34,23 @@ Optional: wrap the agent in a `Task` + `Crew(process=Process.sequential)` and as
 
 - `crew.tasks[0].agent is agent` (or same role)
 - Still no `kickoff()`
+
+## Predict before you run
+
+Does constructing an `Agent` call a model? Does `lookup_plan("nope")` raise or return `"unknown"`?
+
+## Runnable command
+
+```bash
+python -c "from crewai import Agent; print(Agent.__name__)"
+```
+
+If CrewAI is not installed: `pip install -r requirements-crewai.txt` in `.venv-crewai`. Do not `kickoff()`.
+
+## Expected observation
+
+`agent.role` is the string you passed. `allow_delegation is False`. Unknown user id is the string `"unknown"`.
+
+## Self-check
+
+No `langchain`, no `crewai_tools`, no Serper, no `!pip`. Roster ≠ a run.

@@ -33,6 +33,22 @@ CloudWave is a fake B2B SaaS company. You will use the same customers from “wh
 
 Required job path is **0–17**. Weeks **18–20** are pictures, not how CloudWave ships churn. The [capstone](capstone.md) is further still — the only page in this course that needs a GPU.
 
+!!! warning "Weeks 18–20 are a boundary, not a research lab"
+
+    They build the intuition required to understand modern ML systems. They do **not** teach research-level neural-network or transformer training from scratch.
+
+    After week 20 you should be able to:
+
+    - explain convolution, recurrence, and attention as software analogies
+    - know when a tree still wins on SaaS tables
+    - read a high-level transformer block diagram
+
+    You should **not** expect to implement FlashAttention, train GPT from scratch, or debug CUDA kernels.
+
+    Next step if you want that path (short list): [Karpathy's Neural Networks: Zero to Hero](https://karpathy.ai/zero-to-hero.html), [fast.ai](https://www.fast.ai/), a standard DL book/course (Goodfellow/Bengio/Courville, or a university intro). Not this syllabus.
+
+After each required week, try one item on the [reasoning self-checks](self-checks.md) page (Predict / Diagnose / Choose / Defend).
+
 ## How to take it
 
 The recurring cycle:

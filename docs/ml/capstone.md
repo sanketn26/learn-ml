@@ -106,12 +106,24 @@ print(write_splits(Path('capstone/data')))"
 
     This gets you a **first, small, correct-by-construction dataset** — good enough to prove the pipeline end to end. To actually specialize a model you need hundreds of examples per tool, most of which you can't hand-write. That's when you point a stronger **teacher model** (called with the exact same `tools.TOOLS` schema, via API) at a larger bank of scenarios and use its output — after it, too, passes `validate_call()`. Never train on a trajectory that fails your own schema check; a teacher that emits garbage will teach the student to emit garbage, just more confidently.
 
-## Phase 3 — fine-tune on Colab
+## Phase 3 — fine-tune (scaffold first, Colab for the GPU)
 
-This is the one phase that does not run on your laptop. Open a Colab notebook with a T4/L4 GPU runtime.
+This is the one phase that does not run a real train on your laptop. The **scaffold** in [`capstone/finetune/`](https://github.com/sanketn26/learn-ml/tree/main/capstone/finetune) *does* run on CPU: it formats trajectories, checks them against `validate_call`, prints the LoRA config, and refuses to download a 270M checkpoint.
+
+```bash
+python capstone/finetune/prepare_data.py --dry-run
+python capstone/finetune/train_lora.py --dry-run
+python capstone/finetune/evaluate_adapter.py --dry-run
+```
+
+`--dry-run` is the laptop path (and CI). Real training still wants a GPU.
+
+### Colab (optional, same recipe as the scripts)
+
+Open a Colab notebook with a T4/L4 GPU runtime. `pip install -r requirements-capstone.txt` **in Colab**, not into the course venv. Then either run the scripts above without `--dry-run`, or paste the Unsloth sketch:
 
 ```python
-# Colab cell — Unsloth QLoRA fine-tune sketch
+# Colab cell — Unsloth QLoRA fine-tune sketch (same knobs as train_lora.py)
 from unsloth import FastLanguageModel
 
 model, tokenizer = FastLanguageModel.from_pretrained(
@@ -122,12 +134,12 @@ model, tokenizer = FastLanguageModel.from_pretrained(
 model = FastLanguageModel.get_peft_model(
     model, r=16, lora_alpha=16, target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
 )
-# train on capstone/data/train.jsonl formatted as (input, tool_call) pairs
+# train on capstone/finetune/artifacts/train.formatted.jsonl
 # ... SFTTrainer(...).train()
 model.save_pretrained_gguf("coding-specialist-q4", tokenizer, quantization_method="q4_k_m")
 ```
 
-Download the resulting `.gguf` file and run it locally with `llama.cpp` or `ollama` — that's the "must run locally" half of the deliverable satisfied without ever fine-tuning on your own machine.
+Download the resulting `.gguf` (or adapter) and run it locally with `llama.cpp` or `ollama` — that's the "must run locally" half of the deliverable without fine-tuning on your own machine. Read [`capstone/finetune/README.md`](https://github.com/sanketn26/learn-ml/blob/main/capstone/finetune/README.md) for hardware, flags, and what *not* to expect.
 
 ### Base model: don't take FunctionGemma on faith
 
@@ -192,7 +204,7 @@ Out of the box, `specialist_call` returns the golden answer — a *placeholder c
 
 ## ✍️ Exercise
 
-When you can explain the phases out loud, do the [exercises](exercises/capstone.md). Start with `python exercises/ml/capstone/starter.py` from the repo root — it runs Phases 1, 2, 4, and 5 entirely offline. Phase 3 (Colab) is a separate step described in the exercise README.
+When you can explain the phases out loud, do the [exercises](exercises/capstone.md). Start with `python exercises/ml/capstone/starter.py` from the repo root — it runs Phases 1, 2, 4, and 5 entirely offline. Phase 3 starts as `python capstone/finetune/prepare_data.py --dry-run` on a laptop; Colab is the GPU option.
 
 ## 🤔 Reflection
 

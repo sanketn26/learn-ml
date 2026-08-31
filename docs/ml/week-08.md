@@ -210,6 +210,10 @@ CloudWave’s fixture has no emails. Your real warehouse will. Rule:
 2. Why can ROC-AUC look “fine” when the 80-call list is junk?
 3. CS asks “so this account is 80% likely to churn?” What do you actually know?
 
+## Before you leave
+
+Try one [self-check](self-checks.md#week-8-labels) (Predict / Diagnose / Choose / Defend). Write the answer before you open the block.
+
 ## 🔗 Next week
 
 Ranking. Most SaaS models are not “yes/no.” They are “who is at the top of the list.”

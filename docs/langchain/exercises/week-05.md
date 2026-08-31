@@ -28,3 +28,21 @@ Print `trace.steps` for one pass and one fail.
 
 - Each step is a dict with `"name"`
 - You did not require `LANGCHAIN_API_KEY`
+
+## Predict before you run
+
+Can a row be `quality_pass True` and `sla_ok False` at the same time? If angry billing is patched onto `documentation_search`, which flag flips?
+
+## Runnable command
+
+```bash
+python your_golden_suite.py   # local Trace dicts, no LangSmith
+```
+
+## Expected observation
+
+Six cases. Accuracy and `tool_ok` scored separately from `sla_ok`. Forced failure still has a `route` span naming the wrong tool.
+
+## Self-check
+
+You never wrote `relevance_score = 1.0 if latency_ok else 0.5`. You did not create a LangSmith account.

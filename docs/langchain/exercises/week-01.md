@@ -39,3 +39,23 @@ Step 1 classifies `bug` / `feature` / `question`. Step 2 picks a canned reply. U
 - `branch.invoke({"category": "bug"})` (or your `if`) is deterministic — no extra model call for the route.
 
 Do not invent a 14-field schema. Do not call a live provider.
+
+## Predict before you run
+
+Will `JsonOutputParser` return a Pydantic instance or a `dict`? After three forced failures, does an exception escape or do you get `escalate is True`?
+
+## Runnable command
+
+Copy the lesson snippet + your TODOs into a local `.py` file. No API key (`FakeListLLM`).
+
+```bash
+python -c "from langchain_community.llms import FakeListLLM; print('ok', FakeListLLM(responses=['{}']))"
+```
+
+## Expected observation
+
+Each invoke is a dict with your five keys. Two failures then a success returns the success dict. A third failure returns the fallback — no traceback.
+
+## Self-check
+
+Did you call a live provider? If yes, undo it. Concept demos in this track are fake models.

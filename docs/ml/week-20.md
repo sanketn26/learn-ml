@@ -324,4 +324,8 @@ When you can explain the week out loud, do the [exercises](exercises/week-20.md)
 | **ML fundamentals** (regression, classification, overfit, bias, variance) | Weeks 6–10 |
 | **Deep learning** (nets, CNN, RNN, Transformer, the training loop) | Weeks 14, 18–20 |
 
+## Before you leave
+
+Try one item from [self-checks — weeks 18–20](self-checks.md#weeks-18-20-dl-pictures-optional). You should be able to read a block diagram — not implement FlashAttention.
+
 The LangChain course is what you do when the Transformer *already exists* and you need to wire it into a product. You are ready for it.
