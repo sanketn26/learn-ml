@@ -1,5 +1,5 @@
 ---
-description: Treat feature engineering as an API contract: scaling, one-hot encoding, and avoiding train/test leakage before a model ships.
+description: "Treat feature engineering as an API contract: scaling, one-hot encoding, and avoiding train/test leakage before a model ships."
 ---
 
 # Week 6 — Features Are the Model’s API
