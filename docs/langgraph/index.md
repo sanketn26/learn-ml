@@ -1,3 +1,7 @@
+---
+description: A five-week LangGraph track on treating LLM work as a state machine, covering branching graphs, fan-out, checkpoints, human approval, and idempotent writes.
+---
+
 # LangGraph
 
 Five weeks on LLM work as a **state machine**: nodes are functions, edges are control flow, state is the request-scoped object you already thread through a saga.

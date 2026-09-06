@@ -1,3 +1,7 @@
+---
+description: Build a churn-by-plan snapshot, a region mix via groupby and join, and a row-count join validator using Pandas on CloudWave subscription data.
+---
+
 # Exercises — Week 2 — Pandas: SQL You Already Know, in Python
 
 ## What you are building

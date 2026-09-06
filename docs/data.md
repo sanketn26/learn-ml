@@ -1,3 +1,7 @@
+---
+description: Reference for the synthetic CloudWave SaaS datasets used across the course, including subscriptions, events, feature usage, and feedback.
+---
+
 # CloudWave datasets
 
 Synthetic SaaS data, checked into `data/`. One company all the way through the ML course.

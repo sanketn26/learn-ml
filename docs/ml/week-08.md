@@ -1,3 +1,7 @@
+---
+description: Fix mislabeled churn data by defining a time-boxed label, handling censoring, and reading PR-AUC when positive cases are rare.
+---
+
 # Week 8 — Labels Lie
 
 **Course:** Applied ML Foundations for SaaS Analytics  

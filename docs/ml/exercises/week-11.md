@@ -1,3 +1,7 @@
+---
+description: Compare a gradient-boosted ranker against ORDER BY baselines using precision@k and recall@k, then pre-register k to avoid p-hacking the cutoff.
+---
+
 # Exercises — Week 11 — Rank a List
 
 ## What you are building

@@ -1,3 +1,7 @@
+---
+description: Turn a churn training script into a versioned model artifact with a validated prediction contract, latency checks, and a real threshold.
+---
+
 # Week 15 — The Pickle: A Training Script Is Not Production
 
 **Course:** Applied ML Foundations for SaaS Analytics  

@@ -1,3 +1,7 @@
+---
+description: Compare CrewAI's sequential and hierarchical Process modes as staffing choices and see who owns the final ticket in each.
+---
+
 # Week 3 — Sequential vs hierarchical
 
 **Course:** CrewAI  

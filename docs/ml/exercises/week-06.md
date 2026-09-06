@@ -1,3 +1,7 @@
+---
+description: Compare an honest vs a leaked feature scaler, test a missingness flag, and write a contract test that validates a model's score payload.
+---
+
 # Exercises — Week 6 — Features Are the Model's API
 
 ## What you are building

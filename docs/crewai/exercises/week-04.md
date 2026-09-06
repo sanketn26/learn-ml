@@ -1,3 +1,7 @@
+---
+description: Measure calls, latency, and quality for a single-function worker versus a three-role CrewAI crew on the same changelog job.
+---
+
 # Exercises — Week 4 — One worker vs crew
 
 Do these after reading [Week 4](../week-04.md). The “done when” is the comparison. No Docker, no worker pool, no 500 RPS.

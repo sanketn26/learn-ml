@@ -1,3 +1,7 @@
+---
+description: Wire a FastAPI chat endpoint with async LangChain invocation, a timeout-triggered fallback, and a FIFO response cache.
+---
+
 # Exercises — Week 6 — Local handler
 
 Do these after reading [Week 6](../week-06.md). Local FastAPI + timeout/fallback is enough. No cloud deploy, no 100 concurrent users.

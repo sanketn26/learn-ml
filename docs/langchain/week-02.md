@@ -1,3 +1,7 @@
+---
+description: Build per-session chat memory in LangChain by keying message history like a Redis session store, bounding growth, and avoiding cross-user leaks.
+---
+
 # Week 2 — Memory is a session store
 
 **Course:** LangChain  

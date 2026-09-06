@@ -1,3 +1,7 @@
+---
+description: Predict continuous values with linear regression and random forests, scoring with MAE against a mean baseline and residual plots.
+---
+
 # Week 9 — Regression: Predict a Number, Not a Category
 
 **Course:** Applied ML Foundations for SaaS Analytics  

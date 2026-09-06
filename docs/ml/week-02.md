@@ -1,3 +1,7 @@
+---
+description: Master Pandas DataFrames by mapping SQL joins and group-by operations you already know, while building a Customer 360 table.
+---
+
 # Week 2 — Pandas: SQL You Already Know, in Python
 
 **Course:** Applied ML Foundations for SaaS Analytics  

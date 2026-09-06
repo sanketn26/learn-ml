@@ -1,3 +1,7 @@
+---
+description: Hands-on exercises building a branching LangGraph ticket-routing graph with partial state updates and a list reducer for append-only logging.
+---
+
 # Exercises — Week 1 — Branching state
 
 Do these after reading [Week 1](../week-01.md). The “done when” is two inputs taking different paths. Return **partial** dicts. Use a list reducer.

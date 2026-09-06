@@ -1,3 +1,7 @@
+---
+description: Compare horizon vs lifetime churn labels under censoring, evaluate PR-AUC against ROC-AUC on rare positives, and check a model's calibration curve.
+---
+
 # Exercises — Week 8 — Labels Lie
 
 ## What you are building

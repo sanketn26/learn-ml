@@ -1,3 +1,7 @@
+---
+description: Prerequisites and readiness check for this ML course, covering the software engineering background required before Week 0.
+---
+
 # Getting started
 
 You do not need Jupyter. You do not need a GPU.

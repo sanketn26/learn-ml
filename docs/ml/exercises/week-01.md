@@ -1,3 +1,7 @@
+---
+description: NumPy exercises computing feature-usage totals, normalizing a user-by-feature matrix with broadcasting, and identifying the top 1% usage whales.
+---
+
 # Exercises — Week 1 — NumPy: Fast Math on Whole Columns
 
 ## What you are building

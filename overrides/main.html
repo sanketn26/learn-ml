@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {{ super() }}
+  {% if page and page.is_homepage %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": "{{ config.site_name }}",
+    "description": "{{ config.site_description }}",
+    "provider": {
+      "@type": "Organization",
+      "name": "{{ config.site_author }}",
+      "sameAs": "{{ config.repo_url }}"
+    },
+    "url": "{{ config.site_url }}",
+    "isAccessibleForFree": true,
+    "hasCourseInstance": {
+      "@type": "CourseInstance",
+      "courseMode": "online",
+      "courseWorkload": "PT80H"
+    },
+    "about": [
+      "Machine Learning", "CrewAI", "LangChain", "LangGraph",
+      "Multi-Agent Systems", "Applied Statistics", "Neural Networks",
+      "Feature Engineering"
+    ]
+  }
+  </script>
+  {% endif %}
+{% endblock %}

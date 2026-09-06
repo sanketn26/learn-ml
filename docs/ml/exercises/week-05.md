@@ -1,3 +1,7 @@
+---
+description: Run a chi-squared test on plan vs churn, a t-test on sentiment scores, and a sample-size simulation to see when p-values under 0.05 are trustworthy.
+---
+
 # Exercises — Week 5 — “Is This Real, or Just Noise?”
 
 ## What you are building

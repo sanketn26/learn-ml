@@ -1,3 +1,7 @@
+---
+description: Capstone exercises rejecting a broken tool call, adding a new scenario to the evaluation harness, and writing a ship or don't-ship baseline memo.
+---
+
 # Exercises — Capstone — Reliable Coding Specialist
 
 ## What you are building

@@ -1,3 +1,7 @@
+---
+description: Understand Convolutional Neural Networks as reusable sliding detectors, building intuition for how CNNs scan images for patterns.
+---
+
 # Week 18 — CNNs: Sliding Detectors
 
 **Course:** Applied ML Foundations for SaaS Analytics  

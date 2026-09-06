@@ -1,3 +1,7 @@
+---
+description: Apply PCA to compress correlated columns into a few informative axes, reading scree plots and reconstruction error for anomalies.
+---
+
 # Week 12 — PCA: JPEG for Tables
 
 **Course:** Applied ML Foundations for SaaS Analytics  

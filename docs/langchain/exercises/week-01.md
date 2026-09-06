@@ -1,3 +1,7 @@
+---
+description: Build a LangChain prompt-to-parser chain with FakeListLLM, add a retry-then-fallback loop, and route output with RunnableBranch.
+---
+
 # Exercises — Week 1 — Chains
 
 Do these after reading [Week 1](../week-01.md). Concept demo: `FakeListLLM`, no API key.

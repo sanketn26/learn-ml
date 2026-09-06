@@ -1,3 +1,7 @@
+---
+description: Four-week CrewAI multi-agent workflow track covering roles, tasks, sequential vs hierarchical crews, and when a crew beats one worker.
+---
+
 # CrewAI
 
 Four weeks on multi-agent setups as **staffing**: a role is a job description, a tool is an IAM policy, a task is a ticket, a crew is the sprint team.

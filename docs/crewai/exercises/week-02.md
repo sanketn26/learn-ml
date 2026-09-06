@@ -1,3 +1,7 @@
+---
+description: Build a two-task CrewAI release-note pipeline with a declared context dependency, then compare it against plain Python functions.
+---
+
 # Exercises — Week 2 — Tasks and Dependencies
 
 Do these after reading [Week 2 — Task Management & Dependencies](../week-02.md).

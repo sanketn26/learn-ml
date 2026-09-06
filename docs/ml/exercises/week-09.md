@@ -1,3 +1,7 @@
+---
+description: Train a log-target regression forest, measure residual MAE by plan, and build a forbidden leaky CLV target to see why it inflates R-squared.
+---
+
 # Exercises — Week 9 — Regression: Predict a Number, Not a Category
 
 ## What you are building

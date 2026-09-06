@@ -1,3 +1,7 @@
+---
+description: Build a six-case golden evaluation set for a LangChain app, scoring accuracy, tool correctness, and SLA independently, with no LangSmith.
+---
+
 # Exercises — Week 5 — Golden set
 
 Do these after reading [Week 5](../week-05.md). Local `Trace` dict only. No LangSmith account.

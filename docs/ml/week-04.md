@@ -1,3 +1,7 @@
+---
+description: Choose the right chart for the question at hand, building dashboards and cohort heatmaps that avoid dishonest, truncated-axis visuals.
+---
+
 # Week 4 — Charts That Change a Decision
 
 **Course:** Applied ML Foundations for SaaS Analytics  

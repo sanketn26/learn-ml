@@ -1,3 +1,7 @@
+---
+description: Build a LangChain RAG pipeline that separates retrieval from generation, ranks passages by keyword overlap, and refuses to answer without a match.
+---
+
 # Week 4 — RAG: search, then prompt
 
 **Course:** LangChain  

@@ -1,3 +1,7 @@
+---
+description: Build LangGraph fan-out branches that merge with a reducer, embed a compiled subgraph as a node, and retry a flaky external call.
+---
+
 # Week 2 — Fan-out, subgraph, retry
 
 **Course:** LangGraph  

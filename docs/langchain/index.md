@@ -1,3 +1,7 @@
+---
+description: Seven-week LangChain track treating LLM apps as backend systems, from chains and memory management to RAG, eval, and a ticket bot.
+---
+
 # LangChain
 
 Seven weeks on LLM apps as **backend systems**: prompts as templates, tools as functions, memory as a store, RAG as search + a prompt, eval as tests.

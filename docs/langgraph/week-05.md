@@ -1,3 +1,7 @@
+---
+description: Make LangGraph resume idempotent by keying side effects like charges and emails so an at-least-once retry never double-executes a write.
+---
+
 # Week 5 — Crash, Resume, Don’t Charge Twice
 
 **Course:** LangGraph  

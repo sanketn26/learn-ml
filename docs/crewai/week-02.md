@@ -1,3 +1,7 @@
+---
+description: Model a CrewAI Task as a ticket with an output contract and use context to wire upstream artifacts into downstream tasks.
+---
+
 # Week 2 — Three tickets and a dependency
 
 **Course:** CrewAI  

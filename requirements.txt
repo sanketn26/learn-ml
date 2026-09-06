@@ -11,6 +11,8 @@ torch>=2.1.0
 
 # Optional: preview the site
 mkdocs-material>=9.5
+pillow
+cairosvg
 
 # Warehouse-shaped SQL on the CSVs (week 3, reused in week 16)
 duckdb>=1.0

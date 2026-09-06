@@ -1,3 +1,7 @@
+---
+description: Tune a 1-D convolutional neural network's kernel size, compare it against a dense-flatten baseline, and sketch how its sliding stencil detects patterns.
+---
+
 # Exercises — Week 18 — CNNs: Sliding Detectors
 
 ## What you are building

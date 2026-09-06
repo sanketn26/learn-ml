@@ -1,3 +1,7 @@
+---
+description: Hands-on exercise building a single CrewAI Agent with a local dict-lookup tool, asserting fields without calling kickoff or any network.
+---
+
 # Exercises — Week 1 — One agent, one local tool
 
 Do these after reading [Week 1](../week-01.md). `crewai==0.80.0` only — **no** `langchain`, **no** `crewai_tools`, **no** `SerperDevTool`, **no** `!pip`. Do not `kickoff()`.

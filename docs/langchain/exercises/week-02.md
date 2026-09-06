@@ -1,3 +1,7 @@
+---
+description: Implement a keyed LangChain session store with per-user isolation and a bounded message window, then compare it to legacy memory.
+---
+
 # Exercises — Week 2 — Session store
 
 Do these after reading [Week 2](../week-02.md). Use `langchain_core.messages.HumanMessage` / `AIMessage`. A `dict[str, list]` is enough. `ConversationBufferMemory` is optional legacy.

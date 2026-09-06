@@ -1,3 +1,7 @@
+---
+description: Pool an RNN's hidden states, reverse the input sequence to test whether the model relies on order, and explain an LSTM forget gate in plain terms.
+---
+
 # Exercises — Week 19 — RNNs: A Clipboard That Walks the Sequence
 
 ## What you are building

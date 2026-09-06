@@ -1,3 +1,7 @@
+---
+description: Learn LangGraph's StateGraph as a branching state machine, using reducers and partial state updates to route two tickets down different paths.
+---
+
 # Week 1 — A graph is a state machine that branches
 
 **Course:** LangGraph  

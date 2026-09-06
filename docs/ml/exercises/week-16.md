@@ -1,3 +1,7 @@
+---
+description: Build a training pipeline with a candidate model directory, a promote gate guarding production, and a scheduled cron job for nightly scoring.
+---
+
 # Exercises — Week 16 — The Job Pipeline
 
 ## What you are building

@@ -1,3 +1,7 @@
+---
+description: Exercises testing LangGraph idempotency, keyed charge and email writes that survive a resume without double-charging or duplicate sends.
+---
+
 # Exercises — Week 5 — Don’t Charge Twice
 
 Do these after reading [Week 5](../week-05.md).

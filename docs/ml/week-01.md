@@ -1,3 +1,7 @@
+---
+description: Learn NumPy vectorization and broadcasting to replace slow Python for-loops with fast array math, plus how to compute a z-score.
+---
+
 # Week 1 — NumPy: Fast Math on Whole Columns
 
 **Course:** Applied ML Foundations for SaaS Analytics  

@@ -1,3 +1,7 @@
+---
+description: Extend the CloudWave ticket bot's golden file and keyword-allowlist firewall, then print a per-ask cost line for the deployed router.
+---
+
 # Exercises — Week 7 — CloudWave Ticket Bot
 
 Do these after reading [Week 7](../week-07.md).

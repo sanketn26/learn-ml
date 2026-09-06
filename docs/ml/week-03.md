@@ -1,3 +1,7 @@
+---
+description: Treat SQL and the data warehouse as the source of truth, writing date-bound queries and catching grain bugs before they reach a model.
+---
+
 # Week 3 — SQL Is the Source of Truth
 
 **Course:** Applied ML Foundations for SaaS Analytics  

@@ -1,3 +1,7 @@
+---
+description: Rank customers by churn risk using precision@k and recall@k instead of a single classification threshold, beating a naive baseline.
+---
+
 # Week 11 — Rank a List
 
 **Course:** Applied ML Foundations for SaaS Analytics  

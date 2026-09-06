@@ -1,3 +1,7 @@
+---
+description: End-of-week reasoning checks covering the full ML course, from Python fundamentals through classification, regression, and deep learning pictures.
+---
+
 # Reasoning self-checks
 
 End-of-week checks for the required path (0–17) and the optional DL pictures (18–20). These are not trivia. Write your answer first, then open the collapsed block.

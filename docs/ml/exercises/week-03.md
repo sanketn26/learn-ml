@@ -1,3 +1,7 @@
+---
+description: Build a grain-tested as-of Customer 360 in SQL and Pandas, compare tenure_days vs tenure_so_far, and find the latest legal as_of date.
+---
+
 # Exercises — Week 3 — SQL / as_of
 
 ## What you are building

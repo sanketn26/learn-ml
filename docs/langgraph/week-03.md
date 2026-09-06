@@ -1,3 +1,7 @@
+---
+description: Use LangGraph's MemorySaver checkpointer to persist state and resume a crashed graph run without re-executing already-completed nodes.
+---
+
 # Week 3 — Checkpoint, crash, resume
 
 **Course:** LangGraph  

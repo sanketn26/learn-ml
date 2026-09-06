@@ -1,3 +1,7 @@
+---
+description: Write an incident postmortem, wrap a churn model as a read-only get_churn_score tool, and harden an eval router against prompt injection.
+---
+
 # Exercises — Week 17 — On-Call
 
 ## What you are building
