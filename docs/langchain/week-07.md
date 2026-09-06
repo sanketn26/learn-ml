@@ -1,3 +1,7 @@
+---
+description: Ship a production-style LangChain ticket bot with a golden-file CI gate, a keyword allowlist firewall, cost tracking, and RAG that can say I don't know.
+---
+
 # Week 7 — CloudWave Ticket Bot (the one that can fail CI)
 
 **Course:** LangChain  

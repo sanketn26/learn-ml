@@ -1,3 +1,7 @@
+---
+description: Exercises using LangGraph's MemorySaver checkpointer to crash a graph after node two, then resume the same thread without rerunning finished nodes.
+---
+
 # Exercises — Week 3 — MemorySaver resume
 
 Do these after reading [Week 3](../week-03.md). Use LangGraph 0.2’s checkpointer, not a homemade `Checkpoint` class.

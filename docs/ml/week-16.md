@@ -1,3 +1,7 @@
+---
+description: Wire feature extraction, training, gating, and scoring into an automated ML pipeline job, treating Airflow as cron with retries.
+---
+
 # Week 16 — The Job Pipeline
 
 **Course:** Applied ML Foundations for SaaS Analytics  

@@ -1,3 +1,7 @@
+---
+description: An optional GPU capstone fine-tuning a small LLM as a reliable coding specialist with a validated tool contract and Colab LoRA training.
+---
+
 # Capstone — Building a Reliable Coding Specialist
 
 **Course:** Applied ML Foundations for SaaS Analytics

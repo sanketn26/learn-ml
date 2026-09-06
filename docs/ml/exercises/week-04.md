@@ -1,3 +1,7 @@
+---
+description: Build adoption-by-plan and churn-by-region charts in matplotlib, then rebuild a plan-churn bar chart with an honest, zero-based y-axis.
+---
+
 # Exercises — Week 4 — Charts That Change a Decision
 
 ## What you are building

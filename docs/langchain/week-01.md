@@ -1,3 +1,7 @@
+---
+description: Learn LangChain chains as prompt templates piped through output parsers, and compose prompt, model, and parser into one call graph.
+---
+
 # Week 1 — Chains: templates, parsers, pipes
 
 **Course:** LangChain  

@@ -1,3 +1,7 @@
+---
+description: Sketch sequential and hierarchical CrewAI Process crews side by side and explain who owns the final output in each mode.
+---
+
 # Exercises — Week 3 — Sequential vs hierarchical
 
 Do these after reading [Week 3](../week-03.md). Sketch both process types. Do not implement a voting/CEO consensus loop that never runs.

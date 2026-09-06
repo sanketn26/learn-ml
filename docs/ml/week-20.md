@@ -1,3 +1,7 @@
+---
+description: Learn Transformer self-attention as a soft dictionary lookup with queries, keys, and values, the architecture behind GPT and BERT.
+---
+
 # Week 20 — Transformers: Everything Looks at Everything
 
 **Course:** Applied ML Foundations for SaaS Analytics  

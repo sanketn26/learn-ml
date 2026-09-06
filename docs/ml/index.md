@@ -1,3 +1,7 @@
+---
+description: A 20-week applied ML course for engineers, using a fake SaaS company's churn data to teach classification, regression, clustering, and deep learning.
+---
+
 # Applied ML Foundations for SaaS Analytics
 
 Written for working engineers. You do not need calculus, linear algebra, or a stats degree, but you do need programming fluency. This is an introduction to ML, not an introduction to coding. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.

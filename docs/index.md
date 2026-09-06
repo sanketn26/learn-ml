@@ -1,4 +1,5 @@
 ---
+description: Applied machine learning and AI-agent framework courses for software engineers, covering ML fundamentals, CrewAI, LangChain, and LangGraph with no GPU required.
 hide:
   - toc
 ---

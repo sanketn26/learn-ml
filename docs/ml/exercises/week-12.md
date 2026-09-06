@@ -1,3 +1,7 @@
+---
+description: Use PCA to build a churn-colored 2-D scatter, pick the smallest k for 80% explained variance, and identify poorly reconstructed outlier rows.
+---
+
 # Exercises — Week 12 — PCA: JPEG for Tables
 
 ## What you are building

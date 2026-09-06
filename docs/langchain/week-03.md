@@ -1,3 +1,7 @@
+---
+description: Build a LangChain ReAct agent that picks tools from a registry, comparing the agent loop to a backend intent classifier and handler dispatch.
+---
+
 # Week 3 — Agents & Tools
 
 **Course:** LangChain  

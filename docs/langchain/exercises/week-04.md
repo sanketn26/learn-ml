@@ -1,3 +1,7 @@
+---
+description: Implement keyword-overlap retrieval for a LangChain RAG pipeline and score five labeled queries for retrieval hits and refusals.
+---
+
 # Exercises — Week 4 — RAG (retrieve, then generate)
 
 Do these after reading [Week 4](../week-04.md). Use **keyword overlap** retrieval. Do not treat random hash vectors as semantic search. No `llm.predict(context=..., question=...)`.

@@ -1,3 +1,7 @@
+---
+description: Compute precision at a fixed call-center budget, sweep classification thresholds, and run a feature ablation to measure AUC on a churn classifier.
+---
+
 # Exercises — Week 7 — Classification: A Score, Then a Threshold
 
 ## What you are building

@@ -1,3 +1,7 @@
+---
+description: Run a bounded comparison of one worker versus a small CrewAI crew on quality, latency, and call count before adding more agents.
+---
+
 # Week 4 — One worker vs a crew
 
 **Course:** CrewAI  

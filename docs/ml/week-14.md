@@ -1,3 +1,7 @@
+---
+description: Demystify neural networks as layers of weighted sums and activations, covering dropout, early stopping, and a PyTorch training loop.
+---
+
 # Week 14 — Neural Nets, Without the Mystique
 
 **Course:** Applied ML Foundations for SaaS Analytics  

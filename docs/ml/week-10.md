@@ -1,3 +1,7 @@
+---
+description: Explore unsupervised learning with K-Means clustering, elbow and silhouette scores, and why unscaled features skew customer segments.
+---
+
 # Week 10 — Clustering: Sorting Without Labels
 
 **Course:** Applied ML Foundations for SaaS Analytics  

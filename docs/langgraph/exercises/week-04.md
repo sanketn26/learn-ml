@@ -1,3 +1,7 @@
+---
+description: Exercises building a LangGraph human-in-the-loop approval graph with interrupt_before, testing approve, reject, and needs-info resume paths.
+---
+
 # Exercises — Week 4 — Approve / reject / needs-info
 
 Do these after reading [Week 4](../week-04.md). One small approval graph. Weeks 1–4; week 5 (idempotency) is next — mention it, do not skip it later.

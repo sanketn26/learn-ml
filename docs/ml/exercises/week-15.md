@@ -1,3 +1,7 @@
+---
+description: Compare shuffled vs time-split AUC to catch data leakage, benchmark predict() latency, and pick a capacity-constrained decision threshold.
+---
+
 # Exercises — Week 15 — The Pickle
 
 ## What you are building

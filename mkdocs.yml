@@ -1,5 +1,6 @@
 site_name: Learn ML
 site_description: Applied ML and AI-framework courses for software engineers — analogies first, then pictures, then code.
+site_author: Learn ML contributors
 site_url: https://sanketn26.github.io/learn-ml/
 repo_url: https://github.com/sanketn26/learn-ml
 repo_name: sanketn26/learn-ml
@@ -164,3 +165,7 @@ nav:
 
 plugins:
   - search
+  - social:
+      cards_layout_options:
+        background_color: "#1a1b26"
+        color: "#ffffff"

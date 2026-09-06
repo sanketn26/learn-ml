@@ -1,3 +1,7 @@
+---
+description: Combine models with bagging, boosting, voting, and stacking ensembles like Random Forest and gradient boosting for tabular data.
+---
+
 # Week 13 — Ensembles: A Room of Reviewers
 
 **Course:** Applied ML Foundations for SaaS Analytics  

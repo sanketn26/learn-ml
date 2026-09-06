@@ -1,3 +1,7 @@
+---
+description: Serve a LangChain chain behind FastAPI with request timeouts, a fallback response, and a simple FIFO cache for repeated questions.
+---
+
 # Week 6 — Timeouts, fallbacks, a local API
 
 **Course:** LangChain  

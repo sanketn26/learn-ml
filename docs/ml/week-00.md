@@ -1,3 +1,7 @@
+---
+description: Build strong Python fundamentals for ML: type hints, dataclasses, and a from-scratch fit/predict model before NumPy and PyTorch take over.
+---
+
 # Week 0 — Strong Python for AI Engineers
 
 **Course:** Applied ML Foundations for SaaS Analytics  

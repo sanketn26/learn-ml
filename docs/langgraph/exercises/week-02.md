@@ -1,3 +1,7 @@
+---
+description: Exercises for compiling a LangGraph fan-out graph with a subgraph node and a retry policy for a flaky, real-world-facing node.
+---
+
 # Exercises — Week 2 — Fan-out, subgraph, retry
 
 Do these after reading [Week 2](../week-02.md). Compile the examples; do not leave retry as a comment.

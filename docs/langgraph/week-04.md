@@ -1,3 +1,7 @@
+---
+description: Pause a LangGraph run with interrupt_before for human approval, then resume it down approve, reject, or needs-info paths.
+---
+
 # Week 4 — Interrupt for a human
 
 **Course:** LangGraph  

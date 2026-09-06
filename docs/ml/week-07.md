@@ -1,3 +1,7 @@
+---
+description: Understand classification as a score plus a threshold, comparing baselines, confusion matrices, precision/recall, and decision trees.
+---
+
 # Week 7 — Classification: A Score, Then a Threshold
 
 **Course:** Applied ML Foundations for SaaS Analytics  

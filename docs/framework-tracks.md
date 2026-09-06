@@ -1,3 +1,7 @@
+---
+description: How to approach the LangChain, LangGraph, and CrewAI tracks as engineering introductions, including concept demos versus integration demos.
+---
+
 # How to use the framework tracks
 
 LangChain, LangGraph, and CrewAI are **engineering introductions**, not certifications, exhaustive API references, or promises of production readiness. Each track gives an experienced engineer enough intuition to understand the library, build one representative workflow, and continue independently from the official documentation.

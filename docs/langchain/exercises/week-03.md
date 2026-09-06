@@ -1,3 +1,7 @@
+---
+description: Hand-write a thought/action/observation agent loop over two tools, then test its bounded failure at max_iterations and docstring quality.
+---
+
 # Exercises — Week 3 — Agents & Tools
 
 Do these after reading [Week 3 — Agents & Tools](../week-03.md). The loop in the lesson is the assignment. `create_react_agent` is optional library spelling — you may mention it; you do not have to use it.

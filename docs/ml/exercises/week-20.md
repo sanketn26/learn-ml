@@ -1,3 +1,7 @@
+---
+description: Remove positional encoding from a transformer to see accuracy drop, inspect a self-attention map, and compare CNN, RNN, transformer, and GBT tradeoffs.
+---
+
 # Exercises — Week 20 — Transformers: Everything Looks at Everything
 
 ## What you are building

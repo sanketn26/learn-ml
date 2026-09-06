@@ -1,3 +1,7 @@
+---
+description: Learn Recurrent Neural Networks as a hidden state that walks a sequence, covering vanishing gradients and LSTM/GRU gating.
+---
+
 # Week 19 — RNNs: A Clipboard That Walks the Sequence
 
 **Course:** Applied ML Foundations for SaaS Analytics  

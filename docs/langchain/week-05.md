@@ -1,3 +1,7 @@
+---
+description: Evaluate a LangChain app with a golden test file, scoring tool choice and accuracy separately from latency instead of eyeballing playground output.
+---
+
 # Week 5 — Eval is a golden file
 
 **Course:** LangChain  

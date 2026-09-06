@@ -1,3 +1,7 @@
+---
+description: Debug production ML incidents like on-call outages, then expose a churn-scoring function safely to a support bot via a tool schema.
+---
+
 # Week 17 — You Are On-Call (and a Ticket Bot)
 
 **Course:** Applied ML Foundations for SaaS Analytics  

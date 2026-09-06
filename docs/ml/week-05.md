@@ -1,3 +1,7 @@
+---
+description: Use hypothesis testing and p-values to judge whether an A/B test result is real or noise, with confidence intervals as a gut check.
+---
+
 # Week 5 — “Is This Real, or Just Noise?”
 
 **Course:** Applied ML Foundations for SaaS Analytics  

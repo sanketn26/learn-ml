@@ -1,3 +1,7 @@
+---
+description: Inspect gradient-boosted feature importances, deliberately overfit a tree ensemble, and correct a common soft-voting vs stacking naming mistake.
+---
+
 # Exercises — Week 13 — Ensembles: A Room of Reviewers
 
 ## What you are building

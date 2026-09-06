@@ -1,3 +1,7 @@
+---
+description: Learn CrewAI's Agent abstraction as role, goal, backstory, and tools, and build a single-worker agent with a local tool instead of kickoff.
+---
+
 # Week 1 — An agent is a job description
 
 **Course:** CrewAI  
