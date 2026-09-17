@@ -4,8 +4,12 @@ description: Turn a churn training script into a versioned model artifact with a
 
 # Week 15 — The Pickle: A Training Script Is Not Production
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers about to pickle a model and get paged for it.
+You have a model that beats the dummy and a ranked list Priya likes. Ana asks the question that ends the notebook phase: "what happens when your laptop is off and it's Tuesday night?" Nothing, currently. That's this week's problem.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers about to pickle a model and get paged for it.
 
 This is still a **training script**. We will be explicit about what it is not: no feature store, no canary, no GDPR review, no CI. The GPU coding-specialist capstone is a different page (`docs/ml/capstone.md`).
 
@@ -246,26 +250,26 @@ print("Ship the joblib AND contract.py AND this week's commit hash. Same layout 
 
     You can ship a *batch score* from this pipeline: score tonight’s accounts, hand CS a CSV of 80 names. Do not ship a public HTTP API until the contract lives in a tested module, the artifact is in a registry, and someone owns the weekly PR-AUC dashboard.
 
-## Course recap (the actual skills)
+??? note "Course recap (the actual skills, weeks 0–15)"
 
-| Week | How to think about it |
-|---|---|
-| 0 Python | Glue: dataclasses, a `fit`/`predict` class |
-| 1 NumPy | SIMD / SQL on a typed column |
-| 2 Pandas | Joins you already know; never explode the grain |
-| 3 SQL / as_of | The warehouse is source of truth |
-| 4 Charts | Pick the shape that matches the question |
-| 5 Stats | “How often would luck look like this?” |
-| 6 Features | API contract + a wall against the future |
-| 7 Classifiers | Score, then a staffed threshold |
-| 8 Labels | Horizon, imbalance, calibration |
-| 9 Regression | MAE in real units |
-| 10 Clusters | Personas, not APIs |
-| 11 Ranking | Precision@k; beat a SQL sort |
-| 12 PCA | JPEG / rotate the cloud |
-| 13 Ensembles | Reviewers voting vs hunting leftovers |
-| 14 Nets | Mixers + the four-line training step |
-| 15 Pickle | Artifact + contract + capacity |
+    | Week | How to think about it |
+    |---|---|
+    | 0 Python | Glue: dataclasses, a `fit`/`predict` class |
+    | 1 NumPy | SIMD / SQL on a typed column |
+    | 2 Pandas | Joins you already know; never explode the grain |
+    | 3 SQL / as_of | The warehouse is source of truth |
+    | 4 Charts | Pick the shape that matches the question |
+    | 5 Stats | "How often would luck look like this?" |
+    | 6 Features | API contract + a wall against the future |
+    | 7 Classifiers | Score, then a staffed threshold |
+    | 8 Labels | Horizon, imbalance, calibration |
+    | 9 Regression | MAE in real units |
+    | 10 Clusters | Personas, not APIs |
+    | 11 Ranking | Precision@k; beat a SQL sort |
+    | 12 PCA | JPEG / rotate the cloud |
+    | 13 Ensembles | Reviewers voting vs hunting leftovers |
+    | 14 Nets | Mixers + the four-line training step |
+    | 15 Pickle | Artifact + contract + capacity |
 
 ## ✍️ Write-up
 
@@ -282,9 +286,8 @@ Try one [self-check](self-checks.md#week-15-the-pickle) (Predict / Diagnose / Ch
 
 ## 🔗 Next: the job, then (optionally) deep learning
 
-You can refuse a leak, demand a baseline, and staff a threshold. Next:
+You have a joblib and a contract. Ana's next sentence: "this doesn't ship until it can't lose to the dummy, automatically, every night." [Week 16](week-16.md) is that gate. After that:
 
-- **16** the job pipeline: train → gate → prod → tonight’s CSV
 - **17** on-call + the score as a bot tool
 - **18–20** optional pictures (CNN / RNN / attention) — not how CloudWave ships churn
 - **Capstone** (optional, GPU): a coding-tool-use specialist, not this pickle

@@ -4,8 +4,12 @@ description: Wire feature extraction, training, gating, and scoring into an auto
 
 # Week 16 — The Job Pipeline
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have a pickle (Week 15) and a legal label (Week 8). sklearn `Pipeline` is an object. This week is the **job**.
+Ana's rule, in writing this time: nothing writes to `artifacts/prod` unless it beats the dummy and beats current prod, automatically, every single night. You are the one wiring that gate. You're also on-call starting next week.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have a pickle (Week 15) and a legal label (Week 8). sklearn `Pipeline` is an object. This week is the **job**.
 
 ---
 
@@ -190,4 +194,4 @@ Try one [self-check](self-checks.md#week-16-the-job) (Predict / Diagnose / Choos
 
 ## 🔗 Next week
 
-You are on-call. A bad join, a leaked label, a silent NaN. Then a ticket bot that uses this score as a *tool*, not as a personality.
+The gate is wired. The job runs tonight. Tomorrow morning you're the one who finds out if it held: a bad join, a leaked label, a silent NaN — three ways this can quietly go wrong in prod, and [Week 17](week-17.md) is where you meet all three. You're on-call.

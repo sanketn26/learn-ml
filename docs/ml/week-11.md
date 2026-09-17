@@ -4,10 +4,12 @@ description: Rank customers by churn risk using precision@k and recall@k instead
 
 # Week 11 — Rank a List
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a search ranking, a “priority queue,” or a “top of the inbox.” Read after Week 8.
+Priya cannot call everyone. She can call **80**. The product you're building for her is not a yes/no. It's an **ordered list**.
 
-CloudWave CS cannot call everyone. They can call **80**. The product is not a yes/no. It is an **ordered list**.
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written a search ranking, a "priority queue," or a "top of the inbox." Read after Week 8.
 
 ---
 
@@ -103,7 +105,7 @@ If `n_support` beats the GBT at k=80, you do not have a modeling problem. You ha
 
 ## Causation is not a ranked list
 
-The model uses usage. Low usage sits high on the list. A PM says “so if we make them use the product, they won’t churn.”
+The model uses usage. Low usage sits high on the list. Marcus says "so if we make them use the product, they won't churn."
 
 That is a **lever** claim. You trained a **ranker**.
 
@@ -136,11 +138,10 @@ To talk about a lever you need an experiment (Week 5): change onboarding, hold o
 
 ## 🤔 Reflection
 
-1. CS doubles headcount. What happens to k? To the threshold? To precision?
+1. Priya's team doubles headcount. What happens to k? To the threshold? To precision?
 2. When would you *not* bother with a model and just `ORDER BY n_support`?
-3. Write one sentence you would say to the PM who wants to “improve usage to reduce churn” based on this list.
+3. Write one sentence you would say to Marcus, who wants to "improve usage to reduce churn" based on this list.
 
 ## 🔗 Next
 
-If you have not done Weeks 9–12, the tabular path continues there.  
-If you have a pickle: Week 16 is the job that retrains it on Tuesday.
+You hand Priya the list. It's sitting in a notebook variable. [Week 15](week-15.md) is the walk to "a pickle is not production" — or if you haven't done Weeks 9–10 and 12–14 yet, the tabular path continues there first.

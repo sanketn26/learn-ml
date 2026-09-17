@@ -4,8 +4,12 @@ description: Choose the right chart for the question at hand, building dashboard
 
 # Week 4 — Charts That Change a Decision
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who will paste a chart into Slack or a board deck. Not a design class.
+Helen wants one screen before Monday's board meeting: is churn getting worse, which plan is leaking, do engaged customers actually stay. You have Customer 360. She does not want a notebook.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who will paste a chart into Slack or a board deck. Not a design class.
 
 ---
 
@@ -57,9 +61,9 @@ If you would not ship a SQL query without a denominator, do not ship a chart wit
 2. axes that start at a truthful place
 3. a sample size (n=) somewhere visible
 
-## 🏢 Scenario — one page for the CFO
+## 🏢 Scenario — one page for Helen
 
-Your CFO wants, on one screen:
+Helen, the CFO, wants on one screen:
 
 1. Is churn getting worse?
 2. Which plan is the leak?
@@ -228,8 +232,8 @@ When you can explain the week out loud, do the [exercises](exercises/week-04.md)
 
 1. A region’s churn *looks* high. List five non-product reasons (pricing, support hours, competitor, sales quality, data bug).
 2. Feature adoption correlates with lower churn. Draw the causation arrow both ways.
-3. Which one chart would you send the CEO, and which sentence sits above it?
+3. Which one chart would you send Helen, and which sentence sits above it?
 
 ## 🔗 Next week
 
-The CFO asks: “16% vs 20% churn — is that real?” We will answer without turning you into a statistician.
+Marcus wants to call an early feature rollout a win off two small groups of customers. Is a gap that size real, or is it the kind of thing that happens by coin-flip at that sample size? [Week 5](week-05.md) answers without turning you into a statistician.

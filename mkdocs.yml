@@ -73,6 +73,7 @@ nav:
   - Getting started: getting-started.md
   - Framework track guide: framework-tracks.md
   - Datasets: data.md
+  - CloudWave story bible: cloudwave.md
   - ML Fundamentals:
       - Overview: ml/index.md
       - Self-checks: ml/self-checks.md

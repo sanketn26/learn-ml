@@ -30,9 +30,9 @@ When you can explain the week out loud, do the exercises
 🔗 Next week: [topic name]
 ```
 
-That template is excellent *instructional design*. It is also the attention killer. After three weeks the reader can skip the first 40–80 lines, predict the emotional arc (analogy → picture → snippet → don’t-ship), and never enter a room at CloudWave.
+That template supports consistent instruction. Its repetition is a plausible contributor to the reported attention problem, not a demonstrated cause. After three weeks the reader can skip the first 40–80 lines, predict the emotional arc (analogy → picture → snippet → don’t-ship), and never enter a room at CloudWave.
 
-**CloudWave is a dataset brand, not a company.** There are **zero named characters** in the lessons. Roles appear as nouns: “a PM,” “the CEO,” “the CFO,” “CS,” “a tired on-call engineer.” The reader is always generic **you**. Recurring objects are `subscriptions.csv`, `as_of=2024-06-01`, `FEATURE_COLS`, and ~6.4% churn — not a person who changed because last week’s model shipped.
+**CloudWave is a dataset brand, not a company.** There is **no established recurring CloudWave cast** in the ML lessons; named example users do appear in framework lessons. Roles appear as nouns: “a PM,” “the CEO,” “the CFO,” “CS,” “a tired on-call engineer.” The reader is always generic **you**. Recurring objects are `subscriptions.csv`, `as_of=2024-06-01`, `FEATURE_COLS`, and ~6.4% churn — not a person who changed because last week’s model shipped.
 
 The pedagogy promised in `CLAUDE.md` and `docs/ml/index.md` (`analogy → visual → math → predict → run → compare → explain`) is intact and loud. Story is not. Do not add more boxes. Do not add more topics. **Put people, time, and consequence around the content that already exists.**
 
@@ -72,12 +72,12 @@ A rewrite that turns this into a cute novel, or that adds a fifth admonition typ
 
 ### Where the plot actually dies
 
-1. **Weeks 0–6 are tooling chapters with CloudWave CSVs.** Week 0 does not put the reader at CloudWave until a late “load the CSV” section. Week 1’s CEO pulse is never answered as a decision.
+1. **Weeks 0–6 are tooling chapters with CloudWave CSVs.** Week 0 mentions CloudWave in its opening objectives, but does not establish a first-day company scene. Week 1’s CEO pulse is never answered as a decision.
 2. **Weeks 9–10, 12–14, 18–20 are catalog units.** Regression, clustering, PCA, nets, CNN/RNN/Transformer pause or abandon the ship arc. Week 12 even admits the through-line does not have the problem: “CloudWave’s customer table has ~7 numeric fields.”
 3. **Week 5 answers Week 4’s cliffhanger with the wrong product.** Week 4 closes: *“The CFO asks: ‘16% vs 20% churn — is that real?’”* Week 5 rolls out **Premium vs Standard**, which are not CloudWave plans (`free` / `starter` / `pro` / `enterprise`).
-4. **Week 7 ships a label Week 8 calls a lie**, but Week 7 does not end on that reversal. The correction is a new chapter, not a consequence.
+4. **Week 7 teaches a lifetime label Week 8 replaces.** Its code comment, warning, and final link already explicitly foreshadow the correction. The missing piece is a human decision and payoff, not a missing technical transition. Week 7 uses `tenure_so_far`, not the forbidden lifetime `tenure_days`.
 5. **Week 17 is the only media-res week**, and it *catalogues* the earlier bugs as a field guide instead of calling back to scenes the reader lived.
-6. **Capstone leaves the company** for a generic coding-tool-use specialist. CloudWave’s Week 17 incidents become “a free, ground-truth dataset.”
+6. **Capstone changes the learner’s role** to coding-tool-use specialist, but explicitly reuses CloudWave’s Week 17 incidents. Preserve that existing continuity and strengthen the handoff; it is not a wholly unrelated project.
 7. **Framework tracks restart at “what is a chain.”** They share a logo, a golden file, and a refund motif. They do not continue the on-call shift.
 
 ### Scenario headings exist — and are rare
@@ -87,7 +87,7 @@ Only **seven** lessons have `## 🏢 Scenario`:
 - ML: weeks 1, 2, 4, 5, 6, 9
 - LangChain: week 3
 
-The other ~30 weeks never even claim a scene. Several of the seven are schema tables or anti-pattern demos, not scenes (Week 2 “four systems, one customer”; Week 9 “don’t predict fake CLV”).
+The other 30 weeks never even claim a scene. Several of the seven are schema tables or anti-pattern demos, not scenes (Week 2 “four systems, one customer”; Week 9 “don’t predict fake CLV”).
 
 ---
 
@@ -103,7 +103,7 @@ The reader learns to skip the first screen.
 
 ### G2. No cast — attention has nowhere to attach
 
-Zero named people. “A PM says” is a rhetorical device, not a character who will be wrong again next week. Framework tracks have Alice/Bob — in a **retail laptop shop**, not CloudWave.
+No recurring CloudWave cast. “A PM says” is a rhetorical device, not a character who will be wrong again next week. Framework tracks have Alice/Bob — in a **retail laptop shop**, not CloudWave.
 
 Without a repeating human, every week is a new lecture. With five named roles, Week 17’s pager is *Ana’s*, and incident 1 is the Week 2 join she didn’t have a test for.
 
@@ -113,7 +113,7 @@ ML weeks 6, 9, 10, and 16 do not say “CloudWave” at all (grep). Framework we
 
 > “Hypothetical CloudWave volume for this track: a few hundred tickets a day, not a vendor case study.”
 
-That line (and its cousins in LC1, LC2, LC4, LC6, Crew1, Crew2, LG1) trains the reader *not to care*. One disclaimer on the track index is enough. Inside a week, write as if the company is real.
+That line (and its cousins in LC1, LC2, LC4, LC6, Crew1, Crew2, LG1) trains the reader *not to care*. Consolidate repeated fictional-company boilerplate on the track index. Keep local concept-demo and production-limit qualifications; write scenes consistently within the fictional company.
 
 `docs/data.md` is honest about the split: “One company all the way through the **ML course**.” The homepage still claims “one company throughout” next to a file/grain/rows table.
 
@@ -143,6 +143,8 @@ A week holds attention when *this week at CloudWave* needs the idea. Many weeks 
 | Crew 2–4 | Changelog factory, a second product |
 | Crew 3 | `assert seq.process == Process.sequential` |
 
+> Preserve the CrewAI index’s explicit reason to decline extra orchestration. Optionality is an instructional strength; a story should make the tradeoff concrete, not hide it.
+
 ### G6. Tension is postponed, then listed
 
 - Exploding join: a `print` in Week 2, an incident in Week 17.
@@ -158,9 +160,9 @@ Week 17 is the plot payoff compressed into one field guide. The reader did not *
 | ML 0–17 | Latent churn-ship arc, told as a syllabus |
 | LangChain 1–6 | Middleware chapters; week 7 finally assembles a bot |
 | LangGraph | State machine; refund appears, then evaporates into `node3` |
-| CrewAI | Staffing tutorial; index *says you probably don’t need this* |
+| CrewAI | Staffing tutorial; index says “This track is optional ceremony on top of LangChain week 7.” |
 
-The only readable cross-track sequence is: **the bot may classify (LC7); a human must approve money (LG4); resume must not charge twice (LG5).** CrewAI never enters that sequence. ML Week 17’s three incidents are never reused. `user_041906` is the best continuity object in the whole site and is unnamed.
+The only readable cross-track sequence is: **the bot may classify (LC7); a human must approve money (LG4); resume must not charge twice (LG5).** CrewAI never enters that sequence. ML Week 17’s incidents are not a sustained framework-track story; the capstone does explicitly reuse them. `user_041906` is the best continuity object in the whole site and is unnamed.
 
 ### G8. Exercises continue the API, not the incident
 
@@ -248,7 +250,7 @@ First 8–12 lines of every week:
 2. One sentence of what is at risk *this week*.
 3. Then the analogy.
 
-Move `Who this is for`, 🎯, and “If you already write software” below the fold or into a collapsed details block. Stop restating the think box. Stop reprinting the box legend after Week 0.
+Move `Who this is for`, 🎯, and “If you already write software” below the fold or into a `??? note "Who this is for"` collapsed block — `pymdownx.details` is already enabled in `mkdocs.yml` (line 56) and renders as a themed, click-to-expand admonition; raw `<details>` would work via `md_in_html` but loses Material's styling. No page currently uses this extension, so this is free capacity, not a new dependency. Stop restating the think box. Stop reprinting the box legend after Week 0.
 
 **Before (Week 8 is close; make all weeks this shape):**
 
@@ -256,7 +258,7 @@ Move `Who this is for`, 🎯, and “If you already write software” below the 
 
 **After, with cast:**
 
-> Priya called 80 names from last week’s list. None of them cancelled. Helen wants to know why we staffed a tenure detector. The column is `is_churned`.
+> Priya asks for 80 names likely to cancel in the next 30 days. Last week’s notebook learned who ever cancelled. Ana stops the handoff: where is the 30-day answer key?
 
 Same technical payload (horizon labels, censoring, PR-AUC). Different first screen.
 
@@ -275,8 +277,8 @@ Concrete bindings (content already in the files):
 | 5 | Use **starter vs pro** (or free vs paid) from the actual file, not Premium |
 | 6 | Ana cannot compute the column at noon Tuesday |
 | 7 | Priya has 80 slots. End the week on “we trained on ever-churned” |
-| 8 | Priya’s list was a tenure detector (pay off 7) |
-| 9 | Helen wants next-month usage for capacity, not fake CLV — or mark optional |
+| 8 | Replace the lifetime answer key before Priya uses the queue (pay off 7) |
+| 9 | Helen asks how well billing and event counts explain usage; the current target is same-snapshot `total_usage`, not next-month forecasting |
 | 10 | Personas for Priya’s 80-call playbook — or mark optional |
 | 11 | The product is Priya’s ordered queue (already the best stake line) |
 | 12 | Marcus asked for a 2-D map; we will not staff PC3 — or mark optional |
@@ -292,7 +294,8 @@ Week 17 should be a *reunion*, not a first meeting.
 
 - Week 2 exploding MRR = “Helen’s dashboard doubled overnight” (same numbers).
 - Week 6 scaler leak = Ana’s silent bad Tuesday.
-- Week 8 wrong label = Priya’s empty week of calls.
+- Week 8 wrong label = Ana blocks the proposed queue until the 30-day label is defined. Do not invent observed call outcomes.
+- Week 2 missing values and Week 6 feature contract = plant the fill-value mismatch that becomes Week 17’s silent-NaN incident. The scaler leak is useful context, but is not one of Week 17’s three incidents.
 - Week 17 then quotes those threads.
 
 ### P5. Closings are next-week *stakes*, not topic titles
@@ -300,7 +303,7 @@ Week 17 should be a *reunion*, not a first meeting.
 Not: “PCA: JPEG for tabular data.”  
 Instead: “Tuesday the pickle is in prod. Next week the job is allowed to write `artifacts/prod` — or not.”
 
-Week 7 should end: “We just trained on ‘ever churned.’ Next week Priya finds out that is a tenure detector.”
+Week 7 should end: “We just trained on ‘ever churned.’ Priya needs ‘in the next 30 days.’ Next week we fix the answer key before handing over the queue.”
 
 Keep the exercise link. Drop or rotate the identical “When you can explain the week out loud…” sentence.
 
@@ -310,18 +313,18 @@ Keep the exercise link. Drop or rotate the identical “When you can explain the
 - `warning` = what almost shipped this week.
 - `success` = the Slack/email you actually send.
 - Do not run think + engineer + software-table as three paraphrases.
-- One “Hypothetical CloudWave, not a vendor case study” on the track index. Zero inside weeks.
+- Consolidate “Hypothetical CloudWave, not a vendor case study” on the track index. Retain locally necessary demo limitations (see §11).
 
 ### P7. Exercises continue the same ticket
 
-Rewrite the *framing* of `docs/*/exercises/week-XX.md`, not the TODOs in `starter.py` (unless a TODO is “print AUC” when the story is “send Priya a list”).
+Rewrite the *framing* of `docs/*/exercises/week-XX.md`, not the TODOs in `starter.py`. Record any task change as a separate implementation follow-up.
 
 - Week 0: Priya wants plan churn in Slack, no Pandas yet.
 - Week 7: Priya can call 100 test users — send the list, not AUC.
 - Week 16: Ana will refuse promote if dummy wins.
 - Week 17 already almost does this — make 0–16 match.
 
-### P8. Framework tracks: one incident, or drop the logo
+### P8. Framework tracks: connect the incidents
 
 Pick a single ticket and stop rotating worlds.
 
@@ -334,17 +337,31 @@ Must-fix world leaks (same mechanism, new strings):
 | LC2 | Alice/Bob shop for Dell XPS / shoes | Two **tenants**; history = export still timing out vs API-key rotation |
 | LG1 | `"BUY NOW"` spam moderation | Branch `docs` vs `refund_queue` (already the exercise graph) |
 | LG2 | KYC / limit-raise | Email + on-call Slack on the export/refund ticket (already in the week as a flash) |
-| LG3 | `node3 exploded` | Crash the week-4 refund graph after HTTP 200 |
+| LG3 | `node3 exploded` | Name the failing step in a ticket workflow; retain the minimal graph and foreshadow the later write/replay example |
 | Crew 1–4 | Changelog *or* ticket analyst, never both | Researcher/writer/QA triage `CW-1847`, *or* stop prefixing CloudWave |
 
-LC5–7 should be one CI story: the angry-billing golden case is `t2`/`t3` from `eval/golden_tickets.jsonl`, not a new `g1`/`g2`. Week 6 timeout is that handler hanging on `get_churn_score`. Week 7 is “the build went red in *your* repo.”
+LC5–7 should share a CI story, with an explicit fixture mapping: `t2` is injection/refund refusal; `t3` is the churn-score query. They are not interchangeable angry-billing cases. LC5’s `g1`/`g2` use a different demo schema; keep that distinction unless a separately scoped code change aligns the evaluators. Week 6 timeout is that handler hanging on `get_churn_score`. Week 7 is “the build went red in *your* repo.”
 
 Connect to ML Week 17 by reusing incidents, not only `get_churn_score`.
 
-### P9. Optional DL and capstone: stay in-company or drop the logo
+### P9. Optional DL and capstone: make the role transition explicit
 
-- Weeks 18–20: “Marcus wants usage-*shape*, not totals — and it still loses to GBT” is a scene. Graduation is “you shipped churn and survived on-call,” not a three-pillar checklist.
-- Capstone: fine-tune on CloudWave’s incident bot (continue Week 17) **or** stop saying CloudWave. Do not mine the pager as anonymous synthetic trajectories.
+- Weeks 18–20: “Marcus wants usage-*shape*, not totals — what evidence would justify a net?” is a scene. Do not invent a measured loss to GBT. Graduation is “you shipped churn and survived on-call,” not a three-pillar checklist.
+- Capstone: continue the existing Week 17 incident connection with Ana commissioning a coding assistant. Preserve its read/suggest tool contract and synthetic ground truth. Replacing it with a support bot is a separate curriculum/code change.
+
+### P10a. Formatting affordances already enabled, currently unused
+
+`mkdocs.yml`'s `markdown_extensions` block licenses more than the five admonition types in play:
+
+- `pymdownx.details` (`??? note` / `???+ note` for expanded-by-default) — zero uses in `docs/`. This is the mechanism for P2's below-the-fold syllabus material, and could also collapse Week 15's recap table (§P5) instead of deleting information some readers still want.
+- `pymdownx.tabbed` — zero uses in `docs/`. Could hold "software background" framing as a tab instead of a full paragraph duplicating the think-box (the G4 redundancy), so a reader who doesn't need the analogy restated can skip it without the author deleting it for everyone.
+- `attr_list` — available for adding IDs/classes to headings or elements (e.g. a distinct visual treatment for the cold-open paragraph vs. body text) without new CSS work, since `docs/stylesheets/extra.css` already exists to target such classes.
+
+None of this requires a new dependency or CSS framework — it is unused capability already declared in the build config. Verified by reading `mkdocs.yml` lines 47–69 and grepping `docs/` for `<details>`/`???` usage (zero hits both).
+
+### P10b. Code block length is not currently a formatting problem
+
+Checked: the longest code blocks in `docs/ml/` run 51–54 lines (weeks 3, 4, 14, 18, 20) — long but not "wall of code." No block currently needs splitting for formatting reasons alone; don't add `pymdownx.tabbed`-style code-block splitting as a P10a task unless a specific rewrite makes a block longer.
 
 ### P10. Hub pages: one cold open, then the catalog
 
@@ -373,7 +390,7 @@ ML weeks **4, 5, 7, 8, 11, 15, 16, 17** plus `docs/ml/index.md`.
 - Week 15: delete the in-body syllabus table.
 - Week 17: rewrite incidents as callbacks.
 
-This phase alone should change the “I bounced” feedback. The middle catalog weeks can wait.
+This phase tests whether concrete stakes improve the “I bounced” feedback; improvement is not established until learners try it. The middle catalog weeks can wait.
 
 ### Phase 2 — plant the bugs when they are taught
 
@@ -385,7 +402,7 @@ ML **9, 10, 12, 13, 14, 18–20**. Nav labels may say “side quest” / “opti
 
 ### Phase 4 — exercises framing
 
-Exercise markdown for the Phase 1 weeks first, then 0–6. `starter.py` TODOs stay unless the success criterion is still “print a metric” when the story is “send a list.”
+Exercise markdown for the Phase 1 weeks first, then 0–6. `starter.py` TODOs and measurable success criteria stay; task changes require a separately scoped follow-up.
 
 ### Phase 5 — framework tracks as one incident
 
@@ -393,16 +410,16 @@ LC7 + LG4 + LG5 first (already the best sequence). Then LC1–6 string fixes. Th
 
 ### Phase 6 — capstone continuity (optional)
 
-Only after Week 17 has a cast and callbacks. Otherwise the capstone will keep mining anonymous incidents.
+Strengthen the existing incident handoff after Week 17 has a cast and callbacks; preserve the coding-specialist objective.
 
 ---
 
 ## 8. Definition of done (how we know attention improved)
 
-A week is “story-complete” when all of these are true:
+A week passes the proposed editorial checklist when these hold (subject to the usability and evidence safeguards in §11):
 
 1. The first screen is a CloudWave beat (person, ticket, or wrong number), not a 🎯 list.
-2. A named person needs this week’s idea *this week*.
+2. A person or concrete operational decision needs this week’s idea *this week*.
 3. The closing names a consequence, not a topic.
 4. If Week 17 will page you for this bug, the bug already happened on-page in the teaching week.
 5. No world leak (Premium, laptops, KYC, Reddit spam, `node3`) unless the week is explicitly marked off-plot.
@@ -428,5 +445,44 @@ Learner test (qualitative, matches the original feedback): “I wanted to see wh
 
 **Title:** *Story bible + cold opens for the job-path spine (weeks 4, 5, 7, 8, 11, 16, 17).*
 
-Why that slice: it is the latent plot, it already contains the best lines on the site, and Week 5’s Premium/Standard break is a one-hour factual fix with outsized story payoff.
-)
+Why that slice: it is the latent plot and already contains strong decision points. Pilot weeks 4–5 and 7–8 first; review learner feedback before expanding to the remaining spine. Week 15 remains in Phase 1 as a subsequent small change. Do not estimate the Week 5 rename as a simple string fix until its statistical framing and exercise are reviewed.
+
+
+---
+
+## 11. Verification and implementation safeguards (2026-09-17)
+
+**Verdict:** the repository supports the diagnosis of inconsistent story continuity and repeated framing. It does not establish that repetition causes drop-off, that every lesson needs named dialogue, or that a serial story will improve learning. Treat the rewrite as a testable editorial hypothesis. This audit checked source text and fixture data, not every runnable example or learner behavior.
+
+### Verified evidence and corrections
+
+| Finding | Evidence / qualification |
+|---|---|
+| 37 weekly lessons; seven Scenario headings | `docs/{ml,langchain,langgraph,crewai}/week-*.md`: 21 + 7 + 5 + 4. Seven literal `## 🏢 Scenario` matches, exactly the list in §3. A heading count is not a measure of engagement. |
+| Section-order flow is identical across sampled weeks | Weeks 2, 6, 10, 12 all run 🎯 → "If you already write software" → [optional Scenario] → topic sections → ✍️ Exercise → 🤔 Reflection → 🔗 Next week, confirming §1's skeleton diagnosis empirically. `mkdocs.yml` nav order is a plain sequential list — not itself a flow defect. |
+| Four ML lessons omit the company name | Weeks 6, 9, 10, 16, confirmed by literal search. They still use shared data/contracts; missing branding does not by itself mean missing continuity. |
+| Actual subscription plans | `data/subscriptions.csv`: 48,991 rows; `free` 24,400, `starter` 14,622, `pro` 7,420, `enterprise` 2,549. The 8/50 and 12/60 illustration is not a computed sample of those plans. |
+| Week 7 already sets up Week 8 | [Week 7](../docs/ml/week-07.md): lifetime-label code comment, warning, and closing. `numeric` includes `tenure_so_far`; do not rewrite history to say its model used lifetime `tenure_days`. |
+| Week 17 has three specific incidents | [Week 17](../docs/ml/week-17.md): exploding join, forbidden lifetime features, divergent missing-value handling. Plant all three, not just the scaler warning. |
+| Framework ticket is proposed continuity | `CW-1847` is an author proposal, not an existing shared fixture. LC3’s balance tool uses `user_0001`/`user_0002`; its $128.40 example is not already a refund for `user_041906`. |
+| Capstone already reuses incidents | [Capstone Phase 2](../docs/ml/capstone.md) explicitly connects Week 17 to `capstone/scenarios.py`. Retain this and the optional GPU exception. |
+
+### Missing guardrails to apply before rewriting
+
+1. **Keep narrative facts separate from measured results.** Maintain a small author ledger of customer ID, ticket ID, plan, amount, snapshot date, horizon, budget, and evidence file. Distinguish invented dialogue from computed output. An empty call list or zero later cancellations does not alone demonstrate a broken model, particularly after an intervention. Keep the ~6.4% lifetime prevalence separate from the much rarer 30-day target in Week 8; 80 production calls and the Week 7 exercise’s 100 test-set users are different settings.
+2. **Week 5 needs more than plan-name replacement.** Keep 8/50 vs 12/60 explicitly illustrative if those counts stay. A comparison of self-selected `starter` and `pro` users is observational, not a randomized launch test. Preserve the existing “A ranker is not a lever” warning and avoid claiming that plan choice caused churn differences.
+3. **Track an existing technical defect separately.** Week 5 labels `stats.binom.interval(0.95, n, observed_rate) / n` a Clopper–Pearson confidence interval. It is a range of binomial outcomes under a supplied probability, not that parameter-confidence procedure. Use `stats.binomtest(k, n).proportion_ci(method="exact")` in a focused technical follow-up, with actual churn counts. See the official [binomial distribution API](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html) and [proportion confidence interval API](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.BinomTestResult.proportion_ci.html). This contradicts a blanket “technical content needs no correction”; record it without silently expanding this editorial change.
+4. **Do not promise an experiment the code does not run.** Week 9 predicts snapshot `total_usage`; “next-month capacity forecast” would require a future target and time-aware evaluation. Likewise, “GBT still wins” is a curriculum recommendation unless the particular comparison was actually run. LG5’s in-memory `CHARGES` demo calls a function twice in one process; it does not verify durability across a process restart. Preserve that limitation when writing a crash scene.
+5. **A refund is not a charge.** The proposed framework serial must explain why LG4 approves a refund but LG5 demonstrates capture/charge idempotency. Keep them as related examples or scope a coordinated code/exercise change; a string rename cannot make them the same financial operation. Preserve human approval and the read-only ML/LC bot boundary. Session-key isolation in LC2 must not be presented as implemented tenant authorization.
+6. **Keep lessons independently usable.** Add a one-sentence recap and an ordinary prerequisite link for readers arriving from search or directly into a framework track. Keep objectives, accessible headings, setup instructions, and concept-vs-integration labels easy to find. Consolidate repeated fictional-company boilerplate, but keep local limitations where a standalone snippet could otherwise be mistaken for production evidence. Rendered first screens, not raw line counts including YAML, determine whether a hook is visible.
+7. **Avoid replacing one rigid template with another.** A concrete operational question, failed assertion, or anomalous number can open a week without dialogue. Names are optional when they distract from the mechanism. Keep one short scene; retain the analogy, predict/run/compare/explain cycle, and useful recap material. Move or shorten the Week 15 recap only after checking that its information remains discoverable.
+8. **Optionality is a curriculum decision.** Weeks 0–17 are currently required in `CLAUDE.md`, `README.md`, and the ML index. Before marking 9/10/12/14 skippable, map downstream prerequisites and reconcile navigation, indexes, exercises, and self-checks. Prefer a brief story bridge first. Do not conceal the existing optional status of DL/CrewAI to manufacture urgency.
+9. **Respect the framing-only boundary.** Keep starter TODOs, fixtures, expected outputs, algorithms, and success criteria unchanged in the editorial PR. “Send the list” must still require the existing precision/threshold/ablation work. Any proposed fixture/schema, task, or capstone change becomes a separately scoped follow-up, with matching lesson/exercise/solution updates and relevant checks.
+
+### Additions to the rollout and acceptance checks
+
+- **Phase 0:** record the continuity ledger and prerequisite map. Resolve the proposed week-7/8 outcome, Week 9 forecast wording, refund/charge transition, and `t2`/`t3` mapping before authoring scenes. Keep the story bible author-facing unless learners need a short cast pointer.
+- **Phase 1 pilot:** compare original and revised weeks 4–5 and 7–8 with representative working engineers. Ask what decision they were solving, what they expected next, and whether they can still explain the statistical/label caveat. Record confusion and exercise completion as well as preference; a stronger desire to continue is insufficient if comprehension drops. Set a success criterion before reviewing feedback; treat a small qualitative pilot as directional, not causal proof.
+- **Hub coverage:** assign `docs/index.md` to Phase 1 and framework indexes to Phase 5; §P10 previously had no explicit implementation phase. Preserve easy access to readiness/setup guidance. Align the ML index’s “start at Think of it like” reading instructions with the new opening order.
+- **Per editorial PR:** review a local MkDocs preview at desktop and narrow widths; check headings, collapsed blocks, code visibility, prerequisite/exercise/next links, and existing anchors. Run `mkdocs build --strict` for site changes. Run targeted executable checks only if code or fixtures change. This plan-only audit does not require a site build because `plans/` is outside the site.
+- **Definition of done amendment:** §8’s six items are editorial checks, not proof of improved attention. Permit a concrete role or operational decision instead of a named person, retain correct technical claims and observed-vs-invented distinctions, and require pilot feedback before scaling. Read the rendered openings and closings and then complete an exercise; the serial-only author test cannot assess comprehension or code fidelity.

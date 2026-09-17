@@ -64,3 +64,4 @@ temp/
 # Server
 /tmp/learn-ml-server.log
 /tmp/learn-ml-server.pid
+.cache
