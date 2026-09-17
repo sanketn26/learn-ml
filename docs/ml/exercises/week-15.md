@@ -4,6 +4,8 @@ description: Compare shuffled vs time-split AUC to catch data leakage, benchmark
 
 # Exercises — Week 15 — The Pickle
 
+Ana's question from the lesson still stands: what happens when your laptop is off and it's Tuesday night? Turn the training script into an artifact with a contract, a latency number, and a threshold sized to Priya's 80-call budget — something that survives without you in the room.
+
 ## What you are building
 
 A time-split vs shuffled AUC, 80 `predict()` calls with p50/p95 latency, a capacity threshold of 80 names, a drift overlay, and a one-page write-up.
@@ -49,7 +51,7 @@ Dump with `joblib` into `artifacts/<version>/model.joblib`, the same layout as `
 
 ## After you run
 
-A pickle is an artifact plus a contract plus a budget. Random splits measure yesterday. Time splits measure next month.
+A pickle is an artifact plus a contract plus a budget. Random splits measure yesterday. Time splits measure next month. Next week it stops being a file you run by hand.
 
 ## Lesson link
 
