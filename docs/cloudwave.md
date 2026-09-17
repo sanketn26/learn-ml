@@ -64,10 +64,10 @@ A single support ticket carries the LangChain, LangGraph, and (optionally) CrewA
 
 1. **`CW-1847` opens** — a customer's data export times out around 150k rows (LangChain weeks 1, 4; CrewAI week 2 background)
 2. **Refund requested** — the customer asks for a refund while the export is broken (LangChain weeks 3, 7; LangGraph week 4 — a human must approve the money)
-3. **Resume, don't double-charge** — the fix crashes mid-retry; LangGraph week 5 makes sure retrying a resumed job doesn't charge twice
+3. **Resume, don't double-charge** — LangGraph week 3's `issue_credit` node crashes mid-retry on the `CW-1847` thread, establishing that resume is at-least-once, not exactly-once. Week 5 then shows the idempotency-key fix for that failure mode on a **different** write — a payment capture, `charge(invoice_id=...)`, on a different customer's invoice — because a refund payout and a charge capture are different operations and forcing them into one demo would misrepresent one as the other. Both need the pattern; only one is dramatized end-to-end.
 4. **Optional: the changelog that missed it** — if the CrewAI track stays in a course run, its researcher/writer/QA crew triages `CW-1847` instead of an unrelated changelog product
 
-Same customer throughout: `user_041906` (the same ID used in ML Week 17 and the LangChain golden-ticket fixtures `t2`/`t3`). Same on-call engineer: **Ana**.
+`user_041906` is `CW-1847`'s customer, and the same ID used in ML Week 17 and the LangChain golden-ticket fixture `t3` ("is `user_041906` about to cancel?"). `t2` (the prompt-injection refund attempt) carries **no customer ID** — do not describe it as `user_041906`'s ticket. LangGraph week 5's `charge()` demo deliberately uses a different, unnamed invoice, not `user_041906`'s — see point 3. Same on-call engineer throughout: **Ana**.
 
 `CW-1847` is a proposed continuity device for the framework tracks — it is not yet wired into every lesson. Treat any week that doesn't yet reference it as a to-do, not a contradiction.
 

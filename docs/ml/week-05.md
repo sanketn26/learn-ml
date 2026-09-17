@@ -62,7 +62,7 @@ NOT significant     “we do not know yet”  ← not “they are equal”
 - Not “how big the effect is” (that is the effect size / the interval)
 - Not permission to ship
 
-`8/50` vs `12/60` *looks* like the checklist wins. With that few customers, coin-flips produce a 4-point gap all the time. Marcus sees 16% vs 20%. You see a sample size.
+Marcus remembers `8/50` vs `12/60` as the checklist winning — a 4-point gap, in his telling. (Spoiler for the scenario below: he has the columns backwards.) Even if the direction were right, with that few customers coin-flips produce a 4-point gap all the time. Where he sees a win, you see a sample size.
 
 ### Picture the courtroom
 
@@ -132,7 +132,7 @@ print("Ship decision: keep collecting data. Do not tell Helen this is proven on 
 
 ## Now the full CloudWave table
 
-Same question, real `subscriptions.csv`. More customers → the same 4-point gap would be a much bigger deal.
+Different question — is churn different *by plan*, not by checklist — but the same method, run on the real `subscriptions.csv` instead of a 110-customer toy. More customers → a 4-point gap would be a much bigger deal, if one existed.
 
 !!! tip "Visual cue — which test?"
 

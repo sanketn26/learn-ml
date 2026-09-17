@@ -108,7 +108,7 @@ assert RUNS["issue_credit"] == 2  # failed once, succeeded once — did not repl
 
 !!! warning "Watch out — resume re-enters the failed node"
 
-    `issue_credit` ran, threw, and will run again. If it had actually captured a charge before raising, you now have a double charge. Checkpoints are necessary and **not sufficient**. Week 5 puts an idempotency key on the write.
+    `issue_credit` ran, threw, and will run again. If it had actually moved money before raising, you now have a double payout. Checkpoints are necessary and **not sufficient** — resume is at-least-once, not exactly-once, for the node that crashed. Week 5 shows the fix (an idempotency key) on a different CloudWave write; the same key-the-write pattern applies here.
 
 !!! success "Ship / don’t ship"
 
