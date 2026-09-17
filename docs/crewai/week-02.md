@@ -4,8 +4,12 @@ description: Model a CrewAI Task as a ticket with an output contract and use con
 
 # Week 2 — Three tickets and a dependency
 
-**Course:** CrewAI  
-**Who this is for:** Engineers who have put `needs:` on a CI job.
+The fix for `CW-1847` shipped: exports retry instead of timing out. Someone still has to write the changelog entry — and not lose the fine print that it still fails above 200k rows.
+
+??? note "Course details"
+
+    **Course:** CrewAI
+    **Who this is for:** Engineers who have put `needs:` on a CI job.
 
 A task is a ticket: description, expected output, owner, **upstream artifacts**. `context=[upstream]` is the dependency. You do not need 20 tasks or 6 coordinators to learn that.
 

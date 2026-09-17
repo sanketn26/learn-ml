@@ -4,6 +4,8 @@ description: Compute precision at a fixed call-center budget, sweep classificati
 
 # Exercises — Week 7 — Classification: A Score, Then a Threshold
 
+Priya can call 100 test users this week. She wants the list of names, ranked by risk — not an AUC number in a Slack thread. Before you hand it over, prove the model beats doing nothing, and know exactly what you're trading away as you move the cutoff.
+
 ## What you are building
 
 Precision at a 100-call budget, a threshold sweep, and an ablation that drops `tenure_so_far`.
@@ -44,7 +46,7 @@ python exercises/ml/week-07/starter.py
 
 ## After you run
 
-You ship a list of names, not a textbook 0.5 cutoff. Ranking quality (AUC) and desk precision are different emails.
+You ship a list of names, not a textbook 0.5 cutoff. Ranking quality (AUC) and desk precision are different emails — Priya only reads one of them. (Save the AUC number: Week 8 is about to tell you the label behind it was wrong.)
 
 ## Lesson link
 

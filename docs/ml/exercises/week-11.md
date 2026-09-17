@@ -4,6 +4,8 @@ description: Compare a gradient-boosted ranker against ORDER BY baselines using 
 
 # Exercises — Week 11 — Rank a List
 
+Priya's queue is 80 names, not a threshold. Prove your ranker earns its place above a plain `ORDER BY` before it goes anywhere near her desk, and pre-register the k so nobody accuses you of tuning the cutoff after seeing the scoreboard.
+
 ## What you are building
 
 Four rankers at precision@80 / recall@80, a capacity sweep, a pre-registered k, and a two-sentence reply to a causal trap.
@@ -45,7 +47,7 @@ python exercises/ml/week-11/starter.py
 
 ## After you run
 
-SaaS models are ranked lists. Beat a SQL sort or do not ship. Prediction is not a lever.
+SaaS models are ranked lists. Beat a SQL sort or do not ship. Prediction is not a lever — that's your two-sentence answer when someone reads the ranking as a cause.
 
 ## Lesson link
 

@@ -4,8 +4,12 @@ description: Run a bounded comparison of one worker versus a small CrewAI crew o
 
 # Week 4 — One worker vs a crew
 
-**Course:** CrewAI  
-**Who this is for:** Engineers who have been asked to “add more agents” the way people add more microservices.
+Before staffing three roles on every changelog entry, prove it's worth it: does the crew actually catch something a single writer would drop — like the `CW-1847` fix's remaining risk above 200k rows?
+
+??? note "Course details"
+
+    **Course:** CrewAI
+    **Who this is for:** Engineers who have been asked to “add more agents” the way people add more microservices.
 
 The track’s “done when” is a **bounded comparison**: one worker versus a small crew, on quality, latency, and call count. Kubernetes, 500 RPS, and Prometheus are not this week.
 

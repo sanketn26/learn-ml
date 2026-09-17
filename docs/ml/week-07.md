@@ -4,8 +4,12 @@ description: Understand classification as a score plus a threshold, comparing ba
 
 # Week 7 — Classification: A Score, Then a Threshold
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a spam filter, a linter, or a “risk score.” Same shape.
+Priya has 80 calling slots this week and a spreadsheet of 44,000 customers. She needs 80 names, ranked by risk. You have a `plan_type`, `mrr`, and a churn flag. Time to turn that into a score.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written a spam filter, a linter, or a "risk score." Same shape.
 
 ---
 
@@ -335,9 +339,9 @@ When you can explain the week out loud, do the [exercises](exercises/week-07.md)
 ## 🤔 Reflection
 
 1. Why can accuracy be ~94% while the model is useless? (Hint: ~6.4% of users churn.)
-2. A PM wants “both high precision and high recall.” What resource do they need to give you?
+2. Marcus wants “both high precision and high recall.” What resource does he need to give you?
 3. Would you rather explain a depth-3 tree or a 150-tree forest to legal?
 
 ## 🔗 Next week
 
-[Week 8](week-08.md) — labels. Lifetime `is_churned` plus lifetime `tenure_days` is a tenure detector. We will cut the answer key at `as_of` the same way Week 6 cut the features. Regression is Week 9.
+You hand Priya a ranked list. Before she calls anyone, Ana asks one question: the label you trained on was lifetime `is_churned` — "did this person ever cancel" — not "will they cancel in the next 30 days." Those are different questions with different answers. [Week 8](week-08.md) cuts the answer key at `as_of`, the same way Week 6 cut the features.

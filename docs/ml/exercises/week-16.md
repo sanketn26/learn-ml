@@ -4,6 +4,8 @@ description: Build a training pipeline with a candidate model directory, a promo
 
 # Exercises — Week 16 — The Job Pipeline
 
+Ana's rule: nothing writes to `artifacts/prod` unless it beats the dummy and beats current prod, automatically, every night — no exceptions for "it looked fine on my laptop." Wire the gate she'll actually trust, then prove it refuses a losing candidate.
+
 ## What you are building
 
 A candidate directory, a promote gate, proof that train does not write prod, and a five-line cron.
@@ -55,7 +57,7 @@ head tonight.csv
 
 ## After you run
 
-The job is train → gate → prod dir → tonight's CSV. Kubeflow is not the week.
+The job is train → gate → prod dir → tonight's CSV. Kubeflow is not the week. You're on-call starting next week — this gate is what you're trusting at 3 a.m.
 
 ## Lesson link
 

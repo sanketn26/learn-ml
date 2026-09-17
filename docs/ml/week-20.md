@@ -4,8 +4,12 @@ description: Learn Transformer self-attention as a soft dictionary lookup with q
 
 # Week 20 — Transformers: Everything Looks at Everything
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a search index, a join, or `dict.get`. This is the architecture behind GPT, BERT, Copilot, and most of LangChain.
+Weeks 18 and 19 gave Marcus's usage-shape question two optional pictures — a spike detector and a clipboard — and shipped neither. This last optional picture is the one CloudWave would actually reach for elsewhere: attention, applied to the feedback text nobody has time to read one ticket at a time.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written a search index, a join, or `dict.get`. This is the architecture behind GPT, BERT, Copilot, and most of LangChain.
 
 ---
 

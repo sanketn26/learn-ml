@@ -4,6 +4,8 @@ description: Run a chi-squared test on plan vs churn, a t-test on sentiment scor
 
 # Exercises — Week 5 — “Is This Real, or Just Noise?”
 
+Marcus still wants to tell Helen the onboarding checklist worked. Before you answer him, check whether plan itself is even associated with churn once you take `free` out of the picture, and get honest about how much data a claim like his actually needs.
+
 ## What you are building
 
 A paid-only chi-squared, a two-group sentiment t-test, and a sample-size simulation for a 16% vs 20% gap.
@@ -42,7 +44,7 @@ python exercises/ml/week-05/starter.py
 
 ## After you run
 
-p < 0.05 is a filter. A ranker is not a lever: plan × churn is observational.
+p < 0.05 is a filter. A ranker is not a lever: plan × churn is observational. That's the caveat Marcus needs before Monday, not after.
 
 ## Lesson link
 

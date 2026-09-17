@@ -4,8 +4,12 @@ description: Use LangGraph's MemorySaver checkpointer to persist state and resum
 
 # Week 3 — Checkpoint, crash, resume
 
-**Course:** LangGraph  
-**Who this is for:** Engineers who have lost 20 minutes of a job because step 3 died and they reran from step 1.
+The `CW-1847` refund pipeline dies on the third step, mid-run. Nobody wants to re-fetch the ticket and re-check the refund policy just to retry the one node that actually crashed.
+
+??? note "Course details"
+
+    **Course:** LangGraph
+    **Who this is for:** Engineers who have lost 20 minutes of a job because step 3 died and they reran from step 1.
 
 The reason to use a graph is that the **runtime owns the state**. LangGraph 0.2’s in-memory checkpointer is `MemorySaver`. A homemade dict of snapshots is useful intuition; it is not what you compile.
 
@@ -25,15 +29,15 @@ The reason to use a graph is that the **runtime owns the state**. LangGraph 0.2�
 ## Picture the crash
 
 ```
-node1  →  ✓ checkpoint
-node2  →  ✓ checkpoint
-node3  →  boom
+fetch_ticket        →  ✓ checkpoint
+check_refund_policy →  ✓ checkpoint
+issue_credit        →  boom
               │
               ▼
          resume(thread_id)
               │
               ▼
-         node3 again     ← node1 and node2 must not re-run
+    issue_credit again     ← fetch_ticket and check_refund_policy must not re-run
 ```
 
 ## MemorySaver, not a homemade store
@@ -45,7 +49,7 @@ import operator
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 
-RUNS = {"n1": 0, "n2": 0, "n3": 0}
+RUNS = {"fetch_ticket": 0, "check_refund_policy": 0, "issue_credit": 0}
 
 
 class Job(TypedDict):
@@ -53,58 +57,58 @@ class Job(TypedDict):
     crash: bool
 
 
-def node1(state: Job) -> dict:
-    RUNS["n1"] += 1
-    return {"log": ["n1"]}
+def fetch_ticket(state: Job) -> dict:
+    RUNS["fetch_ticket"] += 1
+    return {"log": ["fetch_ticket"]}
 
 
-def node2(state: Job) -> dict:
-    RUNS["n2"] += 1
-    return {"log": ["n2"]}
+def check_refund_policy(state: Job) -> dict:
+    RUNS["check_refund_policy"] += 1
+    return {"log": ["check_refund_policy"]}
 
 
-def node3(state: Job) -> dict:
-    RUNS["n3"] += 1
+def issue_credit(state: Job) -> dict:
+    RUNS["issue_credit"] += 1
     if state["crash"]:
-        raise RuntimeError("node3 exploded")
-    return {"log": ["n3"]}
+        raise RuntimeError("billing API unavailable — issue_credit failed")
+    return {"log": ["issue_credit"]}
 
 
 g = StateGraph(Job)
-g.add_node("node1", node1)
-g.add_node("node2", node2)
-g.add_node("node3", node3)
-g.add_edge(START, "node1")
-g.add_edge("node1", "node2")
-g.add_edge("node2", "node3")
-g.add_edge("node3", END)
+g.add_node("fetch_ticket", fetch_ticket)
+g.add_node("check_refund_policy", check_refund_policy)
+g.add_node("issue_credit", issue_credit)
+g.add_edge(START, "fetch_ticket")
+g.add_edge("fetch_ticket", "check_refund_policy")
+g.add_edge("check_refund_policy", "issue_credit")
+g.add_edge("issue_credit", END)
 
 app = g.compile(checkpointer=MemorySaver())
-config = {"configurable": {"thread_id": "t1"}}
+config = {"configurable": {"thread_id": "CW-1847"}}
 
 try:
     app.invoke({"log": [], "crash": True}, config)
 except RuntimeError:
     pass
 
-assert RUNS == {"n1": 1, "n2": 1, "n3": 1}
+assert RUNS == {"fetch_ticket": 1, "check_refund_policy": 1, "issue_credit": 1}
 snap = app.get_state(config)
-assert "n1" in snap.values["log"] and "n2" in snap.values["log"]
-assert "n3" not in snap.values["log"]
+assert "fetch_ticket" in snap.values["log"] and "check_refund_policy" in snap.values["log"]
+assert "issue_credit" not in snap.values["log"]
 
 app.update_state(config, {"crash": False})
 final = app.invoke(None, config)
 
-assert final["log"][-1] == "n3"
-assert RUNS["n1"] == 1 and RUNS["n2"] == 1
-assert RUNS["n3"] == 2  # failed once, succeeded once — did not replay n1/n2
+assert final["log"][-1] == "issue_credit"
+assert RUNS["fetch_ticket"] == 1 and RUNS["check_refund_policy"] == 1
+assert RUNS["issue_credit"] == 2  # failed once, succeeded once — did not replay the first two steps
 ```
 
 `invoke(None, config)` means “continue this thread.” It is not a new run.
 
 !!! warning "Watch out — resume re-enters the failed node"
 
-    Node 3 ran, threw, and will run again. If node 3 had charged a card before raising, you now have a double charge. Checkpoints are necessary and **not sufficient**. Week 5 puts an idempotency key on the write.
+    `issue_credit` ran, threw, and will run again. If it had actually moved money before raising, you now have a double payout. Checkpoints are necessary and **not sufficient** — resume is at-least-once, not exactly-once, for the node that crashed. Week 5 shows the fix (an idempotency key) on a different CloudWave write; the same key-the-write pattern applies here.
 
 !!! success "Ship / don’t ship"
 
@@ -128,4 +132,4 @@ assert RUNS["n3"] == 2  # failed once, succeeded once — did not replay n1/n2
 
 ## 🔗 Next week
 
-Pause before a write: `interrupt_before=["approve"]`, then approve / reject / needs-info.
+Pause before a write: `interrupt_before=["approve"]`, then approve / reject / needs-info. Two weeks after that, `issue_credit` gets the idempotency key that makes its replay safe.

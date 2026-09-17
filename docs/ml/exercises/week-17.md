@@ -4,6 +4,8 @@ description: Write an incident postmortem, wrap a churn model as a read-only get
 
 # Exercises — Week 17 — On-Call
 
+The pager already went off in the lesson. Ana's asleep; you're not. Write up the incident so the next person on rotation doesn't relive it, then put the score behind a tool the bot can call safely.
+
 ## What you are building
 
 An incident write-up, `get_churn_score` as a read-only tool, a green golden file, and a new injection line the firewall refuses.

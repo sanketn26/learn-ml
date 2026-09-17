@@ -4,8 +4,12 @@ description: Treat feature engineering as an API contract: scaling, one-hot enco
 
 # Week 6 — Features Are the Model’s API
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have designed request payloads. Feature engineering is that, plus a timeline rule.
+Ana is scoring a live user at noon on Tuesday and one column won't compute: it needs data from tomorrow. Week 2 taught you that missing values are a decision, not a default — this week that decision gets made exactly once, in exactly one place, so a training run and a Tuesday-noon request never disagree about what a missing value means.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have designed request payloads. Feature engineering is that, plus a timeline rule.
 
 ---
 
@@ -187,7 +191,7 @@ print(np.round(X_train_t[:, : len(numeric)].mean(axis=0), 3))
 
 !!! success "Ship / don’t ship"
 
-    A feature ships if a tired on-call engineer can compute it from *today’s* warehouses for a single `user_id` with no peek at the label table. If you cannot write that function, it is not a feature.
+    A feature ships if Ana, on-call at 2 a.m., can compute it from *today’s* warehouses for a single `user_id` with no peek at the label table. If you cannot write that function, it is not a feature.
 
     Email, name, ticket body, `user_id`, `churn_date`, and lifetime `tenure_days` do not go in `X`. `pipelines/contract.py` rejects unknown keys so PII cannot wander in. The one function that builds the row is `pipelines.features.build_features(as_of=...)` — Week 3 and Week 16 hang the job on it.
 
@@ -204,4 +208,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-06.md)
 
 ## 🔗 Next week
 
-Classification: a model is a function `features → risk score`. We pick a threshold the sales team can staff.
+The contract is signed: one function builds every feature, in one place. Priya has 80 calling slots this week and 44,000 customers to rank — [Week 7](week-07.md) turns your features into a score she can act on.

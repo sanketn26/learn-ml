@@ -4,6 +4,8 @@ description: Python fundamentals exercises, a churn report from a CSV, a JSON-se
 
 # Exercises — Week 0 — Strong Python for AI Engineers
 
+Priya wants plan-level churn numbers in Slack this afternoon. No Pandas yet — that's next week. Standard library only.
+
 ## What you are building
 
 A plan-level churn report with the standard library, a dataclass that round-trips to a JSON payload, a `fit` / `predict` class, and a fixed mutable-default foot-gun.
@@ -45,7 +47,7 @@ python exercises/ml/week-00/starter.py
 
 ## After you run
 
-Python is glue. The dataclass is next week's row and Week 15's `/predict` body. A model that answers before `fit` is a handler that 200s an empty payload.
+Python is glue. The dataclass is next week's row and Week 15's `/predict` body. A model that answers before `fit` is a handler that 200s an empty payload. Send Priya the numbers.
 
 ## Lesson link
 

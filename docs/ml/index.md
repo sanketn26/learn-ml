@@ -4,9 +4,22 @@ description: A 20-week applied ML course for engineers, using a fake SaaS compan
 
 # Applied ML Foundations for SaaS Analytics
 
-Written for working engineers. You do not need calculus, linear algebra, or a stats degree, but you do need programming fluency. This is an introduction to ML, not an introduction to coding. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.
+CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a week — she needs the right 80. Helen wants to know whether a churn gap is real before anyone touches pricing. You just joined as the ML engineer who has to answer both.
 
-CloudWave is a fake B2B SaaS company. You will use the same customers from “what is a Python dataclass” through a nightly scoring job — then, if you want, the pictures behind CNNs and Transformers.
+??? note "Course details — who this is for, prerequisites"
+
+    Written for working engineers. You do not need calculus, linear algebra, or a stats degree, but you do need programming fluency. This is an introduction to ML, not an introduction to coding. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.
+
+    CloudWave is a fake B2B SaaS company. You will use the same customers from "what is a Python dataclass" through a nightly scoring job — then, if you want, the pictures behind CNNs and Transformers. Full cast, numbers, and story continuity: [CloudWave story bible](../cloudwave.md).
+
+## Who you work with
+
+| Person | Role | Wants |
+|---|---|---|
+| **Priya** | CS lead | 80 names a week, not an AUC |
+| **Marcus** | PM | A chart, and both precision and recall |
+| **Ana** | On-call / data | A feature contract that doesn't leak the future |
+| **Helen** | CFO | One page, in dollars |
 
 ## The path (weeks 0–20)
 
@@ -59,7 +72,7 @@ The recurring cycle:
 
 **analogy → visual → math → predict → run → compare → explain**
 
-1. Read the week on this site. Start at **Think of it like…** and **If you already write software**.
+1. Read the week on this site. Start with the opening scene, then **Think of it like…** and **If you already write software**.
 2. Only then look at the code. It is there to prove the picture, not to be copied blindly.
 3. Before you run a block, write a prediction (what will move, what will not, why). Then run it and compare. If you were wrong, name the assumption that failed.
 4. Do the [exercise](exercises/week-00.md) in `exercises/ml/week-XX/starter.py`.

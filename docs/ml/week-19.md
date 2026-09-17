@@ -4,8 +4,12 @@ description: Learn Recurrent Neural Networks as a hidden state that walks a sequ
 
 # Week 19 — RNNs: A Clipboard That Walks the Sequence
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a fold / reduce, a state machine, or a running total.
+Last week's detector could spot a spike in a customer's usage but forgot everything outside its window. This optional week asks a different question about the same evidence Marcus wants: what if the model needs to remember week 1 by the time it reaches week 12?
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written a fold / reduce, a state machine, or a running total.
 
 An **RNN** (Recurrent Neural Network) is a loop with memory: *read the next token, update a hidden state, repeat.*
 
@@ -209,4 +213,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-19.md)
 
 ## 🔗 Next week
 
-Transformers: throw away the clipboard. Every week (or word) looks at every other one, in parallel.
+The clipboard fades no matter how you gate it. [Week 20](week-20.md) — the last optional picture — throws the clipboard away entirely: every week (or word) looks at every other one, in parallel.

@@ -4,10 +4,12 @@ description: Treat SQL and the data warehouse as the source of truth, writing da
 
 # Week 3 — SQL Is the Source of Truth
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who already write `SELECT`. Read this after Week 2. The CSV in `data/` is a **fixture**. Production is a warehouse.
+Marcus emails you a CSV "with a couple extra columns" and asks you to retrain today. Ana says not yet — not until you can answer one question: what `as_of` date built this file, and can you get it from the warehouse instead of an inbox? A model trained on a file someone emailed you is a demo. A model trained on `as of midnight, this partition` is a job.
 
-A model trained on a file someone emailed you is a demo. A model trained on `as of midnight, this partition` is a job.
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who already write `SELECT`. Read this after Week 2. The CSV in `data/` is a **fixture**. Production is a warehouse.
 
 ---
 
@@ -164,7 +166,7 @@ Do the [exercises](exercises/week-03.md). The SQL lives in your head and in `pip
 ## 🤔 Reflection
 
 1. Why is `tenure_days` on `subscriptions` the wrong column once you have an `as_of`?
-2. A PM emails you a new CSV “with extra features.” What is your first question?
+2. Marcus emails you a new CSV “with extra features.” What is your first question?
 3. When would you *keep* the 360 in SQL (DuckDB, warehouse) instead of bringing it into Pandas?
 
 ## Before you leave
@@ -173,5 +175,5 @@ Try one [self-check](self-checks.md#week-3-as_of) (Predict / Diagnose / Choose /
 
 ## 🔗 Next
 
-If you came from Week 2: go on to Week 4 (charts).  
+Ana's question now has an answer: a query, with a date bound, that you can rerun. If you came from Week 2: [Week 4](week-04.md) turns it into the one page Helen reads before Monday's board meeting.  
 If you already finished classification: Week 8 is labels, delay, and why ~6.4% churn is not “just use AUC.”

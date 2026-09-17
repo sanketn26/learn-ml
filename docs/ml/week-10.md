@@ -4,8 +4,12 @@ description: Explore unsupervised learning with K-Means clustering, elbow and si
 
 # Week 10 — Clustering: Sorting Without Labels
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have bucketed users in SQL and wished the buckets invented themselves.
+Priya has been reading close to the same script to all 80 names on her weekly list. She asks you: are these actually the same kind of customer, or am I calling a whale and a confused free-tier user with the same three lines? Nobody labeled a "customer type" column — if personas exist, you have to find the piles yourself.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have bucketed users in SQL and wished the buckets invented themselves.
 
 ---
 
@@ -220,4 +224,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-10.md)
 
 ## 🔗 Next week
 
-Too many columns. PCA: JPEG for tabular data — keep the big shapes, drop the noise.
+Personas can make Priya's 80 calls sound less like a script, but they don't tell her *who* to call first. [Week 11](week-11.md) builds that ordered list.

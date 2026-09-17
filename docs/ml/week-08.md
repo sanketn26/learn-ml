@@ -4,10 +4,14 @@ description: Fix mislabeled churn data by defining a time-boxed label, handling 
 
 # Week 8 — Labels Lie
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who shipped Week 7’s classifier. Read this after Week 7. CloudWave’s lifetime `is_churned` flag is the wrong label.
+Ana blocks the handoff before Priya gets the list. "This ranks who ever cancels," she says, "not who cancels in the next 30 days. Those aren't the same 80 people." She's right — `is_churned` is a lifetime flag, and it was your label all along.
 
-About **6.4%** of customers ever cancel in this file. A model that predicts “nobody churns” is ~94% accurate and useless. A model that uses lifetime `is_churned` plus `tenure_days` is a tenure detector wearing a costume.
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who shipped Week 7's classifier. Read this after Week 7. CloudWave's lifetime `is_churned` flag is the wrong label.
+
+About **6.4%** of customers ever cancel in this file. A model that predicts "nobody churns" is ~94% accurate and useless. A model trained on the lifetime `is_churned` flag answers "will they ever leave," which is a different, easier, and less useful question than "will they leave in the next 30 days."
 
 ---
 
@@ -212,7 +216,7 @@ CloudWave’s fixture has no emails. Your real warehouse will. Rule:
 
 1. A user signed up yesterday. Why is their 30-day label mostly noise even if you wait?
 2. Why can ROC-AUC look “fine” when the 80-call list is junk?
-3. CS asks “so this account is 80% likely to churn?” What do you actually know?
+3. Priya asks “so this account is 80% likely to churn?” What do you actually know?
 
 ## Before you leave
 
@@ -220,4 +224,4 @@ Try one [self-check](self-checks.md#week-8-labels) (Predict / Diagnose / Choose 
 
 ## 🔗 Next week
 
-Ranking. Most SaaS models are not “yes/no.” They are “who is at the top of the list.”
+You fix the label. Priya's real question is still open: she doesn't want a yes/no for 44,000 customers, she wants the top 80, ranked. [Week 9](week-09.md) and [Week 10](week-10.md) are two detours worth taking on the way — then [Week 11](week-11.md) is that list.

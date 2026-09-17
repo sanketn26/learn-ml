@@ -4,8 +4,12 @@ description: Master Pandas DataFrames by mapping SQL joins and group-by operatio
 
 # Week 2 — Pandas: SQL You Already Know, in Python
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written `SELECT / JOIN / GROUP BY`. You do not need statistics yet.
+Helen forwards a screenshot at 8 a.m.: total MRR on her dashboard doubled overnight. Nothing changed in billing. Somewhere between four systems and one number, a join fanned out — and you're about to write the exact bug that did it, on purpose, so you recognize it before it ever reaches her screen for real.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written `SELECT / JOIN / GROUP BY`. You do not need statistics yet.
 
 ---
 
@@ -238,9 +242,9 @@ When you can explain the week out loud, do the [exercises](exercises/week-02.md)
 ## 🤔 Reflection
 
 1. Your exploded MRR was 3× too big. What code review comment do you leave?
-2. A PM says “customers who write feedback churn less.” Is that product magic, or selection (happy people write reviews)?
+2. Marcus says “customers who write feedback churn less.” Is that product magic, or selection (happy people write reviews)?
 3. When would you *want* an inner join from subscriptions to events?
 
 ## 🔗 Next week
 
-[Week 3](week-03.md) — treat the CSV as a warehouse checkout, with an `as_of`. Then Week 4 is charts.
+The join is fixed, but the CSV in `data/` is still a fixture, not a live warehouse table. Ana won't train a model on a file that showed up in her inbox — [Week 3](week-03.md) is her argument, in SQL. Then Week 4 turns Customer 360 into Helen's one-page chart.

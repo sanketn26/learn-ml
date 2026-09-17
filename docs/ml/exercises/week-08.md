@@ -4,6 +4,8 @@ description: Compare horizon vs lifetime churn labels under censoring, evaluate 
 
 # Exercises — Week 8 — Labels Lie
 
+Ana already blocked the handoff in the lesson: last week's model answers "did they ever churn," not "will they churn in the next 30 days." Before Priya gets a queue built on it, rebuild the label properly and prove the old ranking metric was flattering you.
+
 ## What you are building
 
 Horizon vs lifetime rates, a censoring count, PR-AUC vs ROC-AUC vs precision@80, a forbidden-key `validate()` raise, and a calibration glance.
@@ -49,7 +51,7 @@ pytest tests/test_labels.py tests/test_contract.py
 
 ## After you run
 
-Eventual-after-as_of is the question this file can supervise. Say so in `metrics.json`. Lifetime `churn_date` on a payload is a 400.
+Eventual-after-as_of is the question this file can supervise. Say so in `metrics.json`. Lifetime `churn_date` on a payload is a 400. Now the label is legal — Priya's queue can be built on it.
 
 ## Lesson link
 

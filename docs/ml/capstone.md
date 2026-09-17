@@ -4,8 +4,14 @@ description: An optional GPU capstone fine-tuning a small LLM as a reliable codi
 
 # Capstone — Building a Reliable Coding Specialist
 
-**Course:** Applied ML Foundations for SaaS Analytics
-**Who this is for:** Engineers who finished the required track (0–17) and want to see the same "score, then a contract" discipline applied to an LLM instead of a GBT.
+Week 17 ended with the pager quiet and three postmortems filed: the join that fanned out, the label that leaked, the NaN that got filled twice. Ana reads them and asks for something more than a writeup — a coding assistant that already knows these three shapes cold, so the next engineer on rotation isn't re-deriving them from a stack trace at 3 a.m. Not a general chatbot with your codebase pasted into its prompt. The same discipline she made you ship for the churn score: a narrow tool contract, validated inputs, and nothing that writes.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who finished the required track (0–17) and want to see the same "score, then a contract" discipline applied to an LLM instead of a GBT.
+
+---
 
 !!! warning "This week is different: it needs a GPU"
 
@@ -89,7 +95,7 @@ We dropped `analyze_code` and `generate_test_cases` from the original brief — 
 
 ## Phase 2 — generate trajectories without paying for one API call
 
-CloudWave's own incidents from [Week 17](week-17.md) are a free, ground-truth dataset: you already know the right tool call for "the join that doubled MRR" because you debugged it three weeks ago. `capstone/scenarios.py` encodes six scenarios this way; `capstone/teacher.py` is the "teacher" — for synthetic scenarios where the answer is known by construction, *you* are the teacher, no API needed.
+This is why Ana asked for this over a generic coding bot: CloudWave's own incidents from [Week 17](week-17.md) are a free, ground-truth dataset. You already know the right tool call for "the join that doubled MRR" because you debugged it three weeks ago — no API call needed to manufacture a label. `capstone/scenarios.py` encodes six scenarios this way; `capstone/teacher.py` is the "teacher" — for synthetic scenarios where the answer is known by construction, *you* are the teacher.
 
 ```python
 # capstone/teacher.py

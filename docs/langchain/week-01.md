@@ -4,8 +4,12 @@ description: Learn LangChain chains as prompt templates piped through output par
 
 # Week 1 — Chains: templates, parsers, pipes
 
-**Course:** LangChain  
-**Who this is for:** Engineers who have written an HTTP handler that validates JSON and calls a slow downstream.
+A CloudWave ticket lands: subject “Export timeout,” body `ERR_TIMEOUT_500 on 150k rows`. Before you build anything clever, you need the boring part — turn that text into a category, a priority, and someone to route it to.
+
+??? note "Course details"
+
+    **Course:** LangChain
+    **Who this is for:** Engineers who have written an HTTP handler that validates JSON and calls a slow downstream.
 
 LangChain is not a model. The model is the remote API. LangChain is **middleware**: a prompt is a template, a parser is a schema, a chain is your call graph.
 
@@ -96,8 +100,6 @@ text = chain.invoke({
 })
 assert "cache" in text.lower()
 ```
-
-Hypothetical CloudWave volume for this track: a few hundred tickets a day, not a vendor case study.
 
 ## JsonOutputParser returns a dict
 

@@ -4,10 +4,12 @@ description: Debug production ML incidents like on-call outages, then expose a c
 
 # Week 17 — You Are On-Call (and a Ticket Bot)
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who can run Week 16. This is the last required tabular week. Deep learning (weeks 18–20) is optional after.
+3 a.m., first week on the rotation. The pager says precision@80 fell off a cliff. Ana is asleep. It's yours. Two jobs tonight: **debug a red pipeline**, then **put the score behind a tool** a support bot may call — never the other way around.
 
-Two jobs in one on-call shift: **debug a red pipeline**, then **put the score behind a tool** a support bot may call — never the other way around.
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who can run Week 16. This is the last required tabular week. Deep learning (weeks 18–20) is optional after.
 
 ---
 
@@ -28,6 +30,8 @@ Each one is a real class of outage. Sit with the picture before the fix.
 
 ### 1. The join that doubled MRR
 
+You've seen this shape before. Week 2, Helen's dashboard doubled overnight from the same bug — a `print` statement caught it in a notebook that week. Tonight it's live, in the training table, at 3 a.m.
+
 Symptom: tonight’s list is all enterprise whales. Precision@80 looks amazing. Next month they do not churn. Finance says revenue is “up 2×” on the training table.
 
 ```
@@ -42,6 +46,8 @@ Fix: the Week 2 / Week 3 rule. Aggregate the many-side first. `tests/test_featur
 
 ### 2. The label that leaked the answer
 
+This is the exact mistake Ana blocked in Week 8, before it ever reached Priya's list. Tonight it shipped anyway — a later training run didn't have her in the room.
+
 Symptom: AUC 0.99 on holdout. Prod precision@80 is random. Someone added `tenure_days` and `is_churned` “just to see.”
 
 ```
@@ -53,6 +59,8 @@ time split + horizon label  →  the trick dies
 Fix: `FORBIDDEN` ∩ `FEATURE_COLS` is empty. Horizon label only (Week 8). `validate()` rejects extra keys.
 
 ### 3. The silent NaN
+
+Week 2 taught "missing values are a decision, not a default." Week 6 built the feature contract to make that decision once. Tonight, two code paths made it twice, differently.
 
 Symptom: half of tonight’s scores are `0.5` on the nose. A new region landed as `NaN` in `n_support`. One path filled 0; another let the tree invent a branch. Two code paths.
 

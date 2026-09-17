@@ -4,8 +4,12 @@ description: Learn CrewAI's Agent abstraction as role, goal, backstory, and tool
 
 # Week 1 — An agent is a job description
 
-**Course:** CrewAI  
-**Who this is for:** Engineers who have written a role into a hiring doc and an IAM policy.
+`CW-1847` needs a first pass: what kind of ticket is this, and does it need to escalate. One analyst, one job description, no crew yet.
+
+??? note "Course details"
+
+    **Course:** CrewAI
+    **Who this is for:** Engineers who have written a role into a hiring doc and an IAM policy.
 
 CrewAI is **jobs + tickets + a sprint team**. An agent is a worker with a system prompt (role, goal, backstory), tools (IAM), and a task (a ticket). It is ceremony when one function would do.
 
@@ -40,7 +44,7 @@ Agent
          kickoff()  ← needs a real model; not this week’s demo
 ```
 
-Hypothetical CloudWave: a few ticket analysts. Not a HubSpot/Jasper case study.
+Hypothetical CloudWave: a few ticket analysts. Not a HubSpot/Jasper case study. Once a ticket like `CW-1847` is triaged, someone still has to turn the fix into a changelog entry — that's weeks 2–4.
 
 ## Construct and assert — no kickoff
 
@@ -135,4 +139,4 @@ Attach tools only if you can do it without importing `langchain` or `crewai_tool
 
 ## 🔗 Next week
 
-Tasks with `context=[upstream]`. Three tickets, not twenty.
+Tasks with `context=[upstream]`. Three tickets, not twenty — turning a fix like `CW-1847`'s into a release note without dropping the risk that's still open.

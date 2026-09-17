@@ -4,6 +4,8 @@ description: Build adoption-by-plan and churn-by-region charts in matplotlib, th
 
 # Exercises — Week 4 — Charts That Change a Decision
 
+Helen's board meeting is Monday. She asked for one screen, not a notebook. Rebuild the deck's plan-churn bar honestly, and give her the adoption and region cuts she'll ask about when someone pushes back.
+
 ## What you are building
 
 Three charts: adoption by plan, churn by region, and an honest plan-churn bar whose title is a claim and whose y-axis starts at 0.
@@ -42,7 +44,7 @@ python exercises/ml/week-04/starter.py
 
 ## After you run
 
-A chart is an API response. If the PM can misquote the title, rewrite the title.
+A chart is an API response. If the PM can misquote the title, rewrite the title. This is the screen Helen actually shows the board.
 
 ## Lesson link
 

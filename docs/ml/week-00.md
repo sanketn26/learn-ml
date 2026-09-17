@@ -4,8 +4,12 @@ description: Build strong Python fundamentals for ML: type hints, dataclasses, a
 
 # Week 0 — Strong Python for AI Engineers
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Developers who already write code (Java, TypeScript, Go, …) and need Python to be *the* language they think in for AI work. You do not need prior Python.
+Monday, 9 a.m., first day. Ana pings you on Slack: "welcome — `feature_usage.csv` is 160,000 rows, don't loop it in plain Python or your laptop fan will rat you out." You have not opened the file yet. You are about to.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Developers who already write code (Java, TypeScript, Go, …) and need Python to be *the* language they think in for AI work. You do not need prior Python.
 
 Python is not “the AI.” It is the **glue**. NumPy, Pandas, and PyTorch are the engines. If the glue is sloppy, the engines leak.
 
@@ -299,4 +303,4 @@ Try one [self-check](self-checks.md#week-0-strong-python) (Predict / Diagnose / 
 
 ## 🔗 Next week
 
-NumPy: the same CloudWave numbers, but as a typed column the CPU can chew in one gulp.
+Ana's warning about the 160,000-row file was not small talk. [Week 1](week-01.md) makes it precise: stop looping, start vectorizing — same numbers, one typed column the CPU chews in a single gulp.

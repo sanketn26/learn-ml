@@ -4,8 +4,12 @@ description: Build LangGraph fan-out branches that merge with a reducer, embed a
 
 # Week 2 — Fan-out, subgraph, retry
 
-**Course:** LangGraph  
-**Who this is for:** Engineers who have written a CI workflow with `if:` jobs, or `asyncio.gather` three calls and a join.
+`CW-1847` just got triaged into `refund_queue`. Two things need to happen at once: the customer gets an acknowledgment email, and Ana's on-call channel gets a Slack ping. Neither should wait on the other, and neither write should stomp the other's log entry.
+
+??? note "Course details"
+
+    **Course:** LangGraph
+    **Who this is for:** Engineers who have written a CI workflow with `if:` jobs, or `asyncio.gather` three calls and a join.
 
 Week 1 branched. This week: **do independent work in parallel**, **reuse a subgraph like a function**, **retry the node that talks to the world**.
 
@@ -32,7 +36,7 @@ analyze → is_urgent? → priority_q | standard_q → END
 
 ## Fan-out + reducer (compiles)
 
-Independent CloudWave side-work: email the user, post to the on-call channel. Both write `notes`. Without `operator.add`, the last node wins and you “lose” the email.
+Independent CloudWave side-work on `CW-1847`: email the customer, post to the on-call channel. Both write `notes`. Without `operator.add`, the last node wins and you “lose” the email.
 
 ```python
 import operator
@@ -69,7 +73,7 @@ fan.add_edge("slack", "join")
 fan.add_edge("join", END)
 fan_app = fan.compile()
 
-out = fan_app.invoke({"text": "dashboard down", "notes": []})
+out = fan_app.invoke({"text": "export timing out, CW-1847", "notes": []})
 assert set(out["notes"]) == {"email: queued", "slack: on-call"}
 ```
 
@@ -79,32 +83,32 @@ assert set(out["notes"]) == {"email: queued", "slack: on-call"}
 
 ## Subgraph as a node
 
-A five-step KYC check that shows up in onboarding *and* a limit-raise is a subgraph: compile it, add it as one node.
+An account-status lookup that shows up when a ticket opens *and* again when a refund escalates is a subgraph: compile it, add it as one node.
 
 ```python
-class Kyc(TypedDict):
+class Account(TypedDict):
     user_id: str
     notes: Annotated[list[str], operator.add]
 
 
-def kyc_check(state: Kyc) -> dict:
-    return {"notes": [f"kyc:{state['user_id']}"]}
+def account_lookup(state: Account) -> dict:
+    return {"notes": [f"account:{state['user_id']}"]}
 
 
-inner = StateGraph(Kyc)
-inner.add_node("kyc_check", kyc_check)
-inner.add_edge(START, "kyc_check")
-inner.add_edge("kyc_check", END)
-kyc_app = inner.compile()
+inner = StateGraph(Account)
+inner.add_node("account_lookup", account_lookup)
+inner.add_edge(START, "account_lookup")
+inner.add_edge("account_lookup", END)
+lookup_app = inner.compile()
 
-outer = StateGraph(Kyc)
-outer.add_node("kyc", kyc_app)  # compiled graph as a node
-outer.add_edge(START, "kyc")
-outer.add_edge("kyc", END)
+outer = StateGraph(Account)
+outer.add_node("lookup", lookup_app)  # compiled graph as a node
+outer.add_edge(START, "lookup")
+outer.add_edge("lookup", END)
 outer_app = outer.compile()
 
-got = outer_app.invoke({"user_id": "user_0001", "notes": []})
-assert got["notes"] == ["kyc:user_0001"]
+got = outer_app.invoke({"user_id": "user_041906", "notes": []})
+assert got["notes"] == ["account:user_041906"]
 ```
 
 Same contract as extracting a function: typed in, typed out, no secret globals.

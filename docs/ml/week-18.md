@@ -4,8 +4,12 @@ description: Understand Convolutional Neural Networks as reusable sliding detect
 
 # Week 18 — CNNs: Sliding Detectors
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have written a sliding-window loop, a regex, or an image filter.
+Marcus keeps asking whether the *shape* of a customer's usage — a spike, a slow fade — would predict churn better than the single totals Weeks 0–17 shipped on. This optional week is the tool that would let you answer him, if CloudWave ever needed to: a picture, not a production plan.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have written a sliding-window loop, a regex, or an image filter.
 
 A **Convolutional Neural Network** is not “the image one.” It is: **reuse a tiny detector at every position.**
 
@@ -240,4 +244,4 @@ Try one item from [self-checks — weeks 18–20](self-checks.md#weeks-18-20-dl-
 
 ## 🔗 Next week
 
-RNNs: the stencil starts to have **memory**. We walk the sequence left to right and carry a clipboard.
+A spike detector can spot a shape but has no memory of what came before it. [Week 19](week-19.md) — optional, like this one — adds that: the stencil starts to have **memory**, walking the sequence left to right with a clipboard.
