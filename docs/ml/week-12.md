@@ -4,8 +4,12 @@ description: Apply PCA to compress correlated columns into a few informative axe
 
 # Week 12 — PCA: JPEG for Tables
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have compressed images or used `SELECT` a subset of columns because 200 of them were correlated.
+Marcus wants one slide: every CloudWave customer, as a single picture he can point at in the board deck. He does not want to hear about seven columns or eigenvectors — he wants dots he can circle. You can give him that picture. You are not going to promise him a headcount for "improving PC3."
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have compressed images or used `SELECT` a subset of columns because 200 of them were correlated.
 
 ---
 
@@ -193,4 +197,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-12.md)
 
 ## 🔗 Next week
 
-Committees of models. Bagging vs boosting — a room of reviewers vs a sequence of specialists hunting the last miss.
+Marcus has his slide. Tonight's scoring list still needs a model. [Week 13](week-13.md) runs the actual bake-off for that list — a room of reviewers vs a sequence of specialists hunting the last miss.

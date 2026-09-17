@@ -4,8 +4,12 @@ description: Predict continuous values with linear regression and random forests
 
 # Week 9 — Regression: Predict a Number, Not a Category
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Anyone who has dragged a trendline in a spreadsheet.
+Helen asks a capacity question: how much of a customer's usage can you already explain from the billing and event counts you have on hand right now? Not a forecast — this week's target is the same-snapshot `total_usage` column, predicted from the other columns in this week's Customer 360. That is regression: a number out, not a bucket.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Anyone who has dragged a trendline in a spreadsheet.
 
 ---
 
@@ -196,4 +200,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-09.md)
 
 ## 🔗 Next week
 
-No labels. Clustering: sort the messy inbox when nobody tagged the tickets.
+This regression answered Helen's capacity question, not Priya's call list. [Week 10](week-10.md) is a different side path: Priya wonders whether her 80 calls should all sound the same, or whether CloudWave actually has different customer personas that need different scripts.

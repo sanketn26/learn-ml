@@ -4,8 +4,12 @@ description: Demystify neural networks as layers of weighted sums and activation
 
 # Week 14 — Neural Nets, Without the Mystique
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who keep hearing “just use a network.” This week is permission to **not**, plus a picture of what a net actually is.
+Marcus asks the obvious follow-up to last week's bake-off: could a neural net beat the tree? You already know how to build one. This week you find out, on the same seven-column table, whether it is worth the extra machinery — and you are learning nets now so Weeks 18–20 make sense later.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who keep hearing “just use a network.” This week is permission to **not**, plus a picture of what a net actually is.
 
 We will **not** pretend we taught calculus-level backpropagation.
 
@@ -264,4 +268,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-14.md)
 
 ## 🔗 Next week
 
-The pickle: time split, `predict()`, a versioned artifact. After that: the job pipeline, then (optionally) CNNs, RNNs, and Transformers.
+GBT is still what ships. [Week 15](week-15.md) turns the winning model into something more durable than a notebook variable — a time split, `predict()`, and a versioned artifact. After that: the job pipeline, then (optionally) CNNs, RNNs, and Transformers.

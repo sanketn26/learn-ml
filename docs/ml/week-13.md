@@ -4,8 +4,12 @@ description: Combine models with bagging, boosting, voting, and stacking ensembl
 
 # Week 13 — Ensembles: A Room of Reviewers
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Engineers who have run a design review or a CI matrix. Same idea: one opinion is brittle.
+Ana is about to let whatever wins tonight's scoring job into production. Before that happens you owe her a real bake-off — forest vs boosting vs a plain vote, measured against the baseline that actually ships if nothing here beats it. Not "ensembles as a topic." A decision about tonight's list.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Engineers who have run a design review or a CI matrix. Same idea: one opinion is brittle.
 
 ---
 
@@ -212,4 +216,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-13.md)
 
 ## 🔗 Next week
 
-Neural nets — and an honest answer about whether CloudWave should use one.
+Whichever model wins tonight's bake-off, Marcus will ask if a neural net could do better. [Week 14](week-14.md) answers honestly, on this same table.
