@@ -4,8 +4,12 @@ description: Learn NumPy vectorization and broadcasting to replace slow Python f
 
 # Week 1 — NumPy: Fast Math on Whole Columns
 
-**Course:** Applied ML Foundations for SaaS Analytics  
-**Who this is for:** Software engineers. You do not need calculus or linear algebra.
+Ana's warning turns out to be literal. `feature_usage.csv` is 160,000 rows, and Helen wants a daily pulse — busiest features, top 10% power users, anything that looks "weird" — before end of day. The `for` loop you'd reach for out of habit will be the slowest line in the job.
+
+??? note "Course details"
+
+    **Course:** Applied ML Foundations for SaaS Analytics
+    **Who this is for:** Software engineers. You do not need calculus or linear algebra.
 
 You already have Python (Week 0). This week is not “become a numerical analyst.” It is: **stop writing Python `for` loops over 160,000 usage events.**
 
@@ -44,7 +48,7 @@ DATA = find_data_dir()
 
 ## 🏢 Scenario — CloudWave’s daily health numbers
 
-You are on the growth team at **CloudWave**. The CEO wants a daily pulse:
+You are on the growth team at **CloudWave**. Helen wants a daily pulse:
 
 - Which features are actually used?
 - Who are the top 10% power users?
@@ -304,4 +308,4 @@ Try one [self-check](self-checks.md#week-1-numpy) (Predict / Diagnose / Choose /
 
 ## 🔗 Next week
 
-Pandas: joins, group-bys, and building a Customer 360 table — the bread and butter of SaaS analytics. NumPy stays underneath.
+Those four separate systems — billing, product, telemetry, support — still need to become one row per customer. Joined carelessly, that merge is exactly the bug that will double Helen's MRR dashboard overnight. [Week 2](week-02.md) shows it happening before it ships.
