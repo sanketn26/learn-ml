@@ -4,38 +4,44 @@ description: Build per-session chat memory in LangChain by keying message histor
 
 # Week 2 — Memory is a session store
 
-**Course:** LangChain  
-**Who this is for:** Engineers who have keyed Redis by `session_id` and leaked user A’s cart into user B’s request.
+Two CloudWave support threads are open at once: one tenant is stuck mid-export, the other just wants to know how to rotate an API key. Nothing about the bot's code should let those two conversations blur into each other.
 
-A chain is stateless. “Remember the Dell” is not magic — it is **history you pass in**. The real question is: *which key, which list, what do you drop.*
+??? note "Course details"
+
+    **Course:** LangChain
+    **Who this is for:** Engineers who have keyed Redis by `session_id` and leaked user A’s cart into user B’s request.
+
+A chain is stateless. “Remember what I asked” is not magic — it is **history you pass in**. The real question is: *which key, which list, what do you drop.*
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Isolate two CloudWave shoppers with `session_id`
+- Isolate two CloudWave support threads with `session_id`
 - Store turns as a dict of message lists (or `InMemoryChatMessageHistory`)
 - Bound history so the prompt cannot grow forever
 - Recognize `ConversationBufferMemory` as **legacy spelling**, not the default
-- Know when a session store is the wrong place for facts (plan, cart, PII)
+- Know when a session store is the wrong place for facts (account tier, ticket id, PII)
 
 !!! think "Think of it like… a session store, not a brain."
 
     `GET /cart` is keyed by cookie. Conversation history is the same: `sessions[session_id].append(...)`. If there is no key, there is no memory — or worse, one global list shared by everyone.
 
+    This is **memory isolation**, not tenant authorization. Keying a dict by `session_id` stops one conversation's history from leaking into another's prompt. It proves nothing about who is allowed to open that session in the first place — that check happens above this code, same as it would for any session store.
+
 ## Picture two sessions
 
 ```
 sessions = {
-  "alice": [Human("laptops under $1000"), AI("Dell XPS 13"), Human("the first one")],
-  "bob":   [Human("running shoes size 11")],
+  "tenant_492": [Human("my export keeps timing out"), AI("What row count?"), Human("about 150k rows")],
+  "tenant_118": [Human("how do I rotate an API key?")],
 }
 
-invoke(alice)  →  history = sessions["alice"]   # Bob is invisible
-invoke(bob)    →  history = sessions["bob"]
+invoke(tenant_492)  →  history = sessions["tenant_492"]   # tenant_118 is invisible
+invoke(tenant_118)  →  history = sessions["tenant_118"]
 ```
 
-Cross-session leak = shipping user A’s tickets in user B’s prompt.
+Cross-session leak = shipping tenant A’s ticket history in tenant B’s prompt.
 
 ## The pattern that actually holds state
 
@@ -46,9 +52,9 @@ from langchain_community.llms import FakeListLLM
 from langchain_core.messages import AIMessage, HumanMessage
 
 llm = FakeListLLM(responses=[
-    "Here are laptops under $1000: 1) Dell XPS 13.",
-    "The first one is the Dell XPS 13 ($999).",
-    "I can help with shoes. What size?",
+    "Can you share the row count on that export?",
+    "150k rows is past the known threshold — escalating to CW-1847.",
+    "Settings > API Keys > Rotate. Old key stays valid for 24h.",
 ])
 
 sessions: dict[str, list] = {}
@@ -60,13 +66,13 @@ def chat(session_id: str, text: str) -> str:
     history.append(AIMessage(content=reply))
     return reply
 
-chat("alice", "Show me laptops under $1000")
-chat("alice", "Tell me more about the first one")
-chat("bob", "I need running shoes")
+chat("tenant_492", "My export keeps timing out")
+chat("tenant_492", "It's about 150k rows")
+chat("tenant_118", "How do I rotate an API key?")
 
-assert any("Dell" in m.content for m in sessions["alice"] if isinstance(m, AIMessage))
-assert all("Dell" not in m.content for m in sessions["bob"])
-assert "alice" in sessions and "bob" in sessions
+assert any("CW-1847" in m.content for m in sessions["tenant_492"] if isinstance(m, AIMessage))
+assert all("CW-1847" not in m.content for m in sessions["tenant_118"])
+assert "tenant_492" in sessions and "tenant_118" in sessions
 ```
 
 That dict-of-lists **is** the product. Swap the dict for Redis later; keep the key.
@@ -87,7 +93,7 @@ def get_session_history(session_id: str) -> InMemoryChatMessageHistory:
     return store.setdefault(session_id, InMemoryChatMessageHistory())
 
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "You are a CloudWave shopping assistant."),
+    ("system", "You are a CloudWave support assistant."),
     MessagesPlaceholder(variable_name="history"),
     ("human", "{input}"),
 ])
@@ -100,10 +106,10 @@ with_history = RunnableWithMessageHistory(
 )
 
 with_history.invoke(
-    {"input": "Show me laptops under $1000"},
-    config={"configurable": {"session_id": "alice"}},
+    {"input": "My export keeps timing out"},
+    config={"configurable": {"session_id": "tenant_492"}},
 )
-assert len(store["alice"].messages) >= 2
+assert len(store["tenant_492"].messages) >= 2
 ```
 
 ## Legacy note: ConversationBufferMemory
@@ -114,7 +120,7 @@ You will still see this in older tutorials:
 from langchain.memory import ConversationBufferMemory
 
 memory = ConversationBufferMemory(return_messages=True, memory_key="history")
-memory.save_context({"input": "laptops"}, {"output": "Dell XPS 13"})
+memory.save_context({"input": "export timing out"}, {"output": "What row count?"})
 # load_memory_variables({})["history"]  →  list of messages
 ```
 
@@ -130,7 +136,7 @@ def recent(history: list, k: int = 4) -> list:
     return history[-k:]
 ```
 
-Facts that must survive a trim (plan, cart id, “Enterprise”) belong in a **profile dict**, not in the chat log.
+Facts that must survive a trim (account tier, open ticket id, “Enterprise”) belong in a **profile dict**, not in the chat log.
 
 !!! warning "Watch out — one global Memory instance"
 
@@ -138,11 +144,11 @@ Facts that must survive a trim (plan, cart id, “Enterprise”) belong in a **p
 
 !!! success "Ship / don’t ship"
 
-    **Ship** a store keyed by `session_id` with a trim policy and a test that Alice cannot see Bob. **Don’t ship** unbounded `ConversationBufferMemory` as “the chatbot remembers everything,” and don’t treat few-shot examples inside the system prompt as a substitute for a session (that is week 1). Hypothetical CloudWave shoppers here are two dict keys, not a retailer case study.
+    **Ship** a store keyed by `session_id` with a trim policy and a test that tenant A cannot see tenant B. **Don’t ship** unbounded `ConversationBufferMemory` as “the chatbot remembers everything,” and don’t treat few-shot examples inside the system prompt as a substitute for a session (that is week 1). Don’t ship this session store *as* tenant authorization — it isolates memory, not access. Hypothetical CloudWave tenants here are two dict keys, not two real customers.
 
 ## What this week is not
 
-- Not a recommendation engine. Cart and catalog are your database.
+- Not a ticket database. The support ticket and account records are your database.
 - Not durable storage. `InMemoryChatMessageHistory` dies with the process.
 - Not a license to put PII in the prompt “for personalization.”
 

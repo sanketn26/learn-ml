@@ -10,6 +10,8 @@ This track assumes backend engineering fluency and the [course prerequisites](..
 
 **Scope:** get the idea, build a small working chain, then use the official docs to go further. Read the [framework track guide](../framework-tracks.md) before starting.
 
+Hypothetical CloudWave volume throughout this track: a few hundred tickets a day, not a vendor case study. Ticket `CW-1847` — a data export that times out around 150k rows — threads through weeks 1, 3, 4, and 7.
+
 The model is a dependency. LangChain is middleware. If you cannot redraw a chain as a sequence of function calls, the abstraction is hiding a bug.
 
 | Week | Idea | You are done when… |

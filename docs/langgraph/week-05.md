@@ -4,8 +4,12 @@ description: Make LangGraph resume idempotent by keying side effects like charge
 
 # Week 5 — Crash, Resume, Don’t Charge Twice
 
-**Course:** LangGraph  
-**Who this is for:** Engineers who have a graph (Weeks 1–4) that talks to billing. Persistence without **idempotency** is a double-charge machine.
+Last week’s refund got a human’s approval. This week a different CloudWave write — a capture on someone else’s invoice — crashes mid-retry. A refund payout and a charge capture are not the same operation, but they fail the same way: retried without a key, the customer sees it twice.
+
+??? note "Course details"
+
+    **Course:** LangGraph
+    **Who this is for:** Engineers who have a graph (Weeks 1–4) that talks to billing. Persistence without **idempotency** is a double-charge machine.
 
 ---
 

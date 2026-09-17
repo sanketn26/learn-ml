@@ -4,8 +4,12 @@ description: Pause a LangGraph run with interrupt_before for human approval, the
 
 # Week 4 — Interrupt for a human
 
-**Course:** LangGraph  
-**Who this is for:** Engineers who have put a ticket in `pending_approval` and waited for a Slack reaction.
+`CW-1847`’s customer wants their money back while the export is still broken. The bot can draft that refund. It cannot approve it — that write waits for a person to look.
+
+??? note "Course details"
+
+    **Course:** LangGraph
+    **Who this is for:** Engineers who have put a ticket in `pending_approval` and waited for a Slack reaction.
 
 A homemade `ApprovalRequest` class is a to-do list. LangGraph’s version is the same `StateGraph` + `MemorySaver`, paused with `interrupt_before=["approve"]`. Resume with `invoke(None, config)` after `update_state`.
 

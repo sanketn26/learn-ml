@@ -4,8 +4,12 @@ description: Serve a LangChain chain behind FastAPI with request timeouts, a fal
 
 # Week 6 — Timeouts, fallbacks, a local API
 
-**Course:** LangChain  
-**Who this is for:** Engineers who have wrapped a flaky HTTP client with a timeout and a default.
+The ticket bot works fine in a notebook. Now it has to survive a Tuesday: real requests, a model that sometimes hangs, and a question someone will ask three times in a row.
+
+??? note "Course details"
+
+    **Course:** LangChain
+    **Who this is for:** Engineers who have wrapped a flaky HTTP client with a timeout and a default.
 
 This is an **architectural introduction**, not a production deployment recipe. You will put a chain behind FastAPI, bound the wait, and cache a GET-like question. You will not “hit 1000 RPS” or “99.9%.” Those numbers are not a lesson.
 
@@ -35,7 +39,7 @@ POST /chat  {message}
     └─ GET /health  →  {"ok": true}
 ```
 
-Hypothetical CloudWave: this is the ticket-bot shape from weeks 1–5, served locally. Not a cloud vendor comparison.
+This is the ticket-bot shape from weeks 1–5, served locally. Not a cloud vendor comparison.
 
 ## FastAPI + `ainvoke`
 

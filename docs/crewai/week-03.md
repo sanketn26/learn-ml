@@ -4,8 +4,12 @@ description: Compare CrewAI's sequential and hierarchical Process modes as staff
 
 # Week 3 — Sequential vs hierarchical
 
-**Course:** CrewAI  
-**Who this is for:** Engineers who have chosen “list of jobs” vs “manager assigns work.”
+Same researcher/writer/QA crew from last week, drafting the `CW-1847` changelog entry. The only question this week: does a manager need to sit over them, or does the task order already say who does what?
+
+??? note "Course details"
+
+    **Course:** CrewAI
+    **Who this is for:** Engineers who have chosen “list of jobs” vs “manager assigns work.”
 
 CrewAI’s `Process` flag is the whole week: **sequential** (tickets in order) vs **hierarchical** (a manager LLM assigns). That is a staffing choice. It is not a board meeting and it is not a consensus algorithm.
 

@@ -4,8 +4,12 @@ description: Build a LangChain RAG pipeline that separates retrieval from genera
 
 # Week 4 — RAG: search, then prompt
 
-**Course:** LangChain  
-**Who this is for:** Engineers who have shipped “search the docs, then fill a template.”
+A customer asks the bot how to avoid the 150k-row export timeout. There is no runbook for that yet — the gap is `CW-1847` waiting to happen. The right answer this week is not a guess; it is “I don’t know.”
+
+??? note "Course details"
+
+    **Course:** LangChain
+    **Who this is for:** Engineers who have shipped “search the docs, then fill a template.”
 
 RAG is not a smarter model. It is **retrieval + generation**: find passages, then ask the model to write from those passages. If search is wrong, the sentence is wrong with a citation.
 
@@ -40,7 +44,7 @@ RAG is not a smarter model. It is **retrieval + generation**: find passages, the
               {answer, doc_ids, refuse}
 ```
 
-Hypothetical CloudWave docs: three runbooks (API keys, password reset, plans). Not a vendor help-center claim.
+Three runbooks exist today: API keys, password reset, plans. Not a vendor help-center claim — and notably, no export-timeout runbook yet (see q4 below).
 
 ## Chunk, then search with overlap
 
