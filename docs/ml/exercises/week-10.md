@@ -1,5 +1,5 @@
 ---
-description: Run unscaled K-Means on MRR and usage to see feature scale dominate distance, then name customer personas and profile churn rate by cluster.
+description: Run K-Means on raw MRR and usage, then on scaled features, name customer personas, and profile churn rate by cluster.
 ---
 
 # Exercises — Week 10 — Clustering: Sorting Without Labels

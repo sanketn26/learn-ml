@@ -1,5 +1,5 @@
 ---
-description: Compare a linear MLP to logistic regression, overfit an oversized neural net, and diagnose a training loop with zero_grad commented out.
+description: Compare a linear MLP to logistic regression, train an oversized neural net, and diagnose a PyTorch training loop that runs but does not learn.
 ---
 
 # Exercises — Week 14 — Neural Nets, Without the Mystique

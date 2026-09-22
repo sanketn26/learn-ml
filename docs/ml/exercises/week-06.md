@@ -1,5 +1,5 @@
 ---
-description: Compare an honest vs a leaked feature scaler, test a missingness flag, and write a contract test that validates a model's score payload.
+description: Compare two scaler fitting strategies across a train/test split, test a missingness flag, and write a contract test for a model's score payload.
 ---
 
 # Exercises — Week 6 — Features Are the Model's API

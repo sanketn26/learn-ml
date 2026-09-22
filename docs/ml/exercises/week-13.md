@@ -1,5 +1,5 @@
 ---
-description: Inspect gradient-boosted feature importances, deliberately overfit a tree ensemble, and correct a common soft-voting vs stacking naming mistake.
+description: Inspect gradient-boosted feature importances, push a tree ensemble to its depth limits, and name the ensemble method in a worked example.
 ---
 
 # Exercises — Week 13 — Ensembles: A Room of Reviewers
