@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import ast
 import py_compile
+import textwrap
 from pathlib import Path
 
 import pytest
@@ -99,6 +100,23 @@ def test_framework_exercise_pages_have_recovery_sections():
     assert not missing, missing
 
 
+def test_framework_exercise_pages_predict_first_and_stage_hints():
+    """Predict sits above the tasks; hints and the expected observation start closed."""
+    bad = []
+    for path in LC + LG + CA:
+        text = path.read_text()
+        name = f"{path.parent.parent.name}/{path.name}"
+        if text.index("## Predict before you run") > text.index("## 1."):
+            bad.append(f"{name}: Predict comes after the first task")
+        for stage in ('"Hint 1 — a nudge"', '"Hint 2 — the approach"', '"Hint 3 — '):
+            if stage not in text:
+                bad.append(f"{name}: no {stage} block")
+        observed = text.split("## Expected observation", 1)[1].lstrip()
+        if not observed.startswith("??? "):
+            bad.append(f"{name}: Expected observation is not collapsed")
+    assert not bad, bad
+
+
 @pytest.mark.parametrize(
     "mod",
     [
@@ -140,7 +158,7 @@ def test_fenced_python_in_framework_exercises_parses_or_is_sketch():
             lang = header.strip().split()[0].lower() if header.strip() else ""
             if lang not in {"python", "py"}:
                 continue
-            src = body.strip()
+            src = textwrap.dedent(body).strip()  # fences inside ??? hints are indented
             if not src or src.startswith("#") and "TODO" in src:
                 continue
             try:

@@ -11,8 +11,8 @@ NC := \033[0m
 # The ML weeks, LangChain/LangGraph, and CrewAI pin incompatible stacks, so
 # each gets its own virtualenv (see docs/framework-tracks.md).
 VENV := venv
-VENV_FRAMEWORKS := venv-frameworks
-VENV_CREWAI := venv-crewai
+VENV_FRAMEWORKS := .venv-framework
+VENV_CREWAI := .venv-crewai
 PYTHON := python3
 TORCH_CPU_INDEX := https://download.pytorch.org/whl/cpu
 # Use the venv when it exists, so `make test` works with or without activating it.
@@ -37,13 +37,13 @@ setup: $(VENV)/bin/python ## ML venv + dependencies (CPU-only torch)
 	$(VENV)/bin/pip install -r requirements.txt
 	@echo "$(GREEN)ok.  source $(VENV)/bin/activate$(NC)"
 
-setup-frameworks: ## LangChain + LangGraph venv (venv-frameworks/)
+setup-frameworks: ## LangChain + LangGraph venv (.venv-framework/)
 	$(PYTHON) -m venv $(VENV_FRAMEWORKS)
 	$(VENV_FRAMEWORKS)/bin/pip install --upgrade pip
 	$(VENV_FRAMEWORKS)/bin/pip install -r requirements-frameworks.txt pytest
 	@echo "$(GREEN)ok.  source $(VENV_FRAMEWORKS)/bin/activate$(NC)"
 
-setup-crewai: ## CrewAI venv, isolated from LangChain (venv-crewai/)
+setup-crewai: ## CrewAI venv, isolated from LangChain (.venv-crewai/)
 	$(PYTHON) -m venv $(VENV_CREWAI)
 	$(VENV_CREWAI)/bin/pip install --upgrade pip
 	$(VENV_CREWAI)/bin/pip install -r requirements-crewai.txt

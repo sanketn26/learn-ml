@@ -4,3 +4,10 @@
 crewai==0.80.0
 python-dotenv==1.0.1
 pydantic==2.10.6
+# crewai 0.80 leaves these open; today's releases break its import against
+# pydantic 2.10 (typing ReadOnly) and drop pkg_resources. Pin to its era.
+litellm==1.53.1
+openai==1.55.3
+instructor==1.7.0
+setuptools<81
+pytest

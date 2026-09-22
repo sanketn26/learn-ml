@@ -140,7 +140,9 @@ source .venv-framework/bin/activate
 pip install -r requirements-frameworks.txt
 ```
 
-CrewAI is optional and heavier. Install its isolated environment only when you begin that track:
+(`make setup-frameworks` does the same three steps.)
+
+CrewAI is optional and heavier. Install its isolated environment only when you begin that track (or `make setup-crewai`):
 
 ```bash
 python3.11 -m venv .venv-crewai

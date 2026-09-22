@@ -7,3 +7,5 @@ langgraph==0.2.76
 python-dotenv==1.0.1
 requests==2.32.3
 pydantic==2.10.6
+# Week 6 serves the chain behind FastAPI (TestClient uses httpx, already pulled in).
+fastapi==0.115.14
