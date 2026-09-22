@@ -24,7 +24,6 @@ ML_SECTIONS = (
     "Predict before you run",
     "Task",
     "Success criteria",
-    "Debugging clues",
     "After you run",
     "Lesson link",
 )
@@ -57,6 +56,19 @@ def test_ml_exercise_readmes_have_standard_sections():
             if heading not in text:
                 missing.append(f"{path.relative_to(ROOT)}: {heading}")
     assert not missing, missing
+
+
+def test_ml_exercise_readmes_match_docs_pages():
+    """READMEs are generated from docs pages — edit the page, then run the sync script."""
+    import subprocess
+    import sys
+
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "sync_exercise_readmes.py"), "--check"],
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, "run python scripts/sync_exercise_readmes.py\n" + proc.stdout
 
 
 def test_framework_exercise_pages_exist():

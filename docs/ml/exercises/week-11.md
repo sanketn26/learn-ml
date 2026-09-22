@@ -16,6 +16,12 @@ Four rankers at precision@80 / recall@80, a capacity sweep, a pre-registered k, 
 2. As k grows 20 → 80 → 200, does precision rise or fall?
 3. If usage *predicts* churn, does forcing a tutorial *cause* retention?
 
+## Before you start
+
+- Keep the starter's *time* split. A random split flatters every ranker and makes the comparison meaningless.
+
+Each task has three hints, closed by default. Open only as far as you need.
+
 ## Task
 
 Work in `starter.py`. Run from the repo root:
@@ -26,11 +32,98 @@ python exercises/ml/week-11/starter.py
 
 **1. Four rankers.** On a time-split holdout, print precision@80 and recall@80 for: the GBT, `n_support`, `-log_usage`, and random. Circle a ship / don't-ship.
 
+??? tip "Hint 1 — a nudge"
+    A ranker is anything that sorts customers. A SQL `ORDER BY n_support DESC` is a ranker. Would you ship a model that loses to one line of SQL?
+
+??? tip "Hint 2 — the approach"
+    The starter already has the time split, the GBT, and `precision_at_k`. Write a matching `recall_at_k` (hits in the top k over all positives). Score four arrays on the same `y_test`: `scores`, `test["n_support"]`, `-test["log_usage"]`, and `rng.random(len(test))`.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    import numpy as np
+    from sklearn.ensemble import GradientBoostingClassifier
+    from sklearn.pipeline import Pipeline
+
+    from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
+    from pipelines.labels import drop_unlabelled, label_eventual_churn
+
+    # --- same as the starter ---
+    df = build_features(as_of=AS_OF_DEFAULT, n=None)
+    df, y = drop_unlabelled(df, label_eventual_churn(df, AS_OF_DEFAULT))
+    cut = df["signup_date"].quantile(0.80)
+    train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
+    model = Pipeline([
+        ("prep", make_preprocessor()),
+        ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
+    ]).fit(train[FEATURE_COLS], y.loc[train.index])
+    scores = model.predict_proba(test[FEATURE_COLS])[:, 1]
+    y_test = y.loc[test.index].to_numpy()
+
+
+    def precision_at_k(y, s, k=80) -> float:
+        return float(np.asarray(y)[np.argsort(-np.asarray(s))[:k]].mean())
+
+
+    # --- new ---
+    def recall_at_k(y, s, k=80) -> float:
+        y = np.asarray(y)
+        return float(y[np.argsort(-np.asarray(s))[:k]].sum() / max(y.sum(), 1))
+
+
+    rng = np.random.default_rng(0)
+    rankers = {
+        "gbt": scores,
+        "n_support": test["n_support"].to_numpy(),
+        "-log_usage": -test["log_usage"].to_numpy(),
+        "random": rng.random(len(test)),
+    }
+    for name, s in rankers.items():
+        print(f"{name:<11} p@80={precision_at_k(y_test, s):.3f}  r@80={recall_at_k(y_test, s):.3f}")
+    ```
+
 **2. Capacity.** Repeat precision@k for k in `{20, 80, 200}`. What happens to precision as k grows? Write the Slack message to CS if they 4× the budget.
+
+??? tip "Hint 1 — a nudge"
+    The model's most confident names are at the top. Each extra call goes to someone the model is *less* sure about.
+
+??? tip "Hint 2 — the approach"
+    Loop k over `(20, 80, 200)` for the GBT and one baseline; print precision and recall at each. Your Slack message should quote the number of *extra churners reached*, not just the new precision.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    for k in (20, 80, 200):
+        print(f"k={k:<4} gbt p={precision_at_k(y_test, scores, k):.3f} r={recall_at_k(y_test, scores, k):.3f}   "
+              f"n_support p={precision_at_k(y_test, rankers['n_support'], k):.3f}")
+    ```
 
 **3. Pre-register.** Write down k *before* you look at the numbers. (You already did: 80.) Changing k after seeing precision is p-hacking. Add a comment in your script that says so.
 
-**4. Causal trap.** In two sentences, reply to: "the model says usage predicts churn, so let's force people through the tutorial." 
+??? tip "Hint 1 — a nudge"
+    Where did 80 come from — the data, or Priya's calendar?
+
+??? tip "Hint 2 — the approach"
+    Put `K = 80` as a module constant above everything else, with a comment that names who set it and why. Anything that later changes `K` should have to edit that line in a diff someone reviews.
+
+??? example "Hint 3 — a skeleton"
+    ```python
+    # Pre-registered: K = 80 is CS's weekly call capacity (Priya), fixed before any
+    # precision@k was computed. Changing it after seeing the table is p-hacking.
+    K = 80
+    ```
+
+**4. Causal trap.** In two sentences, reply to: "the model says usage predicts churn, so let's force people through the tutorial."
+
+??? tip "Hint 1 — a nudge"
+    A thermometer predicts a fever. Does holding the thermometer under cold water cure one?
+
+??? tip "Hint 2 — the approach"
+    Sentence one: what the model actually measured (association in historical data). Sentence two: what would be needed to learn whether the tutorial *causes* retention — hint, Week 5.
+
+??? example "Hint 3 — a skeleton"
+    ```text
+    The model shows that <what usage is associated with>, which is <prediction / cause?>.
+    To know whether forcing the tutorial helps, we'd need <what kind of test>.
+    ```
 
 ## Success criteria
 
@@ -38,12 +131,6 @@ python exercises/ml/week-11/starter.py
 - Precision@k table for 20/80/200.
 - Comment that k=80 was pre-registered.
 - Causal reply in two sentences.
-
-## Debugging clues
-
-- Random split vs time split will flatter the model.
-- Sorting by `-log_usage` is a baseline, not a product.
-- Changing k after seeing the table is p-hacking.
 
 ## After you run
 

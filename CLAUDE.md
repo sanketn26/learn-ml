@@ -58,7 +58,10 @@ Callout CSS lives in `docs/stylesheets/extra.css`. Admonition types: `think`, `e
 ## Adding a week
 
 1. Write `docs/<course>/week-XX.md`.
-2. If it is ML, add `docs/ml/exercises/week-XX.md` and `exercises/ml/week-XX/starter.py`.
+2. If it is ML, add `docs/ml/exercises/week-XX.md` and `exercises/ml/week-XX/starter.py`, then run
+   `python scripts/sync_exercise_readmes.py` — the README next to the starter is generated from the page.
+   Hints are staged `??? tip "Hint 1 — a nudge"` / `"Hint 2 — the approach"` / `??? example "Hint 3 — most of the code"`
+   under each task; every Hint 3 `python` block is executed by `tests/test_hint_snippets.py`.
 3. Add the page to `mkdocs.yml` `nav`.
 4. Preview with `mkdocs serve`.
 

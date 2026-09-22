@@ -10,9 +10,15 @@ Feature totals as a 1-D array, a user-normalized usage matrix via broadcasting, 
 
 ## Predict before you run
 
-1. Will mean feature-total usage sit above or below the median? (Whales pull the mean.)
+1. Will mean feature-total usage sit above or below the median?
 2. What shape must the row-mean have so `(users, features) / (users, 1)` broadcasts?
 3. Will the top 1% of users account for closer to 1% of usage, or a lot more?
+
+## Before you start
+
+- Pivoting every user × feature is a big matrix on a laptop. Sample users first.
+
+Each task has three hints, closed by default. Open only as far as you need.
 
 ## Task
 
@@ -26,16 +32,60 @@ Use the real files — the lesson's DAU picture is 7 days × 4 regions.
 
 **1. Feature ranking.** Load `feature_usage.csv`. For each `feature_name`, compute total `usage_count` with a group-by, then convert the totals to a NumPy array and print mean / median / p90 of *those feature totals*.
 
+??? tip "Hint 1 — a nudge"
+    The stats are over one number per *feature*, not one per usage row. How many numbers should your array hold before you call `np.mean`?
+
+??? tip "Hint 2 — the approach"
+    Pandas groups the ragged keys, NumPy does the math: `groupby("feature_name")["usage_count"].sum()`, then `.to_numpy(dtype=float)`, then `np.mean` / `np.median` / `np.quantile(..., 0.9)`. p90 of per-row usage is a different question — don't answer that one by accident.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    import numpy as np
+    import pandas as pd
+
+    from lib.course_data import find_data_dir
+
+    usage = pd.read_csv(find_data_dir() / "feature_usage.csv")
+    totals = usage.groupby("feature_name")["usage_count"].sum().to_numpy(dtype=float)
+    print(f"{len(totals)} features  mean={np.mean(totals):,.0f}  median={np.median(totals):,.0f}  "
+          f"p90={np.quantile(totals, 0.9):,.0f}")
+    ```
+
 **2. Broadcasting on a real pivot.** Pivot a *sample* of users × features into a 2-D usage matrix (`fillna(0)`). Divide each row by that row's mean (user-normalized usage). Shapes: `(users, features) / (users, 1)`.
+
+??? tip "Hint 1 — a nudge"
+    Broadcasting is a shape contract. You want one divisor per *row*. What shape does `mat.mean(axis=1)` return, and what shape does NumPy need to line it up against `(users, features)`?
+
+??? tip "Hint 2 — the approach"
+    Sample a few thousand `user_id`s, then `pivot_table(index="user_id", columns="feature_name", values="usage_count", aggfunc="sum", fill_value=0)`. `mean(axis=1, keepdims=True)` gives `(users, 1)`. A user whose row mean is 0 divides by 0 — swap those means for 1.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    rng = np.random.default_rng(0)
+    some_users = rng.choice(usage["user_id"].unique(), size=2000, replace=False)
+    pivot = usage[usage["user_id"].isin(some_users)].pivot_table(
+        index="user_id", columns="feature_name", values="usage_count", aggfunc="sum", fill_value=0
+    )
+    mat = pivot.to_numpy(dtype=float)
+    row_means = mat.mean(axis=1, keepdims=True)  # shape (n_users, 1)
+    normalized = mat / np.where(row_means == 0, 1, row_means)
+    print(pivot.shape, normalized.shape, np.isfinite(normalized).all())
+    ```
 
 **3. Whale hunt.** Per `user_id`, sum usage. List user ids in the top 1%. How many are they? What share of all usage do they account for?
 
-??? tip "💡 Hint — row-normalize with broadcasting"
+??? tip "Hint 1 — a nudge"
+    "Top 1%" is a cut on a 1-D vector of per-user totals — one line, not a loop over users.
 
+??? tip "Hint 2 — the approach"
+    `groupby("user_id")["usage_count"].sum()`, then `np.quantile(per_user, 0.99)` as the cut. The share is the whales' sum over everyone's sum.
+
+??? example "Hint 3 — most of the code"
     ```python
-    mat = pivot.to_numpy()
-    row_means = mat.mean(axis=1, keepdims=True)  # shape (n_users, 1)
-    normalized = mat / np.where(row_means == 0, 1, row_means)
+    per_user = usage.groupby("user_id")["usage_count"].sum().astype(float)
+    cut = np.quantile(per_user.to_numpy(), 0.99)
+    whales = per_user[per_user >= cut]
+    print(f"{len(whales)} whales (cut={cut:,.0f})  share of usage={whales.sum() / per_user.sum():.1%}")
     ```
 
 ## Success criteria
@@ -43,12 +93,6 @@ Use the real files — the lesson's DAU picture is 7 days × 4 regions.
 - Stats are over *feature totals*, not raw rows.
 - Normalized matrix shape matches the pivot; zero-mean rows did not explode.
 - Whale count and usage share are printed.
-
-## Debugging clues
-
-- Pivoting every user can be huge — sample.
-- Row mean 0 → divide by 1.
-- p90 of row usage is a different question than p90 of feature totals.
 
 ## After you run
 
