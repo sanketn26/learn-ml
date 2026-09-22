@@ -94,6 +94,18 @@ mkdocs serve --dev-addr 0.0.0.0:8000   # then open http://127.0.0.1:8000 on your
 
 Anything you write inside that container (filled-in TODOs, notes) disappears when it exits, because `--rm` throws the container away. If you want your edits to persist on your host instead, bind-mount the repo over the baked-in copy: `docker run --rm -it -v "$(pwd)":/workspace -p 8000:8000 learn-ml`.
 
+### The same thing, with `make`
+
+The `Makefile` wraps both paths. `make help` lists every target.
+
+```bash
+make setup           # local ML venv, CPU-only torch (make setup-all adds the framework venvs)
+make dev             # setup, run the tests, then serve the course
+make docker-up       # build if needed, start a bind-mounted container serving :8000
+make docker-shell    # a shell inside it; make docker-test runs pytest there
+make docker-down     # stop and remove the container (your files stay on the host)
+```
+
 ### VS Code Dev Container
 
 The same `Dockerfile` is wired up as a [Dev Container](https://containers.dev/) via `.devcontainer/devcontainer.json`, which bind-mounts your local clone so edits save to your machine, not the container. With the *Dev Containers* extension installed:

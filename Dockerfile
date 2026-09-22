@@ -12,10 +12,13 @@ FROM python:3.11-slim
 WORKDIR /workspace
 
 # gcc/g++ cover the rare source build when a wheel is missing for this arch;
-# everything in requirements.txt normally ships prebuilt wheels.
+# everything in requirements.txt normally ships prebuilt wheels. libcairo2 is
+# for mkdocs-material's social-card plugin (cairosvg), so `make docker-up`
+# can serve the site from inside the container.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     git \
+    libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .

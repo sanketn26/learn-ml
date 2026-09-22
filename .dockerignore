@@ -1,6 +1,7 @@
 .git
 .venv
 venv
+venv-*
 env
 ENV
 __pycache__
