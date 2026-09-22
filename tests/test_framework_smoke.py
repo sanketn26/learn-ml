@@ -58,6 +58,19 @@ def test_ml_exercise_readmes_have_standard_sections():
     assert not missing, missing
 
 
+def test_ml_exercise_pages_use_staged_hints():
+    """Hints are opt-in collapsibles per task, never an always-visible spoiler list."""
+    bad = []
+    for path in ML_DOCS:
+        text = path.read_text()
+        if "## Debugging clues" in text:
+            bad.append(f"{path.name}: visible 'Debugging clues' section")
+        for stage in ('"Hint 1 — a nudge"', '"Hint 2 — the approach"', '"Hint 3 — '):
+            if stage not in text:
+                bad.append(f"{path.name}: no {stage} block")
+    assert not bad, bad
+
+
 def test_ml_exercise_readmes_match_docs_pages():
     """READMEs are generated from docs pages — edit the page, then run the sync script."""
     import subprocess
