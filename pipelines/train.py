@@ -21,8 +21,8 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from pipelines.features import AS_OF_DEFAULT, CATEGORICAL, FEATURE_COLS, NUMERIC, build_features
-from pipelines.labels import HORIZON_DAYS, drop_unlabelled, label_churn_in_horizon, label_eventual_churn
+from pipelines.features import AS_OF_DEFAULT, CATEGORICAL, FEATURE_COLS, NUMERIC
+from pipelines.split import BACKTEST_HORIZON_DAYS, snapshot_split
 
 BUDGET = 80
 
@@ -47,29 +47,16 @@ def _keep_all_positives(frame: pd.DataFrame, y: pd.Series, n: int, rng: int = 42
     return out, y.loc[out.index]
 
 
-def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventual") -> dict:
+def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = BACKTEST_HORIZON_DAYS) -> dict:
     as_of_ts = pd.Timestamp(as_of)
-    raw = build_features(as_of=as_of_ts, n=None, at_risk_only=True)
-    if label == "horizon":
-        y_all = label_churn_in_horizon(raw, as_of_ts)
-        frame, y = drop_unlabelled(raw, y_all)
-    elif label == "eventual":
-        y_all = label_eventual_churn(raw, as_of_ts)
-        frame, y = drop_unlabelled(raw, y_all)
-    else:
-        raise ValueError("label must be 'eventual' or 'horizon'")
-
-    cutoff = frame["signup_date"].quantile(0.80)
-    train_df = frame[frame["signup_date"] <= cutoff]
-    test_df = frame[frame["signup_date"] > cutoff]
-    y_train = y.loc[train_df.index]
-    y_test = y.loc[test_df.index]
+    # Backtest, not a signup_date cut — a signup cut is a tenure cut (see pipelines/split.py).
+    train_df, y_train, test_df, y_test = snapshot_split(as_of_ts, horizon_days=horizon_days, n=None)
     train_df, y_train = _keep_all_positives(train_df, y_train, n)
     test_df, y_test = _keep_all_positives(test_df, y_test, None if n is None else max(n // 4, 400))
     if y_train.nunique() < 2:
         raise RuntimeError(
             f"train set has one class (rate={float(y_train.mean())}). "
-            "Use a larger --n or a different --as-of."
+            "Use a larger --n, a longer --horizon-days, or a different --as-of."
         )
 
     pipe = Pipeline(
@@ -105,8 +92,9 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventua
     meta = {
         "model_version": version,
         "as_of": str(as_of_ts.date()),
-        "label": label,
-        "horizon_days": HORIZON_DAYS if label == "horizon" else None,
+        "train_as_of": str((as_of_ts - pd.Timedelta(days=horizon_days)).date()),
+        "label": f"churn within {horizon_days} days",
+        "horizon_days": horizon_days,
         "trained_at": datetime.now(timezone.utc).isoformat(),
         "n_train": int(len(train_df)),
         "n_test": int(len(test_df)),
@@ -132,9 +120,9 @@ def main() -> None:
     parser.add_argument("--as-of", default=str(AS_OF_DEFAULT.date()))
     parser.add_argument("--out", default=str(ROOT / "artifacts"))
     parser.add_argument("--n", type=int, default=8000)
-    parser.add_argument("--label", choices=("eventual", "horizon"), default="eventual")
+    parser.add_argument("--horizon-days", type=int, default=BACKTEST_HORIZON_DAYS)
     args = parser.parse_args()
-    meta = train(args.as_of, Path(args.out), n=args.n, label=args.label)
+    meta = train(args.as_of, Path(args.out), n=args.n, horizon_days=args.horizon_days)
     print(json.dumps(meta, indent=2))
 
 

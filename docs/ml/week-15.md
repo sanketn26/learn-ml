@@ -90,7 +90,7 @@ from pipelines.features import (
     build_features,
     make_preprocessor,
 )
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.split import snapshot_split
 ```
 
 ## Architecture (the only diagram that matters)
@@ -99,7 +99,7 @@ from pipelines.labels import drop_unlabelled, label_eventual_churn
  warehouse CSVs
       │  nightly job
       ▼
- build_features(as_of)  ──►  time split  ──►  train pipeline  ──►  artifact (joblib + metrics)
+ build_features(as_of)  ──►  backtest    ──►  train pipeline  ──►  artifact (joblib + metrics)
                          │                                      │
                          └── holdout report                     ▼
                                                          predict(payload)  {score, flag, version}
@@ -115,19 +115,14 @@ from pipelines.labels import drop_unlabelled, label_eventual_churn
 
 ```python
 as_of = AS_OF_DEFAULT
-df = build_features(as_of=as_of, n=None, at_risk_only=True)
-y = label_eventual_churn(df, as_of)
-df, y = drop_unlabelled(df, y)
-# This file only has tens of 30-day cancels. Eventual-after-as_of is the
-# question it can supervise. Write that on the artifact. Horizon is still
-# the product question (Week 8 / pipelines.train --label).
-
-df = df.sort_values("signup_date")
-cutoff = df["signup_date"].quantile(0.80)
-train_df = df[df["signup_date"] <= cutoff]
-test_df = df[df["signup_date"] > cutoff]
-y_train, y_test = y.loc[train_df.index], y.loc[test_df.index]
-print(f"Time wall at {cutoff.date()}  train={len(train_df):,}  test={len(test_df):,}")
+HORIZON = 90
+# Stand 90 days in the past, learn from what happened by today, then score
+# today's at-risk customers and check the next 90 days. A 30-day window has
+# only tens of cancels in this file; write the horizon on the artifact.
+train_df, y_train, test_df, y_test = snapshot_split(as_of, horizon_days=HORIZON)
+train_as_of = as_of - pd.Timedelta(days=HORIZON)
+print(f"train: at-risk on {train_as_of.date()}, labelled by {as_of.date()}  n={len(train_df):,}")
+print(f"test:  at-risk on {as_of.date()}, labelled over the next {HORIZON} days  n={len(test_df):,}")
 print("Train rate", float(y_train.mean()), "Test rate", float(y_test.mean()))
 
 pipe = Pipeline(
@@ -145,6 +140,34 @@ print(f"Holdout AUC: {roc_auc_score(y_test, proba):.3f}")
 print(f"Holdout PR-AUC: {average_precision_score(y_test, proba):.3f}")
 print(f"dummy PR-AUC: {float(y_test.mean()):.3f}")
 ```
+
+## Foot-gun: a signup-date cut is a tenure cut
+
+The tempting time wall is one snapshot, sorted by `signup_date`, oldest 80% in train. It looks like "train on the past." It is not. At a fixed `as_of`, `tenure_so_far = as_of − signup_date`, so cutting on signup date *is* cutting on tenure — the strongest column in the table.
+
+```
+ one snapshot at as_of, cut on signup_date
+ tenure_so_far:  0 ──── 377 days │ 378 ──────────── 882 days
+                 test (new)      │ train (old)
+                 1.0% churn (91) │ 0.05% churn (19)  ← almost nothing to learn from
+ the model never sees a short tenure in training, then scores only short tenures
+```
+
+```python
+old_cut = build_features(as_of=as_of, n=None)["signup_date"].quantile(0.80)
+snap = build_features(as_of=as_of, n=None)
+early, late = snap[snap["signup_date"] <= old_cut], snap[snap["signup_date"] > old_cut]
+print(f"signup cut → train tenure {early['tenure_so_far'].min()}–{early['tenure_so_far'].max()} days, "
+      f"test tenure {late['tenure_so_far'].min()}–{late['tenure_so_far'].max()} days")
+print(f"backtest   → train tenure {train_df['tenure_so_far'].min()}–{train_df['tenure_so_far'].max()} days, "
+      f"test tenure {test_df['tenure_so_far'].min()}–{test_df['tenure_so_far'].max()} days")
+```
+
+The first line prints two ranges that do not touch. On this file, with the 90-day label, that split scores AUC ≈ 0.4 — worse than a coin — while the backtest scores ≈ 0.88 and a shuffled split lands near 0.8. At the laptop sample size the gate in Week 16 refuses the signup-cut model outright. A backtest keeps both sides on the same range and asks the question production will: *standing on a date, who leaves next?*
+
+!!! success "Ship / don't ship"
+
+    **Ship** a model evaluated on a later *snapshot* than it trained on, with the horizon written in `metrics.json`. **Don't ship** a split on any column that is a function of `as_of` — `signup_date`, `tenure_so_far`, "days since last login" — without checking the two sides overlap.
 
 ## Threshold from a staffing number
 
@@ -222,7 +245,7 @@ We will not implement a full PSI monitor. We will overlay histograms. If the ora
 fig, axes = plt.subplots(1, 3, figsize=(12, 3.3))
 for ax, col in zip(axes, ["mrr", "log_usage", "tenure_so_far"]):
     ax.hist(train_df[col], bins=30, density=True, alpha=0.55, label="train", color="#3b82f6")
-    ax.hist(test_df[col], bins=30, density=True, alpha=0.55, label="later signups", color="#f59e0b")
+    ax.hist(test_df[col], bins=30, density=True, alpha=0.55, label="today's snapshot", color="#f59e0b")
     ax.set_title(col)
     ax.legend(fontsize=8)
 plt.suptitle("If orange leaves blue, the world moved — re-check PR-AUC before celebrating")

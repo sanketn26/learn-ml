@@ -88,12 +88,12 @@ From the repo root:
 
 ```bash
 pytest tests/test_contract.py tests/test_gate.py tests/test_labels.py
-python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual
+python -m pipelines.train --as-of 2024-06-01 --n 8000
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 ```
 
-`--label eventual` (default) is “did they cancel *after* `as_of`.” This fixture only has tens of 30-day events, so that is the question the file can supervise. `--label horizon` is the product question (cancel in 30 days). It will often refuse to train: one class in the fold. Both write `"label"` into `metrics.json` so you do not lie about which one you shipped.
+`train` backtests (Week 15): it learns on the snapshot `--horizon-days` before `--as-of` (default 90), labelled with what happened by `--as-of`, then scores the `--as-of` snapshot against the next 90 days. The product question is 30 days, but this fixture only has tens of 30-day cancels — try `--horizon-days 30` and watch it refuse to train on one class. The horizon and both snapshot dates go into `metrics.json` so you do not lie about which question you shipped.
 
 `train` never writes `prod`. A human or a green gate does. That is the whole difference between a script and a pipeline.
 
@@ -103,7 +103,7 @@ from pathlib import Path
 from pipelines.promote import gate
 from pipelines.train import train
 
-meta = train("2024-06-01", Path("artifacts"), n=8000, label="eventual")
+meta = train("2024-06-01", Path("artifacts"), n=8000)
 print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"], meta["base_rate"])
 ok, reason = gate(Path("artifacts") / meta["model_version"], Path("artifacts") / "prod")
 print("promote?", ok, reason)

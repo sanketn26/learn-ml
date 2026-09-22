@@ -28,7 +28,7 @@ def main() -> None:
 
     out = ROOT / "artifacts" / "solution-week16"
     print("\n1. Train writes a candidate, not prod")
-    meta = train("2024-06-01", out, n=4000, label="eventual")
+    meta = train("2024-06-01", out, n=4000)
     candidate = out / meta["model_version"]
     prod = ROOT / "artifacts" / "prod"
     print(json.dumps({k: meta[k] for k in ("model_version", "pr_auc", "dummy_pr_auc", "auc", "precision_at_80")}, indent=2))
@@ -57,7 +57,7 @@ def main() -> None:
     stamp = None
     if prod.exists() and (prod / "metrics.json").exists():
         stamp = (prod / "metrics.json").read_text()
-    train("2024-06-01", out, n=4000, label="eventual")
+    train("2024-06-01", out, n=4000)
     if stamp is not None:
         assert (prod / "metrics.json").read_text() == stamp
         print("  artifacts/prod metrics.json unchanged after a second train")
@@ -70,7 +70,7 @@ def main() -> None:
         "\n".join(
             [
                 "  pytest tests/",
-                "  python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual",
+                "  python -m pipelines.train --as-of 2024-06-01 --n 8000",
                 "  python -m pipelines.promote --candidate artifacts/20240601",
                 "  python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv",
                 "  head tonight.csv",

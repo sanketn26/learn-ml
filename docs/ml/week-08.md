@@ -68,6 +68,7 @@ from sklearn.pipeline import Pipeline
 
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
 from pipelines.labels import drop_unlabelled, label_churn_in_horizon, label_eventual_churn
+from pipelines.split import snapshot_split
 
 as_of = AS_OF_DEFAULT  # 2024-06-01
 df = build_features(as_of=as_of, n=None, at_risk_only=True)
@@ -110,10 +111,10 @@ rng = np.random.default_rng(0)
 dummy = np.full(len(y), float(y.mean()))
 noise = rng.random(len(y))
 
-print("dummy ROC-AUC", roc_auc_score(y, dummy).round(3),
-      "dummy PR-AUC", average_precision_score(y, dummy).round(3))
-print("noise ROC-AUC", roc_auc_score(y, noise).round(3),
-      "noise PR-AUC", average_precision_score(y, noise).round(3))
+print("dummy ROC-AUC", round(roc_auc_score(y, dummy), 3),
+      "dummy PR-AUC", round(average_precision_score(y, dummy), 3))
+print("noise ROC-AUC", round(roc_auc_score(y, noise), 3),
+      "noise PR-AUC", round(average_precision_score(y, noise), 3))
 print("base rate (this is the dummy PR-AUC, in one number)", float(y.mean()))
 ```
 
@@ -158,12 +159,10 @@ Compare the reliability curve with your prediction.
 If your prediction was wrong, what assumption was wrong?
 
 ```python
-# Horizon labels leave ~8 train positives after a time split — empty calibration bins.
-# Eventual-after-as_of is still rare and is the label week 16 actually trains.
-y_cal = label_eventual_churn(labelled, as_of)
-cut = labelled["signup_date"].quantile(0.80)
-train = labelled[labelled["signup_date"] <= cut]
-test = labelled[labelled["signup_date"] > cut]
+# A 30-day horizon leaves too few positives for calibration bins. Widen it to 90
+# and backtest: learn on the snapshot 90 days earlier, check on this one.
+# (Week 15 explains why a signup_date cut is the wrong time wall.)
+train, y_train, test, y_test = snapshot_split(as_of, horizon_days=90)
 # FEATURE_COLS includes plan_type (a string). Trees cannot eat it raw.
 model = Pipeline(
     [
@@ -171,9 +170,9 @@ model = Pipeline(
         ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
     ]
 )
-model.fit(train[FEATURE_COLS], y_cal.loc[train.index])
+model.fit(train[FEATURE_COLS], y_train)
 p = model.predict_proba(test[FEATURE_COLS])[:, 1]
-frac_pos, mean_pred = calibration_curve(y_cal.loc[test.index], p, n_bins=8, strategy="quantile")
+frac_pos, mean_pred = calibration_curve(y_test, p, n_bins=8, strategy="quantile")
 
 fig, ax = plt.subplots(figsize=(5.2, 4.2))
 ax.plot([0, 1], [0, 1], "--", color="#94a3b8", label="honest")

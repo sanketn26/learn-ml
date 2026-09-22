@@ -35,7 +35,7 @@ python exercises/ml/week-14/starter.py
     Stack two linear functions and simplify the algebra. What kind of function comes out the other end — and which model on your list already is exactly that, plus a sigmoid?
 
 ??? tip "Hint 2 — the approach"
-    The lesson's time split and `make_preprocessor()`; fit `LogisticRegression(max_iter=1000)` and `MLPClassifier(hidden_layer_sizes=(16, 8), activation="identity")` on the same transformed matrices. Compare test `roc_auc_score`. The lesson's "collapse demo" is the picture for why.
+    The lesson's backtest split (`snapshot_split`) and `make_preprocessor()`; fit `LogisticRegression(max_iter=1000)` and `MLPClassifier(hidden_layer_sizes=(16, 8), activation="identity")` on the same transformed matrices. Compare test `roc_auc_score`. The lesson's "collapse demo" is the picture for why.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -44,14 +44,10 @@ python exercises/ml/week-14/starter.py
     from sklearn.metrics import roc_auc_score
     from sklearn.neural_network import MLPClassifier
 
-    from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-    from pipelines.labels import drop_unlabelled, label_eventual_churn
+    from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, make_preprocessor
+    from pipelines.split import snapshot_split
 
-    df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
-    df, y = drop_unlabelled(df, label_eventual_churn(df, AS_OF_DEFAULT))
-    cut = df["signup_date"].quantile(0.80)
-    train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
-    y_train, y_test = y.loc[train.index], y.loc[test.index]
+    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
     prep = make_preprocessor()
     X_train_t = prep.fit_transform(train[FEATURE_COLS])
     X_test_t = prep.transform(test[FEATURE_COLS])
@@ -93,7 +89,7 @@ python exercises/ml/week-14/starter.py
 
 ??? example "Hint 3 — a skeleton"
     ```text
-    1. Result:   on the time-split holdout, GBT AUC <x> vs best net <y>.
+    1. Result:   on the backtest holdout, GBT AUC <x> vs best net <y>.
     2. Why:      <what kind of data this is, and what trees are good at>.
     3. Cost:     <training time / tuning / explainability difference>.
     4. Risk:     <what the net did in task 2>.

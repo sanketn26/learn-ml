@@ -1,5 +1,5 @@
 ---
-description: Compare shuffled vs time-split AUC, benchmark predict() latency, and pick a capacity-constrained decision threshold for a churn model artifact.
+description: Compare three train/test splits for a churn model, benchmark predict() latency, and pick a capacity-constrained decision threshold for its artifact.
 ---
 
 # Exercises — Week 15 — The Pickle
@@ -8,11 +8,11 @@ Ana's question from the lesson still stands: what happens when your laptop is of
 
 ## What you are building
 
-A time-split vs shuffled AUC, 80 `predict()` calls with p50/p95 latency, a capacity threshold of 80 names, a drift overlay, and a one-page write-up.
+Test AUC under three splits, 80 `predict()` calls with p50/p95 latency, a capacity threshold of 80 names, a drift overlay, and a one-page write-up.
 
 ## Predict before you run
 
-1. Will shuffled AUC exceed time-split AUC?
+1. Rank the three splits in task 1 by the AUC you expect, before you run any of them.
 2. Does `validate` accept `email` on the payload?
 3. Will a 0.5 threshold flag more or fewer than 80 customers?
 
@@ -30,17 +30,16 @@ Work in `starter.py`. Run from the repo root:
 python exercises/ml/week-15/starter.py
 ```
 
-**1. Time wall.** `build_features` + `label_eventual_churn` (or `label_churn_in_horizon`). Split on `signup_date` (train = earlier 80% of signups, test = later 20%). Train the same GBT (with `make_preprocessor()` — `plan_type` is a string) on a *shuffled* split and on the time split. Report both AUCs. If they differ, write one sentence about why.
+**1. Time wall.** Train the same GBT (with `make_preprocessor()` — `plan_type` is a string) three ways and report test AUC for each: (a) one `as_of` snapshot, shuffled 80/20; (b) the same snapshot cut on `signup_date` (earlier 80% of signups train, later 20% test); (c) `snapshot_split` — train on the snapshot 90 days earlier, test on `as_of`. Use a 90-day horizon label for all three. Rank the three by how much you'd trust them, in one sentence each.
 
 ??? tip "Hint 1 — a nudge"
-    In production you train on everyone who exists today and score people who sign up next month. Which of the two splits looks like that?
+    In production you stand on a date, score everyone at risk, and find out later who left. Which of the three splits looks like that — and does (b) really train on "the past," or on something else?
 
 ??? tip "Hint 2 — the approach"
-    `cutoff = df["signup_date"].quantile(0.80)` gives the time split; `train_test_split(..., stratify=y)` gives the shuffled one with the same test size. Fit the same pipeline on each and compare test AUC.
+    For (a) and (b), label one snapshot with `label_churn_in_horizon(df, as_of, 90)` and `drop_unlabelled`. (a) is `train_test_split(..., stratify=y)`; (b) is `df["signup_date"].quantile(0.80)`. For (c), `snapshot_split(as_of, horizon_days=90)` returns all four pieces. After (b), print the `tenure_so_far` range on each side.
 
 ??? example "Hint 3 — most of the code"
     ```python
-    import json
     import time
     from pathlib import Path
 
@@ -57,10 +56,8 @@ python exercises/ml/week-15/starter.py
 
     from pipelines.contract import predict, validate
     from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-    from pipelines.labels import drop_unlabelled, label_eventual_churn
-
-    df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
-    df, y = drop_unlabelled(df, label_eventual_churn(df, AS_OF_DEFAULT))
+    from pipelines.labels import drop_unlabelled, label_churn_in_horizon
+    from pipelines.split import snapshot_split
 
 
     def gbt() -> Pipeline:
@@ -70,16 +67,25 @@ python exercises/ml/week-15/starter.py
         ])
 
 
-    cutoff = df["signup_date"].quantile(0.80)
-    train, test = df[df["signup_date"] <= cutoff], df[df["signup_date"] > cutoff]
-    y_train, y_test = y.loc[train.index], y.loc[test.index]
-    time_model = gbt().fit(train[FEATURE_COLS], y_train)
-    time_scores = time_model.predict_proba(test[FEATURE_COLS])[:, 1]
+    def test_auc(tr, y_tr, te, y_te) -> float:
+        return roc_auc_score(y_te, gbt().fit(tr[FEATURE_COLS], y_tr).predict_proba(te[FEATURE_COLS])[:, 1])
 
-    Xs_tr, Xs_te, ys_tr, ys_te = train_test_split(df[FEATURE_COLS], y, test_size=len(test), random_state=42, stratify=y)
-    shuffled_auc = roc_auc_score(ys_te, gbt().fit(Xs_tr, ys_tr).predict_proba(Xs_te)[:, 1])
-    print(f"time-split AUC={roc_auc_score(y_test, time_scores):.3f}   shuffled AUC={shuffled_auc:.3f}")
+
+    snap = build_features(as_of=AS_OF_DEFAULT, n=None)
+    snap, y_snap = drop_unlabelled(snap, label_churn_in_horizon(snap, AS_OF_DEFAULT, horizon_days=90))
+
+    a_tr, a_te, ya_tr, ya_te = train_test_split(snap, y_snap, test_size=0.2, random_state=42, stratify=y_snap)
+    cut = snap["signup_date"].quantile(0.80)
+    b_tr, b_te = snap[snap["signup_date"] <= cut], snap[snap["signup_date"] > cut]
+    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
+
+    print(f"(a) shuffled     AUC={test_auc(a_tr, ya_tr, a_te, ya_te):.3f}")
+    print(f"(b) signup cut   AUC={test_auc(b_tr, y_snap.loc[b_tr.index], b_te, y_snap.loc[b_te.index]):.3f}  "
+          f"tenure train {b_tr['tenure_so_far'].min()}–{b_tr['tenure_so_far'].max()}, "
+          f"test {b_te['tenure_so_far'].min()}–{b_te['tenure_so_far'].max()}")
+    print(f"(c) backtest     AUC={test_auc(train, y_train, test, y_test):.3f}")
     ```
+    The trust ranking — and why (b) behaves the way it does — is yours.
 
 **2. `predict()` contract.** Import `validate` and `predict` from `pipelines.contract`. Do **not** invent a `CustomerFeatures` type — read `validate` before you build a payload. `predict` returns `{churn_score, flag_for_cs, model_version}`. Call it 80 times. Print p50 / p95 latency.
 
@@ -91,6 +97,8 @@ python exercises/ml/week-15/starter.py
 
 ??? example "Hint 3 — most of the code"
     ```python
+    time_model = gbt().fit(train[FEATURE_COLS], y_train)
+    time_scores = time_model.predict_proba(test[FEATURE_COLS])[:, 1]
     version = AS_OF_DEFAULT.strftime("%Y%m%d")
     artifact = {"pipeline": time_model, "metrics": {"threshold": 0.5, "model_version": version}}
 
@@ -114,7 +122,7 @@ python exercises/ml/week-15/starter.py
     joblib.dump({"pipeline": time_model, "features": FEATURE_COLS}, dest / "model.joblib")
     ```
 
-**3. Capacity, not 0.5.** From the time-split test set, pick the threshold that flags **at most 80** customers (CS budget). Report precision and recall at that cut. Compare to 0.5.
+**3. Capacity, not 0.5.** From the backtest test set, pick the threshold that flags **at most 80** customers (CS budget). Report precision and recall at that cut. Compare to 0.5.
 
 ??? tip "Hint 1 — a nudge"
     Priya's budget is a *count*. Turn the count into a score: what is the score of the 80th-riskiest customer?
@@ -132,10 +140,10 @@ python exercises/ml/week-15/starter.py
               f"recall={recall_score(y_test, flag, zero_division=0):.3f}")
     ```
 
-**4. Drift sketch.** Overlay histograms of `mrr`, `log_usage`, `tenure_so_far` for train vs later signups. One sentence: did the world move?
+**4. Drift sketch.** Overlay histograms of `mrr`, `log_usage`, `tenure_so_far` for the train snapshot vs today's snapshot. One sentence: did the world move?
 
 ??? tip "Hint 1 — a nudge"
-    One of these three columns *has* to differ between early and late signups, by construction. Which one — and does that count as the world moving?
+    The two snapshots are 90 days apart. Which column shifts just because the calendar moved — and does that count as the world moving?
 
 ??? tip "Hint 2 — the approach"
     Three subplots; in each, `hist(..., density=True, alpha=0.5)` for `train` and `test` with shared bins. Density, not counts — the groups are different sizes.
@@ -144,15 +152,15 @@ python exercises/ml/week-15/starter.py
     ```python
     fig, axes = plt.subplots(1, 3, figsize=(12, 3.4))
     for ax, col in zip(axes, ["mrr", "log_usage", "tenure_so_far"]):
-        bins = np.histogram_bin_edges(df[col], bins=30)
-        ax.hist(train[col], bins=bins, density=True, alpha=0.5, label="train (earlier)")
-        ax.hist(test[col], bins=bins, density=True, alpha=0.5, label="later signups")
+        bins = np.histogram_bin_edges(np.r_[train[col], test[col]], bins=30)
+        ax.hist(train[col], bins=bins, density=True, alpha=0.5, label="train snapshot")
+        ax.hist(test[col], bins=bins, density=True, alpha=0.5, label="today's snapshot")
         ax.set_title(col)
     axes[0].legend()
     fig.savefig("drift.png", dpi=120)
     ```
 
-**5. One-page write-up.** (1) the time wall, (2) holdout AUC vs a dummy, (3) the 80-call precision, (4) one drift risk, (5) what you refused to over-claim.
+**5. One-page write-up.** (1) the time wall and why you chose it, (2) holdout AUC vs a dummy, (3) the 80-call precision, (4) one drift risk, (5) what you refused to over-claim.
 
 ??? tip "Hint 1 — a nudge"
     Write it for Ana, who wasn't in the room. Every claim should point at a number you printed above.
@@ -163,8 +171,8 @@ python exercises/ml/week-15/starter.py
 ??? example "Hint 3 — a skeleton"
     ```text
     # Churn model <version> — ship note
-    1. Time wall:   trained on signups ≤ <date>, tested on <n> later signups.
-    2. Holdout:     AUC <x> (time) vs <y> (shuffled); base rate <r>.
+    1. Time wall:   trained on the <date> snapshot, tested on <as_of> (+<h> days).
+    2. Holdout:     backtest AUC <x> vs shuffled <y> vs signup cut <z>; base rate <r>.
     3. Budget:      top-80 precision <p> → ~<k> real churners reached per week.
     4. Drift risk:  <column> moved because <reason>; watch <what>.
     5. Not claimed: <the thing you are refusing to say>.
@@ -174,7 +182,7 @@ Dump with `joblib` into `artifacts/<version>/model.joblib`, the same layout as `
 
 ## Success criteria
 
-- Two AUCs (time vs shuffle).
+- Three AUCs (shuffled, signup cut, backtest) with a one-line trust ranking.
 - 80 `predict()` latencies and a response with `model_version`.
 - Threshold for ≤80 flags vs 0.5.
 - Artifact layout matches train.

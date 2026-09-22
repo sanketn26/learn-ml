@@ -82,7 +82,7 @@ from sklearn.metrics import roc_auc_score
 from sklearn.neural_network import MLPClassifier
 
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.split import snapshot_split
 ```
 
 ## Why activations exist — a 30-second proof
@@ -120,12 +120,7 @@ print("That number should be ~0. Activations are what make depth real.")
 `MLPClassifier` is the sklearn stand-in. Real dropout lives in PyTorch (`nn.Dropout`) below. sklearn’s `alpha` is **L2**, not dropout.
 
 ```python
-df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
-y = label_eventual_churn(df, AS_OF_DEFAULT)
-df, y = drop_unlabelled(df, y)
-cut = df["signup_date"].quantile(0.80)
-train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
-y_train, y_test = y.loc[train.index], y.loc[test.index]
+train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)  # backtest, Week 15
 prep = make_preprocessor()
 X_train_t = prep.fit_transform(train[FEATURE_COLS])
 X_test_t = prep.transform(test[FEATURE_COLS])

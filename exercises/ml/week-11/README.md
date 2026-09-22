@@ -14,7 +14,7 @@ Four rankers at precision@80 / recall@80, a capacity sweep, a pre-registered k, 
 
 ## Before you start
 
-- Keep the starter's *time* split. A random split flatters every ranker and makes the comparison meaningless.
+- Keep the starter's backtest split (`snapshot_split`). A random split flatters every ranker and makes the comparison meaningless.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -26,7 +26,7 @@ Work in `starter.py`. Run from the repo root:
 python exercises/ml/week-11/starter.py
 ```
 
-**1. Four rankers.** On a time-split holdout, print precision@80 and recall@80 for: the GBT, `n_support`, `-log_usage`, and random. Circle a ship / don't-ship.
+**1. Four rankers.** On the backtest holdout, print precision@80 and recall@80 for: the GBT, `n_support`, `-log_usage`, and random. Circle a ship / don't-ship.
 
 <details>
 <summary>Hint 1 — a nudge</summary>
@@ -38,7 +38,7 @@ A ranker is anything that sorts customers. A SQL `ORDER BY n_support DESC` is a 
 <details>
 <summary>Hint 2 — the approach</summary>
 
-The starter already has the time split, the GBT, and `precision_at_k`. Write a matching `recall_at_k` (hits in the top k over all positives). Score four arrays on the same `y_test`: `scores`, `test["n_support"]`, `-test["log_usage"]`, and `rng.random(len(test))`.
+The starter already has the backtest split, the GBT, and `precision_at_k`. Write a matching `recall_at_k` (hits in the top k over all positives). Score four arrays on the same `y_test`: `scores`, `test["n_support"]`, `-test["log_usage"]`, and `rng.random(len(test))`.
 
 </details>
 
@@ -50,20 +50,17 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.pipeline import Pipeline
 
-from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, make_preprocessor
+from pipelines.split import snapshot_split
 
 # --- same as the starter ---
-df = build_features(as_of=AS_OF_DEFAULT, n=None)
-df, y = drop_unlabelled(df, label_eventual_churn(df, AS_OF_DEFAULT))
-cut = df["signup_date"].quantile(0.80)
-train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
+train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
 model = Pipeline([
     ("prep", make_preprocessor()),
     ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
-]).fit(train[FEATURE_COLS], y.loc[train.index])
+]).fit(train[FEATURE_COLS], y_train)
 scores = model.predict_proba(test[FEATURE_COLS])[:, 1]
-y_test = y.loc[test.index].to_numpy()
+y_test = y_test.to_numpy()
 
 def precision_at_k(y, s, k=80) -> float:
     return float(np.asarray(y)[np.argsort(-np.asarray(s))[:k]].mean())

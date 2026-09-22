@@ -70,7 +70,7 @@ from sklearn.model_selection import validation_curve
 from sklearn.pipeline import Pipeline
 
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.split import snapshot_split
 ```
 
 ## Picture the two committees
@@ -87,13 +87,8 @@ BAGGING                         BOOSTING
     For CloudWave-sized *tables* (thousands to hundreds of thousands of rows, mixed numbers + categories), **gradient-boosted trees are the default workhorse** — XGBoost / LightGBM / sklearn’s GBT. Neural nets start to win on images, text, and sequences, not on the 7-column `FEATURE_COLS` table.
 
 ```python
-df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
-y = label_eventual_churn(df, AS_OF_DEFAULT)
-df, y = drop_unlabelled(df, y)
-X = df[FEATURE_COLS]
-cut = df["signup_date"].quantile(0.80)
-X_train, y_train = X[df["signup_date"] <= cut], y[df["signup_date"] <= cut]
-X_test, y_test = X[df["signup_date"] > cut], y[df["signup_date"] > cut]
+train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)  # backtest, Week 15
+X_train, X_test = train[FEATURE_COLS], test[FEATURE_COLS]
 prep = make_preprocessor()
 
 def auc_of(model):
@@ -174,11 +169,11 @@ The diagnostic is always the same pair of curves.
 
 ```python
 # 2.5k-row picture is enough to see the two curves; a full-file × 12-depth CV is a coffee break
-sample = np.random.default_rng(0).choice(len(X), size=min(2500, len(X)), replace=False)
+sample = np.random.default_rng(0).choice(len(X_train), size=min(2500, len(X_train)), replace=False)
 depths = np.arange(1, 8)
 train_s, test_s = validation_curve(
     RandomForestClassifier(n_estimators=25, random_state=42, n_jobs=2),
-    prep.fit_transform(X.iloc[sample]), y.iloc[sample],
+    prep.fit_transform(X_train.iloc[sample]), y_train.iloc[sample],
     param_name="max_depth", param_range=depths,
     cv=2, scoring="roc_auc", n_jobs=2,
 )

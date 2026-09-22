@@ -58,18 +58,13 @@ from sklearn.metrics import roc_auc_score
 from sklearn.pipeline import Pipeline
 
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.split import snapshot_split
 
 as_of = AS_OF_DEFAULT
-# n=None + eventual-after-as_of: this fixture only has tens of 30-day cancels,
-# so precision@80 on the horizon label is 0–2 positives and a coin flip.
-df = build_features(as_of=as_of, n=None, at_risk_only=True)
-y = label_eventual_churn(df, as_of)
-df, y = drop_unlabelled(df, y)
-
-cut = df["signup_date"].quantile(0.80)
-test = df[df["signup_date"] > cut]
-y_test = y.loc[test.index]
+# Backtest: learn on the snapshot 90 days before as_of, rank today's at-risk
+# customers, check who left in the next 90 days. A 30-day window has too few
+# cancels in this fixture for precision@80 to mean anything.
+train, y_train, test, y_test = snapshot_split(as_of, horizon_days=90)
 print("positives in test", int(y_test.sum()), "of", len(y_test))
 
 model = Pipeline(
@@ -78,8 +73,7 @@ model = Pipeline(
         ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
     ]
 )
-train = df[df["signup_date"] <= cut]
-model.fit(train[FEATURE_COLS], y.loc[train.index])
+model.fit(train[FEATURE_COLS], y_train)
 score = model.predict_proba(test[FEATURE_COLS])[:, 1]
 
 
@@ -94,7 +88,7 @@ print("model     ", at_k(y_test, score, 80))
 print("n_support ", at_k(y_test, test["n_support"], 80))
 print("low usage ", at_k(y_test, -test["log_usage"], 80))
 print("random    ", at_k(y_test, np.random.default_rng(0).random(len(test)), 80))
-print("ROC-AUC   ", roc_auc_score(y_test, score).round(3))
+print("ROC-AUC   ", round(roc_auc_score(y_test, score), 3))
 ```
 
 If `n_support` beats the GBT at k=80, you do not have a modeling problem. You have a “the tree is not earning its pickle” problem. Ship the sort.

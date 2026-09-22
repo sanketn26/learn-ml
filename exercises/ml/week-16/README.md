@@ -14,7 +14,7 @@ A candidate directory, a promote gate, proof that train does not write prod, and
 
 ## Before you start
 
-- Horizon labels can starve the train set of positives — this course defaults to `--label eventual` and says so in `metrics.json`.
+- A 30-day horizon starves the train set of positives on this fixture — `train` defaults to a 90-day backtest and writes the horizon into `metrics.json`.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -30,7 +30,7 @@ python exercises/ml/week-16/starter.py
 Full pipeline (after you trust the starter):
 
 ```bash
-python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual
+python -m pipelines.train --as-of 2024-06-01 --n 8000
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 head tonight.csv
@@ -48,7 +48,7 @@ The gate is a pure function of `metrics.json`. To test that it says *no*, you do
 <details>
 <summary>Hint 2 — the approach</summary>
 
-Call `pipelines.train.train(...)` into a directory you control, read its `metrics.json` (if the real candidate already fails the gate, that *is* your refusal — write down the reason), then copy the candidate to a scratch dir, raise `dummy_pr_auc` above `pr_auc` in the copy, and call `pipelines.promote.gate(scratch, None)`. It returns `(ok, reason)`.
+Call `pipelines.train.train(...)` into a directory you control, read its `metrics.json`, then copy the candidate to a scratch dir, raise `dummy_pr_auc` above `pr_auc` in the copy, and call `pipelines.promote.gate(scratch, None)`. It returns `(ok, reason)`.
 
 </details>
 
@@ -63,7 +63,7 @@ from pathlib import Path
 from pipelines.promote import gate
 from pipelines.train import train
 
-meta = train("2024-06-01", Path("artifacts"), n=8000, label="eventual")
+meta = train("2024-06-01", Path("artifacts"), n=8000)
 candidate = Path("artifacts") / meta["model_version"]
 print("pr_auc", meta["pr_auc"], "dummy", meta["dummy_pr_auc"], "→", gate(candidate, None))
 
@@ -108,7 +108,7 @@ def fingerprint(d: Path) -> str:
 prod = Path("artifacts") / "prod"
 before = fingerprint(prod)
 for _ in range(2):
-    train("2024-06-01", Path("artifacts"), n=8000, label="eventual")
+    train("2024-06-01", Path("artifacts"), n=8000)
 print("after two trains:", before, "→", fingerprint(prod))
 try:
     promote(candidate, prod)
@@ -168,7 +168,7 @@ Four commands, and each one should stop the next from running if it fails. What 
 ```bash
 set -euo pipefail
 python -m pytest tests/
-python -m pipelines.train --as-of "<date>" --n 8000 --label eventual
+python -m pipelines.train --as-of "<date>" --n 8000
 python -m pipelines.promote --candidate "artifacts/<version>"
 python -m pipelines.score_batch --as-of "<date>" --artifact artifacts/prod --out tonight.csv
 ```
