@@ -14,12 +14,9 @@ import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 
-ML_EXERCISE_DIRS = [ROOT / "exercises" / "ml" / f"week-{i:02d}" for i in range(0, 21)] + [
-    ROOT / "exercises" / "ml" / "capstone"
-]
-ML_DOCS = [ROOT / "docs" / "ml" / "exercises" / f"week-{i:02d}.md" for i in range(0, 21)] + [
-    ROOT / "docs" / "ml" / "exercises" / "capstone.md"
-]
+# Every exercise page, and a starter folder for each — weeks and capstones alike.
+ML_DOCS = sorted((ROOT / "docs" / "ml" / "exercises").glob("*.md"))
+ML_EXERCISE_DIRS = [ROOT / "exercises" / "ml" / page.stem for page in ML_DOCS]
 ML_SECTIONS = (
     "What you are building",
     "Predict before you run",

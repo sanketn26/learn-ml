@@ -57,6 +57,7 @@ One line of "hypothetical CloudWave, not a vendor case study" belongs on each tr
 | Artifact | 15 | A pickle on your laptop is not production |
 | Job | 16 | Ana won't let anything ship that loses to the dummy; the pipeline gets a gate |
 | **Payoff** | 17 | You're on-call. Three incidents you already lived come back: the join that doubled Helen's MRR, the leak Ana caught, and a silent NaN that slipped past both |
+| **Capstone: ship** | after 17 | Quarter-end. Helen wants "it runs every week" in the board pack; Priya wants her 80 every Monday; Ana wants a holiday. You ship the job. Two weeks later (2024-06-15) Priya says Monday's list "looks like strangers" — one seeded upstream defect (dollars→cents, an events fan-out, or a stalled usage extract) that passed every contract check |
 
 ## The one framework-track incident: `CW-1847`
 
@@ -99,3 +100,6 @@ Keep this list current as lessons change. It is the fast way to check "does this
 | Framework incident ID | `CW-1847` | proposed, this page |
 | Continuity customer | `user_041906` | Week 17, LC golden tickets |
 | On-call engineer | Ana | Week 16, Week 17 |
+| Job-path capstone ship date / incident night | 2024-06-01 / 2024-06-15 | `docs/ml/capstone-ship.md` |
+| Churners at risk on 2024-06-01, 90-day horizon | 110 of 43,947 (0.25%) | `snapshot_split` |
+| Desk list worth (90-day horizon) | ~1 churner per 80 calls, ~5× a random 80 | `docs/ml/capstone-ship.md` |

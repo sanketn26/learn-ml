@@ -21,9 +21,10 @@ docs/                 MkDocs source = the course
   ml/exercises/       exercise pages
   langchain/ langgraph/ crewai/
 exercises/ml/week-XX/ starter.py the learner runs
-exercises/ml/capstone/ starter.py for the optional capstone
+exercises/ml/capstone*/ starter.py for each capstone
 pipelines/            train / score / promote / contract
-capstone/             tool contract, teacher, reliability, eval (capstone)
+capstone/             tool contract, teacher, reliability, eval (GPU capstone)
+capstone_ship/        briefs + seeded incident (job-path capstone, CPU)
 tests/                pytest gates
 eval/                 golden tickets for the bot
 lib/course_data.py    loaders (no IPython)

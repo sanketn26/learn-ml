@@ -43,12 +43,13 @@ CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a 
 | 15 | A pickle is not production. Time split, `predict()`, drift. |
 | 16 | The job pipeline. Gate. Prod dir. Tonight’s CSV. |
 | 17 | On-call. Score as a tool. Golden tickets. |
+| Capstone: ship | Closes the job path. Weeks 3–17 as one gated weekly job, then diagnose an incident you didn't cause. CPU-only. |
 | 18 | Optional: CNNs as a sliding detector. |
 | 19 | Optional: RNNs as a clipboard that walks. |
 | 20 | Optional: Transformers as a soft join. |
-| Capstone | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
+| Capstone: specialist | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
 
-Required job path is **0–17**. Weeks **18–20** are pictures, not how CloudWave ships churn. The [capstone](capstone.md) is further still — the only page in this course that needs a GPU.
+Required job path is **0–17**, closed by the [job-path capstone](capstone-ship.md) — ship the churn score end to end, then survive its first incident. Weeks **18–20** are pictures, not how CloudWave ships churn. The [coding-specialist capstone](capstone.md) is further still — the only page in this course that needs a GPU.
 
 !!! warning "Weeks 18–20 are a boundary, not a research lab"
 
