@@ -90,7 +90,7 @@ Be honest about this one. With 110 churners among 43,947 at-risk customers, a *r
 
     **Lift** = precision of your list ÷ base rate. `0.0125 / 0.0025 = 5`. Lift says the model is working. It does not say the list is worth 80 calls. That depends on what a call costs and what a saved customer is worth — which is Helen's question, not a metric.
 
-Whether to ship the desk list at that rate is a business call. The model is the same either way; the *brief* is what changes.
+Whether to ship the desk list at that rate is a business call. The model is the same either way; the *brief* is what changes — the [scenario bank](capstone-scenarios.md) judges the same scores four other ways.
 
 ## 5 — The contract, tested
 

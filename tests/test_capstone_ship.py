@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from capstone_ship.briefs import RETENTION_DESK, judge, select, threshold_for
+from capstone_ship.briefs import BRIEFS, RETENTION_DESK, judge, select, threshold_for
 from capstone_ship.incident import DEFECTS, _defect_for, diagnose, incident_frame
 from pipelines.contract import validate
 from pipelines.features import FEATURE_COLS, NUMERIC, build_features
@@ -62,6 +62,20 @@ def test_select_cuts_at_capacity_and_threshold_reproduces_it(clean):
     y.loc[picked.index[:4]] = 1
     verdict = judge(picked, clean, y, RETENTION_DESK)
     assert verdict["hits"] == 4 and verdict["recall"] == 1.0
+
+
+@pytest.mark.parametrize("key", sorted(BRIEFS))
+def test_every_brief_runs_through_the_same_code_path(clean, key):
+    brief = BRIEFS[key]
+    scores = np.random.default_rng(0).random(len(clean))
+    picked = select(clean, scores, brief)
+    assert 0 < len(picked) <= brief.capacity
+    assert brief.eligible(clean).loc[picked.index].all()
+    if brief.cost is not None:
+        assert brief.cost(picked).sum() <= brief.budget
+    y = pd.Series((scores > 0.99).astype(int), index=clean.index)
+    verdict = judge(picked, clean, y, brief)
+    assert verdict["brief"] == key and verdict["picked"] == len(picked)
 
 
 def _solution():

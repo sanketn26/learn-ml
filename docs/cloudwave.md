@@ -103,3 +103,4 @@ Keep this list current as lessons change. It is the fast way to check "does this
 | Job-path capstone ship date / incident night | 2024-06-01 / 2024-06-15 | `docs/ml/capstone-ship.md` |
 | Churners at risk on 2024-06-01, 90-day horizon | 110 of 43,947 (0.25%) | `snapshot_split` |
 | Desk list worth (90-day horizon) | ~1 churner per 80 calls, ~5× a random 80 | `docs/ml/capstone-ship.md` |
+| Scenario-bank budgets | Helen $3,000 discounts (20% × 3 mo); Marcus 50 pitches; Ana 30 senior slots; onboarding 40 sessions (first 45 days) | `capstone_ship/briefs.py` |

@@ -312,12 +312,44 @@ The list:      at <precision> vs base rate <r>, I would <ship / not ship> the de
 
 </details>
 
+**9. Re-skin it.** Run two briefs from the [scenario bank](../../../docs/ml/capstone-scenarios.md) through your step 4 — at least one of `discount-targeting` or `onboarding-activation` — and write a ship / don't-ship for each in its stakeholder's units.
+
+<details>
+<summary>Hint 1 — a nudge</summary>
+
+Your step 4 already takes a `brief` argument. What *else* has to change to answer Helen instead of Priya — the model, the scores, or just the brief?
+
+</details>
+
+<details>
+<summary>Hint 2 — the approach</summary>
+
+Loop over `BRIEFS` with the same `scores` and `test_df`. Read each verdict against *its own* baseline: the break-even rate against 1.0, the slice precision against the slice base rate, churners pitched against the usage-only list.
+
+</details>
+
+<details>
+<summary>Hint 3 — most of the code</summary>
+
+```python
+from capstone_ship.briefs import BRIEFS
+
+for key in ("discount-targeting", "onboarding-activation"):
+    brief = BRIEFS[key]
+    picked = select(test_df, scores, brief)
+    print(key, f"threshold={threshold_for(picked):.4f}", judge(picked, test_df, y_test, brief))
+```
+The two ship / don't-ship calls are yours.
+
+</details>
+
 ## Success criteria
 
 - `gate(candidate, None)` is `(True, "ok")` on the backtest.
 - `metrics.json` carries the threshold, brief, and capacity; tonight's list has exactly 80 names.
 - Three payloads rejected by `validate()`.
 - `diagnose(seed, columns)` is `True` for your seed — and your postmortem names the test that would have caught it.
+- Two briefs judged in their stakeholders' units, each with a ship / don't-ship.
 
 ## After you run
 

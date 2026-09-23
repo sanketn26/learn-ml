@@ -96,6 +96,7 @@ nav:
       - Week 16 — Job pipeline: ml/week-16.md
       - Week 17 — On-call: ml/week-17.md
       - Capstone — Ship the churn score: ml/capstone-ship.md
+      - Capstone — Scenario bank: ml/capstone-scenarios.md
       - Week 18 — CNNs (optional): ml/week-18.md
       - Week 19 — RNNs (optional): ml/week-19.md
       - Week 20 — Transformers (optional): ml/week-20.md
