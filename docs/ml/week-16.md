@@ -158,7 +158,7 @@ from pipelines.labels import label_churn_in_horizon
 as_of = "2024-06-01"  # the night we scored
 tonight = pd.read_csv("tonight.csv")
 frame = build_features(as_of=as_of, n=None, at_risk_only=True)
-frame = frame.assign(y=label_churn_in_horizon(frame, as_of))
+frame = frame.assign(y=label_churn_in_horizon(frame, as_of, horizon_days=90))  # same horizon as metrics.json
 joined = tonight.merge(frame[["user_id", "y"]], on="user_id", how="left")
 knowable = joined.dropna(subset=["y"])
 print("n flagged", len(tonight), "with labels", len(knowable))

@@ -48,7 +48,7 @@ Ship
 
 ### Time-based split is not optional
 
-`train_test_split(..., shuffle=True)` is fine for a homework iris set. It is a lie for SaaS. Customers in the “test” set would include people from the same week as train — and tomorrow’s traffic is *next* week. Split on signup or on event time. Train on the past. Test on the future. Same rule as backtesting a trading strategy, or as not using tomorrow’s logs to tune today’s alert.
+`train_test_split(..., shuffle=True)` is fine for a homework iris set. It is a lie for SaaS. Customers in the “test” set would include people from the same week as train — and tomorrow’s traffic is *next* week. Split on time — an earlier snapshot for training, a later one for testing (not a `signup_date` cut; see the foot-gun below). Train on the past. Test on the future. Same rule as backtesting a trading strategy, or as not using tomorrow’s logs to tune today’s alert.
 
 ### Picture the contract
 

@@ -51,8 +51,9 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = B
     as_of_ts = pd.Timestamp(as_of)
     # Backtest, not a signup_date cut — a signup cut is a tenure cut (see pipelines/split.py).
     train_df, y_train, test_df, y_test = snapshot_split(as_of_ts, horizon_days=horizon_days, n=None)
+    # Downsample negatives to fit on a laptop. Never the test set: every metric
+    # below is quoted as "what the desk will see," so it runs on the real mix.
     train_df, y_train = _keep_all_positives(train_df, y_train, n)
-    test_df, y_test = _keep_all_positives(test_df, y_test, None if n is None else max(n // 4, 400))
     if y_train.nunique() < 2:
         raise RuntimeError(
             f"train set has one class (rate={float(y_train.mean())}). "
