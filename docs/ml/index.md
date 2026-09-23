@@ -47,6 +47,7 @@ CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a 
 | 18 | Optional: CNNs as a sliding detector. |
 | 19 | Optional: RNNs as a clipboard that walks. |
 | 20 | Optional: Transformers as a soft join. |
+| Capstone: sequences | Optional, CPU: CNN, RNN, and transformer over event sequences vs the Week-13 GBT, with a control and seeds. |
 | Capstone: specialist | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
 
 Required job path is **0–17**, closed by the [job-path capstone](capstone-ship.md) — ship the churn score end to end, then survive its first incident. Weeks **18–20** are pictures, not how CloudWave ships churn. The [coding-specialist capstone](capstone.md) is further still — the only page in this course that needs a GPU.

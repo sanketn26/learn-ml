@@ -28,7 +28,7 @@ Solutions exist for the foundational weeks, the hard-stats / production
 weeks, and the capstone:
 
 `week-00` … `week-05`, `week-07`, `week-08`, `week-15`, `week-16`, `week-17`,
-and `capstone/`, plus `capstone-ship/` (the job-path capstone).
+and `capstone/`, plus `capstone-ship/` (job path), `capstone-agent/` (framework tracks), and `capstone-sequence/` (deep learning).
 
 Other weeks follow the same recovery idea using the hints on the exercise
 page. Do not put notebooks here.

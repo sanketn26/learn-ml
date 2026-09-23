@@ -100,6 +100,7 @@ nav:
       - Week 18 — CNNs (optional): ml/week-18.md
       - Week 19 — RNNs (optional): ml/week-19.md
       - Week 20 — Transformers (optional): ml/week-20.md
+      - Capstone — Order vs the row (optional, CPU): ml/capstone-sequence.md
       - Capstone — Coding specialist (optional, GPU): ml/capstone.md
       - Exercises:
           - Week 0: ml/exercises/week-00.md
@@ -124,6 +125,7 @@ nav:
           - Week 18: ml/exercises/week-18.md
           - Week 19: ml/exercises/week-19.md
           - Week 20: ml/exercises/week-20.md
+          - Capstone — Sequences: ml/exercises/capstone-sequence.md
           - Capstone: ml/exercises/capstone.md
   - LangChain:
       - Overview: langchain/index.md
