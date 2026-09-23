@@ -41,6 +41,18 @@ def hint3_code(page: Path) -> str:
     return "\n".join(chunks)
 
 
+# Repo packages → the third-party modules they import, so a page that only says
+# `from pipelines ...` still skips cleanly in a venv without the ML stack.
+LOCAL_NEEDS = {
+    "lib": ["numpy", "pandas"],
+    "pipelines": ["numpy", "pandas", "sklearn", "joblib"],
+    "capstone_ship": ["numpy", "pandas", "sklearn", "joblib"],
+    "capstone": [],
+    "capstone_agent": [],
+    "eval": [],
+}
+
+
 def missing_modules(code: str) -> list[str]:
     roots = set()
     for node in ast.walk(ast.parse(code)):
@@ -48,8 +60,10 @@ def missing_modules(code: str) -> list[str]:
             roots.update(a.name.split(".")[0] for a in node.names)
         elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
             roots.add(node.module.split(".")[0])
-    local = {"lib", "pipelines", "capstone", "eval"}
-    return sorted(m for m in roots - local if importlib.util.find_spec(m) is None)
+    needed = set(roots - LOCAL_NEEDS.keys())
+    for pkg in roots & LOCAL_NEEDS.keys():
+        needed.update(LOCAL_NEEDS[pkg])  # a repo package brings its own third-party imports
+    return sorted(m for m in needed if importlib.util.find_spec(m) is None)
 
 
 def _id(page: Path) -> str:

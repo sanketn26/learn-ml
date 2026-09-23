@@ -25,6 +25,7 @@ exercises/ml/capstone*/ starter.py for each capstone
 pipelines/            train / score / promote / contract
 capstone/             tool contract, teacher, reliability, eval (GPU capstone)
 capstone_ship/        briefs + seeded incident (job-path capstone, CPU)
+capstone_agent/       runbooks, ledger, golden tickets (agent capstone; graph needs .venv-framework)
 tests/                pytest gates
 eval/                 golden tickets for the bot
 lib/course_data.py    loaders (no IPython)

@@ -19,6 +19,7 @@ Use a graph when you need branches, retries, pause-for-a-human, or replay. Three
 | [3 — Persistence](week-03.md) | Checkpoints. Replay after a crash. | A failed run resumes without repeating completed pure work. |
 | [4 — Human in the loop](week-04.md) | Interrupt, resume, the approval node. | Approve, reject, and needs-info follow distinct tested paths. |
 | [5 — Don’t charge twice](week-05.md) | Resume is at-least-once. Keys make effects once. | Replaying the side-effect node produces one charge. |
+| [Capstone — Support agent](../ml/capstone-agent.md) | LangChain 4/5/7 + LangGraph 3/4/5 in one graph. | Six golden tickets pass, and the gate fails an agent without the approval interrupt. |
 
 !!! think "Think of it like… CI, Redux, or a workflow engine"
     The runtime owns the state so you can stop in the middle and start again. That is the product feature. Pretty diagrams are a side effect.

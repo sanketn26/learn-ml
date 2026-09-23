@@ -26,3 +26,29 @@ jobs:
           python capstone/finetune/prepare_data.py --dry-run
           python capstone/finetune/train_lora.py --dry-run
           python capstone/finetune/evaluate_adapter.py --dry-run
+
+  # Framework pages and the agent capstone need their own pinned stacks; in the
+  # job above they skip. Run them here so a hint or the agent gate can't rot.
+  frameworks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install LangChain + LangGraph (requirements-frameworks.txt)
+        run: pip install -r requirements-frameworks.txt pytest
+      - name: Framework hints, agent capstone, smoke
+        run: pytest tests/test_hint_snippets.py tests/test_capstone_agent.py tests/test_framework_smoke.py
+
+  crewai:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install CrewAI (requirements-crewai.txt)
+        run: pip install -r requirements-crewai.txt
+      - name: CrewAI hints
+        run: pytest tests/test_hint_snippets.py -k crewai
