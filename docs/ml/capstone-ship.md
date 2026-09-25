@@ -47,8 +47,8 @@ from pipelines.score_batch import score_batch
 from pipelines.split import snapshot_split
 from pipelines.train import train
 
-train_df, y_train, test_df, y_test = snapshot_split("2024-06-01", horizon_days=90)       # 2
-meta = train("2024-06-01", Path("artifacts/demo"), n=8000, horizon_days=90)              # 3 (builds 1 inside)
+train_df, y_train, test_df, y_test = snapshot_split("2024-06-01", horizon_days=30)       # 2
+meta = train("2024-06-01", Path("artifacts/demo"), horizon_days=30)              # 3 (builds 1 inside)
 candidate = Path("artifacts/demo") / meta["model_version"]
 scores = load_artifact(candidate)["pipeline"].predict_proba(test_df[FEATURE_COLS])[:, 1]
 picked = select(test_df, scores, RETENTION_DESK)                                          # 4
@@ -65,30 +65,36 @@ Nine calls, no new modelling code. If any step needs more than a few lines, it's
 
 ## 2 — A label with a horizon you can defend
 
-Priya's real question is *who leaves in the next 30 days?* The file answers it badly:
+Priya's real question is *who leaves in the next 30 days?* Check that the file can supervise it before you commit:
 
-| Horizon | Train positives | Test positives (of 43,947 at risk) |
+| Horizon | Train positives | Test positives (of 27,935 at risk) |
 |---|---:|---:|
-| 30 days | 49 | 48 |
-| 90 days | 144 | 110 |
+| 30 days | 545 | 532 |
+| 90 days | 1,361 | 1,472 |
 
-Forty-nine examples is not a training set. A 90-day horizon triples the signal and changes the question — "who leaves this quarter" is less urgent than "who leaves this month." That trade goes in `metrics.json` (`horizon_days`) and in your write-up. [Week 8](week-08.md) is the lesson; this is the decision.
+Five hundred positives is a training set. The 90-day label has more, but it answers "who leaves this quarter" — a slower, less urgent question than the one Priya asked. Ship the 30-day horizon, and write it into `metrics.json` (`horizon_days`) and your write-up. [Week 8](week-08.md) is the lesson; this is the decision.
 
 ## 3 — Train, then prove it beats nothing
 
-`train()` backtests: it learns on the snapshot 90 days before `as_of` and tests on the `as_of` snapshot ([Week 15](week-15.md) explains why not a `signup_date` cut). `gate(candidate, None)` refuses anything that loses to the dummy. On this file the candidate scores ROC-AUC ≈ 0.88 and PR-AUC ≈ 0.017 against a dummy's 0.0025 — about seven times better than guessing, on an event that happens to one customer in four hundred.
+`train()` backtests: it learns on the snapshot 30 days before `as_of` and tests on the `as_of` snapshot ([Week 15](week-15.md) explains why not a `signup_date` cut). `gate(candidate, None)` refuses anything that loses to the dummy. On this file the candidate scores ROC-AUC ≈ 0.75 and PR-AUC ≈ 0.05 against a dummy's 0.019 — under three times better than guessing, on an event that happens to one customer in fifty each month. That is an ordinary churn model, not a bad one.
 
 ## 4 — The threshold is a headcount
 
-Priya can call 80. The threshold is whatever score the 80th name has; it falls out of the list. `select` + `threshold_for` do it, and the capstone writes the result into `metrics.json` so `predict()` flags exactly the people on the list. A 0.5 cut on this model flags 19 customers — not a number anyone staffed for.
+Priya can call 80. The threshold is whatever score the 80th name has; it falls out of the list. `select` + `threshold_for` do it, and the capstone writes the result into `metrics.json`.
+
+Then read `flag_rate` in that file. It says about 8% of customers clear the threshold — some 2,200 people, not 80. Look at `ties_at_threshold`: roughly 2,175 customers share the 80th score *exactly*. They are brand-new free accounts that signed up, logged one event, and never came back. The trees see no difference between them, so they all get the same score, and the 80th slot lands in the middle of that plateau.
+
+!!! warning "Watch out — ties at the cut"
+
+    A threshold only reproduces a list when scores are distinct around the cut. When thousands tie, `score >= threshold` flags thousands, and *which* 80 of them make the list is decided by sort order — unstable sorts give a different list, and a different precision, on every run. Rank and cut with an explicit tie-break (`select` and `score_batch` sort by score, then `user_id`), and treat `flag_for_cs` as "at least this risky," not "on the list."
 
 ### What the list is worth
 
-Be honest about this one. With 110 churners among 43,947 at-risk customers, a *random* 80 reaches about 0.2 of them. The model's 80 reach about one. That's a five-fold lift — and it's still one real churner per 80 calls, and one or two hits is a lottery week to week.
+Be honest about this one. With 532 churners among 27,935 at-risk customers, a *random* 80 reaches about 1.5 of them. The model's 80 reach about twelve — an eight-fold lift. `metrics.json` also carries `precision_at_80_ci95`: roughly 5% to 20%. On a given Monday that is anywhere from four to sixteen real churners, and [Week 11](week-11.md) showed the list is not reliably better than "sort by low usage" on a single week.
 
 !!! math "Math, translated"
 
-    **Lift** = precision of your list ÷ base rate. `0.0125 / 0.0025 = 5`. Lift says the model is working. It does not say the list is worth 80 calls. That depends on what a call costs and what a saved customer is worth — which is Helen's question, not a metric.
+    **Lift** = precision of your list ÷ base rate. `0.15 / 0.019 ≈ 8`. Lift says the model is working. It does not say the list is worth 80 calls. That depends on what a call costs, what a saved customer is worth, and whether a call saves anyone at all — which only a randomized holdout can tell you ([Week 11](week-11.md)).
 
 Whether to ship the desk list at that rate is a business call. The model is the same either way; the *brief* is what changes — the [scenario bank](capstone-scenarios.md) judges the same scores four other ways.
 
@@ -132,4 +138,4 @@ Two weeks later, Priya: *half of Monday's list are people I've never heard of.* 
 
 1. Your list reaches about one churner in 80 calls. What would you need to know to tell Helen whether that's worth a CS salary?
 2. Which step-7 defect would a range check on each column catch, and which needs a check on a *slice*?
-3. The 90-day horizon made the model trainable and the question less urgent. Where in the artifact does that trade stay visible after you've moved on?
+3. You chose the 30-day horizon over the 90-day one with more positives. Where in the artifact does that choice stay visible after you've moved on — and what breaks if next quarter's retrain quietly uses 90?

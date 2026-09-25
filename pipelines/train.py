@@ -34,6 +34,17 @@ def _threshold_for_budget(y: np.ndarray, scores: np.ndarray, budget: int) -> flo
     return float(np.partition(scores, -k)[-k])
 
 
+def _precision_ci(y: np.ndarray, scores: np.ndarray, budget: int, n_boot: int = 500, rng: int = 0) -> list[float]:
+    """95% bootstrap interval on precision@budget. One backtest is one draw."""
+    gen = np.random.default_rng(rng)
+    k = min(budget, len(scores))
+    draws = []
+    for _ in range(n_boot):
+        i = gen.integers(0, len(y), len(y))
+        draws.append(y[i][np.argsort(-scores[i])[:k]].mean())
+    return [round(float(q), 4) for q in np.percentile(draws, [2.5, 97.5])]
+
+
 def _keep_all_positives(frame: pd.DataFrame, y: pd.Series, n: int, rng: int = 42) -> tuple[pd.DataFrame, pd.Series]:
     """Downsample negatives only. Dropping rares is how 0.1% events become 0 events."""
     if n is None or len(frame) <= n:
@@ -47,12 +58,15 @@ def _keep_all_positives(frame: pd.DataFrame, y: pd.Series, n: int, rng: int = 42
     return out, y.loc[out.index]
 
 
-def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = BACKTEST_HORIZON_DAYS) -> dict:
+def train(as_of: str, out_dir: Path, n: int | None = None, horizon_days: int = BACKTEST_HORIZON_DAYS) -> dict:
     as_of_ts = pd.Timestamp(as_of)
     # Backtest, not a signup_date cut — a signup cut is a tenure cut (see pipelines/split.py).
     train_df, y_train, test_df, y_test = snapshot_split(as_of_ts, horizon_days=horizon_days, n=None)
-    # Downsample negatives to fit on a laptop. Never the test set: every metric
-    # below is quoted as "what the desk will see," so it runs on the real mix.
+    # Optional: downsample negatives for a faster run. The full train snapshot
+    # (~27k rows) fits in seconds, and downsampling makes the top of the list
+    # depend on which negatives survived — so the default keeps them all.
+    # Never the test set: every metric below is quoted as "what the desk will
+    # see," so it runs on the real mix.
     train_df, y_train = _keep_all_positives(train_df, y_train, n)
     if y_train.nunique() < 2:
         raise RuntimeError(
@@ -74,7 +88,12 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = B
             (
                 "model",
                 GradientBoostingClassifier(
-                    n_estimators=40, learning_rate=0.1, max_depth=2, random_state=42
+                    n_estimators=40, learning_rate=0.1, max_depth=2,
+                    # No leaf smaller than 50 customers. Without it the trees carve
+                    # out slivers like "pro, MRR $101.14–$101.32" around three
+                    # training churners and put them at the top of the list (Week 15).
+                    min_samples_leaf=50,
+                    random_state=42,
                 ),
             ),
         ]
@@ -87,7 +106,9 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = B
     auc = roc_auc_score(y_test, scores)
     threshold = _threshold_for_budget(y_test.to_numpy(), scores, BUDGET)
     flagged = scores >= threshold
-    precision_at_budget = float(y_test.to_numpy()[np.argsort(-scores)[:BUDGET]].mean()) if len(y_test) else 0.0
+    # Same order the desk list uses: score, then user_id to break ties.
+    order = np.lexsort((test_df["user_id"].to_numpy(), -scores))
+    precision_at_budget = float(y_test.to_numpy()[order[:BUDGET]].mean()) if len(y_test) else 0.0
 
     version = as_of_ts.strftime("%Y%m%d")
     meta = {
@@ -105,7 +126,11 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, horizon_days: int = B
         "dummy_pr_auc": round(float(dummy_ap), 4),
         "threshold": round(threshold, 4),
         "precision_at_80": round(precision_at_budget, 4),
+        "precision_at_80_ci95": _precision_ci(y_test.to_numpy(), scores, BUDGET),
         "flag_rate": round(float(flagged.mean()), 4),
+        # Customers sharing the 80th score. If this is large, `score >= threshold`
+        # flags far more than the budget — rank and cut, do not threshold.
+        "ties_at_threshold": int((scores == threshold).sum()),
         "features": FEATURE_COLS,
     }
 
@@ -120,7 +145,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Train CloudWave churn as of a day.")
     parser.add_argument("--as-of", default=str(AS_OF_DEFAULT.date()))
     parser.add_argument("--out", default=str(ROOT / "artifacts"))
-    parser.add_argument("--n", type=int, default=8000)
+    parser.add_argument("--n", type=int, default=None, help="downsample train negatives to this many rows (default: keep all)")
     parser.add_argument("--horizon-days", type=int, default=BACKTEST_HORIZON_DAYS)
     args = parser.parse_args()
     meta = train(args.as_of, Path(args.out), n=args.n, horizon_days=args.horizon_days)

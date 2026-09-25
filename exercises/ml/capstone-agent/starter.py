@@ -5,7 +5,7 @@ Run from the repo root, in the framework venv (make setup-frameworks):
     .venv-framework/bin/python exercises/ml/capstone-agent/starter.py
 
 Build `build_agent`. The runner scores it against the golden tickets, then
-runs the approval and crash drills. No API key: FakeListLLM only.
+runs the approval and crash drills. No API key: FakeListChatModel only.
 """
 
 from __future__ import annotations
@@ -18,11 +18,11 @@ from typing import Annotated, TypedDict
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from langchain_community.llms import FakeListLLM  # noqa: F401
+from langchain_core.language_models import FakeListChatModel  # noqa: F401
 from langchain_core.output_parsers import StrOutputParser  # noqa: F401
 from langchain_core.prompts import ChatPromptTemplate  # noqa: F401
 from langchain_core.runnables import RunnableConfig  # noqa: F401
-from langgraph.checkpoint.memory import MemorySaver  # noqa: F401
+from langgraph.checkpoint.memory import InMemorySaver  # noqa: F401
 from langgraph.graph import END, START, StateGraph  # noqa: F401
 
 from capstone_agent.golden import CW_1847_CUSTOMER, SCORES, evaluate
@@ -50,7 +50,7 @@ def build_agent(ledger: Ledger, scores: dict):
     """Return a compiled graph: checkpointer + interrupt_before=["issue_credit"].
 
     TODO 1: triage — injection → blocked, refund/credit → approval, churn → score, else docs or idk
-    TODO 2: docs (retrieve + FakeListLLM chain) and idk
+    TODO 2: docs (retrieve + FakeListChatModel chain) and idk
     TODO 3: draft_credit → issue_credit, paused for a human
     TODO 5: issue_credit writes through ledger.credit with a key that survives a resume
     """

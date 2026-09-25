@@ -12,8 +12,8 @@ A candidate model that beats the dummy on a backtest, a threshold set by Priya's
 
 ## Predict before you run
 
-1. With a 90-day horizon, roughly how many of Priya's 80 calls will reach a customer who actually leaves?
-2. Will a 0.5 threshold flag more or fewer than 80 customers?
+1. With a 30-day horizon (~2% base rate), roughly how many of Priya's 80 calls will reach a customer who actually leaves — and how many would a random 80?
+2. Will a 0.5 threshold flag more or fewer than 80 customers? Will the 80th score's threshold flag *exactly* 80?
 3. On the incident night, how many rows will `validate()` reject?
 4. Which is easier to see in a column summary: a column that doubled, or one that went to zero for a slice of customers?
 
@@ -59,7 +59,7 @@ pytest tests/test_capstone_ship.py
     from pipelines.split import snapshot_split
     from pipelines.train import train
 
-    AS_OF, HORIZON = pd.Timestamp("2024-06-01"), 90
+    AS_OF, HORIZON = pd.Timestamp("2024-06-01"), 30
     WORKDIR = Path("artifacts") / "capstone-ship"
 
     frame = build_features(as_of=AS_OF, n=None)
@@ -68,7 +68,7 @@ pytest tests/test_capstone_ship.py
     print(f"{len(frame):,} at-risk customers")
     ```
 
-**2. A label with a horizon.** Implement `step2_labels` with an explicit horizon. In your write-up, say why that horizon and not 30 days.
+**2. A label with a horizon.** Implement `step2_labels` with an explicit horizon. In your write-up, say why that horizon and not 90 days.
 
 ??? tip "Hint 1 — a nudge"
     Priya's real question is "who leaves in the next month?" How many of those events does this file actually contain — and what does Week 8 say about supervising a label that rare?
@@ -90,12 +90,12 @@ pytest tests/test_capstone_ship.py
     You already wrote this job in Week 16. What's the one function call, and what decides whether its output is allowed anywhere near prod?
 
 ??? tip "Hint 2 — the approach"
-    `train(as_of, out_dir, n=..., horizon_days=...)` writes `out_dir/<version>/`. Then `gate(candidate, None)` returns `(ok, reason)`. Assert `ok` — a capstone that ships a model losing to the dummy has failed step 3, not passed it.
+    `train(as_of, out_dir, horizon_days=...)` writes `out_dir/<version>/`. Then `gate(candidate, None)` returns `(ok, reason)`. Assert `ok` — a capstone that ships a model losing to the dummy has failed step 3, not passed it.
 
 ??? example "Hint 3 — most of the code"
     ```python
     out = WORKDIR / "artifacts"
-    meta = train(str(AS_OF.date()), out, n=4000, horizon_days=HORIZON)
+    meta = train(str(AS_OF.date()), out, horizon_days=HORIZON)
     candidate = out / meta["model_version"]
     ok, reason = gate(candidate, None)
     print({k: meta[k] for k in ("auc", "pr_auc", "dummy_pr_auc", "precision_at_80", "base_rate")}, ok, reason)
@@ -122,7 +122,27 @@ pytest tests/test_capstone_ship.py
     metrics.update({"threshold": round(cut, 4), "brief": RETENTION_DESK.key, "capacity": RETENTION_DESK.capacity})
     (candidate / "metrics.json").write_text(json.dumps(metrics, indent=2))
     ```
-    Whether one or two real churners in 80 calls is worth Priya's week goes in the write-up.
+    Whether about a dozen real churners in 80 calls — and the bootstrap interval around that dozen — is worth Priya's week goes in the write-up.
+
+**4b. Read the misses.** Before anything ships, pull two lists from the backtest: the 10 highest-scored customers who did **not** churn (false alarms at the top of Priya's list), and the 10 churners the model ranked lowest (misses it will never call). Print their feature rows next to the population median. In the write-up, one sentence each: what do the false alarms have in common, and what do the misses have in common that the features cannot see?
+
+??? tip "Hint 1 — a nudge"
+    Metrics tell you *how often* the model is wrong. These two lists tell you *how* — and the "how" is usually a missing feature or a data bug, not a missing layer.
+
+??? tip "Hint 2 — the approach"
+    Put `scores` and `y_test` on `test_df`. Sort by score: the top rows with `y == 0` are false alarms; the bottom rows with `y == 1` are misses. Compare their `FEATURE_COLS` to `test_df[FEATURE_COLS].median()`. Week 15's reason codes help explain a single row.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    ranked = test_df.assign(score=scores, y=y_test.to_numpy()).sort_values(["score", "user_id"], ascending=[False, True])
+    false_alarms = ranked[ranked["y"] == 0].head(10)
+    misses = ranked[ranked["y"] == 1].tail(10)
+    cols = ["plan_type", "mrr", "tenure_so_far", "log_usage", "total_events", "n_support"]
+    print("population median:\n", test_df[cols[1:]].median().round(2).to_string())
+    print("\ntop false alarms:\n", false_alarms[cols + ["score"]].round(3).to_string(index=False))
+    print("\nlowest-ranked churners:\n", misses[cols + ["score"]].round(3).to_string(index=False))
+    ```
+    Expect the false alarms to be accounts about two weeks old with one event: the model cannot tell *dormant* from *hasn't started yet*. Expect the misses to look like *healthy* customers — busy, paying, long-tenured — who left anyway. Nothing in `FEATURE_COLS` saw it coming. Name the column you would add (recent activity trend? a support ticket's sentiment?) and how you would compute it as of Monday.
 
 **5. Contract test.** Implement `step5_contract`: one real `predict()` call, and three payloads `validate()` must reject.
 
@@ -171,7 +191,7 @@ pytest tests/test_capstone_ship.py
     ```bash
     set -euo pipefail
     python -m pytest tests/
-    python -m pipelines.train --as-of "$AS_OF" --n 8000 --horizon-days 90
+    python -m pipelines.train --as-of "$AS_OF"
     # promote, then score with --limit 80
     ```
 
@@ -245,6 +265,7 @@ pytest tests/test_capstone_ship.py
 
 - `gate(candidate, None)` is `(True, "ok")` on the backtest.
 - `metrics.json` carries the threshold, brief, and capacity; tonight's list has exactly 80 names.
+- Ten false alarms and ten misses read, with one sentence on what each group shares.
 - Three payloads rejected by `validate()`.
 - `diagnose(seed, columns)` is `True` for your seed — and your postmortem names the test that would have caught it.
 - Two briefs judged in their stakeholders' units, each with a ship / don't-ship.

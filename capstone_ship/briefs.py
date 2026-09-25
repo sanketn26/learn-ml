@@ -184,7 +184,11 @@ def select(frame: pd.DataFrame, scores: np.ndarray, brief: Brief = RETENTION_DES
     """The list this brief ships: eligible rows, ordered by the brief's priority, cut at capacity."""
     scored = frame.assign(churn_score=np.asarray(scores, dtype=float))
     scored["priority"] = np.asarray(brief.priority(scored, scored["churn_score"].to_numpy()), dtype=float)
-    pool = scored.loc[brief.eligible(scored)].sort_values("priority", ascending=False)
+    # Ties are common (a tree scores every "signed up, never came back" account the
+    # same); break them by user_id so the same scores always ship the same list.
+    pool = scored.loc[brief.eligible(scored)].sort_values(
+        ["priority", "user_id"], ascending=[False, True], kind="stable"
+    )
     if brief.cost is not None and brief.budget is not None:
         pool = pool.loc[brief.cost(pool).cumsum() <= brief.budget]
     return pool.head(brief.capacity)

@@ -11,7 +11,7 @@ Every part of that agent exists somewhere in the LangChain and LangGraph tracks.
 ??? note "Course details"
 
     **Tracks closed:** LangChain (Weeks 4, 5, 7) and LangGraph (Weeks 3, 4, 5).
-    **Runs on:** the framework venv (`make setup-frameworks`). No API key — the only model is `FakeListLLM`, and it never routes.
+    **Runs on:** the framework venv (`make setup-frameworks`). No API key — the only model is `FakeListChatModel`, and it never routes.
 
 ---
 
@@ -34,11 +34,11 @@ Every part of that agent exists somewhere in the LangChain and LangGraph tracks.
              │
              ├─ injection ───────────────► blocked        "I can't help with that."
              ├─ churn question ──────────► score          read-only tool, logged in tools_called
-             ├─ runbook hit ─────────────► docs           FakeListLLM answers from retrieved text only
+             ├─ runbook hit ─────────────► docs           FakeListChatModel answers from retrieved text only
              ├─ no hit ──────────────────► idk            "I don't know yet — a human has it."   (CW-1847)
              └─ refund / credit ─► draft_credit ─║ interrupt ║─► issue_credit ─► ledger.credit(key)
                                                  human decides      (keyed: a resume replays, never repays)
-                                    MemorySaver checkpoints every step · golden tickets gate every change
+                                    InMemorySaver checkpoints every step · golden tickets gate every change
 ```
 
 The only place money moves is behind the double bar. The only thing that makes a second run safe is the key.
@@ -67,8 +67,8 @@ Same crash, same resume. The keyed ledger credits 2,900 cents; the one keyed by 
 | Keyword firewall | `eval.router.allowed_tools` + an injection list in `triage` | LangChain 7 |
 | Retrieve, then refuse on a miss | `capstone_agent.runbooks.retrieve` | LangChain 4 |
 | Golden tickets as a CI gate | `capstone_agent.golden.evaluate` | LangChain 5, 7 |
-| Checkpointed resume | `MemorySaver` + `thread_id` | LangGraph 3 |
-| Human approval before any write | `interrupt_before=["issue_credit"]` | LangGraph 4 |
+| Checkpointed resume | `InMemorySaver` + `thread_id` | LangGraph 3 |
+| Human approval before any write | `interrupt_before=["issue_credit"]` (the static-breakpoint spelling from LangGraph 4) | LangGraph 4 |
 | Idempotent write | `ledger.credit(key, ...)` | LangGraph 5 |
 
 ## Triage is code, not a prompt
@@ -86,6 +86,8 @@ There is no runbook for large exports — CW-1847 is an open incident. `retrieve
 ## Money waits, and can wait across a restart
 
 `interrupt_before=["issue_credit"]` stops the graph after `draft_credit` and checkpoints it. A human records `decision` with `update_state`; `invoke(None, config)` carries on. Because the pause is a checkpoint, the approval queue survives a deploy — the refund is still waiting on the same `thread_id` afterwards.
+
+This capstone uses the **static breakpoint** from [LangGraph week 4](../langgraph/week-04.md): the graph stops *before* `issue_credit` every time, and the golden gate can prove it by compiling an agent without it. Calling `interrupt()` inside `issue_credit` and resuming with `Command(resume=decision)` is the other 1.x spelling — if you port to it, remember the node re-runs from the top on resume, so the ledger key below matters even more.
 
 ## A resume runs the write twice
 

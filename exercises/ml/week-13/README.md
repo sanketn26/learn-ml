@@ -6,7 +6,7 @@ GBT feature importances next to encoded names, a deep-ensemble train-vs-test run
 
 ## Predict before you run
 
-1. Will importances look like a story (`tenure_so_far`, usage) or a shuffle?
+1. Will importances look like a story (usage, activity, MRR) or a shuffle?
 2. With `max_depth=8`, `n_estimators=80`, which AUC rises more — train or test?
 3. Is soft voting stacking?
 
@@ -48,7 +48,7 @@ from sklearn.pipeline import Pipeline
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, make_preprocessor
 from pipelines.split import snapshot_split
 
-train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
+train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=30)
 
 gbt = Pipeline([
     ("prep", make_preprocessor()),

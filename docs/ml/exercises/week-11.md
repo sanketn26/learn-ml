@@ -48,7 +48,7 @@ python exercises/ml/week-11/starter.py
     from pipelines.split import snapshot_split
 
     # --- same as the starter ---
-    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
+    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=30)
     model = Pipeline([
         ("prep", make_preprocessor()),
         ("gbt", GradientBoostingClassifier(n_estimators=40, max_depth=2, random_state=42)),
@@ -122,12 +122,37 @@ python exercises/ml/week-11/starter.py
     To know whether forcing the tutorial helps, we'd need <what kind of test>.
     ```
 
+**5. Put an interval on it.** Bootstrap the test set 1,000 times. Report a 95% interval for the GBT's precision@80, and for the *gap* between the GBT and the `-log_usage` sort. Does the gap's interval include zero? Write the one sentence you would put in the Monday email.
+
+??? tip "Hint 1 — a nudge"
+    One backtest is one draw of customers. How much would precision@80 move if you had drawn a different 28,000 from the same world?
+
+??? tip "Hint 2 — the approach"
+    Resample row indices with replacement (`rng.integers(0, n, n)`), rebuild both top-80 lists on the resample, recount. Keep the model's precision and the difference between the two lists *from the same resample* — that is the paired bootstrap. `np.percentile(draws, [2.5, 97.5])` is the interval.
+
+??? example "Hint 3 — most of the code"
+    ```python
+    low_usage = -test["log_usage"].to_numpy()
+    rng = np.random.default_rng(0)
+    model_p, gap = [], []
+    for _ in range(1000):
+        i = rng.integers(0, len(y_test), len(y_test))
+        a = precision_at_k(y_test[i], scores[i])
+        model_p.append(a)
+        gap.append(a - precision_at_k(y_test[i], low_usage[i]))
+    lo, hi = np.percentile(model_p, [2.5, 97.5])
+    g_lo, g_hi = np.percentile(gap, [2.5, 97.5])
+    print(f"gbt p@80 {precision_at_k(y_test, scores):.3f}  95% CI [{lo:.3f}, {hi:.3f}]   gap vs -log_usage [{g_lo:+.3f}, {g_hi:+.3f}]")
+    ```
+    The sentence for the email — and whether "the model wins" survives the second interval — is yours.
+
 ## Success criteria
 
 - Four rankers, two metrics, one circled ship rule.
 - Precision@k table for 20/80/200.
 - Comment that k=80 was pre-registered.
 - Causal reply in two sentences.
+- A 95% bootstrap interval on precision@80, and on the gap to the `-log_usage` sort.
 
 ## After you run
 

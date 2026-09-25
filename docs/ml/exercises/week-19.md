@@ -11,13 +11,13 @@ A mean-pooled hidden state, a reversed-week run, and a one-sentence forget-gate 
 ## Predict before you run
 
 1. Does `out.mean(dim=1)` give a mid-sequence dip more say than the last step?
-2. If `torch.flip` kills accuracy, was the model using order or the total?
+2. If `torch.flip` drops test AUC, was the model using order or the total?
 3. What does a forget gate throw away, in shopping-cart language?
 
 ## Before you start
 
 - CPU is enough; this is a 12-step sequence toy, not a language model.
-- `load_weekly_usage_grid` returns lifetime `is_churned` — a sequence toy, not an as-of label.
+- `load_weekly_usage_grid` returns the 12 weeks before 2024-06-01 and the 30-day label after it (~2% positive). Judge models on PR-AUC or AUC; accuracy just echoes the base rate.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -35,7 +35,7 @@ python exercises/ml/week-19/starter.py
     `out[:, -1, :]` is the clipboard after week 12 — whatever survived eleven overwrites. `out.mean(dim=1)` gives every week's clipboard an equal vote. Which one lets week 6 speak?
 
 ??? tip "Hint 2 — the approach"
-    Add a `pool` argument to the lesson's `SequenceNet` and switch between `out[:, -1, :]` and `out.mean(dim=1)`. Train both with the same seed. Accuracy sits near the majority baseline at ~6% churn — compare AUC too.
+    Add a `pool` argument to the lesson's `SequenceNet` and switch between `out[:, -1, :]` and `out.mean(dim=1)`. Train both with the same seed. Accuracy sits near the majority baseline at ~2% churn — compare AUC too.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -91,7 +91,7 @@ python exercises/ml/week-19/starter.py
     A model that only adds the weeks up gets the same total forwards and backwards. What would a model that *reads in order* notice?
 
 ??? tip "Hint 2 — the approach"
-    Flip both train and test (`[:, ::-1]`), retrain, and compare with the forward run. If accuracy drops, the model was using order. If nothing moves, it was summing.
+    Flip both train and test (`[:, ::-1]`), retrain, and compare with the forward run. If AUC drops by more than a rerun's seed spread, the model was using order. If nothing moves, it was summing.
 
 ??? example "Hint 3 — most of the code"
     ```python

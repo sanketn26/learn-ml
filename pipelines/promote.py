@@ -21,6 +21,11 @@ def gate(candidate: Path, prod: Path | None) -> tuple[bool, str]:
         return False, f"AUC {cand['auc']} is coin-flip"
     if prod is not None and (prod / "metrics.json").exists():
         prev = json.loads((prod / "metrics.json").read_text())
+        if prev.get("horizon_days") != cand.get("horizon_days"):
+            # PR-AUC moves with the base rate: a 90-day model's 0.13 and a 30-day
+            # model's 0.05 are answers to different questions, not better and worse.
+            return False, (f"prod answers a different question (horizon {prev.get('horizon_days')}d vs "
+                           f"{cand.get('horizon_days')}d); review and promote by hand")
         if cand["pr_auc"] + 1e-6 < prev["pr_auc"]:
             return False, f"PR-AUC {cand['pr_auc']} < prod {prev['pr_auc']}"
     return True, "ok"

@@ -117,13 +117,40 @@ Same contract as extracting a function: typed in, typed out, no secret globals.
 
 A billing GET will 503. Retry **that node**, not the email you already sent.
 
-**Library spelling** (langgraph 0.2):
+**Library spelling** (LangGraph 1.x — `RetryPolicy` lives in `langgraph.types`, and the argument is `retry_policy=`):
 
 ```python
-from langgraph.pregel import RetryPolicy
+import operator
+from typing import Annotated, TypedDict
 
-# graph.add_node("charge", charge, retry=RetryPolicy(max_attempts=3))
+from langgraph.graph import END, START, StateGraph
+from langgraph.types import RetryPolicy
+
+
+class ChargeState(TypedDict):
+    notes: Annotated[list, operator.add]
+
+
+billing_calls = {"n": 0}
+
+
+def charge(state: ChargeState) -> dict:
+    billing_calls["n"] += 1
+    if billing_calls["n"] < 3:
+        raise ConnectionError("billing 503")
+    return {"notes": ["charged"]}
+
+
+g = StateGraph(ChargeState)
+g.add_node("charge", charge,
+           retry_policy=RetryPolicy(max_attempts=3, initial_interval=0.01, retry_on=ConnectionError))
+g.add_edge(START, "charge")
+g.add_edge("charge", END)
+assert g.compile().invoke({"notes": []}) == {"notes": ["charged"]}
+assert billing_calls["n"] == 3        # two 503s, then success — only this node re-ran
 ```
+
+`retry_on` matters: retry the errors that *can* go away (timeouts, 503s), not a `ValueError` from bad input, which will fail the same way three times.
 
 **Concept demo** (no API key, proves the policy with ordinary Python):
 

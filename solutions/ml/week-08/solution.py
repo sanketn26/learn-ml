@@ -22,7 +22,7 @@ sys.path.insert(0, str(ROOT))
 
 from pipelines.contract import validate
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_churn_in_horizon, label_eventual_churn
+from pipelines.labels import drop_unlabelled, label_churn_in_horizon
 
 BUDGET = 80
 
@@ -40,7 +40,7 @@ def main() -> None:
     labelled_h, y_h2 = drop_unlabelled(df, y_h)
     print(f"  horizon-30 rate={float(y_h2.mean()):.4f}  n={len(y_h2):,}  positives={int(y_h2.sum())}")
     print(f"  lifetime is_churned on those rows={float(labelled_h['is_churned'].mean()):.4f}")
-    print("  legal at score time: the horizon label (or eventual-after-as_of). Not lifetime is_churned.")
+    print("  legal at score time: the horizon label. Not lifetime is_churned.")
 
     print("\n2. Censoring — observation_end = as_of + 10 days, horizon=30")
     short_end = as_of + pd_timedelta(days=10)
@@ -48,9 +48,8 @@ def main() -> None:
     print(f"  NaN (censored or already gone): {int(y_c.isna().sum()):,}")
     print(f"  observed cancels that survived as 1: {int((y_c == 1).sum()):,}")
 
-    print("\n3. PR vs ROC on eventual labels")
-    y_e = label_eventual_churn(df, as_of)
-    frame, y = drop_unlabelled(df, y_e)
+    print("\n3. PR vs ROC on the 30-day label")
+    frame, y = drop_unlabelled(df, label_churn_in_horizon(df, as_of))
     X = frame[FEATURE_COLS]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
     pipe = Pipeline(

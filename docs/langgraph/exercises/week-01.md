@@ -124,7 +124,8 @@ State has `log: Annotated[list[str], operator.add]`. `classify` returns `{"log":
     for name, fn in (("classify", classify), ("docs", docs), ("refund_queue", refund_queue)):
         g2.add_node(name, lambda state, fn=fn: fn(state))  # unannotated: LangGraph reads schemas from type hints
     g2.add_edge(START, "classify")
-    g2.add_conditional_edges("classify", route)
+    # Unannotated too: LangGraph 1.x also reads the router's type hints, and `route` names Ticket.
+    g2.add_conditional_edges("classify", lambda state: route(state), ["docs", "refund_queue"])
     g2.add_edge("docs", END)
     g2.add_edge("refund_queue", END)
     print("no reducer:", g2.compile().invoke({"content": "rotate key", "decision": "", "log": []})["log"])

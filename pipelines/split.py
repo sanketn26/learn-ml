@@ -18,9 +18,10 @@ from pathlib import Path
 import pandas as pd
 
 from pipelines.features import AS_OF_DEFAULT, OBSERVATION_END, build_features
-from pipelines.labels import drop_unlabelled, label_churn_in_horizon
+from pipelines.labels import HORIZON_DAYS, drop_unlabelled, label_churn_in_horizon
 
-BACKTEST_HORIZON_DAYS = 90
+# The backtest asks the product question: who leaves in the next 30 days.
+BACKTEST_HORIZON_DAYS = HORIZON_DAYS
 
 
 def snapshot_split(

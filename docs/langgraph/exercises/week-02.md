@@ -39,7 +39,7 @@ Compile the lesson’s email + slack + join graph (or the same shape for CloudWa
     from typing import Annotated, TypedDict
 
     from langgraph.graph import END, START, StateGraph
-    from langgraph.pregel import RetryPolicy
+    from langgraph.types import RetryPolicy
 
 
     class Notify(TypedDict):
@@ -119,7 +119,7 @@ Use `RetryPolicy` on a node **or** the lesson’s `with_retry` wrapper (label it
     Retry is a per-node decision. Which nodes talk to something that can flake, and which are pure functions that would fail the same way every time?
 
 ??? tip "Hint 2 — the approach"
-    `add_node("charge", flaky, retry=RetryPolicy(max_attempts=3, initial_interval=0.01))`. Careful: the default `retry_on` only retries *transient-looking* errors — `ConnectionError` yes, `RuntimeError` / `ValueError` no. Raise the kind of error a flaky network actually raises, or pass your own `retry_on`. Leave the formatting node without a policy.
+    `add_node("charge", flaky, retry_policy=RetryPolicy(max_attempts=3, initial_interval=0.01))`. Careful: the default `retry_on` only retries *transient-looking* errors — `ConnectionError` yes, `RuntimeError` / `ValueError` no. Raise the kind of error a flaky network actually raises, or pass your own `retry_on`. Leave the formatting node without a policy.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -139,7 +139,7 @@ Use `RetryPolicy` on a node **or** the lesson’s `with_retry` wrapper (label it
 
 
     g = StateGraph(Notify)
-    g.add_node("charge", flaky_charge, retry=RetryPolicy(max_attempts=3, initial_interval=0.01))
+    g.add_node("charge", flaky_charge, retry_policy=RetryPolicy(max_attempts=3, initial_interval=0.01))
     g.add_node("format", format_receipt)
     g.add_edge(START, "charge")
     g.add_edge("charge", "format")

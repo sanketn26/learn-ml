@@ -11,12 +11,12 @@ AS_OF = pd.Timestamp("2024-06-01")
 
 @pytest.fixture(scope="module")
 def split():
-    return snapshot_split(AS_OF, horizon_days=90, n=None)
+    return snapshot_split(AS_OF, horizon_days=30, n=None)
 
 
 def test_train_snapshot_is_one_horizon_earlier(split):
     train, _, test, _ = split
-    assert (train["as_of"] == AS_OF - pd.Timedelta(days=90)).all()
+    assert (train["as_of"] == AS_OF - pd.Timedelta(days=30)).all()
     assert (test["as_of"] == AS_OF).all()
 
 
@@ -40,4 +40,4 @@ def test_both_sides_have_positives(split):
 
 def test_refuses_a_fully_censored_test_window():
     with pytest.raises(ValueError, match="censored"):
-        snapshot_split(OBSERVATION_END - pd.Timedelta(days=10), horizon_days=90)
+        snapshot_split(OBSERVATION_END - pd.Timedelta(days=10), horizon_days=30)

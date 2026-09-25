@@ -30,13 +30,13 @@ Work in `starter.py`. Run from the repo root:
 python exercises/ml/week-15/starter.py
 ```
 
-**1. Time wall.** Train the same GBT (with `make_preprocessor()` — `plan_type` is a string) three ways and report test AUC for each: (a) one `as_of` snapshot, shuffled 80/20; (b) the same snapshot cut on `signup_date` (earlier 80% of signups train, later 20% test); (c) `snapshot_split` — train on the snapshot 90 days earlier, test on `as_of`. Use a 90-day horizon label for all three. Rank the three by how much you'd trust them, in one sentence each.
+**1. Time wall.** Train the same GBT (with `make_preprocessor()` — `plan_type` is a string) three ways and report test AUC for each: (a) one `as_of` snapshot, shuffled 80/20; (b) the same snapshot cut on `signup_date` (earlier 80% of signups train, later 20% test); (c) `snapshot_split` — train on the snapshot 30 days earlier, test on `as_of`. Use a 30-day horizon label for all three. Rank the three by how much you'd trust them, in one sentence each.
 
 ??? tip "Hint 1 — a nudge"
     In production you stand on a date, score everyone at risk, and find out later who left. Which of the three splits looks like that — and does (b) really train on "the past," or on something else?
 
 ??? tip "Hint 2 — the approach"
-    For (a) and (b), label one snapshot with `label_churn_in_horizon(df, as_of, 90)` and `drop_unlabelled`. (a) is `train_test_split(..., stratify=y)`; (b) is `df["signup_date"].quantile(0.80)`. For (c), `snapshot_split(as_of, horizon_days=90)` returns all four pieces. After (b), print the `tenure_so_far` range on each side.
+    For (a) and (b), label one snapshot with `label_churn_in_horizon(df, as_of, 30)` and `drop_unlabelled`. (a) is `train_test_split(..., stratify=y)`; (b) is `df["signup_date"].quantile(0.80)`. For (c), `snapshot_split(as_of, horizon_days=30)` returns all four pieces. After (b), print the `tenure_so_far` range on each side.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -72,12 +72,12 @@ python exercises/ml/week-15/starter.py
 
 
     snap = build_features(as_of=AS_OF_DEFAULT, n=None)
-    snap, y_snap = drop_unlabelled(snap, label_churn_in_horizon(snap, AS_OF_DEFAULT, horizon_days=90))
+    snap, y_snap = drop_unlabelled(snap, label_churn_in_horizon(snap, AS_OF_DEFAULT, horizon_days=30))
 
     a_tr, a_te, ya_tr, ya_te = train_test_split(snap, y_snap, test_size=0.2, random_state=42, stratify=y_snap)
     cut = snap["signup_date"].quantile(0.80)
     b_tr, b_te = snap[snap["signup_date"] <= cut], snap[snap["signup_date"] > cut]
-    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
+    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=30)
 
     print(f"(a) shuffled     AUC={test_auc(a_tr, ya_tr, a_te, ya_te):.3f}")
     print(f"(b) signup cut   AUC={test_auc(b_tr, y_snap.loc[b_tr.index], b_te, y_snap.loc[b_te.index]):.3f}  "
@@ -125,14 +125,18 @@ python exercises/ml/week-15/starter.py
 **3. Capacity, not 0.5.** From the backtest test set, pick the threshold that flags **at most 80** customers (CS budget). Report precision and recall at that cut. Compare to 0.5.
 
 ??? tip "Hint 1 — a nudge"
-    Priya's budget is a *count*. Turn the count into a score: what is the score of the 80th-riskiest customer?
+    Priya's budget is a *count*. Turn the count into a score: what is the score of the 80th-riskiest customer — and how many *other* customers have exactly that score?
 
 ??? tip "Hint 2 — the approach"
-    Sort the test scores descending and take the 80th value (`np.partition` works too — see `pipelines.train._threshold_for_budget`). Flag `scores >= cut`; compute flagged count, precision, recall. Do the same at 0.5.
+    Sort the test scores descending and look at the 80th value. If many customers tie at it, `scores >= cut` flags far more than 80 — so walk up to the lowest distinct score that flags at most 80. Flag `scores >= cut`; compute flagged count, precision, recall. Do the same at 0.5.
 
 ??? example "Hint 3 — most of the code"
     ```python
-    cut_80 = float(np.sort(time_scores)[::-1][79])
+    # The 80th score is not enough: thousands of customers can share it (Week 16's
+    # capstone calls this "ties at the cut"). Take the lowest cut that flags ≤ 80.
+    distinct = np.unique(time_scores)[::-1]
+    flagged_at = np.searchsorted(np.sort(-time_scores), -distinct, side="right")  # count ≥ each cut
+    cut_80 = float(distinct[flagged_at <= 80][-1])
     for name, cut in [("budget-80", cut_80), ("0.5", 0.5)]:
         flag = time_scores >= cut
         print(f"{name:<10} cut={cut:.4f} flagged={int(flag.sum()):>5} "
@@ -143,7 +147,7 @@ python exercises/ml/week-15/starter.py
 **4. Drift sketch.** Overlay histograms of `mrr`, `log_usage`, `tenure_so_far` for the train snapshot vs today's snapshot. One sentence: did the world move?
 
 ??? tip "Hint 1 — a nudge"
-    The two snapshots are 90 days apart. Which column shifts just because the calendar moved — and does that count as the world moving?
+    The two snapshots are 30 days apart. Which column shifts just because the calendar moved — and does that count as the world moving?
 
 ??? tip "Hint 2 — the approach"
     Three subplots; in each, `hist(..., density=True, alpha=0.5)` for `train` and `test` with shared bins. Density, not counts — the groups are different sizes.

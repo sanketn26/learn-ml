@@ -136,9 +136,9 @@ Use them with the week's exercise: **predict → run → compare → explain**.
 
 ## Week 7 — Classification
 
-??? question "Predict: majority dummy accuracy on ~6.4% churn? Dummy AUC?"
+??? question "Predict: majority dummy accuracy on a label that is ~9% positive? Dummy AUC?"
 
-    Accuracy ≈ 93–94%. AUC ≈ 0.5. Accuracy is a trap; ranking quality is not.
+    Accuracy ≈ 91%. AUC ≈ 0.5. On the 30-day label (~2% positive) the same dummy scores ≈ 98%. Accuracy is a trap; ranking quality is not.
 
 ??? question "Diagnose: threshold 0.8 flags 12 people, precision looks amazing, CS asked for 100 names. What did you optimize?"
 
@@ -164,7 +164,7 @@ Use them with the week's exercise: **predict → run → compare → explain**.
 
 ??? question "Choose: Monday email number — ROC-AUC, PR-AUC, or precision@80 on horizon-30?"
 
-    PR-AUC vs dummy, plus precision@budget on a label with enough positives (eventual, in this fixture). Horizon-30 precision@80 is a lottery (~48 positives in the whole file).
+    PR-AUC vs dummy, plus precision@80 **with its bootstrap interval** (Week 11). With ~530 positives among ~28,000 customers, 80 calls hold only a handful of churners — a bare precision@80 moves several points from week to week.
 
 ??? question "Defend: why must `validate()` reject `churn_date` on the payload?"
 

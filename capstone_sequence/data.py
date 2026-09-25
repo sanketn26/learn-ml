@@ -21,7 +21,7 @@ import pandas as pd
 
 from lib.course_data import find_data_dir
 from pipelines.features import FEATURE_COLS, make_preprocessor
-from pipelines.split import snapshot_split
+from pipelines.split import BACKTEST_HORIZON_DAYS, snapshot_split
 from pipelines.train import _keep_all_positives
 
 EVENT_TYPES = ["cancel", "click", "downgrade", "feature_use", "login", "page_view",
@@ -73,7 +73,7 @@ def sequences(user_ids: pd.Series, as_of: pd.Timestamp, events: pd.DataFrame,
     return tokens, recency, tokens != PAD
 
 
-def bakeoff_data(as_of: str | pd.Timestamp = "2024-06-01", horizon_days: int = 90,
+def bakeoff_data(as_of: str | pd.Timestamp = "2024-06-01", horizon_days: int = BACKTEST_HORIZON_DAYS,
                  n_train: int | None = 8000, events: pd.DataFrame | None = None) -> tuple[Split, Split]:
     """(train, test): train is the snapshot `horizon_days` earlier, negatives downsampled
     to `n_train` rows for a laptop; test is the full `as_of` snapshot, never downsampled."""

@@ -145,12 +145,59 @@ Optional 10-line env sketch if you later add a hosted tracer (not required):
 
 ```python
 # import os
-# os.environ["LANGCHAIN_TRACING_V2"] = "true"
-# os.environ["LANGCHAIN_API_KEY"] = "..."   # not in this repo
-# os.environ["LANGCHAIN_PROJECT"] = "cloudwave-week5"
+# os.environ["LANGSMITH_TRACING"] = "true"     # older code: LANGCHAIN_TRACING_V2
+# os.environ["LANGSMITH_API_KEY"] = "..."      # not in this repo
+# os.environ["LANGSMITH_PROJECT"] = "cloudwave-week5"
 ```
 
 The local `Trace` dict is what the exercise grades.
+
+## One run is one draw
+
+The stand-in `handle` above is deterministic. A real model is not: it samples, and the same query can route to `escalate_to_human` nine times and `documentation_search` the tenth. So a golden case is not pass/fail — it has a **pass rate**, and five cases run once each is a very small sample. This is ML Week 5 and Week 11 again, with prompts instead of customers.
+
+Concept demo: a simulated model that gets each case right 85% of the time (prompt A) or 80% (prompt B).
+
+```python
+import numpy as np
+from scipy.stats import binomtest
+
+rng = np.random.default_rng(0)
+
+
+def run_suite(p_correct: float, cases: int, repeats: int) -> tuple[int, int]:
+    """(passes, attempts) for a model that passes any single attempt with p_correct."""
+    attempts = cases * repeats
+    return int(rng.binomial(attempts, p_correct)), attempts
+
+
+for label, p in [("prompt A", 0.85), ("prompt B", 0.80)]:
+    for repeats in (1, 20):
+        passes, n = run_suite(p, cases=5, repeats=repeats)
+        ci = binomtest(passes, n).proportion_ci(method="exact")
+        print(f"{label}  5 cases × {repeats:>2} runs: {passes}/{n} = {passes / n:.0%}  "
+              f"95% CI {ci.low:.0%}–{ci.high:.0%}")
+```
+
+With one run per case, each prompt's interval spans most of the range; “A scored 5/5 and B scored 4/5” is noise. Twenty runs per case narrow it — and on this seed the *worse* prompt (B, 80% true) still comes out ahead of A (85% true), inside overlapping intervals. Before you tell anyone a prompt change helped, run each case several times and compare **intervals**, not two single scores. Sampling temperature is part of the test setup: evaluate at the temperature you ship.
+
+## LLM-as-judge is a model — test it too
+
+Word overlap cannot grade “Escalating to our support team.” The common fix is a second model that grades the first (“does this reply escalate billing anger to a human? yes/no”). That judge is a classifier, and it makes mistakes. Before its verdict gates CI, grade 30–50 real replies **by hand** and measure how often the judge agrees with you:
+
+```python
+from sklearn.metrics import cohen_kappa_score
+
+human = np.array([1, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 0,
+                  1, 1, 0, 0, 1, 1, 0, 1, 0, 1])            # you, reading 30 replies
+judge = human.copy()
+judge[[2, 5, 11, 17, 24]] = 1 - judge[[2, 5, 11, 17, 24]]  # a judge that disagrees 5 times
+agree = (human == judge).mean()
+print(f"agreement {agree:.0%}   Cohen's kappa {cohen_kappa_score(human, judge):.2f}")
+print("judge said pass, human said fail:", int(((judge == 1) & (human == 0)).sum()))
+```
+
+Raw agreement flatters a judge when most replies pass; **kappa** corrects for agreement you would get by chance (1.0 perfect, 0 chance). The row that matters is *judge said pass, human said fail*: those are the failures your CI will wave through. If that count is not small, fix the judge's rubric before you trust its green checks. Re-check it whenever you change the judge model or prompt.
 
 !!! warning "Watch out — overlap is a blunt instrument"
 
@@ -158,7 +205,7 @@ The local `Trace` dict is what the exercise grades.
 
 !!! success "Ship / don’t ship"
 
-    **Ship** a golden set that fails when the wrong tool fires, with latency as a separate SLO. **Don’t ship** “95% quality” that mixes speed into relevance, and don’t block the week on a LangSmith account.
+    **Ship** a golden set that fails when the wrong tool fires, with latency as a separate SLO, several runs per case against a sampled model, and — if a model grades the replies — a measured agreement with human labels. **Don’t ship** “95% quality” that mixes speed into relevance, and don’t block the week on a LangSmith account.
 
 ## ✍️ Exercise
 
@@ -169,6 +216,7 @@ The local `Trace` dict is what the exercise grades.
 1. A correct escalate takes 3 seconds; SLA is 500ms. Pass or fail? On which column?
 2. What is one CloudWave query you would add that the overlap scorer would mishandle?
 3. Where does the trace live if the process crashes before you print it?
+4. Prompt B passes 19/20 runs and prompt A passes 17/20. Is B better? What would you run next?
 
 ## 🔗 Next week
 

@@ -11,7 +11,7 @@ Ana blocks the handoff before Priya gets the list. "This ranks who ever cancels,
     **Course:** Applied ML Foundations for SaaS Analytics
     **Who this is for:** Engineers who shipped Week 7's classifier. Read this after Week 7. CloudWave's lifetime `is_churned` flag is the wrong label.
 
-About **6.4%** of customers ever cancel in this file. A model that predicts "nobody churns" is ~94% accurate and useless. A model trained on the lifetime `is_churned` flag answers "will they ever leave," which is a different, easier, and less useful question than "will they leave in the next 30 days."
+About **9%** of the customers still active on 2024-06-01 ever cancel in this file — but only about **2%** cancel in the next 30 days. A model that predicts "nobody churns" is ~98% accurate on that 30-day question, and useless. A model trained on the lifetime `is_churned` flag answers "will they ever leave," which is a different, easier, and less useful question than "will they leave in the next 30 days."
 
 ---
 
@@ -90,19 +90,19 @@ The lifetime rate is higher. It counts people who cancel after the 30-day window
 ## Imbalance is a staffing fact
 
 ```
-~44,000 at-risk customers on 2024-06-01
-  ~48 cancel in the next 30 days          (~0.11%, not 60–80 per thousand)
-  ~168 cancel sometime after as_of        (eventual; still rare)
+~28,000 at-risk customers on 2024-06-01
+  ~530 cancel in the next 30 days         (~1.9% — about 2% a month, a normal SMB SaaS)
+  ~2,600 cancel sometime after as_of      (eventual: everything left in the file)
   the rest do not, in this file
 
-Accuracy of “predict 0”:  ~99.9% on the 30-day question
+Accuracy of “predict 0”:  ~98% on the 30-day question
 CS can call:              80 people
 The only number that pays: of those 80, how many actually left?
 ```
 
-This fixture only has **tens** of 30-day events. That is why Week 16’s job trains `"label": "eventual"` and writes that string in `metrics.json`. The product question is still 30 days. The file can actually supervise “cancel after Monday.”
+Why not train on “eventual”? It has five times the positives. But its window runs to the end of the file: six months long for a June snapshot, one month for an October one. The same customer gets a different answer depending on the day you ask — a label whose meaning drifts with the calendar. The 30-day label means the same thing every Monday, and ~530 positives is plenty to learn from. Week 16’s job trains on it and writes `"label": "churn within 30 days"` into `metrics.json`.
 
-ROC-AUC asks “can you rank a random churner above a random non-churner?” With 99.9% negatives, a lazy model still looks fine.
+ROC-AUC asks “can you rank a random churner above a random non-churner?” With 98% negatives, a lazy model still looks fine.
 
 **PR-AUC** (average precision) asks “as you walk down the ranked list, how often were you right?” That matches the 80-call budget.
 
@@ -159,10 +159,10 @@ Compare the reliability curve with your prediction.
 If your prediction was wrong, what assumption was wrong?
 
 ```python
-# A 30-day horizon leaves too few positives for calibration bins. Widen it to 90
-# and backtest: learn on the snapshot 90 days earlier, check on this one.
-# (Week 15 explains why a signup_date cut is the wrong time wall.)
-train, y_train, test, y_test = snapshot_split(as_of, horizon_days=90)
+# Backtest: learn on the snapshot 30 days earlier (its labels are complete by
+# as_of), check on this one. Week 15 explains why a signup_date cut is the
+# wrong time wall.
+train, y_train, test, y_test = snapshot_split(as_of, horizon_days=30)
 # FEATURE_COLS includes plan_type (a string). Trees cannot eat it raw.
 model = Pipeline(
     [
@@ -223,4 +223,4 @@ Try one [self-check](self-checks.md#week-8-labels) (Predict / Diagnose / Choose 
 
 ## 🔗 Next week
 
-You fix the label. Priya's real question is still open: she doesn't want a yes/no for 44,000 customers, she wants the top 80, ranked. [Week 9](week-09.md) and [Week 10](week-10.md) are two detours worth taking on the way — then [Week 11](week-11.md) is that list.
+You fix the label. Priya's real question is still open: she doesn't want a yes/no for 28,000 customers, she wants the top 80, ranked. [Week 9](week-09.md) and [Week 10](week-10.md) are two detours worth taking on the way — then [Week 11](week-11.md) is that list.

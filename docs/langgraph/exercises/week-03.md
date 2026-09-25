@@ -1,15 +1,15 @@
 ---
-description: Exercises using LangGraph's MemorySaver checkpointer to crash a graph after node two, then resume the same thread without rerunning finished nodes.
+description: Exercises using LangGraph's InMemorySaver checkpointer to crash a graph after node two, then resume the same thread without rerunning finished nodes.
 ---
 
-# Exercises — Week 3 — MemorySaver resume
+# Exercises — Week 3 — InMemorySaver resume
 
-Do these after reading [Week 3](../week-03.md). Use LangGraph 0.2’s checkpointer, not a homemade `Checkpoint` class.
+Do these after reading [Week 3](../week-03.md). Use LangGraph’s checkpointer, not a homemade `Checkpoint` class.
 
 ```python
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 
-app = graph.compile(checkpointer=MemorySaver())
+app = graph.compile(checkpointer=InMemorySaver())
 config = {"configurable": {"thread_id": "t1"}}
 ```
 
@@ -23,7 +23,7 @@ After a crash in node 3, are `RUNS["n1"]` and `RUNS["n2"]` still 1? A new `threa
 python your_memorysaver_resume.py
 ```
 
-Use LangGraph 0.2's `MemorySaver`, not a homemade `Checkpoint` class.
+Use LangGraph's `InMemorySaver`, not a homemade `Checkpoint` class.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -40,14 +40,14 @@ Three nodes. Node 3 raises when `crash is True`. Invoke once, catch the error.
     A checkpointer saves state *between* nodes. After the crash, what is the last thing it could have saved?
 
 ??? tip "Hint 2 — the approach"
-    Three nodes in a line, each bumping `RUNS[name]` and appending to a reducer `log`. Compile with `checkpointer=MemorySaver()`, invoke with a `thread_id` config and `crash=True`, catch the exception, then read `app.get_state(config).values`.
+    Three nodes in a line, each bumping `RUNS[name]` and appending to a reducer `log`. Compile with `checkpointer=InMemorySaver()`, invoke with a `thread_id` config and `crash=True`, catch the exception, then read `app.get_state(config).values`.
 
 ??? example "Hint 3 — most of the code"
     ```python
     import operator
     from typing import Annotated, TypedDict
 
-    from langgraph.checkpoint.memory import MemorySaver
+    from langgraph.checkpoint.memory import InMemorySaver
     from langgraph.graph import END, START, StateGraph
 
     RUNS = {"n1": 0, "n2": 0, "n3": 0}
@@ -74,7 +74,7 @@ Three nodes. Node 3 raises when `crash is True`. Invoke once, catch the error.
     g.add_edge("n1", "n2")
     g.add_edge("n2", "n3")
     g.add_edge("n3", END)
-    app = g.compile(checkpointer=MemorySaver())
+    app = g.compile(checkpointer=InMemorySaver())
     config = {"configurable": {"thread_id": "t1"}}
 
     try:
@@ -117,7 +117,7 @@ Invoke a **different** `thread_id` after the crash (do not resume `t1`).
 - You can explain in one sentence why `thread_id` is the resume key
 
 ??? tip "Hint 1 — a nudge"
-    `MemorySaver` is a dict of checkpoints. What's the key?
+    `InMemorySaver` is a dict of checkpoints. What's the key?
 
 ??? tip "Hint 2 — the approach"
     Build a second config with `thread_id="t2"` and invoke it with a full input. Watch which counters move. Then try `invoke(None, ...)` on a thread that has no checkpoint at all and see what you get.

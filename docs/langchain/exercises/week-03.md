@@ -1,5 +1,5 @@
 ---
-description: Hand-write a thought/action/observation agent loop over two tools, then test its bounded failure at max_iterations and docstring quality.
+description: Hand-write a thought/action/observation agent loop over two tools, then test its bounded failure at a step cap and docstring quality.
 ---
 
 # Exercises — Week 3 — Agents & Tools
@@ -99,7 +99,7 @@ Add a third tool, `issue_refund(user_id, amount)`. Do **not** hook it to the loo
     5. So: not in TOOLS; reachable only through <the LangGraph week-4 pattern>.
     ```
 
-## 3. max_iterations
+## 3. The loop cap
 
 Force the loop to pick a missing tool name. Confirm it stops at `MAX_STEPS` with a clear error, not an infinite spin.
 

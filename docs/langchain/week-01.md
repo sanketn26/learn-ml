@@ -20,6 +20,7 @@ LangChain is not a model. The model is the remote API. LangChain is **middleware
 - Write a reusable prompt template and inject variables
 - Compose `prompt | llm | parser` and say what each step returns
 - Parse model text into a **dict** (or a Pydantic object) and reject garbage
+- Know the 1.x shipping path: `with_structured_output(Model)` returns a validated Pydantic instance
 - Route a second step with a Python `if` (or an 8-line `RunnableBranch`)
 - Know when a chain is the wrong tool
 
@@ -35,11 +36,11 @@ Your backend                        LangChain
 HTTP handler                        a chain entrypoint
 string template + params            PromptTemplate / ChatPromptTemplate
 JSON schema / pydantic              output parser
-service client                      an LLM (here: FakeListLLM)
+service client                      an LLM (here: FakeListChatModel)
 try / catch + retries               fallbacks you write yourself
 ```
 
-Concept demos in this track use `FakeListLLM`. No API key.
+Concept demos in this track use `FakeListChatModel`. No API key.
 
 ## Picture the pipe
 
@@ -50,7 +51,7 @@ ticket dict
 [ChatPromptTemplate]   fill {subject} and {body}
     │
     ▼
-[FakeListLLM]          returns a JSON string (scripted)
+[FakeListChatModel]          returns a JSON string (scripted)
     │
     ▼
 [JsonOutputParser]     returns a dict  ← not a Pydantic instance
@@ -78,7 +79,7 @@ Calling a provider by hand is fine. This spelling is the **old** OpenAI Python S
 ## The same ticket, as a chain
 
 ```python
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
 from pydantic import BaseModel, Field
@@ -89,7 +90,7 @@ Subject: {subject}
 Body: {body}
 Reply in one sentence."""
 )
-llm = FakeListLLM(responses=[
+llm = FakeListChatModel(responses=[
     "Clear the browser cache, then reload the dashboard."
 ])
 chain = prompt | llm | StrOutputParser()
@@ -124,7 +125,7 @@ Body: {body}
 {format_instructions}"""
 ).partial(format_instructions=parser.get_format_instructions())
 
-triage_llm = FakeListLLM(responses=[
+triage_llm = FakeListChatModel(responses=[
     '{"category":"bug","priority":4,"assign_to":"engineering",'
     '"escalate":true,"draft":"We see the export timeout; engineering is on it."}'
 ])
@@ -138,6 +139,21 @@ assert isinstance(result, dict)
 assert result["category"] == "bug"
 assert result["escalate"] is True
 ```
+
+### The shipping spelling: `with_structured_output`
+
+A parser reads the model's *text* and hopes it is JSON. Real chat models can do better: the provider is told the schema and returns arguments that match it, and LangChain hands you a validated **Pydantic instance**, not a dict. That is how you ship triage in LangChain 1.x. It needs a real provider, so this block is an integration demo, not run here:
+
+```python
+# Integration demo — needs a provider key (and `pip install langchain-anthropic` or similar).
+# from langchain.chat_models import init_chat_model
+# model = init_chat_model("anthropic:claude-sonnet-5")      # any tool-calling chat model
+# triage_model = model.with_structured_output(TicketTriage)
+# result = triage_model.invoke("Subject: Export timeout\nBody: ERR_TIMEOUT_500 on 150k rows.")
+# isinstance(result, TicketTriage)   # True — validated by the library, or it raises
+```
+
+The concept demo above and this version agree on the *contract* (`TicketTriage`); they differ in who enforces it. Test your code against the fake, then run a small golden set against the real model (week 5).
 
 !!! warning "Watch out — few-shot does not learn"
 
@@ -204,9 +220,11 @@ assert branch.invoke({"category": "bug"}) == "file a bug"
 
 Memory is a **session store**. Two `session_id`s must not leak.
 
-## 📚 Docs (this pin)
+## 📚 Docs (this pin: LangChain 1.x)
 
-- [LangChain Python 0.2](https://python.langchain.com/v0.2/docs/introduction/)
-- [LCEL](https://python.langchain.com/v0.2/docs/concepts/#langchain-expression-language-lcel)
-- [JSON parser](https://python.langchain.com/v0.2/docs/how_to/output_parser_json/)
+- [LangChain overview](https://docs.langchain.com/oss/python/langchain/overview)
+- [Models](https://docs.langchain.com/oss/python/langchain/models) — `init_chat_model`, chat vs text models
+- [Structured output](https://docs.langchain.com/oss/python/langchain/structured-output)
+- [Runnables (the `|` pipe) reference](https://reference.langchain.com/python/langchain_core/runnables/)
+- [Migrating from 0.x to 1.x](https://docs.langchain.com/oss/python/migrate/langchain-v1)
 - [Pydantic](https://docs.pydantic.dev/)

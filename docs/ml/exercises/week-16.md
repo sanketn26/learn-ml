@@ -18,7 +18,7 @@ A candidate directory, a promote gate, proof that train does not write prod, and
 
 ## Before you start
 
-- A 30-day horizon starves the train set of positives on this fixture — `train` defaults to a 90-day backtest and writes the horizon into `metrics.json`.
+- `train` backtests on the 30-day horizon (~545 training positives), writes the horizon and a bootstrap interval on precision@80 into `metrics.json`, and the gate refuses to compare against a prod model trained on a different horizon.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -34,7 +34,7 @@ python exercises/ml/week-16/starter.py
 Full pipeline (after you trust the starter):
 
 ```bash
-python -m pipelines.train --as-of 2024-06-01 --n 8000
+python -m pipelines.train --as-of 2024-06-01
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 head tonight.csv
@@ -57,7 +57,7 @@ head tonight.csv
     from pipelines.promote import gate
     from pipelines.train import train
 
-    meta = train("2024-06-01", Path("artifacts"), n=8000)
+    meta = train("2024-06-01", Path("artifacts"))
     candidate = Path("artifacts") / meta["model_version"]
     print("pr_auc", meta["pr_auc"], "dummy", meta["dummy_pr_auc"], "→", gate(candidate, None))
 
@@ -92,7 +92,7 @@ head tonight.csv
     prod = Path("artifacts") / "prod"
     before = fingerprint(prod)
     for _ in range(2):
-        train("2024-06-01", Path("artifacts"), n=8000)
+        train("2024-06-01", Path("artifacts"))
     print("after two trains:", before, "→", fingerprint(prod))
     try:
         promote(candidate, prod)
@@ -128,7 +128,7 @@ head tonight.csv
     ```bash
     set -euo pipefail
     python -m pytest tests/
-    python -m pipelines.train --as-of "<date>" --n 8000
+    python -m pipelines.train --as-of "<date>"
     python -m pipelines.promote --candidate "artifacts/<version>"
     python -m pipelines.score_batch --as-of "<date>" --artifact artifacts/prod --out tonight.csv
     ```

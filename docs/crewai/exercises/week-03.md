@@ -53,7 +53,7 @@ Two agents, two tasks, `context=[t1]` on the second, `process=Process.sequential
 
 ## 2. Hierarchical flag
 
-Build a second `Crew` with `process=Process.hierarchical` (manager LLM omitted unless you have a real provider — do not pass a LangChain fake).
+Build a second `Crew` with `process=Process.hierarchical` and a `manager_agent` whose goal names the manager's one job. CrewAI 1.x refuses to construct a hierarchical crew without a manager.
 
 **Checks:**
 
@@ -64,15 +64,19 @@ Build a second `Crew` with `process=Process.hierarchical` (manager LLM omitted u
     Hierarchical adds a role that isn't in your `agents` list. Who is it, and what does it need that the others don't?
 
 ??? tip "Hint 2 — the approach"
-    Same agents and tasks, `process=Process.hierarchical`, no `manager_llm`. Construction may succeed, but a run would need a manager model — note what the error or docs say. Your two sentences contrast "the last task's agent" with "the manager."
+    Same agents and tasks, `process=Process.hierarchical`, plus `manager_agent=Agent(..., allow_delegation=True)`. Keep the manager out of `agents=`. Try it once *without* a manager first and read the `ValidationError` — it fails at construction, before any tokens are spent. Your two sentences contrast "the last task's agent" with "the manager."
 
 ??? example "Hint 3 — most of the code"
     ```python
     try:
-        hier = Crew(agents=[researcher, writer], tasks=[t1, t2], process=Process.hierarchical)
-        print("constructed:", hier.process)
-    except Exception as exc:  # some versions validate the manager at construction
-        print("hierarchical needs a manager:", type(exc).__name__, exc)
+        Crew(agents=[researcher, writer], tasks=[t1, t2], process=Process.hierarchical)
+    except Exception as exc:  # CrewAI 1.x validates the manager at construction
+        print("no manager:", type(exc).__name__)
+
+    manager = Agent(role="release manager", goal="Assign each ticket; do not rewrite the output.",
+                    backstory="Owns the order of work, not the words.", allow_delegation=True, verbose=False)
+    hier = Crew(agents=[researcher, writer], tasks=[t1, t2], process=Process.hierarchical, manager_agent=manager)
+    assert hier.process == Process.hierarchical
     ```
 
 ## 3. No ballot

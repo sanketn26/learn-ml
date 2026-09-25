@@ -35,10 +35,13 @@ def score_batch(as_of: str, artifact_dir: Path, limit: int = 80) -> pd.DataFrame
     scores = art["pipeline"].predict_proba(frame[FEATURE_COLS])[:, 1]
     cut = art["metrics"]["threshold"]
     ranked = frame[["user_id"]].copy()
-    ranked["churn_score"] = scores.round(4)
+    ranked["churn_score"] = scores
     ranked["flag_for_cs"] = ranked["churn_score"] >= cut
     ranked["model_version"] = art["metrics"]["model_version"]
-    return ranked.sort_values("churn_score", ascending=False).head(limit)
+    # Rank on the raw score, ties broken by user_id: the same model and data
+    # always ship the same list. Round only for display.
+    ranked = ranked.sort_values(["churn_score", "user_id"], ascending=[False, True], kind="stable").head(limit)
+    return ranked.assign(churn_score=ranked["churn_score"].round(4))
 
 
 def main() -> None:

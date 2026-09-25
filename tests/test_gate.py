@@ -40,3 +40,13 @@ def test_promotes_first_model_that_beats_dummy(tmp_path: Path):
     ok, reason = gate(cand, None)
     assert ok
     assert reason == "ok"
+
+
+def test_refuses_to_compare_models_that_answer_different_questions(tmp_path: Path):
+    cand = tmp_path / "cand"
+    prod = tmp_path / "prod"
+    _metrics(cand, pr_auc=0.05, dummy_pr_auc=0.02, horizon_days=30)
+    _metrics(prod, pr_auc=0.13, dummy_pr_auc=0.05, horizon_days=90)
+    ok, reason = gate(cand, prod)
+    assert not ok
+    assert "different question" in reason

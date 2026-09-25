@@ -58,4 +58,15 @@ The final week of each track is the reference exercise for that introduction:
 They do not make an application production-ready. Production also requires threat modeling, authentication and authorization, secrets management, privacy review, provider limits, timeouts, budgets, observability, evaluation against real traffic, incident response, and an owner.
 
 !!! warning "Version-sensitive code"
-    Use Python 3.11 and a separate virtual environment for each framework track. The reference pins capture the API generation used by these lessons; they are not a recommendation to use old packages in a new production service. If you choose current releases, expect to translate some imports using the official migration guides.
+    Use Python 3.11 or newer and a separate virtual environment for each framework track (`make setup-frameworks`, `make setup-crewai`). The lessons are written against **LangChain 1.x / LangGraph 1.x** and **CrewAI 1.x** (exact pins in `requirements-frameworks.txt` and `requirements-crewai.txt`). If you meet 0.x code in the wild — `AgentExecutor`, `ConversationBufferMemory`, `langchain_community` fakes, `langgraph.pregel.RetryPolicy` — the [LangChain v1](https://docs.langchain.com/oss/python/migrate/langchain-v1) and [LangGraph v1](https://docs.langchain.com/oss/python/migrate/langgraph-v1) migration guides map it to the spellings used here.
+
+    | You will see (0.x) | Used here (1.x) |
+    |---|---|
+    | `langchain_community.llms.FakeListLLM` | `langchain_core.language_models.FakeListChatModel` |
+    | `AgentExecutor`, `create_react_agent` | `langchain.agents.create_agent` + middleware |
+    | `max_iterations` | `ModelCallLimitMiddleware(run_limit=...)` |
+    | `ConversationBufferMemory` | a history keyed by session / a checkpointer keyed by `thread_id` |
+    | `from langgraph.pregel import RetryPolicy`, `retry=` | `from langgraph.types import RetryPolicy`, `retry_policy=` |
+    | `interrupt_before` + `update_state` for approvals | `interrupt()` + `Command(resume=...)` |
+    | `MemorySaver` | `InMemorySaver` (same class) |
+    | CrewAI hierarchical crew with no manager | `manager_agent=` required at construction |

@@ -88,12 +88,12 @@ From the repo root:
 
 ```bash
 pytest tests/test_contract.py tests/test_gate.py tests/test_labels.py
-python -m pipelines.train --as-of 2024-06-01 --n 8000
+python -m pipelines.train --as-of 2024-06-01
 python -m pipelines.promote --candidate artifacts/20240601
 python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
 ```
 
-`train` backtests (Week 15): it learns on the snapshot `--horizon-days` before `--as-of` (default 90), labelled with what happened by `--as-of`, then scores the `--as-of` snapshot against the next 90 days. The product question is 30 days, but this fixture only has tens of 30-day cancels — try `--horizon-days 30` and watch it refuse to train on one class. The horizon and both snapshot dates go into `metrics.json` so you do not lie about which question you shipped.
+`train` backtests (Week 15): it learns on the snapshot `--horizon-days` before `--as-of` (default 30), labelled with what happened by `--as-of`, then scores the `--as-of` snapshot against the next 30 days — the question Priya asked. The horizon, both snapshot dates, and a bootstrap interval on precision@80 go into `metrics.json`, so you do not lie about which question you shipped or how sure you were.
 
 `train` never writes `prod`. A human or a green gate does. That is the whole difference between a script and a pipeline.
 
@@ -103,7 +103,7 @@ from pathlib import Path
 from pipelines.promote import gate
 from pipelines.train import train
 
-meta = train("2024-06-01", Path("artifacts"), n=8000)
+meta = train("2024-06-01", Path("artifacts"))
 print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"], meta["base_rate"])
 ok, reason = gate(Path("artifacts") / meta["model_version"], Path("artifacts") / "prod")
 print("promote?", ok, reason)
@@ -138,14 +138,55 @@ same artifact                    same artifact
 
 Week 15 was right: you may ship the batch list. You may not ship a public HTTP API until `contract.py` is imported by the handler, not copy-pasted into FastAPI.
 
+## Slice report before you promote
+
+The gate asks one question about the whole population: does the candidate beat the dummy? Before a human promotes, ask it again **per slice** — plan, tenure band, region, company size, whatever your business is organized by. One table:
+
+```python
+import numpy as np
+import pandas as pd
+from sklearn.metrics import roc_auc_score
+
+from pipelines.contract import load_artifact
+from pipelines.features import FEATURE_COLS
+from pipelines.split import snapshot_split
+
+art = load_artifact(Path("artifacts/prod"))
+_, _, test, y = snapshot_split("2024-06-01")
+test = test.assign(score=art["pipeline"].predict_proba(test[FEATURE_COLS])[:, 1], y=y.to_numpy())
+# Highest score first; user_id breaks ties so the list is the same on every run.
+order = np.lexsort((test["user_id"].to_numpy(), -test["score"].to_numpy()))
+test["on_list"] = False
+test.iloc[order[:80], test.columns.get_loc("on_list")] = True
+test["tenure_band"] = pd.cut(test["tenure_so_far"], [-1, 90, 365, 10_000], labels=["<90d", "90–365d", ">1y"])
+
+for col in ["plan_type", "tenure_band"]:
+    rows = []
+    for key, g in test.groupby(col, observed=True):
+        rows.append({
+            col: key,
+            "customers": len(g),
+            "churn rate": g["y"].mean(),
+            "share of list": g["on_list"].sum() / 80,
+            "AUC in slice": roc_auc_score(g["y"], g["score"]) if g["y"].nunique() > 1 else np.nan,
+        })
+    print(pd.DataFrame(rows).round(3).to_string(index=False), "\n")
+```
+
+On this model the list is about 85% `free` and over 90% customers younger than 90 days. No `pro` or `enterprise` account makes it, and inside `enterprise` the model barely ranks at all (AUC near 0.55). None of that is a bug — free, new accounts really do churn most. But it is a *product decision hiding inside a model*: Priya's team will spend every call on accounts worth $0 of MRR, and nobody will ever call a wobbling enterprise customer. That is Helen's call to make, with this table in front of her, not a default the model makes for her. (The [scenario bank](capstone-scenarios.md) shows briefs that make it explicitly.)
+
+!!! warning "Watch out — this table is also your fairness audit"
+
+    CloudWave's customers are companies, so the slices are plans and tenure. When your rows are *people*, the same table by age band, region, language, or disability status is the fairness check. Those attributes stay **out of `X`** (Week 8's PII fence) and **in the audit** — you cannot measure a gap on a column you refused to keep. Look for a slice where the model is much worse at ranking (AUC in slice), or where one group absorbs all the false alarms, and decide *before* promoting whether that is acceptable.
+
 ## Monitor is last week’s labels
 
 Drift histograms (Week 15) are a smoke alarm. The actual page:
 
 1. Take last week’s `tonight.csv`
 2. Now that 30 days have passed, join the horizon label
-3. Print precision@80 vs what `metrics.json` promised
-4. If it fell off a cliff, do **not** auto-promote tomorrow’s train
+3. Print precision@80 vs the **interval** `metrics.json` promised (`precision_at_80_ci95`)
+4. One week below the interval is a yellow light — 80 calls hold only a handful of churners (Week 11). Several weeks below it is a page: do **not** auto-promote tomorrow’s train
 
 That is a 15-line job. It is more valuable than a feature store.
 
@@ -158,19 +199,20 @@ from pipelines.labels import label_churn_in_horizon
 as_of = "2024-06-01"  # the night we scored
 tonight = pd.read_csv("tonight.csv")
 frame = build_features(as_of=as_of, n=None, at_risk_only=True)
-frame = frame.assign(y=label_churn_in_horizon(frame, as_of, horizon_days=90))  # same horizon as metrics.json
+frame = frame.assign(y=label_churn_in_horizon(frame, as_of, horizon_days=30))  # same horizon as metrics.json
 joined = tonight.merge(frame[["user_id", "y"]], on="user_id", how="left")
 knowable = joined.dropna(subset=["y"])
 print("n flagged", len(tonight), "with labels", len(knowable))
 print("precision@80", float(knowable["y"].mean()) if len(knowable) else "still censored")
-# compare to metrics.json["precision_at_80"] and metrics.json["base_rate"]
+# compare to metrics.json["precision_at_80_ci95"], not the point estimate
 ```
 
 `score_batch` already `validate`s every row it scores. You do not need a second loop.
 
 !!! warning "Watch out"
 
-    - Retraining daily on a ~0.1% 30-day event (or whatever `base_rate` you wrote in `metrics.json`) is how you overfit the last noisy week. Weekly is a default.
+    - Retraining daily on a ~2% 30-day event (whatever `base_rate` you wrote in `metrics.json`) is how you overfit the last noisy week. Weekly is a default.
+    - Once the list ships, called customers are not clean labels (Week 11). Log who was called; monitor precision on the randomized holdout, or a list that *works* will look like a list that broke.
     - Auto-promote without a gate is `main` pushing to prod on red CI.
     - Two copies of feature math is two products. You will not notice until a whale gets a 0.0.
 

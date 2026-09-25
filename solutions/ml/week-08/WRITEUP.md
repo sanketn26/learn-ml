@@ -23,7 +23,8 @@ Exercise: [docs/ml/exercises/week-08.md](../../../docs/ml/exercises/week-08.md)
 
     `label_churn_in_horizon` vs `is_churned` on the same `build_features`
     frame. Pass `observation_end=as_of + 10 days` to see NaNs. Train the
-    GBT on `label_eventual_churn` (the 30-day event is too rare here).
+    GBT on the 30-day horizon label (~530 positives — enough; `eventual`'s
+    window changes length with the snapshot date).
     `validate({..., "churn_date": "..."})` must raise. `calibration_curve`
     is a glance, not a certificate.
 
@@ -47,7 +48,6 @@ python solutions/ml/week-08/solution.py
 
 ```python
 y_h = label_churn_in_horizon(df, as_of)
-y_e = label_eventual_churn(df, as_of)
 ```
 
 ## Why this decision

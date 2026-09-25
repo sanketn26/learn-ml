@@ -24,7 +24,7 @@ crash drill (one credit, two billing calls).
 - **Triage order is the security model.** Injection first, write intent second, the
   allowlist third, retrieval last. The allowlist grants `get_churn_score` on "about to
   cancel", so a churn-first order hands a tool to g6's injection.
-- **The model lives in one node.** `docs` is the only place `FakeListLLM` runs; it never
+- **The model lives in one node.** `docs` is the only place `FakeListChatModel` runs; it never
   chooses a route. Swapping in a real provider changes phrasing, not behaviour.
 - **The key is thread + ticket + action.** Every part is identical when a resume reruns
   `issue_credit`. A timestamp or uuid would differ, and billing would pay again.

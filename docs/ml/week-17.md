@@ -35,10 +35,10 @@ You've seen this shape before. Week 2, Helen's dashboard doubled overnight from 
 Symptom: tonight’s list is all enterprise whales. Precision@80 looks amazing. Next month they do not churn. Finance says revenue is “up 2×” on the training table.
 
 ```
-subscriptions ~49k ──join──  raw feature_usage 160k
+subscriptions ~49k ──join──  raw feature_usage 270k
                      │
                      ▼
-                 160k rows, mrr copied
+                 270k rows, mrr copied
                  sum(mrr) is a lie
 ```
 

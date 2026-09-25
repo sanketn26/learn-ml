@@ -58,10 +58,21 @@ Each ML week has:
 ```
 exercises/ml/week-00/
   README.md     # the tasks
-  starter.py    # run this, fill in the TODOs
+  starter.py    # run this, fill in each task_N
 ```
 
 The same tasks are also on the site under **ML Fundamentals → Exercises**.
+
+Every `starter.py` checks itself. Each task is a function that starts as `raise NotImplementedError`; replace the body with your answer and rerun. The script prints one line per task:
+
+```
+  ✓  1. Plan report
+  ✗  2. Dataclass round-trip — mrr should be a float in the payload, not the CSV string
+  ·  3. MeanBaseline tests — not started
+  ✎  4. Foot-gun hunt — a write-up; no code to check
+```
+
+A check tests a *property* a correct answer must have — a join that did not fan out, a split with no future in it, a precision that beats the base rate — never one exact number, so your model is allowed to differ from ours. Read the check functions at the bottom of the file when you are stuck: they say what “right” means. Write-up tasks (✎) are for you and a reviewer.
 
 Work from the repo root so `lib/course_data.py` can find `data/`.
 

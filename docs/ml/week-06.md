@@ -208,4 +208,4 @@ When you can explain the week out loud, do the [exercises](exercises/week-06.md)
 
 ## 🔗 Next week
 
-The contract is signed: one function builds every feature, in one place. Priya has 80 calling slots this week and 44,000 customers to rank — [Week 7](week-07.md) turns your features into a score she can act on.
+The contract is signed: one function builds every feature, in one place. Priya has 80 calling slots this week and about 28,000 active customers to rank — [Week 7](week-07.md) turns your features into a score she can act on.

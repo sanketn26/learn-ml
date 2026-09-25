@@ -7,7 +7,7 @@ description: Implement keyword-overlap retrieval for a LangChain RAG pipeline an
 Do these after reading [Week 4](../week-04.md). Use **keyword overlap** retrieval. Do not treat random hash vectors as semantic search. No `llm.predict(context=..., question=...)`.
 
 ```python
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 ```
@@ -43,7 +43,7 @@ Chunk the three CloudWave runbooks from the lesson (API keys, password reset, pl
 
 ??? example "Hint 3 — most of the code"
     ```python
-    from langchain_community.llms import FakeListLLM
+    from langchain_core.language_models import FakeListChatModel
     from langchain_core.documents import Document
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import ChatPromptTemplate
@@ -100,7 +100,7 @@ Chunk the three CloudWave runbooks from the lesson (API keys, password reset, pl
         "Answer using ONLY this CloudWave documentation. If it is not there, say you don't know.\n\n"
         "DOCUMENTATION:\n{context}\n\nQUESTION: {question}\n\nANSWER:"
     )
-    llm = FakeListLLM(responses=["Settings > API Keys, then Generate."] * 10)
+    llm = FakeListChatModel(responses=["Settings > API Keys, then Generate."] * 10)
     chain = rag_prompt | llm | StrOutputParser()
     MODEL_CALLS = {"n": 0}
 

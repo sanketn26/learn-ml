@@ -1,13 +1,13 @@
 ---
-description: Build a LangChain prompt-to-parser chain with FakeListLLM, add a retry-then-fallback loop, and route output with RunnableBranch.
+description: Build a LangChain prompt-to-parser chain with FakeListChatModel, add a retry-then-fallback loop, and route output with RunnableBranch.
 ---
 
 # Exercises — Week 1 — Chains
 
-Do these after reading [Week 1](../week-01.md). Concept demo: `FakeListLLM`, no API key.
+Do these after reading [Week 1](../week-01.md). Concept demo: `FakeListChatModel`, no API key.
 
 ```python
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser, StrOutputParser
 from langchain_core.runnables import RunnableBranch, RunnableLambda
@@ -20,17 +20,17 @@ Will `JsonOutputParser` return a Pydantic instance or a `dict`? After three forc
 
 ## Runnable command
 
-Copy the lesson snippet + your TODOs into a local `.py` file. No API key (`FakeListLLM`).
+Copy the lesson snippet + your TODOs into a local `.py` file. No API key (`FakeListChatModel`).
 
 ```bash
-python -c "from langchain_community.llms import FakeListLLM; print('ok', FakeListLLM(responses=['{}']))"
+python -c "from langchain_core.language_models import FakeListChatModel; print('ok', FakeListChatModel(responses=['{}']))"
 ```
 
 Each task has three hints, closed by default. Open only as far as you need.
 
 ## 1. Five-field triage dict
 
-Define a Pydantic model with **five** fields (`category`, `priority`, `assign_to`, `escalate`, `draft`). Build `prompt | FakeListLLM | JsonOutputParser`. Invoke three CloudWave tickets (bug, billing, question).
+Define a Pydantic model with **five** fields (`category`, `priority`, `assign_to`, `escalate`, `draft`). Build `prompt | FakeListChatModel | JsonOutputParser`. Invoke three CloudWave tickets (bug, billing, question).
 
 **Checks:**
 
@@ -42,11 +42,11 @@ Define a Pydantic model with **five** fields (`category`, `priority`, `assign_to
     The Pydantic model is a *schema you hand the prompt*, not necessarily the type you get back. Check what `JsonOutputParser` actually returns before you write the asserts.
 
 ??? tip "Hint 2 — the approach"
-    `JsonOutputParser(pydantic_object=TicketTriage)` gives you `get_format_instructions()` — `.partial()` it into the prompt. Script `FakeListLLM(responses=[...])` with three JSON strings, one per ticket; it answers them in order.
+    `JsonOutputParser(pydantic_object=TicketTriage)` gives you `get_format_instructions()` — `.partial()` it into the prompt. Script `FakeListChatModel(responses=[...])` with three JSON strings, one per ticket; it answers them in order.
 
 ??? example "Hint 3 — most of the code"
     ```python
-    from langchain_community.llms import FakeListLLM
+    from langchain_core.language_models import FakeListChatModel
     from langchain_core.output_parsers import JsonOutputParser
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.runnables import RunnableBranch, RunnableLambda
@@ -65,7 +65,7 @@ Define a Pydantic model with **five** fields (`category`, `priority`, `assign_to
     prompt = ChatPromptTemplate.from_template(
         "Classify this CloudWave ticket as JSON.\nSubject: {subject}\nBody: {body}\n{format_instructions}"
     ).partial(format_instructions=parser.get_format_instructions())
-    llm = FakeListLLM(responses=[
+    llm = FakeListChatModel(responses=[
         '{"category":"bug","priority":4,"assign_to":"engineering","escalate":true,"draft":"Engineering is on it."}',
         '{"category":"billing","priority":3,"assign_to":"billing","escalate":false,"draft":"Billing will reply."}',
         '{"category":"question","priority":1,"assign_to":"support","escalate":false,"draft":"See the docs."}',
@@ -118,7 +118,7 @@ Wrap `chain.invoke` in a loop: max 3 attempts, then return `{"category": "unknow
         return invoke
 
 
-    ok_llm = FakeListLLM(responses=['{"category":"bug","priority":2,"assign_to":"engineering","escalate":false,"draft":"On it."}'])
+    ok_llm = FakeListChatModel(responses=['{"category":"bug","priority":2,"assign_to":"engineering","escalate":false,"draft":"On it."}'])
     ok_chain = prompt | ok_llm | parser
     print(invoke_with_fallback(flaky(2, ok_chain.invoke), {"subject": "x", "body": "y"}))
     print(invoke_with_fallback(flaky(3, ok_chain.invoke), {"subject": "x", "body": "y"}))

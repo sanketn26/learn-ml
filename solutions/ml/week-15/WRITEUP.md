@@ -21,7 +21,7 @@ Exercise: [docs/ml/exercises/week-15.md](../../../docs/ml/exercises/week-15.md)
 
 ??? tip "Hint 2"
 
-    `snapshot_split(as_of, horizon_days=90)` from `pipelines.split`. Train
+    `snapshot_split(as_of, horizon_days=30)` from `pipelines.split`. Train
     the GBT with `make_preprocessor()` on FEATURE_COLS, and compare it with a
     shuffled split and a `signup_date` cut of one snapshot. Time 80 `predict()` calls with
     `time.perf_counter`. Threshold = the 80th-highest test score (same idea
@@ -51,7 +51,7 @@ python solutions/ml/week-15/solution.py
 ```python
 from pipelines.contract import predict, validate
 from pipelines.split import snapshot_split
-train, y_train, test, y_test = snapshot_split(as_of, horizon_days=90)
+train, y_train, test, y_test = snapshot_split(as_of, horizon_days=30)
 ```
 
 ## Why this decision

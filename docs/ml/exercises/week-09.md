@@ -30,7 +30,7 @@ python exercises/ml/week-09/starter.py
     Usage has a long right tail. A model that minimizes squared error on raw usage spends most of its effort on a handful of whales. What would you do to a skewed column in Week 6?
 
 ??? tip "Hint 2 — the approach"
-    Reuse the lesson's time split and `prep`. Fit one forest on `y_train` and one on `np.log1p(y_train)`; `np.expm1` the second forest's predictions. Compare both with `mean_absolute_error` on the *original* scale — log-space MAE is not a number a PM can read.
+    Reuse the lesson's backtest (train on last month's snapshot, test on this month's) and its next-30-day usage target. Fit one forest on `y_train` and one on `np.log1p(y_train)`; `np.expm1` the second forest's predictions. Compare both with `mean_absolute_error` on the *original* scale — log-space MAE is not a number a PM can read.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -42,14 +42,26 @@ python exercises/ml/week-09/starter.py
     from sklearn.pipeline import Pipeline
     from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+    import pandas as pd
+
+    from lib.course_data import find_data_dir
     from pipelines.features import AS_OF_DEFAULT, build_features
 
-    df = build_features(as_of=AS_OF_DEFAULT, n=8000, at_risk_only=True)
-    num = ["mrr", "tenure_so_far", "features_adopted", "total_events", "n_support"]
-    cut = df["signup_date"].quantile(0.80)
-    train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
+    usage = pd.read_csv(find_data_dir() / "feature_usage.csv",
+                        usecols=["user_id", "usage_count", "date"], parse_dates=["date"])
+
+
+    def next_30d_usage(frame, as_of):
+        window = usage[(usage["date"] > as_of) & (usage["date"] <= as_of + pd.Timedelta(days=30))]
+        return frame["user_id"].map(window.groupby("user_id")["usage_count"].sum()).fillna(0)
+
+
+    num = ["mrr", "tenure_so_far", "log_usage", "features_adopted", "total_events", "n_support"]
+    train_as_of = AS_OF_DEFAULT - pd.Timedelta(days=30)          # the lesson's backtest
+    train = build_features(as_of=train_as_of, n=8000)
+    test = build_features(as_of=AS_OF_DEFAULT, n=8000, random_state=7)
     X_train, X_test = train[num + ["plan_type"]], test[num + ["plan_type"]]
-    y_train, y_test = train["total_usage"], test["total_usage"]
+    y_train, y_test = next_30d_usage(train, train_as_of), next_30d_usage(test, AS_OF_DEFAULT)
 
 
     def forest() -> Pipeline:

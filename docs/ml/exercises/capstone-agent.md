@@ -47,11 +47,11 @@ Work in `starter.py`. Run from the repo root:
     import operator
     from typing import Annotated, TypedDict
 
-    from langchain_community.llms import FakeListLLM
+    from langchain_core.language_models import FakeListChatModel
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.runnables import RunnableConfig
-    from langgraph.checkpoint.memory import MemorySaver
+    from langgraph.checkpoint.memory import InMemorySaver
     from langgraph.graph import END, START, StateGraph
 
     from capstone_agent.golden import CW_1847_CUSTOMER, SCORES, evaluate
@@ -94,7 +94,7 @@ Work in `starter.py`. Run from the repo root:
         print(triage({"text": text})["route"], "←", text)
     ```
 
-**2. Answer, or say you don't know.** Write `docs` (retrieve, then a `prompt | FakeListLLM | StrOutputParser` chain, with `doc_ids` from retrieval) and `idk`, plus the read-only `score` and the `blocked` reply.
+**2. Answer, or say you don't know.** Write `docs` (retrieve, then a `prompt | FakeListChatModel | StrOutputParser` chain, with `doc_ids` from retrieval) and `idk`, plus the read-only `score` and the `blocked` reply.
 
 ??? tip "Hint 1 — a nudge"
     Where do `doc_ids` come from — the model's answer, or the retriever? And on the CW-1847 export question, what would a model do if you called it anyway?
@@ -107,7 +107,7 @@ Work in `starter.py`. Run from the repo root:
     def make_nodes(scores: dict):
         chain = (
             ChatPromptTemplate.from_template("Answer ONLY from these runbooks, or say you don't know.\n{context}\n\nQ: {question}")
-            | FakeListLLM(responses=["Per the runbook: Settings > API Keys, then Generate."])
+            | FakeListChatModel(responses=["Per the runbook: Settings > API Keys, then Generate."])
             | StrOutputParser()
         )
 
@@ -168,7 +168,7 @@ Work in `starter.py`. Run from the repo root:
         g.add_edge("draft_credit", "issue_credit")
         for terminal in ("docs", "idk", "blocked", "score", "issue_credit"):
             g.add_edge(terminal, END)
-        return g.compile(checkpointer=MemorySaver(), interrupt_before=["issue_credit"])
+        return g.compile(checkpointer=InMemorySaver(), interrupt_before=["issue_credit"])
 
 
     for row in evaluate(build_agent):

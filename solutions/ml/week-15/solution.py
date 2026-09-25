@@ -29,7 +29,7 @@ from pipelines.labels import drop_unlabelled, label_churn_in_horizon
 from pipelines.split import snapshot_split
 
 BUDGET = 80
-HORIZON = 90
+HORIZON = 30
 VERSION = "week15"
 
 
@@ -52,7 +52,7 @@ def main() -> None:
         auc = roc_auc_score(y_te, pipe.predict_proba(x_te[FEATURE_COLS])[:, 1])
         return pipe, float(auc)
 
-    print("1. Three time walls, one GBT, 90-day horizon label")
+    print("1. Three time walls, one GBT, 30-day horizon label")
     snap = build_features(as_of=AS_OF_DEFAULT, n=None)
     snap, y = drop_unlabelled(snap, label_churn_in_horizon(snap, AS_OF_DEFAULT, horizon_days=HORIZON))
     print(f"  snapshot rows={len(snap):,}  positives={int(y.sum())}  rate={float(y.mean()):.4f}")
@@ -124,10 +124,10 @@ def main() -> None:
     for col in ("mrr", "log_usage", "tenure_so_far"):
         a, b = float(train_t[col].mean()), float(test_t[col].mean())
         print(f"  {col:16s}  train_mean={a:.3f}  today_mean={b:.3f}  delta={b - a:+.3f}")
-    print("  one sentence: tenure_so_far moves ~90 days by construction; mrr and usage moving is the world moving.")
+    print("  one sentence: tenure_so_far moves ~30 days by construction; mrr and usage moving is the world moving.")
 
     print("\n5. One-page write-up")
-    print("  Time wall: a 90-day snapshot backtest. Shuffled AUC is the vanity number; a signup cut is a tenure cut.")
+    print("  Time wall: a 30-day snapshot backtest. Shuffled AUC is the vanity number; a signup cut is a tenure cut.")
     print("  Beat a dummy (0.5 AUC / base-rate AP) or do not ship. Capacity=80, not threshold 0.5.")
     print("  Drift risk: new-plan or pricing changes shift mrr. Refused: 'this score is a probability' without calibration.")
     print(f"  artifact: {dest}")

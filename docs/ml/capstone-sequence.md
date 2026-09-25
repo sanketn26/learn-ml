@@ -48,20 +48,20 @@ from capstone_sequence.data import EVENT_TYPES, NONE, bakeoff_data
 
 train, test = bakeoff_data()
 events_per_row = test.mask.sum(axis=1)
-print(f"test: {len(test.y):,} customers, {int(test.y.sum())} churn within 90 days")
+print(f"test: {len(test.y):,} customers, {int(test.y.sum())} churn within 30 days")
 print(f"events per customer: median {int(sorted(events_per_row)[len(events_per_row) // 2])}, "
       f"max {events_per_row.max()}, no events at all {(test.tokens[:, -1] == NONE).sum():,}")
 print("latest event, first 3 customers:", [EVENT_TYPES[t - 1] if t != NONE else "NONE" for t in test.tokens[:3, -1]])
 ```
 
-Three events is not much of a sequence. Hold that thought.
+A median of five events is not much of a sequence. Hold that thought.
 
 ## The data, and the two rules that keep it honest
 
-`capstone_sequence.data.bakeoff_data` builds on the same backtest as the job path: train on the snapshot 90 days before `as_of`, test on the full `as_of` population — never downsampled. Two representation rules matter:
+`capstone_sequence.data.bakeoff_data` builds on the same backtest as the job path: train on the snapshot 30 days before `as_of`, test on the full `as_of` population — never downsampled. Two representation rules matter:
 
 - **Left padding.** The latest event is always at position `-1`, so a GRU reads its answer there without packing, and a CNN or transformer ignores padding through `mask`.
-- **Silent customers get a `NONE` token.** 1,534 test customers have no events before `as_of`. An all-padding row makes an attention mask fully blank and produces NaNs — and "no events" is information anyway.
+- **Silent customers get a `NONE` token.** 205 test customers have no events before `as_of`. An all-padding row makes an attention mask fully blank and produces NaNs — and "no events" is information anyway.
 
 ## Three encoders, one contract
 
@@ -75,7 +75,7 @@ Each encoder is `(tokens, recency, mask, static) -> logit`, built from a shared 
 
 ## Read the gap against the spread
 
-`bakeoff` trains every model over several seeds with a class-weighted loss (positives are 0.3% of training rows) and reports mean and standard deviation of AUC and PR-AUC, lift over the dummy, and hits in the top 80. Two readings matter:
+`bakeoff` trains every model over several seeds with a class-weighted loss (positives are ~2% of customers; ~7% of training rows once negatives are downsampled to 8,000) and reports mean and standard deviation of AUC and PR-AUC, lift over the dummy, and hits in the top 80. Two readings matter:
 
 1. **Encoder vs control** — what the sequence added.
 2. **Best model vs GBT** — whether any of this is worth changing what ships.
@@ -84,7 +84,7 @@ Then one experiment for *why*: scramble each test customer's real events into a 
 
 !!! warning "Watch out — an event name is not a label"
 
-    The event log has a `cancel` type. It's tempting to treat it as a leak, or as the strongest feature. Check it against the billing ledger: 866 of the 926 `cancel` events belong to customers who never churned, and at-risk customers with one churn at about the same rate as everyone else. Event names are what an instrumentation engineer typed. `churn_date` in `subscriptions.csv` is what finance booked.
+    The event log has a `cancel` type, logged on the day a customer churns. It looks like the perfect feature. Check where it can appear: a customer at risk on `as_of` has, by definition, not churned yet — so no at-risk sequence ever contains `cancel`. If one does, your `as_of` cut is broken and the model is reading the answer key. The label comes from `churn_date` in `subscriptions.csv`, what finance booked; an event name is what an instrumentation engineer typed, and it only means what the cut lets it mean.
 
 !!! warning "Watch out — a gap smaller than the seed spread is not a result"
 
@@ -92,17 +92,17 @@ Then one experiment for *why*: scramble each test customer's real events into a 
 
 ??? success "The reference run — open after your own bake-off"
 
-    Three seeds, 20 epochs, 8,000 training rows, the full 43,947-row test set:
+    Three seeds, 20 epochs, 8,000 training rows, the full 27,935-row test set, 30-day label (base rate 1.9%):
 
     | Model | AUC (± sd) | PR-AUC (± sd) | Lift over dummy |
     |---|---|---|---|
-    | GBT (week 13) | 0.880 | 0.017 | 6.9× |
-    | MLP, static only | 0.889 ± 0.002 | 0.022 ± 0.001 | 8.9× |
-    | CNN + static | 0.826 ± 0.013 | 0.014 ± 0.001 | 5.4× |
-    | GRU + static | 0.855 ± 0.007 | 0.017 ± 0.001 | 6.7× |
-    | Transformer + static | 0.858 ± 0.010 | 0.016 ± 0.002 | 6.4× |
+    | GBT (week 13) | 0.744 | 0.051 | 2.7× |
+    | MLP, static only | 0.753 ± 0.002 | 0.056 ± 0.002 | 2.9× |
+    | CNN + static | 0.756 ± 0.004 | 0.054 ± 0.004 | 2.8× |
+    | GRU + static | 0.756 ± 0.001 | 0.052 ± 0.000 | 2.7× |
+    | Transformer + static | 0.748 ± 0.006 | 0.052 ± 0.001 | 2.7× |
 
-    Every encoder does **worse** than the same head with no sequence. Scrambling event order moves the GRU's and transformer's AUC by at most 0.005 — less than half their seed spread. With a median of three events whose types barely move the churn rate, the sequence gives the networks more to overfit, not more to learn. The row wins; which model reads it matters much less (the MLP edges the GBT here, well within what a different horizon or sample could reverse). Marcus's transformer doesn't ship, and it doesn't need a GPU to find that out.
+    No encoder beats the same head with no sequence by more than its spread: the CNN and GRU edge the control on AUC by 0.003, and trail it on PR-AUC. Scrambling event order costs the GRU about 0.004 AUC — more than its own seed spread, so it *is* reading order a little — and costs the transformer nothing. The order the GRU found is real and worth nothing: the churn signal in this file is *how much* a customer is still doing, which the static row already carries, not the sequence it happened in. The sequence gives the networks more to overfit, not more to learn. The row wins; which model reads it matters much less (the MLP edges the GBT here, well within what a different horizon or sample could reverse). Marcus's transformer doesn't ship, and it doesn't need a GPU to find that out.
 
 ## Ship / don't ship
 

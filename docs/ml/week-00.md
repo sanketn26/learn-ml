@@ -4,7 +4,7 @@ description: Build strong Python fundamentals for ML: type hints, dataclasses, a
 
 # Week 0 — Strong Python for AI Engineers
 
-Monday, 9 a.m., first day. Ana pings you on Slack: "welcome — `feature_usage.csv` is 160,000 rows, don't loop it in plain Python or your laptop fan will rat you out." You have not opened the file yet. You are about to.
+Monday, 9 a.m., first day. Ana pings you on Slack: "welcome — `feature_usage.csv` is 270,000 rows, don't loop it in plain Python or your laptop fan will rat you out." You have not opened the file yet. You are about to.
 
 ??? note "Course details"
 
@@ -168,7 +168,7 @@ print("as dict (API body):", row.__dict__)
 | Immutable row | `tuple` |
 | “Map this list” | `[f(x) for x in xs if pred(x)]` |
 
-Comprehensions are Python’s `map` + `filter`. When the list is 160,000 numbers and the work is math, **stop** and use NumPy (Week 1).
+Comprehensions are Python’s `map` + `filter`. When the list is 270,000 numbers and the work is math, **stop** and use NumPy (Week 1).
 
 ```python
 plans = ["free", "starter", "pro", "free", "enterprise"]
@@ -303,4 +303,4 @@ Try one [self-check](self-checks.md#week-0-strong-python) (Predict / Diagnose / 
 
 ## 🔗 Next week
 
-Ana's warning about the 160,000-row file was not small talk. [Week 1](week-01.md) makes it precise: stop looping, start vectorizing — same numbers, one typed column the CPU chews in a single gulp.
+Ana's warning about the 270,000-row file was not small talk. [Week 1](week-01.md) makes it precise: stop looping, start vectorizing — same numbers, one typed column the CPU chews in a single gulp.

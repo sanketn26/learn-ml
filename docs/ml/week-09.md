@@ -4,7 +4,7 @@ description: Predict continuous values with linear regression and random forests
 
 # Week 9 — Regression: Predict a Number, Not a Category
 
-Helen asks a capacity question: how much of a customer's usage can you already explain from the billing and event counts you have on hand right now? Not a forecast — this week's target is the same-snapshot `total_usage` column, predicted from the other columns in this week's Customer 360. That is regression: a number out, not a bucket.
+Helen asks a capacity question: how much will each customer use the product next month? Infra wants it for sizing, CS wants it to spot accounts about to go quiet. You have Monday's Customer 360 and nothing after it. That is regression: a number out, not a bucket.
 
 ??? note "Course details"
 
@@ -36,6 +36,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
+from lib.course_data import find_data_dir
 from pipelines.features import AS_OF_DEFAULT, build_features
 ```
 
@@ -72,27 +73,32 @@ A trumpet is not a stats curiosity. It means your error is largest on the accoun
 
 A common tutorial target is `lifetime_value = mrr * tenure_months` while also handing the model `mrr` and `tenure`. That is asking it to multiply two inputs. R² will look magical. You will have learned nothing.
 
-**Honest target:** `total_usage` from product data, using billing + event *counts* that are not the usage column itself. Still imperfect, but the model cannot just multiply two features you gave it.
+**Honest target:** how much each customer uses the product in the **30 days after `as_of`** — a number that does not exist yet on Monday morning. Features stop at `as_of` (Week 6); the label starts after it (Week 8). Past usage is a *legal* feature here, because the thing you are predicting is future usage, not a column you already hold.
 
 !!! warning "Watch out — target leakage"
 
     If you can compute the label from the features with a calculator, you are not doing machine learning. You are doing QA on a formula.
 
 ```python
-df = build_features(as_of=AS_OF_DEFAULT, n=8000, at_risk_only=True)
-# Predict product usage from billing + event counts. Do not hand it log_usage —
-# that is log1p(total_usage), a calculator, not a model.
-features_num = ["mrr", "tenure_so_far", "features_adopted", "total_events", "n_support"]
+usage = pd.read_csv(find_data_dir() / "feature_usage.csv",
+                    usecols=["user_id", "usage_count", "date"], parse_dates=["date"])
+
+def next_30d_usage(frame, as_of):
+    """The label: usage in (as_of, as_of + 30d]. It starts where the features stop."""
+    window = usage[(usage["date"] > as_of) & (usage["date"] <= as_of + pd.Timedelta(days=30))]
+    return frame["user_id"].map(window.groupby("user_id")["usage_count"].sum()).fillna(0)
+
+features_num = ["mrr", "tenure_so_far", "log_usage", "features_adopted", "total_events", "n_support"]
 features_cat = ["plan_type"]
-target = "total_usage"
 
-work = df[features_num + features_cat + [target, "signup_date"]].dropna()
-X = work[features_num + features_cat]
-y = work[target]
-
-cut = work["signup_date"].quantile(0.80)
-X_train, y_train = X[work["signup_date"] <= cut], y[work["signup_date"] <= cut]
-X_test, y_test = X[work["signup_date"] > cut], y[work["signup_date"] > cut]
+# Backtest, not a signup_date cut (Week 15): learn on last month's snapshot,
+# whose next-30-day usage is already known, then predict this month's.
+train_as_of = AS_OF_DEFAULT - pd.Timedelta(days=30)
+train = build_features(as_of=train_as_of, n=8000)
+test = build_features(as_of=AS_OF_DEFAULT, n=8000, random_state=7)
+X_train, y_train = train[features_num + features_cat], next_30d_usage(train, train_as_of)
+X_test, y_test = test[features_num + features_cat], next_30d_usage(test, AS_OF_DEFAULT)
+print(f"next-30-day usage: median {y_test.median():.0f}, mean {y_test.mean():.1f}, max {y_test.max():.0f}")
 
 prep = ColumnTransformer([
     ("num", StandardScaler(), features_num),

@@ -48,7 +48,7 @@ GROUP BY plan                  subs.groupby("plan_type").agg(...)
 COUNT(*)                       .size()
 ```
 
-The habit that saves careers: **aggregate the many-side before you join.** Joining a ~49k customer table to 160k usage rows is the same bug as a SQL join that blows up a report and then you `SUM(mrr)` on the exploded grain.
+The habit that saves careers: **aggregate the many-side before you join.** Joining a ~49k customer table to 270k usage rows is the same bug as a SQL join that blows up a report and then you `SUM(mrr)` on the exploded grain.
 
 ### Picture the grain
 
@@ -194,7 +194,7 @@ If you join subscriptions to **raw** feature_usage (many rows per user), you dup
 
 !!! warning "Watch out — fan-out"
 
-    A ~49k-row customer table joined to 160,000 usage rows becomes ~160,000 rows, and `mrr.sum()` will lie by a factor of ~3. Always aggregate the many-side first. Always print `len(left)` vs `len(result)`.
+    A ~49k-row customer table joined to 270,000 usage rows becomes ~286,000 rows, and `mrr.sum()` will lie by a factor of ~13 — heavy users have the most usage rows *and* tend to pay more, so the biggest accounts get copied the most. Always aggregate the many-side first. Always print `len(left)` vs `len(result)`.
 
 ```python
 exploded = subs.merge(usage[["user_id", "usage_count"]], on="user_id", how="left")
@@ -241,7 +241,7 @@ When you can explain the week out loud, do the [exercises](exercises/week-02.md)
 
 ## 🤔 Reflection
 
-1. Your exploded MRR was 3× too big. What code review comment do you leave?
+1. Your exploded MRR was ~13× too big. What code review comment do you leave?
 2. Marcus says “customers who write feedback churn less.” Is that product magic, or selection (happy people write reviews)?
 3. When would you *want* an inner join from subscriptions to events?
 

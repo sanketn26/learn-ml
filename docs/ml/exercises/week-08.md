@@ -12,7 +12,7 @@ Horizon vs lifetime rates, a censoring count, PR-AUC vs ROC-AUC vs precision@80,
 
 ## Predict before you run
 
-1. About 6.4% ever cancel. Horizon-30 has tens of positives. If you raise the threshold 0.5 → 0.8, which way do precision and recall move, and why is the swing sharper than on a 50/50 label?
+1. About 9% of today's customers ever cancel; about 2% cancel in the next 30 days. If you raise the threshold 0.5 → 0.8, which way do precision and recall move, and why is the swing sharper than on a 50/50 label?
 2. Which rate is legal at score time?
 3. Would you put ROC-AUC or PR-AUC in the Monday email?
 
@@ -32,7 +32,7 @@ python exercises/ml/week-08/starter.py
 pytest tests/test_labels.py tests/test_contract.py
 ```
 
-**0. Predict first.** About 6.4% of customers ever cancel (lifetime). Before running anything: a model trained on the horizon-30 label instead sees roughly 48 positives in the whole file. If you raise the classification threshold from 0.5 to 0.8 on that model, which direction do precision and recall move, and why does a rare positive class make that swing sharper than it would on a 50/50 label? Write your guess, then check it against exercise 3.
+**0. Predict first.** About 9% of the customers active on 2024-06-01 ever cancel (lifetime). Before running anything: a model trained on the horizon-30 label instead sees roughly 530 positives among ~28,000 rows. If you raise the classification threshold from 0.5 to 0.8 on that model, which direction do precision and recall move, and why does a rare positive class make that swing sharper than it would on a 50/50 label? Write your guess, then check it against exercise 3.
 
 **1. Two rates.** On `as_of=2024-06-01`, print horizon-30 churn rate vs lifetime `is_churned` on the same at-risk people. Which one is legal at score time?
 
@@ -77,17 +77,17 @@ pytest tests/test_labels.py tests/test_contract.py
     print(f"NaN labels={int(short.isna().sum()):,} of {len(short):,}   observed 1s={int((short == 1).sum())}")
     ```
 
-**3. PR vs ROC.** Train the small GBT from the lesson on **eventual** labels (`label_eventual_churn`). Print ROC-AUC, PR-AUC, dummy PR-AUC, precision@80. Horizon-30 has ~48 positives in the whole file — precision@80 there is a lottery. Which number would you put in the Monday email?
+**3. PR vs ROC.** Train the small GBT from the lesson on the **30-day** label (`label_churn_in_horizon`). Print ROC-AUC, PR-AUC, dummy PR-AUC, precision@80. With ~2% positives, 80 calls hold only a handful of churners — so precision@80 moves a lot between runs. Which number would you put in the Monday email, and what would you write next to it?
 
 ??? tip "Hint 1 — a nudge"
     ROC-AUC asks "are churners ranked above non-churners on average?" Priya's question is "of my 80 calls, how many land?" Which metric is closer to hers, and what does a dummy score on it?
 
 ??? tip "Hint 2 — the approach"
-    `label_eventual_churn` → `drop_unlabelled` → stratified split → `Pipeline([make_preprocessor(), GradientBoostingClassifier(n_estimators=40, max_depth=2)])`. The dummy PR-AUC is `average_precision_score` on a constant score (the train base rate). Precision@80 is `y_test` at `np.argsort(-proba)[:80]`.
+    `label_churn_in_horizon` → `drop_unlabelled` → stratified split → `Pipeline([make_preprocessor(), GradientBoostingClassifier(n_estimators=40, max_depth=2)])`. The dummy PR-AUC is `average_precision_score` on a constant score (the train base rate). Precision@80 is `y_test` at `np.argsort(-proba)[:80]`.
 
 ??? example "Hint 3 — most of the code"
     ```python
-    frame, y = drop_unlabelled(df, label_eventual_churn(df, as_of))
+    frame, y = drop_unlabelled(df, label_churn_in_horizon(df, as_of))
     X_train, X_test, y_train, y_test = train_test_split(
         frame[FEATURE_COLS], y, test_size=0.2, random_state=42, stratify=y
     )

@@ -42,7 +42,7 @@ def test_an_unkeyed_write_pays_twice():
 
 def _solution():
     pytest.importorskip("langgraph")
-    pytest.importorskip("langchain_community")
+    pytest.importorskip("langchain_core")
     path = ROOT / "solutions" / "ml" / "capstone-agent" / "solution.py"
     spec = importlib.util.spec_from_file_location("capstone_agent_solution", path)
     module = importlib.util.module_from_spec(spec)

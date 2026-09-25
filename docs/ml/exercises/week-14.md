@@ -47,7 +47,7 @@ python exercises/ml/week-14/starter.py
     from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, make_preprocessor
     from pipelines.split import snapshot_split
 
-    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=90)
+    train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=30)
     prep = make_preprocessor()
     X_train_t = prep.fit_transform(train[FEATURE_COLS])
     X_test_t = prep.transform(test[FEATURE_COLS])

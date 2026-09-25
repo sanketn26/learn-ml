@@ -42,11 +42,11 @@ def label_eventual_churn(
     frame: pd.DataFrame,
     as_of: str | pd.Timestamp | None = None,
 ) -> pd.Series:
-    """1 if they cancel after as_of. Already-churned rows are NaN.
+    """1 if they cancel any time after as_of. Already-churned rows are NaN.
 
-    The 30-day horizon is the product question. This fixture only has tens of
-    those events. Eventual-after-as_of is the question the file can actually
-    supervise. Say so in metrics.json.
+    Not a training label: its window stretches to the end of the file, so
+    early snapshots get a longer window than late ones. Week 8 prints it next
+    to the 30-day horizon label to show how much the definition moves the rate.
     """
     as_of = pd.Timestamp(as_of or AS_OF_DEFAULT)
     churn = pd.to_datetime(frame["churn_date"], errors="coerce")

@@ -20,6 +20,7 @@ This is still a **training script**. We will be explicit about what it is not: n
 - Wire `build_features` → time-based split → GBT → a versioned artifact
 - Call `pipelines.contract.validate` / `predict` — extra keys and NaN fail loud
 - Pick a threshold from **CS capacity**, not from 0.5
+- Attach **reason codes** to every listed customer — and read them before you ship
 - Draw a crude drift picture (`tenure_so_far`, this month vs train)
 - Time 80 `predict()` calls so you have a latency number, not a vibe
 - List what you are *not* deploying
@@ -115,10 +116,10 @@ from pipelines.split import snapshot_split
 
 ```python
 as_of = AS_OF_DEFAULT
-HORIZON = 90
-# Stand 90 days in the past, learn from what happened by today, then score
-# today's at-risk customers and check the next 90 days. A 30-day window has
-# only tens of cancels in this file; write the horizon on the artifact.
+HORIZON = 30
+# Stand 30 days in the past, learn from what happened by today, then score
+# today's at-risk customers and check the next 30 days. Write the horizon on
+# the artifact — it is part of what the score means.
 train_df, y_train, test_df, y_test = snapshot_split(as_of, horizon_days=HORIZON)
 train_as_of = as_of - pd.Timedelta(days=HORIZON)
 print(f"train: at-risk on {train_as_of.date()}, labelled by {as_of.date()}  n={len(train_df):,}")
@@ -143,13 +144,13 @@ print(f"dummy PR-AUC: {float(y_test.mean()):.3f}")
 
 ## Foot-gun: a signup-date cut is a tenure cut
 
-The tempting time wall is one snapshot, sorted by `signup_date`, oldest 80% in train. It looks like "train on the past." It is not. At a fixed `as_of`, `tenure_so_far = as_of − signup_date`, so cutting on signup date *is* cutting on tenure — the strongest column in the table.
+The tempting time wall is one snapshot, sorted by `signup_date`, oldest 80% in train. It looks like "train on the past." It is not. At a fixed `as_of`, `tenure_so_far = as_of − signup_date`, so cutting on signup date *is* cutting on tenure.
 
 ```
  one snapshot at as_of, cut on signup_date
- tenure_so_far:  0 ──── 377 days │ 378 ──────────── 882 days
-                 test (new)      │ train (old)
-                 1.0% churn (91) │ 0.05% churn (19)  ← almost nothing to learn from
+ tenure_so_far:  0 ──── 109 days │ 110 ─────────────── 882 days
+                 test (new)       │ train (old)
+                 3.8% churn (209) │ 1.4% churn (323)
  the model never sees a short tenure in training, then scores only short tenures
 ```
 
@@ -163,7 +164,11 @@ print(f"backtest   → train tenure {train_df['tenure_so_far'].min()}–{train_d
       f"test tenure {test_df['tenure_so_far'].min()}–{test_df['tenure_so_far'].max()} days")
 ```
 
-The first line prints two ranges that do not touch. On this file, with the 90-day label, that split scores AUC ≈ 0.4 — worse than a coin — while the backtest scores ≈ 0.88 and a shuffled split lands near 0.8. At the laptop sample size the gate in Week 16 refuses the signup-cut model outright. A backtest keeps both sides on the same range and asks the question production will: *standing on a date, who leaves next?*
+The first line prints two ranges that do not touch. On this file the signup-cut model scores AUC ≈ 0.70 against ≈ 0.75 for the backtest. That is not a disaster on the dashboard, and that is exactly the danger.
+
+Everything the model knows about tenure it learned on customers older than 110 days. New customers churn at 2.6× the rate of old ones, and the model has never seen one. The number looks like a small regression; the real problem is a model scoring a population it was never trained on. It will look fine offline and fail the first month new signups dominate the list (Week 17 is what that month feels like on-call).
+
+A backtest keeps both sides on the same tenure range and asks the question production will: *standing on a date, who leaves next?*
 
 !!! success "Ship / don't ship"
 
@@ -185,6 +190,15 @@ print(f"There were {int(y_test.sum())} events in the window; "
       f"recall={hits / max(float(y_test.sum()), 1):.0%}.")
 threshold = float(np.partition(proba, -BUDGET)[-BUDGET]) if len(proba) >= BUDGET else 1.0
 
+# One backtest is one draw. Put the interval on the report (Week 11's bootstrap).
+rng = np.random.default_rng(0)
+y_np = y_test.to_numpy()
+boot = []
+for _ in range(500):
+    i = rng.integers(0, len(y_np), len(y_np))
+    boot.append(y_np[i][np.argsort(-proba[i])[:BUDGET]].mean())
+print(f"precision@{BUDGET} 95% CI: {np.percentile(boot, 2.5):.0%}–{np.percentile(boot, 97.5):.0%}")
+
 prec, rec, _thr = precision_recall_curve(y_test, proba)
 fig, ax = plt.subplots(figsize=(6.5, 3.8))
 ax.plot(rec, prec, color="#1d4ed8")
@@ -198,6 +212,67 @@ ax.annotate("80-call budget", xy=(hits / max(float(y_test.sum()), 1), hits / BUD
 plt.tight_layout()
 plt.show()
 ```
+
+## Why is this customer on the list?
+
+Priya's first question about any name is *why*. "The model said 0.99" is not an answer she can open a call with. Give every listed customer **reason codes**: the two or three columns that push their score up the most.
+
+The simplest honest version needs no new library. For each column, reset it to a typical customer's value and rescore. The bigger the drop, the more that column is carrying this customer's score. It is a what-if test, one row at a time.
+
+```python
+from pipelines.features import NUMERIC
+
+typical = train_df[NUMERIC].median()
+
+
+def reasons(model, row, k=2):
+    """Columns whose typical value would lower this customer's score the most."""
+    base = model.predict_proba(row.to_frame().T[FEATURE_COLS])[:, 1][0]
+    drops = {}
+    for col in NUMERIC:
+        what_if = row.copy()
+        what_if[col] = typical[col]
+        drops[col] = base - model.predict_proba(what_if.to_frame().T[FEATURE_COLS])[:, 1][0]
+    top_cols = sorted(drops, key=drops.get, reverse=True)[:k]
+    return base, [f"{c}={row[c]:.4g} (+{drops[c]:.2f})" for c in top_cols]
+
+
+for i in np.argsort(-proba)[:5]:
+    row = test_df.iloc[i]
+    score, why = reasons(pipe, row)
+    print(f"{row['user_id']}  {row['plan_type']:<10} score={score:.3f}  because {', '.join(why)}")
+```
+
+Read the output before you ship. On this file the top of the list is a row of `pro` accounts with scores near 1.0, and the reason is the same every time: **`mrr` of about $101.1–$101.3**. That is not a churn pattern. It is three training churners who happened to pay $101.14, $101.15 and $101.32, and a boosted tree that carved a leaf just for them. In the test month, none of the ~100 customers in that price band churn.
+
+No aggregate metric showed this. AUC was fine. The reason codes showed it in five lines, because they force you to *read* the list the way Priya will. The fix is a guard rail on the tree, not a patch on the list: forbid leaves smaller than, say, 50 customers.
+
+```python
+guarded = Pipeline([
+    ("prep", make_preprocessor()),
+    ("model", GradientBoostingClassifier(
+        n_estimators=40, learning_rate=0.1, max_depth=2, min_samples_leaf=50, random_state=42
+    )),
+]).fit(train_df[FEATURE_COLS], y_train)
+guarded_proba = guarded.predict_proba(test_df[FEATURE_COLS])[:, 1]
+top_guarded = y_test.to_numpy()[np.argsort(-guarded_proba)[:BUDGET]].sum()
+print(f"top score {proba.max():.3f} → {guarded_proba.max():.3f};  "
+      f"hits in the top {BUDGET}: {int(hits)} → {int(top_guarded)}")
+for i in np.argsort(-guarded_proba)[:3]:
+    row = test_df.iloc[i]
+    score, why = reasons(guarded, row)
+    print(f"{row['user_id']}  {row['plan_type']:<10} score={score:.3f}  because {', '.join(why)}")
+```
+
+The top score falls from “certain” to a modest number that matches reality (the base rate is 2%), and the reasons now read like churn: brand-new free accounts that logged one event and never came back. The hit count barely moves — the guarded top 80 sits inside a plateau of ~2,000 customers with identical scores, so *which* 80 you call there is decided by sort order (the capstone makes that tie-break explicit). What changed is that the five names at the top are no longer noise. `pipelines/train.py` ships with this guard.
+
+!!! math "Math, translated"
+
+    The what-if test is a crude, one-column-at-a-time cousin of **SHAP values**, which split a score into per-column contributions that add up exactly to the prediction, accounting for columns that interact. Reach for the `shap` library when you need contributions that sum correctly or have many interacting columns. Either way the contract is the same: every name on the list comes with a *reason a human can check*.
+
+!!! warning "Watch out — a reason code is a description of the model, not of the customer"
+
+    "Low usage" as a reason means the model leans on low usage for this person. It does not mean usage *caused* the risk, or that raising usage will save them (Week 11). Write reasons as “flagged because…”, never “at risk because…”.
 
 ## The contract: `validate` + `predict`
 
@@ -296,7 +371,7 @@ print("Ship the joblib AND contract.py AND this week's commit hash. Same layout 
 
 ## ✍️ Write-up
 
-In one page: (1) the time wall you used, (2) holdout AUC vs a dummy, (3) the 80-call precision, (4) one drift risk, (5) what you refused to over-claim.
+In one page: (1) the time wall you used, (2) holdout AUC vs a dummy, (3) the 80-call precision **with its bootstrap interval**, (4) one drift risk, (5) what you refused to over-claim.
 
 
 ## ✍️ Exercise

@@ -33,8 +33,8 @@ from pipelines.features import FEATURE_COLS
 from pipelines.split import snapshot_split
 from pipelines.train import train
 
-_, _, test_df, y_test = snapshot_split("2024-06-01", horizon_days=90)
-meta = train("2024-06-01", Path("artifacts/briefs"), n=8000, horizon_days=90)
+_, _, test_df, y_test = snapshot_split("2024-06-01", horizon_days=30)
+meta = train("2024-06-01", Path("artifacts/briefs"), horizon_days=30)
 scores = load_artifact(Path("artifacts/briefs") / meta["model_version"])["pipeline"].predict_proba(test_df[FEATURE_COLS])[:, 1]
 
 for brief in BRIEFS.values():
@@ -63,6 +63,8 @@ One loop, five lists, five thresholds. `capstone_ship/briefs.py` holds each brie
 !!! math "Math, translated — why this list isn't sorted by MRR"
 
     A proportional discount on an account costs `k × mrr` and protects `mrr`. Return per discount dollar is `score × mrr / (k × mrr) = score / k` — **the account's size cancels out**. Sorting by `score × mrr` looks like "protect the most revenue" and actually spends the budget on a handful of large accounts that rarely leave. Sort by risk; let the budget decide how many.
+
+    That algebra quietly assumes the discount saves each account *in proportion to its churn score*. It doesn't have to. The highest-risk accounts may be lost causes a 20% discount cannot move, and some mid-risk accounts may be persuadable. A churn score cannot tell those apart; only a randomized holdout of the discount can ([Week 11](week-11.md)). Treat "sort by risk" as the best you can do *before* you have that experiment, not as the answer.
 
 ### Expansion ranking — Marcus
 

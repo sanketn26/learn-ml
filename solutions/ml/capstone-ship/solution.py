@@ -31,7 +31,7 @@ from pipelines.split import snapshot_split
 from pipelines.train import train
 
 AS_OF = pd.Timestamp("2024-06-01")
-HORIZON = 90
+HORIZON = 30
 INCIDENT_NIGHT = AS_OF + pd.Timedelta(days=14)
 
 
@@ -49,7 +49,7 @@ def step2_labels(as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON):
     return train_df, y_train, test_df, y_test
 
 
-def step3_train(out_dir: Path, as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON, n: int = 8000) -> Path:
+def step3_train(out_dir: Path, as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON, n: int | None = None) -> Path:
     meta = train(str(as_of.date()), out_dir, n=n, horizon_days=horizon)
     candidate = out_dir / meta["model_version"]
     ok, reason = gate(candidate, None)
@@ -100,7 +100,7 @@ def step6_promote_and_score(candidate: Path, prod: Path, as_of: pd.Timestamp = A
 
 CRON = """set -euo pipefail
 python -m pytest tests/
-python -m pipelines.train --as-of "$AS_OF" --n 8000 --horizon-days 90
+python -m pipelines.train --as-of "$AS_OF"
 python -m pipelines.promote --candidate "artifacts/${AS_OF//-/}"
 python -m pipelines.score_batch --as-of "$AS_OF" --artifact artifacts/prod --limit 80 --out tonight.csv
 """
@@ -130,7 +130,7 @@ def step7_incident(prod: Path, seed: int, night: pd.Timestamp = INCIDENT_NIGHT,
     }
 
 
-def run(workdir: Path, seeds: tuple[int, ...] = (0,), n: int = 8000) -> dict:
+def run(workdir: Path, seeds: tuple[int, ...] = (0,), n: int | None = None) -> dict:
     out = workdir / "artifacts"
     prod = out / "prod"
     step1_features()

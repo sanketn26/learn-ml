@@ -30,7 +30,7 @@ from pipelines.train import train  # noqa: F401
 
 WORKDIR = ROOT / "artifacts" / "capstone-ship"
 AS_OF = pd.Timestamp("2024-06-01")
-HORIZON = 90  # TODO (step 2): justify this number in your write-up
+HORIZON = 30  # TODO (step 2): justify this number in your write-up
 INCIDENT_NIGHT = AS_OF + pd.Timedelta(days=14)
 SEED = 0  # your incident; any integer
 
@@ -45,7 +45,7 @@ def step2_labels(as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON):
     raise NotImplementedError("step 2: snapshot_split with your horizon")
 
 
-def step3_train(out_dir: Path, as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON, n: int = 8000) -> Path:
+def step3_train(out_dir: Path, as_of: pd.Timestamp = AS_OF, horizon: int = HORIZON, n: int | None = None) -> Path:
     """Train a candidate and prove it beats the dummy. Return the candidate directory."""
     raise NotImplementedError("step 3: pipelines.train.train + the promote gate")
 

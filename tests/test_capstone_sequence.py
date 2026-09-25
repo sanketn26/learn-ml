@@ -11,6 +11,7 @@ import pandas as pd
 import pytest
 
 from capstone_sequence.data import NONE, PAD, bakeoff_data, load_events, sequences
+from pipelines.split import snapshot_split
 
 ROOT = Path(__file__).resolve().parent.parent
 AS_OF = pd.Timestamp("2024-06-01")
@@ -47,8 +48,9 @@ def test_silent_customers_get_a_none_token(splits):
 
 def test_test_split_is_the_real_population(splits):
     train, test = splits
-    assert len(test.y) > 40_000 and 0 < test.y.mean() < 0.01   # never downsampled
-    assert train.y.sum() == 144                                  # every training positive kept
+    _, y_train, test_df, y_test = snapshot_split(AS_OF)
+    assert len(test.y) == len(test_df) and test.y.mean() == pytest.approx(y_test.mean())  # never downsampled
+    assert train.y.sum() == y_train.sum()                                                 # every training positive kept
     assert train.static.shape[1] == test.static.shape[1]
 
 

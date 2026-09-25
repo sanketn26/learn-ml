@@ -4,7 +4,7 @@ Run from the repo root, in the framework venv:
 
     .venv-framework/bin/python solutions/ml/capstone-agent/solution.py
 
-No API key: the only model is FakeListLLM, and it never routes. Routing is
+No API key: the only model is FakeListChatModel, and it never routes. Routing is
 a keyword firewall; money moves only after a human approves; the credit
 write is keyed so a resume cannot pay twice.
 """
@@ -19,11 +19,11 @@ from typing import Annotated, TypedDict
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableConfig
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 
 from capstone_agent.golden import CW_1847_CUSTOMER, SCORES, evaluate
@@ -50,7 +50,7 @@ class Ticket(TypedDict, total=False):
 
 
 def build_agent(ledger: Ledger, scores: dict, checkpointer=None, approval_gate: bool = True):
-    llm = FakeListLLM(responses=["Per the runbook: Settings > API Keys, then Generate. Send it as a Bearer token."])
+    llm = FakeListChatModel(responses=["Per the runbook: Settings > API Keys, then Generate. Send it as a Bearer token."])
     answer_chain = (
         ChatPromptTemplate.from_template(
             "Answer ONLY from these CloudWave runbooks, or say you don't know.\n{context}\n\nQ: {question}"
@@ -112,7 +112,7 @@ def build_agent(ledger: Ledger, scores: dict, checkpointer=None, approval_gate: 
     for terminal in ("docs", "idk", "blocked", "score", "issue_credit"):
         g.add_edge(terminal, END)
     interrupt = ["issue_credit"] if approval_gate else []  # False only for the test's negative control
-    return g.compile(checkpointer=checkpointer or MemorySaver(), interrupt_before=interrupt)
+    return g.compile(checkpointer=checkpointer or InMemorySaver(), interrupt_before=interrupt)
 
 
 REFUND = {"ticket_id": "CW-1847", "user_id": CW_1847_CUSTOMER, "text": "Please refund me for the broken export."}

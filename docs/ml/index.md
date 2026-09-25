@@ -4,7 +4,7 @@ description: A 20-week applied ML course for engineers, using a fake SaaS compan
 
 # Applied ML Foundations for SaaS Analytics
 
-CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a week — she needs the right 80. Helen wants to know whether a churn gap is real before anyone touches pricing. You just joined as the ML engineer who has to answer both.
+CloudWave loses about 2% of its customers every month — roughly 550 people. Priya's team can call 80 a week — she needs the right 80. Helen wants to know whether a churn gap is real before anyone touches pricing. You just joined as the ML engineer who has to answer both.
 
 ??? note "Course details — who this is for, prerequisites"
 
@@ -26,7 +26,7 @@ CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a 
 | Week | What you are really learning |
 |---|---|
 | 0 | Python as glue. Names vs values. A `fit` / `predict` class. |
-| 1 | NumPy as a typed column. Stop looping 160k rows. |
+| 1 | NumPy as a typed column. Stop looping 270k rows. |
 | 2 | Pandas as SQL. Customer 360. The join that explodes. |
 | 3 | SQL is the source of truth. `as_of`. Grain tests. |
 | 4 | Charts as API responses. Honest axes. |
@@ -49,6 +49,29 @@ CloudWave loses about 6.4% of its customers. Priya's team can call 80 of them a 
 | 20 | Optional: Transformers as a soft join. |
 | Capstone: sequences | Optional, CPU: CNN, RNN, and transformer over event sequences vs the Week-13 GBT, with a control and seeds. |
 | Capstone: specialist | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
+
+### What depends on what
+
+The weeks are numbered, but not every week needs the one before it. The **spine** (double arrows) is the shortest path to shipping the churn list; the side branches can be taken in any order after the week they hang from.
+
+```
+ 0 Python ══▶ 1 NumPy ══▶ 2 Pandas ══▶ 3 SQL/as_of ══▶ 6 Features ══▶ 7 Classify ══▶ 8 Labels
+                             │                                                        ║
+                             ├── 4 Charts                                             ║
+                             └── 5 Signal vs noise  (intervals + power, reused in 11, 15)
+                                                                                      ▼
+   9 Regression  ─┐                                                           11 Rank a list
+  10 Clustering  ─┼── optional detours, any order after 8                            ║
+  12 PCA         ─┘                                                                   ▼
+  13 Ensembles   ─── validation folds + importance, feeds ───────────────▶   15 The pickle
+  14 Neural nets ─── needed only for 18–20                                           ║
+                                                                                      ▼
+                                                                       16 Job ══▶ 17 On-call
+                                                                                      ║
+                                                                                      ▼
+                                                                             Capstone: ship
+  after 14:  18 CNN ──▶ 19 RNN ──▶ 20 Transformer ──▶ Capstone: sequences
+```
 
 Required job path is **0–17**, closed by the [job-path capstone](capstone-ship.md) — ship the churn score end to end, then survive its first incident. Weeks **18–20** are pictures, not how CloudWave ships churn. The [coding-specialist capstone](capstone.md) is further still — the only page in this course that needs a GPU.
 

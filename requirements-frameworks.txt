@@ -1,11 +1,17 @@
-# Reference environment for the API generation shown in the lessons.
+# Reference environment for the API generation shown in the lessons (LangChain / LangGraph 1.x).
 # Use a dedicated virtual environment. See docs/framework-tracks.md.
-# Python 3.11 is the course reference interpreter.
-langchain==0.2.17
-langchain-community==0.2.19
-langgraph==0.2.76
+# Python 3.11+ (3.12 tested).
+langchain==1.4.2
+langchain-core==1.6.4
+langchain-text-splitters==1.1.2
+langgraph==1.2.12
 python-dotenv==1.0.1
 requests==2.32.3
-pydantic==2.10.6
-# Week 6 serves the chain behind FastAPI (TestClient uses httpx, already pulled in).
-fastapi==0.115.14
+pydantic==2.13.5
+# Week 6 serves the chain behind FastAPI (TestClient uses httpx).
+fastapi==0.141.1
+httpx
+# Week 4 measures retrieval with a TF-IDF baseline.
+scikit-learn
+scipy
+# langchain-community is being sunset; the lessons use langchain_core's fake models instead.

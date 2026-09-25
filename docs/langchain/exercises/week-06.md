@@ -9,7 +9,7 @@ Do these after reading [Week 6](../week-06.md). Local FastAPI + timeout/fallback
 ```python
 import asyncio
 import time
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 ```
 
 ## Predict before you run
@@ -48,14 +48,14 @@ Copy the lesson’s FastAPI app. `POST /chat` must `await chain.ainvoke({...})` 
 
     from fastapi import FastAPI
     from fastapi.testclient import TestClient
-    from langchain_community.llms import FakeListLLM
+    from langchain_core.language_models import FakeListChatModel
     from langchain_core.output_parsers import StrOutputParser
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.runnables import RunnableLambda
     from pydantic import BaseModel
 
     app = FastAPI()
-    chain = ChatPromptTemplate.from_template("{message}") | FakeListLLM(responses=["Settings > Security."] * 10) | StrOutputParser()
+    chain = ChatPromptTemplate.from_template("{message}") | FakeListChatModel(responses=["Settings > Security."] * 10) | StrOutputParser()
 
 
     class ChatRequest(BaseModel):

@@ -10,14 +10,14 @@ A 1-D CNN with a wider kernel, a dense-flatten baseline, and a stencil sketch on
 
 ## Predict before you run
 
-1. Does `kernel_size=5` move test accuracy, or just change what the detector looks at?
+1. Does `kernel_size=5` move test PR-AUC, or just change what the detector looks at?
 2. If a `Linear(12, 1)` ties the CNN, was the signal *shape* or *total*?
 3. Which of three stencil positions fires on a late-week drop?
 
 ## Before you start
 
 - This is a teaching toy on 12 weekly totals. CPU only.
-- `load_weekly_usage_grid` returns lifetime `is_churned` — a sequence toy, not an as-of label. Don't ship anything from it.
+- `load_weekly_usage_grid` returns the 12 weeks before 2024-06-01 and the 30-day label after it (~2% positive). Judge models on PR-AUC or AUC; accuracy just echoes the base rate. Don't ship anything from it.
 
 Each task has three hints, closed by default. Open only as far as you need.
 
@@ -29,13 +29,13 @@ Work in `starter.py`. Run from the repo root:
 python exercises/ml/week-18/starter.py
 ```
 
-**1. Kernel size.** Change `kernel_size` to 5. Does test accuracy move? What did you make the detector look at?
+**1. Kernel size.** Change `kernel_size` to 5. Does test PR-AUC move? What did you make the detector look at?
 
 ??? tip "Hint 1 — a nudge"
     A kernel of 3 sees three consecutive weeks at a time. What pattern could a 5-week window catch that a 3-week one can't — and does this data even have it?
 
 ??? tip "Hint 2 — the approach"
-    Give `UsageCNN` a `kernel_size` argument and train both versions with the same seed and split. With ~6% churners, accuracy hugs the majority baseline — print test AUC next to it so a real change is visible.
+    Give `UsageCNN` a `kernel_size` argument and train both versions with the same seed and split. With ~2% churners, accuracy hugs the majority baseline — print test AUC next to it so a real change is visible.
 
 ??? example "Hint 3 — most of the code"
     ```python
@@ -43,7 +43,7 @@ python exercises/ml/week-18/starter.py
     import torch
     import torch.nn as nn
     import torch.nn.functional as F
-    from sklearn.metrics import roc_auc_score
+    from sklearn.metrics import average_precision_score, roc_auc_score
 
     from lib.course_data import load_weekly_usage_grid
 
@@ -75,13 +75,13 @@ python exercises/ml/week-18/starter.py
             opt.step()
         with torch.no_grad():
             p = model(torch.tensor(Xte)).sigmoid().numpy()
-        return float(((p > 0.5) == yte).mean()), float(roc_auc_score(yte, p))
+        return float(average_precision_score(yte, p)), float(roc_auc_score(yte, p))
 
 
     for k in (3, 5):
         torch.manual_seed(0)
-        acc, auc = fit_eval(UsageCNN(kernel_size=k))
-        print(f"kernel={k}  test acc={acc:.3f}  AUC={auc:.3f}  (majority acc {1 - yte.mean():.3f})")
+        pr, auc = fit_eval(UsageCNN(kernel_size=k))
+        print(f"kernel={k}  test PR-AUC={pr:.3f}  AUC={auc:.3f}  (base rate {yte.mean():.3f})")
     ```
 
 **2. Dense baseline.** Flatten the 12 weeks into a `nn.Linear(12, 1)` and compare.
@@ -104,8 +104,8 @@ python exercises/ml/week-18/starter.py
 
 
     torch.manual_seed(0)
-    acc, auc = fit_eval(Dense())
-    print(f"dense      test acc={acc:.3f}  AUC={auc:.3f}")
+    pr, auc = fit_eval(Dense())
+    print(f"dense      test PR-AUC={pr:.3f}  AUC={auc:.3f}")
     ```
     Whether the CNN earned its extra weights is your call.
 
@@ -128,7 +128,7 @@ python exercises/ml/week-18/starter.py
 ## Success criteria
 
 - Kernel-5 vs kernel-3 note.
-- Dense baseline AUC/accuracy next to the CNN.
+- Dense baseline PR-AUC and AUC next to the CNN.
 - ASCII or paper sketch with a circled position.
 
 ## After you run

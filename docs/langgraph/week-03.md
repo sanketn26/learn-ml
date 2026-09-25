@@ -1,5 +1,5 @@
 ---
-description: Use LangGraph's MemorySaver checkpointer to persist state and resume a crashed graph run without re-executing already-completed nodes.
+description: Use LangGraph's InMemorySaver checkpointer to persist state and resume a crashed graph run without re-executing already-completed nodes.
 ---
 
 # Week 3 — Checkpoint, crash, resume
@@ -11,20 +11,20 @@ The `CW-1847` refund pipeline dies on the third step, mid-run. Nobody wants to r
     **Course:** LangGraph
     **Who this is for:** Engineers who have lost 20 minutes of a job because step 3 died and they reran from step 1.
 
-The reason to use a graph is that the **runtime owns the state**. LangGraph 0.2’s in-memory checkpointer is `MemorySaver`. A homemade dict of snapshots is useful intuition; it is not what you compile.
+The reason to use a graph is that the **runtime owns the state**. LangGraph’s in-memory checkpointer is `InMemorySaver` (older code calls it `MemorySaver` — same class). A homemade dict of snapshots is useful intuition; it is not what you compile.
 
 ---
 
 ## 🎯 What you will be able to do
 
-- Compile with `MemorySaver` and a `thread_id`
+- Compile with `InMemorySaver` and a `thread_id`
 - Run until a node fails **after node 2**
 - Resume the same thread so nodes 1–2 do not run again
 - Know that resume is at-least-once for the failed node (week 5 keys the write)
 
 !!! think "Think of it like… a debugger’s snapshot, not a backup disk."
 
-    `thread_id` is the workflow id. Each completed node writes a checkpoint. Crash = restore that row and continue. `MemorySaver` lives in process RAM — enough to prove resume. Durable production stores are a different class (Postgres, etc.) and out of this week’s scope.
+    `thread_id` is the workflow id. Each completed node writes a checkpoint. Crash = restore that row and continue. `InMemorySaver` lives in process RAM — enough to prove resume. Durable production stores are a different class (Postgres, etc.) and out of this week’s scope.
 
 ## Picture the crash
 
@@ -40,13 +40,13 @@ issue_credit        →  boom
     issue_credit again     ← fetch_ticket and check_refund_policy must not re-run
 ```
 
-## MemorySaver, not a homemade store
+## InMemorySaver, not a homemade store
 
 ```python
 from typing import Annotated, TypedDict
 import operator
 
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.graph import END, START, StateGraph
 
 RUNS = {"fetch_ticket": 0, "check_refund_policy": 0, "issue_credit": 0}
@@ -83,7 +83,7 @@ g.add_edge("fetch_ticket", "check_refund_policy")
 g.add_edge("check_refund_policy", "issue_credit")
 g.add_edge("issue_credit", END)
 
-app = g.compile(checkpointer=MemorySaver())
+app = g.compile(checkpointer=InMemorySaver())
 config = {"configurable": {"thread_id": "CW-1847"}}
 
 try:
@@ -116,8 +116,8 @@ assert RUNS["issue_credit"] == 2  # failed once, succeeded once — did not repl
 
 ## What this week is not
 
-- Not Postgres. `MemorySaver` dies with the process — that is fine for the concept demo.
-- Not human approval (week 4 uses the same `MemorySaver` + `interrupt_before`).
+- Not Postgres. `InMemorySaver` dies with the process — that is fine for the concept demo.
+- Not human approval (week 4 uses the same `InMemorySaver`, plus `interrupt()`).
 - Not a 30-minute Spark job. The three-node graph is the whole point.
 
 ## ✍️ Exercise
@@ -132,4 +132,4 @@ assert RUNS["issue_credit"] == 2  # failed once, succeeded once — did not repl
 
 ## 🔗 Next week
 
-Pause before a write: `interrupt_before=["approve"]`, then approve / reject / needs-info. Two weeks after that, `issue_credit` gets the idempotency key that makes its replay safe.
+Pause before a write with `interrupt()`, then resume with approve / reject / needs-info. Two weeks after that, `issue_credit` gets the idempotency key that makes its replay safe.
