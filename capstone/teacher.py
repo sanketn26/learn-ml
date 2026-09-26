@@ -1,63 +1,83 @@
-"""Phase 2 — generate trajectories.
+"""Phase 2 — turn solved investigations into training examples.
 
-For a synthetic scenario where we already know the right tool, WE are the
-teacher: correct-by-construction beats an API call. Use `generate_dataset`
-to build the first few hundred examples for free. Swap in a real teacher
-(a frontier model called with the same `tools.TOOLS` schema) only once you
-need scale or need trajectories for cases you can't hand-write — see
-docs/ml/capstone.md Phase 2.
+The teacher solves every case in the bank on real data. Each accepted step
+becomes one example: (the state before it → the command it chose). A
+model trained on these learns single decisions; the harness chains them.
+
+Some examples also get a rejected attempt spliced in before the right
+answer — a hallucinated column, swapped dates, an invented user_id — with
+the validator's real message. That is how a small model learns to recover
+from a rejection instead of repeating it.
 """
 
 from __future__ import annotations
 
+import copy
 import json
+import random
 from pathlib import Path
 
-from capstone.reliability import validate_call
-from capstone.scenarios import SCENARIOS, Scenario
+from capstone.cases import DEFAULT_NIGHTS, Case, all_cases
+from capstone.harness import run_loop
+from capstone.policies import teacher_policy
+from capstone.reliability import RejectedCall, validate_call
+
+RECOVERY_RATE = 0.2
 
 
-def golden_call(scenario: Scenario) -> dict | None:
-    """The trajectory a reliable model should have produced. None means
-    "no tool call" (e.g. an injection attempt)."""
-    if scenario.expect_tool == "none":
-        return None
-    if scenario.expect_tool == "find_potential_bugs":
-        return {"name": "find_potential_bugs", "arguments": {"code": scenario.input_text, "language": "python"}}
-    if scenario.expect_tool == "review_diff":
-        return {"name": "review_diff", "arguments": {"diff": scenario.input_text}}
-    if scenario.expect_tool == "explain_error":
-        return {"name": "explain_error", "arguments": {"traceback": scenario.input_text}}
-    if scenario.expect_tool == "suggest_fix":
-        code, _, issue = scenario.input_text.partition("issue:")
-        return {"name": "suggest_fix", "arguments": {"code": code.strip(), "issue": issue.strip()}}
-    if scenario.expect_tool == "check_style_or_conventions":
-        return {"name": "check_style_or_conventions", "arguments": {"code": scenario.input_text, "ruleset": "pep8"}}
-    raise ValueError(f"no golden rule for tool {scenario.expect_tool!r}")
+def trajectory(case: Case) -> dict:
+    run = run_loop(teacher_policy(case), case)
+    if run["outcome"] != "solved":
+        raise AssertionError(f"teacher failed {case.id}: {run['outcome']}")
+    return run
 
 
-def build_trajectory(scenario: Scenario) -> dict:
-    call = golden_call(scenario)
-    if call is not None:
-        validate_call(call)  # the teacher's own output must pass the contract
-    return {"id": scenario.id, "input": scenario.input_text, "context": scenario.context, "tool_call": call}
+def corrupt(call: dict) -> dict:
+    """A plausible wrong version of `call` — the mistakes small models actually make."""
+    bad = copy.deepcopy(call)
+    args, command = bad["args"], bad["command"]
+    if "ref_as_of" in args:
+        args["ref_as_of"], args["as_of"] = args["as_of"], args["ref_as_of"]
+    elif command == "check_grain":
+        args["as_of"] = "last week"
+    elif command == "check_threshold":
+        args["capacity"] = str(args["capacity"])
+    elif command == "check_leakage":
+        args["column"] = args["column"].split("_")[0]
+    elif command == "explain_rejection":
+        args["error"] = "the payload was rejected"
+    elif command == "conclude":
+        args["evidence"] = args["evidence"] + [99]
+    elif command == "escalate":
+        args["reason"] = "unsure"
+    return bad
 
 
-def generate_dataset(scenarios: list[Scenario] = SCENARIOS) -> list[dict]:
-    return [build_trajectory(s) for s in scenarios]
+def examples(case: Case, run: dict, rng: random.Random) -> list[dict]:
+    steps, rows = run["state"]["steps"], []
+    base = {"case_id": case.id, "kind": case.kind, "split": case.split}
+    for i, step in enumerate(steps):
+        before = {**run["state"], "steps": steps[:i]}
+        target = {"command": step["command"], "args": step["args"]}
+        rows.append({**base, "id": f"{case.id}#{step['n']}", "state": before, "call": target})
+        if rng.random() < RECOVERY_RATE:
+            bad = corrupt(target)
+            try:
+                validate_call(bad, before)
+            except RejectedCall as exc:
+                rejected = {"n": len(before["steps"]) + 1, "call": bad, "rejected": str(exc)}
+                rows.append({**base, "id": f"{case.id}#{step['n']}r", "recovery": True,
+                             "state": {**before, "steps": before["steps"] + [rejected]}, "call": target})
+    return rows
 
 
-def write_splits(out_dir: Path, scenarios: list[Scenario] = SCENARIOS) -> dict[str, int]:
-    """80/10/10 split by index — fine for a teaching dataset this small.
-    A real run needs hundreds of scenarios per tool before this ratio means much."""
+def write_splits(out_dir: Path, nights=DEFAULT_NIGHTS, seed: int = 0) -> dict[str, int]:
+    """Solve every case, write {train,val,test}.jsonl of per-step examples, return example counts."""
+    rng = random.Random(seed)
+    rows: dict[str, list[dict]] = {"train": [], "val": [], "test": []}
+    for case in all_cases(nights):
+        rows[case.split].extend(examples(case, trajectory(case), rng))
     out_dir.mkdir(parents=True, exist_ok=True)
-    rows = generate_dataset(scenarios)
-    n = len(rows)
-    cut_a, cut_b = int(n * 0.8), int(n * 0.9)
-    splits = {"train": rows[:cut_a], "val": rows[cut_a:cut_b], "test": rows[cut_b:]}
-    counts = {}
-    for name, split_rows in splits.items():
-        path = out_dir / f"{name}.jsonl"
-        path.write_text("\n".join(json.dumps(r) for r in split_rows) + ("\n" if split_rows else ""))
-        counts[name] = len(split_rows)
-    return counts
+    for split, split_rows in rows.items():
+        (out_dir / f"{split}.jsonl").write_text("".join(json.dumps(r) + "\n" for r in split_rows))
+    return {split: len(split_rows) for split, split_rows in rows.items()}

@@ -19,7 +19,7 @@ ARTIFACTS = ROOT / "capstone" / "finetune" / "artifacts"
 
 DEFAULT_CONFIG = {
     "model_name": "google/functiongemma-270m-it",
-    "max_seq_length": 2048,
+    "max_seq_length": 3072,  # the longest six-step state is ~2.2k tokens with the catalog
     "load_in_4bit": True,
     "lora_r": 16,
     "lora_alpha": 16,
@@ -95,22 +95,25 @@ def try_transformers_probe(dry_run: bool) -> str:
     return f"transformers {version} available for a real load"
 
 
-def ensure_formatted(artifacts: Path) -> None:
+def ensure_formatted(artifacts: Path, dry_run: bool = False) -> None:
     if (artifacts / "train.formatted.jsonl").exists() and (artifacts / "val.formatted.jsonl").exists():
         return
     from capstone.finetune.prepare_data import (
+        DATA_DIR,
+        QUICK_NIGHTS,
         _ensure_raw_splits,
         _load_jsonl,
         format_row,
         validate_formatted,
         write_formatted,
-        DATA_DIR,
     )
+    from capstone.cases import DEFAULT_NIGHTS
 
-    _ensure_raw_splits(DATA_DIR)
+    data_dir = artifacts / "dry-run-data" if dry_run else DATA_DIR
+    _ensure_raw_splits(data_dir, QUICK_NIGHTS if dry_run else DEFAULT_NIGHTS)
     artifacts.mkdir(parents=True, exist_ok=True)
     for split in ("train", "val", "test"):
-        raw = _load_jsonl(DATA_DIR / f"{split}.jsonl")
+        raw = _load_jsonl(data_dir / f"{split}.jsonl")
         formatted = [format_row(row) for row in raw]
         if formatted:
             validate_formatted(formatted)
@@ -138,17 +141,42 @@ def train_real(config: dict, artifacts: Path, adapter_out: Path) -> None:
         lora_alpha=config["lora_alpha"],
         target_modules=config["target_modules"],
     )
+    from datasets import Dataset
+    from trl import SFTConfig, SFTTrainer
+
+    def split(name: str) -> Dataset:
+        # The chat template turns system/user/assistant into the model's own format, the same
+        # messages policies.llm_policy sends at inference time.
+        rows = _load_formatted(artifacts / f"{name}.formatted.jsonl")
+        return Dataset.from_list([{"text": tokenizer.apply_chat_template(r["messages"], tokenize=False)} for r in rows])
+
     adapter_out.mkdir(parents=True, exist_ok=True)
-    print("Unsloth model loaded. Wire SFTTrainer on")
-    print(f"  {artifacts / 'train.formatted.jsonl'}")
-    print("This scaffold stops before a long train so you can confirm VRAM first.")
-    print(f"When you run a full SFT, write the adapter to {adapter_out}")
+    trainer = SFTTrainer(
+        model=model,
+        processing_class=tokenizer,
+        train_dataset=split("train"),
+        eval_dataset=split("val"),
+        args=SFTConfig(
+            output_dir=str(adapter_out / "checkpoints"),
+            dataset_text_field="text",
+            per_device_train_batch_size=config["batch_size"],
+            gradient_accumulation_steps=config["grad_accum"],
+            num_train_epochs=config["epochs"],
+            learning_rate=config["learning_rate"],
+            logging_steps=20,
+            eval_strategy="epoch",
+            save_strategy="no",
+            report_to="none",
+        ),
+    )
+    trainer.train()
     model.save_pretrained(adapter_out)
     tokenizer.save_pretrained(adapter_out)
+    print(f"adapter → {adapter_out}. Score it: python capstone/finetune/evaluate_adapter.py --adapter {adapter_out}")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="LoRA train (or dry-run) for the coding specialist.")
+    parser = argparse.ArgumentParser(description="LoRA train (or dry-run) for the on-call specialist.")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--model", default=DEFAULT_CONFIG["model_name"])
     parser.add_argument("--artifacts", default=str(ARTIFACTS))
@@ -160,8 +188,10 @@ def main() -> None:
     config["model_name"] = args.model
     config["epochs"] = args.epochs
     artifacts = Path(args.artifacts)
+    if args.dry_run and artifacts == ARTIFACTS:
+        artifacts = ARTIFACTS / "dry-run"  # what prepare_data.py --dry-run wrote
 
-    ensure_formatted(artifacts)
+    ensure_formatted(artifacts, dry_run=args.dry_run)
     counts = verify_dataset(artifacts)
     device = report_device()
     print("dataset:", counts)

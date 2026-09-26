@@ -8,7 +8,7 @@ An AI-frameworks learning platform. **Markdown lessons + separate Python exercis
 
 - **ML Fundamentals** (weeks 0–17 required job path, 18–20 optional DL): analogy → picture → code → “watch out” → “ship / don’t ship.”
 - **Laptop budget:** no GPU. `load_customer_360` samples ~8k rows; `build_features` is the as-of path. Override with `n=None` only for the full ~49k.
-- **Capstone** (optional, `ml/capstone.md`): the one page that needs a GPU — fine-tunes a small coding-tool-use specialist. The harness (`capstone/`) itself runs CPU-only; only Phase 3 (Colab fine-tune) breaks the no-GPU rule.
+- **Capstone** (optional, `ml/capstone.md`): the one page that needs a GPU — a pipeline on-call specialist. Commands are YAML specs (`capstone/commands/`), a harness chains one-command decisions, and the ablation separates harness from weights. Everything runs CPU-only except Phase 4 (Colab fine-tune).
 - **LangChain** (7 weeks), **LangGraph** (5), **CrewAI** (4, optional).
 
 Synthetic SaaS data in `data/`. CloudWave is the through-line.
@@ -22,10 +22,10 @@ docs/                 MkDocs source = the course
   langchain/ langgraph/ crewai/
 exercises/ml/week-XX/ starter.py the learner runs
 exercises/ml/capstone*/ starter.py for each capstone
-pipelines/            train / score / promote / contract
-capstone/             tool contract, teacher, reliability, eval (GPU capstone)
+pipelines/            train / score / promote / contract / job (score date vs matured-label training) / ranking (score, then user_id)
+capstone/             command specs, validator, harness, teacher, ablation (GPU capstone)
 capstone_ship/        briefs + seeded incident (job-path capstone, CPU)
-capstone_agent/       runbooks, ledger, golden tickets (agent capstone; graph needs .venv-framework)
+capstone_agent/       runbooks, SQLite ledger + checkpoint store, extractive stand-in model, golden tickets (agent capstone; graph needs .venv-framework)
 capstone_sequence/    event sequences + bake-off harness (DL capstone, CPU)
 tests/                pytest gates
 eval/                 golden tickets for the bot

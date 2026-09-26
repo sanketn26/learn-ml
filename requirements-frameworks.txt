@@ -5,6 +5,8 @@ langchain==1.4.2
 langchain-core==1.6.4
 langchain-text-splitters==1.1.2
 langgraph==1.2.12
+# Durable checkpoints for the agent capstone (a paused refund survives a restart).
+langgraph-checkpoint-sqlite==3.1.1
 python-dotenv==1.0.1
 requests==2.32.3
 pydantic==2.13.5

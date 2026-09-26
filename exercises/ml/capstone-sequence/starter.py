@@ -61,6 +61,24 @@ class StaticOnly(nn.Module):
         return self.head(static)
 
 
+class BagOfEvents(nn.Module):
+    """The second control: the same events (types + recency) and the same Steps, pooled as a bag.
+
+    A masked mean has no positions, so it can't tell A-then-B from B-then-A. An encoder that beats
+    StaticOnly but not this has found *which* events and *how recent* — information, not order.
+    """
+
+    def __init__(self, n_static: int) -> None:
+        super().__init__()
+        self.steps = Steps()
+        self.head = Head(D + n_static)
+
+    def forward(self, tokens, recency, mask, static):
+        h = self.steps(tokens, recency)
+        pooled = (h * mask.unsqueeze(-1)).sum(1) / mask.sum(1, keepdim=True).clamp(min=1)
+        return self.head(pooled, static)
+
+
 # --- yours: every forward is (tokens, recency, mask, static) -> logits (B,) ----
 
 class ConvEncoder(nn.Module):
@@ -89,7 +107,7 @@ class AttentionEncoder(nn.Module):
 
 def main() -> None:
     train, test = bakeoff_data()
-    encoders = {"mlp, static only": StaticOnly}
+    encoders = {"mlp, static only": StaticOnly, "bag of events + static": BagOfEvents}
     for name, cls in (("cnn + static", ConvEncoder), ("gru + static", GRUEncoder),
                       ("transformer + static", AttentionEncoder)):
         try:

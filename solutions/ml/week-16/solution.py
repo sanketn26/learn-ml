@@ -72,7 +72,7 @@ def main() -> None:
                 "  pytest tests/",
                 "  python -m pipelines.train --as-of 2024-06-01",
                 "  python -m pipelines.promote --candidate artifacts/20240601",
-                "  python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv",
+                "  python -m pipelines.score_batch --as-of 2024-07-01 --artifact artifacts/prod --out tonight.csv  # labels_known_by",
                 "  head tonight.csv",
             ]
         )

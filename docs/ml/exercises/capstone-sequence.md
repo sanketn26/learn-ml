@@ -4,23 +4,23 @@ description: Deep-learning capstone exercises — build CNN, RNN, and transforme
 
 # Exercises — Capstone — Does the Order of Events Beat the Row?
 
-Weeks 18–20 drew the pictures. Here the three architectures meet a real question with a real bar: the Week-13 GBT on the aggregated row. Every network also gets that row, so the only thing it can add is *order*.
+Weeks 18–20 drew the pictures. Here the three architectures meet a real question with a real bar: the Week-13 GBT on the aggregated row. Every network also gets that row, and a bag-of-events control gets the same events without their order — so you can say what the events added and what the order added, separately.
 
 ## What you are building
 
-Three encoders over each customer's event sequence, a three-seed bake-off against the GBT and a static-only control, one experiment that tests whether order matters, and a verdict you'd sign.
+Three encoders over each customer's event sequence, a three-seed bake-off on two backtest dates against the GBT and two controls (static-only, and bag-of-events), one experiment that tests whether order matters, and a verdict you'd sign.
 
 ## Predict before you run
 
 1. A customer's sequence as of 2024-06-01 has a median of how many events?
-2. Rank the five models by PR-AUC before you train any of them: GBT, static-only MLP, CNN, GRU, transformer.
+2. Rank the six models by PR-AUC before you train any of them: GBT, static-only MLP, bag of events, CNN, GRU, transformer. Will the ranking be the same on a second date?
 3. If you shuffle each test sequence's event order, what happens to a model that genuinely uses order?
 4. How many of the 80 top-scored customers will actually churn — and is a difference of one or two between models a result?
 
 ## Before you start
 
-- CPU only. The full bake-off (5 models × 3 seeds) takes about a minute.
-- Finish Weeks 13 and 18–20 first. `capstone_sequence/` gives you the sequences, the harness, and the GBT; the starter gives you the shared `Steps`, `Head`, and `StaticOnly` modules.
+- CPU only. The full bake-off (6 models × 3 seeds × 2 dates) takes a minute or two.
+- Finish Weeks 13 and 18–20 first. `capstone_sequence/` gives you the sequences, the harness, and the GBT; the starter gives you the shared `Steps`, `Head`, and both controls: `StaticOnly` and `BagOfEvents`.
 - Every encoder's `forward` is `(tokens, recency, mask, static) -> logits`. Sequences are **left-padded**: position `-1` is always the latest real event.
 
 Each task has three hints, closed by default. Open only as far as you need.
@@ -49,10 +49,11 @@ pytest tests/test_capstone_sequence.py
     import torch.nn as nn
 
     from capstone_sequence.data import MAX_LEN, PAD, VOCAB_SIZE, bakeoff_data
-    from capstone_sequence.harness import bakeoff, fit_predict, metrics
+    from capstone_sequence.harness import bakeoff, bakeoff_dates, fit_predict, metrics
 
     D = 16
     N_TRAIN, SEEDS, EPOCHS = 4000, (0, 1), 10  # raise to 8000, (0, 1, 2), 20 for the write-up
+    DATES = ("2024-06-01", "2024-09-01")
 
 
     class Steps(nn.Module):
@@ -81,6 +82,17 @@ pytest tests/test_capstone_sequence.py
 
         def forward(self, tokens, recency, mask, static):
             return self.head(static)
+
+
+    class BagOfEvents(nn.Module):  # the same events and recency, mean-pooled: no order
+        def __init__(self, n_static: int) -> None:
+            super().__init__()
+            self.steps = Steps()
+            self.head = Head(D + n_static)
+
+        def forward(self, tokens, recency, mask, static):
+            h = self.steps(tokens, recency)
+            return self.head((h * mask.unsqueeze(-1)).sum(1) / mask.sum(1, keepdim=True).clamp(min=1), static)
 
 
     class ConvEncoder(nn.Module):
@@ -149,24 +161,29 @@ pytest tests/test_capstone_sequence.py
             return self.head(pooled, static)
     ```
 
-**4. The bake-off.** Run all five models over three seeds. Read the table with its standard deviations.
+**4. The bake-off.** Run all six models over three seeds on two backtest dates. Read each gap against its seed spread, then check whether it survives the other date.
 
 ??? tip "Hint 1 — a nudge"
-    One seed's AUC is an anecdote. Which gaps in your table are bigger than the seed-to-seed spread — and which model is the *control*?
+    One seed's AUC is an anecdote, and one month is an anecdote too. Which gaps are bigger than the seed spread *and* point the same way on both dates? And which control does each encoder need to beat?
 
 ??? tip "Hint 2 — the approach"
-    `bakeoff(encoders, train, test, seeds=...)` returns mean and sd per model, plus PR-AUC lift over the dummy and mean hits in the top 80. Compare each encoder with **the static-only MLP**, not just the GBT: that isolates what the sequence added.
+    `bakeoff_dates(encoders, dates, seeds=..., epochs=...)` runs `bakeoff` on each date and stacks the tables. Read it in three steps per date: bag − static MLP is what the *events* added; encoder − bag is what *order* added; best − GBT is whether to change what ships. An encoder compared only with the static MLP gets credit for the events, the recency, and the extra capacity all at once.
 
 ??? example "Hint 3 — most of the code"
     ```python
     encoders = {
         "mlp, static only": StaticOnly,
+        "bag of events + static": BagOfEvents,
         "cnn + static": ConvEncoder,
         "gru + static": GRUEncoder,
         "transformer + static": AttentionEncoder,
     }
-    table = bakeoff(encoders, train, test, seeds=SEEDS, epochs=EPOCHS)
+    table = bakeoff_dates(encoders, DATES, seeds=SEEDS, epochs=EPOCHS, n_train=N_TRAIN)
     print(table.to_string())
+    for as_of, block in table.groupby(level=0, sort=False):
+        auc = block.droplevel(0)["auc"]
+        print(as_of, f"events added {auc['bag of events + static'] - auc['mlp, static only']:+.4f}",
+              f"order added (gru) {auc['gru + static'] - auc['bag of events + static']:+.4f}")
     ```
 
 **5. Does order matter?** Pick your best sequence model and score the test set twice: as-is, and with each customer's real events shuffled into a random order. Report both AUCs.
@@ -193,8 +210,10 @@ pytest tests/test_capstone_sequence.py
 
 
     scrambled = shuffle_real_events(test)
-    print("as-is    ", metrics(fit_predict(GRUEncoder, train, test, epochs=EPOCHS), test.y)["auc"])
-    print("scrambled", metrics(fit_predict(GRUEncoder, train, scrambled, epochs=EPOCHS), test.y)["auc"])
+    ids = test.frame["user_id"].to_numpy()
+    for name, cls in (("gru", GRUEncoder), ("bag", BagOfEvents)):  # the bag is the check: it can't move
+        print(name, "as-is    ", metrics(fit_predict(cls, train, test, epochs=EPOCHS), test.y, ids)["auc"])
+        print(name, "scrambled", metrics(fit_predict(cls, train, scrambled, epochs=EPOCHS), test.y, ids)["auc"])
     ```
     What the gap — or its absence — means is yours to write.
 
@@ -204,22 +223,22 @@ pytest tests/test_capstone_sequence.py
     The honest verdict can be "the row wins." That's a result, not a failure — as long as the table and the seed spread back it up.
 
 ??? tip "Hint 2 — the approach"
-    Lead with the control comparison: sequence model vs static-only MLP says what order added. Then the GBT comparison. For the brief, `select(test.frame, scores, brief)` and `judge(...)` work on any model's scores — the brief doesn't care which model made them.
+    Lead with the two control comparisons: bag vs static-only MLP says what the events added; your best encoder vs the bag says what order added. Then the GBT comparison — on both dates. For the brief, `select(test.frame, scores, brief)` and `judge(...)` work on any model's scores — the brief doesn't care which model made them.
 
 ??? example "Hint 3 — a skeleton"
     ```text
-    Compared: GBT, a static-only MLP, and CNN / GRU / transformer encoders that also saw the row — <n> seeds, backtest.
-    Won:      <model> at PR-AUC <x> ± <sd>; the gap to <runner-up> is <bigger / smaller> than the seed spread.
-    Sequence: adding event order <helped / did nothing / hurt> by <Δ> against the static-only control, and scrambling order <…>.
+    Compared: GBT, a static-only MLP, a bag of events, and CNN / GRU / transformer encoders that also saw the row — <n> seeds, 2 backtest dates.
+    Won:      <model> at PR-AUC <x> ± <sd>; the gap to <runner-up> is <bigger / smaller> than the seed spread, and <holds / flips> on the other date.
+    Sequence: the events added <Δ> (bag − static); their order added <Δ> (encoder − bag), and scrambling order <…>.
     Changes my mind: <longer histories? event types that mean what they say? a different question?>.
     ```
 
 ## Success criteria
 
 - Three encoders that train without NaNs (every row, including customers with no events).
-- A three-seed table with standard deviations and the static-only control.
+- A three-seed, two-date table with standard deviations and both controls.
 - A scrambled-order result for your best sequence model.
-- A four-sentence verdict that cites the control, the spread, and one brief.
+- A four-sentence verdict that separates events from order, cites the spread and the second date, and one brief.
 
 ## After you run
 

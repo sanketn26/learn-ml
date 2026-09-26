@@ -47,7 +47,7 @@ LOCAL_NEEDS = {
     "lib": ["numpy", "pandas"],
     "pipelines": ["numpy", "pandas", "sklearn", "joblib"],
     "capstone_ship": ["numpy", "pandas", "sklearn", "joblib"],
-    "capstone": [],
+    "capstone": ["numpy", "pandas", "sklearn", "joblib", "yaml"],
     "capstone_agent": [],
     "eval": [],
 }

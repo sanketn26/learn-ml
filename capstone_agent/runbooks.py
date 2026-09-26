@@ -3,6 +3,11 @@
 There is deliberately no runbook for large exports: CW-1847 is an open
 incident, and the honest answer to "why does my 150k-row export time
 out?" is "I don't know yet — a human has it."
+
+A hit needs at least MIN_SHARED content words in common with the question.
+One shared word is noise: "How do I fix a failed payment?" shares only
+"failed" with the password-reset runbook ("Five failed logins lock the
+account"), and answering it from that runbook is confidently wrong.
 """
 
 from __future__ import annotations
@@ -16,16 +21,24 @@ RUNBOOKS = {
              "Cancel anytime. Invoices live in Settings > Billing.",
 }
 
-MIN_SCORE = 0.25  # below this overlap, a hit is noise: say "I don't know"
+STOPWORDS = {"the", "and", "how", "can", "you", "does", "what", "why", "for", "are", "with", "this", "that", "your",
+             "our", "get", "keep", "keeps", "any", "not"}
+MIN_SHARED = 2  # content words a question and a runbook must share before the runbook may answer it
 
 
 def tokens(text: str) -> set[str]:
-    return {t for t in "".join(c.lower() if c.isalnum() else " " for c in text).split() if len(t) > 2}
+    """Lowercased content words, plural 's' stripped so "keys" meets "key"."""
+    words = "".join(c.lower() if c.isalnum() else " " for c in text).split()
+    return {w[:-1] if w.endswith("s") and len(w) > 3 else w for w in words if len(w) > 2 and w not in STOPWORDS}
 
 
 def retrieve(question: str, k: int = 2) -> list[tuple[float, str, str]]:
-    """[(score, doc_id, text)], best first; hits under MIN_SCORE are dropped."""
+    """[(score, doc_id, text)], best first; runbooks sharing fewer than MIN_SHARED words are dropped."""
     q = tokens(question)
-    scored = [(len(q & tokens(text)) / max(len(q), 1), doc_id, text) for doc_id, text in RUNBOOKS.items()]
+    scored = []
+    for doc_id, text in RUNBOOKS.items():
+        shared = q & tokens(text)
+        if len(shared) >= MIN_SHARED:
+            scored.append((len(shared) / max(len(q), 1), doc_id, text))
     scored.sort(key=lambda hit: hit[0], reverse=True)
-    return [hit for hit in scored[:k] if hit[0] >= MIN_SCORE]
+    return scored[:k]

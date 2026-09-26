@@ -1,0 +1,15 @@
+command: slice_column
+purpose: Split one column's zero share and mean ratio by a slice, tonight against last week.
+use_when: compare_nights shows a column's zero share jumped while its mean barely moved. Something stopped landing for some customers, not all.
+not_when: The column's mean ratio is far from 1 — that is a unit or a fan-out, and one customer shows it faster.
+args:
+  column: {type: feature_column, required: true}
+  by: {type: enum, values: [signup_cohort, plan_type], required: true}
+  ref_as_of: {type: date, required: true}
+  as_of: {type: date, required: true, after: ref_as_of}
+returns: "{column, by, slices: [{slice, rows, ref_zero_share, zero_share, mean_ratio}]}"
+next: [slice_column, conclude]
+terminal: false
+side_effects: none
+examples:
+  - "log_usage zero share went from 0.09 to 0.21 overnight; the mean only fell 8%."

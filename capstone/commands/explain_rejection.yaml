@@ -1,0 +1,12 @@
+command: explain_rejection
+purpose: Turn a validate() error into the field it names and the contract rule it broke.
+use_when: The ticket quotes a ValueError or TypeError raised by pipelines.contract.validate.
+not_when: Nothing was rejected — a contract passes values it cannot judge, so a wrong list with no error is an incident.
+args:
+  error: {type: quote, required: true}
+returns: "{rule, fields, fix}"
+next: [conclude]
+terminal: false
+side_effects: none
+examples:
+  - "score_batch died at 02:10: ValueError: unknown keys: ['user_id']"

@@ -90,10 +90,20 @@ From the repo root:
 pytest tests/test_contract.py tests/test_gate.py tests/test_labels.py
 python -m pipelines.train --as-of 2024-06-01
 python -m pipelines.promote --candidate artifacts/20240601
-python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
+python -m pipelines.score_batch --as-of 2024-07-01 --artifact artifacts/prod --out tonight.csv
 ```
 
-`train` backtests (Week 15): it learns on the snapshot `--horizon-days` before `--as-of` (default 30), labelled with what happened by `--as-of`, then scores the `--as-of` snapshot against the next 30 days — the question Priya asked. The horizon, both snapshot dates, and a bootstrap interval on precision@80 go into `metrics.json`, so you do not lie about which question you shipped or how sure you were.
+`train` backtests (Week 15): it learns on the snapshot `--horizon-days` before `--as-of` (default 30), labelled with what happened by `--as-of`, then scores the `--as-of` snapshot against the next 30 days — the question Priya asked. The horizon, both snapshot dates, the date its labels are known by, and a bootstrap interval on precision@80 go into `metrics.json`, so you do not lie about which question you shipped or how sure you were.
+
+That is why the score date is **July 1**, not June 1. The backtest as of June 1 was graded on who churned by July 1; on the morning of June 1 nobody knows that yet. A job has three dates, and they are never the same day:
+
+```
+ train learns on     train is graded on            the job runs and scores
+ 2024-05-02 ────────► 2024-06-01 ─── 30 days ───► 2024-07-01
+ (as_of − horizon)    (as_of)     labels mature    (score date = as_of + horizon)
+```
+
+`python -m pipelines.job --score-date 2024-07-01` does all four steps with the dates derived from the one you know: today. `score_batch` refuses a score date earlier than the model's `labels_known_by`.
 
 `train` never writes `prod`. A human or a green gate does. That is the whole difference between a script and a pipeline.
 
@@ -108,6 +118,10 @@ print(meta["auc"], meta["pr_auc"], meta["dummy_pr_auc"], meta["precision_at_80"]
 ok, reason = gate(Path("artifacts") / meta["model_version"], Path("artifacts") / "prod")
 print("promote?", ok, reason)
 ```
+
+!!! warning "Watch out — compare two models on the same customers"
+
+    prod's `metrics.json` holds its PR-AUC from *its* backtest: a different month, a different base rate, a different mix of easy and hard accounts. PR-AUC moves with all three. A candidate that "beats 0.05" might just have been graded in a month when more people churned. So `gate` loads prod's pipeline and re-scores it on the candidate's matured holdout, then compares the two numbers from the same rows. The reason string says so: `ok: PR-AUC 0.0512 vs prod 0.0498 (same holdout, 27,935 customers)`.
 
 !!! engineer "Engineer mental model"
 

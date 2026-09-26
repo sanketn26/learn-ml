@@ -27,8 +27,23 @@ def _payload(row: dict) -> dict:
     return out
 
 
+def labels_known_by(metrics: dict) -> pd.Timestamp:
+    """The last date whose churn this model's evaluation needed."""
+    if "labels_known_by" in metrics:
+        return pd.Timestamp(metrics["labels_known_by"])
+    return pd.Timestamp(metrics["as_of"]) + pd.Timedelta(days=metrics["horizon_days"])
+
+
 def score_batch(as_of: str, artifact_dir: Path, limit: int = 80) -> pd.DataFrame:
     art = load_artifact(artifact_dir)
+    known_by = labels_known_by(art["metrics"])
+    if pd.Timestamp(as_of) < known_by:
+        # A model backtested as of June 1 was graded on who churned by July 1. On a June 1
+        # morning nobody knows that yet: the job that trained it could not have run.
+        raise ValueError(
+            f"model {art['metrics']['model_version']} was evaluated on churn up to {known_by.date()}; "
+            f"it cannot score {pd.Timestamp(as_of).date()}. Train as of score date − horizon (pipelines/job.py)."
+        )
     frame = build_features(as_of=as_of, n=None, at_risk_only=True)
     for rec in frame[FEATURE_COLS].to_dict(orient="records"):
         validate(_payload(rec))

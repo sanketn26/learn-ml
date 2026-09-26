@@ -107,7 +107,7 @@ Keep this list current as lessons change. It is the fast way to check "does this
 | Job-path capstone ship date / incident night | 2024-06-01 / 2024-06-15 | `docs/ml/capstone-ship.md` |
 | Label everywhere | churn within 30 days of `as_of` (`HORIZON_DAYS`) | `pipelines/labels.py` |
 | Churners at risk on 2024-06-01, 30-day horizon | 532 of 27,935 (1.9%) | `snapshot_split` |
-| Desk list worth (30-day horizon) | ~12 churners per 80 calls (95% CI ≈ 5–20%), ~8× a random 80 | `metrics.json` `precision_at_80_ci95` |
+| Desk list worth (30-day horizon) | ~12 churners per 80 calls (95% CI ≈ 6–24%, resampled with the list's user_id tie-break), ~8× a random 80 | `metrics.json` `precision_at_80_ci95` |
 | Ties at the 80th score | ~2,175 new free accounts share it | `metrics.json` `ties_at_threshold` |
 | Events per at-risk customer (2024-06-01) | median 5, max 760; 205 with none | `capstone_sequence/data.py` |
 | `cancel` events | one per churn inside the log window (11,692), on the churn date | `data/user_events.csv` vs `subscriptions.csv` |

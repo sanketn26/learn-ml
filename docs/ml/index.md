@@ -48,7 +48,7 @@ CloudWave loses about 2% of its customers every month — roughly 550 people. Pr
 | 19 | Optional: RNNs as a clipboard that walks. |
 | 20 | Optional: Transformers as a soft join. |
 | Capstone: sequences | Optional, CPU: CNN, RNN, and transformer over event sequences vs the Week-13 GBT, with a control and seeds. |
-| Capstone: specialist | Optional, needs a GPU: fine-tune a small, reliable coding-tool-use specialist. |
+| Capstone: on-call specialist | Optional, needs a GPU for one phase: spec'd read-only commands, a harness for long investigations, and an ablation of harness vs fine-tuned weights. |
 
 ### What depends on what
 

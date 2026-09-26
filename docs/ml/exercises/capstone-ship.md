@@ -55,6 +55,7 @@ pytest tests/test_capstone_ship.py
     from pipelines.contract import load_artifact, predict, validate
     from pipelines.features import FEATURE_COLS, NUMERIC, build_features
     from pipelines.promote import gate, promote
+    from pipelines.ranking import top_k
     from pipelines.score_batch import _payload, score_batch
     from pipelines.split import snapshot_split
     from pipelines.train import train
@@ -178,21 +179,22 @@ pytest tests/test_capstone_ship.py
     Only one function may write `artifacts/prod`. And the nightly list should be as long as the desk can call — no longer.
 
 ??? tip "Hint 2 — the approach"
-    `promote(candidate, prod)` runs the gate itself. `score_batch(as_of, prod, limit=brief.capacity)` returns tonight's ranked list; save it as `tonight.csv`. The cron is Week 16's, with your horizon and capacity flags.
+    `promote(candidate, prod)` runs the gate itself. Then score the *score date*, not the backtest date: a model backtested as of June 1 was graded on who churned by July 1, so July 1 is the first morning it could exist — `score_batch` refuses anything earlier. `score_batch(SCORE_DATE, prod, limit=brief.capacity)` returns the ranked list; save it as `tonight.csv`. The cron is `pipelines.job`, which keeps the three dates apart for you.
 
 ??? example "Hint 3 — most of the code"
     ```python
     prod = WORKDIR / "artifacts" / "prod"
     promote(candidate, prod)
-    tonight = score_batch(str(AS_OF.date()), prod, limit=RETENTION_DESK.capacity)
+    SCORE_DATE = AS_OF + pd.Timedelta(days=HORIZON)  # the first morning the backtest's labels exist
+    tonight = score_batch(str(SCORE_DATE.date()), prod, limit=RETENTION_DESK.capacity)
     tonight.to_csv(WORKDIR / "tonight.csv", index=False)
     print(tonight.head())
     ```
     ```bash
     set -euo pipefail
     python -m pytest tests/
-    python -m pipelines.train --as-of "$AS_OF"
-    # promote, then score with --limit 80
+    # trains as of (today − 30d) on matured labels, gates on the same holdout, scores today
+    python -m pipelines.job --score-date "$(date +%F)" --horizon-days 30 --limit 80
     ```
 
 **7. The incident.** Two weeks later, Priya says Monday's list "looks like strangers." Implement `step7_incident`: compare the incident night's frame (`incident_frame(INCIDENT_NIGHT, seed)`) with the week before, name the corrupted columns, and check them with `diagnose(seed, columns)`.
@@ -206,7 +208,7 @@ pytest tests/test_capstone_ship.py
 ??? example "Hint 3 — most of the code"
     ```python
     SEED = 0
-    night = AS_OF + pd.Timedelta(days=14)
+    night = SCORE_DATE + pd.Timedelta(days=14)
     reference = build_features(night - pd.Timedelta(days=7), n=None)
     tonight_frame = incident_frame(night, seed=SEED)
     print(f"rows: last week={len(reference):,}  tonight={len(tonight_frame):,}")
@@ -215,7 +217,7 @@ pytest tests/test_capstone_ship.py
 
     def top80(frame: pd.DataFrame) -> set:
         s = load_artifact(prod)["pipeline"].predict_proba(frame[FEATURE_COLS])[:, 1]
-        return set(frame["user_id"].to_numpy()[np.argsort(-s)[:80]])
+        return set(frame["user_id"].to_numpy()[top_k(s, frame["user_id"], 80)])  # same tie-break as the list
 
 
     clean_tonight = build_features(night, n=None)

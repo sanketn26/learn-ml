@@ -9,7 +9,7 @@ Marcus has read a blog post: *every churn model should be a transformer over the
 ??? note "Course details"
 
     **Closes:** the optional deep-learning weeks (18–20), with Week 13's GBT as the bar.
-    **Runs on:** CPU, the main venv. The full bake-off — five models, three seeds — takes about a minute.
+    **Runs on:** CPU, the main venv. The full bake-off — six models, three seeds, two backtest dates — takes a minute or two.
 
 ---
 
@@ -17,7 +17,8 @@ Marcus has read a blog post: *every churn model should be a transformer over the
 
 - Turn an event log into leak-free, padded sequences on the same backtest split the job path uses
 - Build CNN, RNN, and transformer encoders that respect padding and see the same static row as the GBT
-- Run a bake-off with a **control** and **several seeds**, and read a gap against its spread
+- Run a bake-off with **two controls**, **several seeds**, and **more than one date**, and read a gap against its spread
+- Separate what the *events* add from what their *order* adds
 - Test whether a model uses *order* by scrambling it
 - Write a verdict that says "the simpler model wins" when that's what the numbers say
 
@@ -28,20 +29,26 @@ Marcus has read a blog post: *every churn model should be a transformer over the
 ## The picture
 
 ```
- one at-risk customer, as of 2024-06-01 (median: 3 events; max kept: 16)
+ one at-risk customer, as of 2024-06-01 (median: 5 events; max kept: 16)
 
  tokens   [PAD PAD PAD … PAD  login  page_view  login]   ← left-padded: position -1 is the latest event
  recency  [ 0   0   0  …  0   0.92     0.90     0.65 ]   ← log-days before as_of
  static   [mrr, tenure_so_far, log_usage, …, plan]       ← the same row the GBT sees
 
             ┌─ GBT (week 13)          static only           ← the bar
-            ├─ MLP                    static only           ← the control: same head, no sequence
- scores ◄───┼─ CNN         + static   sliding detector      (week 18)
+            ├─ MLP                    static only           ← control 1: no events at all
+ scores ◄───┼─ bag of events + static same events, no order ← control 2: types + recency, mean-pooled
+            ├─ CNN         + static   sliding detector      (week 18)
             ├─ GRU         + static   walking clipboard     (week 19)
             └─ transformer + static   everything-looks-at-everything (week 20)
 ```
 
-Every network gets the static row, so the control and the encoders differ in exactly one thing: the sequence. If an encoder only matches the control, order added nothing.
+Adding a sequence adds three things at once: *which* events happened, *how recently*, and the *order* they came in — plus a bigger model to fit them. Comparing an encoder with the static MLP measures all of that together. The bag control sees the same events and the same recency through the same step embedding, but pools them with a mean, so it cannot tell login-then-cancel-page from the reverse. That splits the gain in two:
+
+```
+ events added = bag − static MLP          which events, how recent
+ order  added = encoder − bag             the sequence itself
+```
 
 ```python
 from capstone_sequence.data import EVENT_TYPES, NONE, bakeoff_data
@@ -75,40 +82,42 @@ Each encoder is `(tokens, recency, mask, static) -> logit`, built from a shared 
 
 ## Read the gap against the spread
 
-`bakeoff` trains every model over several seeds with a class-weighted loss (positives are ~2% of customers; ~7% of training rows once negatives are downsampled to 8,000) and reports mean and standard deviation of AUC and PR-AUC, lift over the dummy, and hits in the top 80. Two readings matter:
+`bakeoff` trains every model over several seeds with a class-weighted loss (positives are ~2% of customers; ~7% of training rows once negatives are downsampled to 8,000) and reports mean and standard deviation of AUC and PR-AUC, lift over the dummy, and hits in the top 80 (ranked by score, ties broken by `user_id`, like every list in the course). `bakeoff_dates` runs the whole thing on two backtest dates. Three readings matter:
 
-1. **Encoder vs control** — what the sequence added.
-2. **Best model vs GBT** — whether any of this is worth changing what ships.
+1. **Bag vs static MLP** — what the events added: which ones, how recent.
+2. **Encoder vs bag** — what *order* added, on top of the same events.
+3. **Best model vs GBT** — whether any of this is worth changing what ships.
 
-Then one experiment for *why*: scramble each test customer's real events into a random order. A model that uses order should get worse.
+Then one experiment for *why*: scramble each test customer's real events into a random order, tokens and recency together. The bag can't notice — it never saw order. A model that uses order should get worse.
 
 !!! warning "Watch out — an event name is not a label"
 
     The event log has a `cancel` type, logged on the day a customer churns. It looks like the perfect feature. Check where it can appear: a customer at risk on `as_of` has, by definition, not churned yet — so no at-risk sequence ever contains `cancel`. If one does, your `as_of` cut is broken and the model is reading the answer key. The label comes from `churn_date` in `subscriptions.csv`, what finance booked; an event name is what an instrumentation engineer typed, and it only means what the cut lets it mean.
 
-!!! warning "Watch out — a gap smaller than the seed spread is not a result"
+!!! warning "Watch out — a gap smaller than the seed spread is not a result, and seeds are not dates"
 
-    Top-80 hits are a handful at most on this data, and they move between seeds; AUC moves by about a hundredth. A model that "wins" by less than its own spread hasn't won. Report the spread next to every number, or don't report the number.
+    Top-80 hits are a handful at most on this data, and they move between seeds; AUC moves by a few thousandths. A model that "wins" by less than its own spread hasn't won. But a small seed spread only says the result is stable *on this month's customers*. Re-run on a second backtest date: if the ranking of models flips between dates, the seed spread was hiding the real uncertainty. Report the spread next to every number, on more than one date, or don't report the number.
 
 ??? success "The reference run — open after your own bake-off"
 
-    Three seeds, 20 epochs, 8,000 training rows, the full 27,935-row test set, 30-day label (base rate 1.9%):
+    Three seeds, 20 epochs, 8,000 training rows, the full test snapshot, 30-day label, on two backtest dates:
 
-    | Model | AUC (± sd) | PR-AUC (± sd) | Lift over dummy |
-    |---|---|---|---|
-    | GBT (week 13) | 0.744 | 0.051 | 2.7× |
-    | MLP, static only | 0.753 ± 0.002 | 0.056 ± 0.002 | 2.9× |
-    | CNN + static | 0.756 ± 0.004 | 0.054 ± 0.004 | 2.8× |
-    | GRU + static | 0.756 ± 0.001 | 0.052 ± 0.000 | 2.7× |
-    | Transformer + static | 0.748 ± 0.006 | 0.052 ± 0.001 | 2.7× |
+    | Model | AUC 06-01 (± sd) | PR-AUC 06-01 | AUC 09-01 (± sd) | PR-AUC 09-01 |
+    |---|---|---|---|---|
+    | GBT (week 13) | 0.744 | 0.051 | 0.773 | 0.063 |
+    | MLP, static only | 0.753 ± 0.002 | 0.056 | 0.766 ± 0.001 | 0.063 |
+    | Bag of events + static | 0.758 ± 0.002 | 0.052 | 0.768 ± 0.001 | 0.058 |
+    | CNN + static | 0.756 ± 0.004 | 0.054 | 0.761 ± 0.003 | 0.055 |
+    | GRU + static | 0.756 ± 0.001 | 0.052 | 0.768 ± 0.001 | 0.057 |
+    | Transformer + static | 0.748 ± 0.006 | 0.052 | 0.770 ± 0.002 | 0.059 |
 
-    No encoder beats the same head with no sequence by more than its spread: the CNN and GRU edge the control on AUC by 0.003, and trail it on PR-AUC. Scrambling event order costs the GRU about 0.004 AUC — more than its own seed spread, so it *is* reading order a little — and costs the transformer nothing. The order the GRU found is real and worth nothing: the churn signal in this file is *how much* a customer is still doing, which the static row already carries, not the sequence it happened in. The sequence gives the networks more to overfit, not more to learn. The row wins; which model reads it matters much less (the MLP edges the GBT here, well within what a different horizon or sample could reverse). Marcus's transformer doesn't ship, and it doesn't need a GPU to find that out.
+    Read it in the three steps. **Events** (bag − static): +0.005 and +0.002 AUC — a little, on both dates — while PR-AUC *falls* on both (0.056 → 0.052, 0.063 → 0.058): the extra inputs help the ranking in the middle of the list and hurt it at the top, which is where Priya's 80 live. **Order** (best encoder − bag): −0.002 on June 1, +0.002 on September 1 — the same size as the seed spread, pointing different ways on different dates. That is not a finding. Scrambling order costs the GRU about 0.004 AUC, so it *reads* order a little; reading it isn't the same as it being worth anything. **The bar**: the static MLP beats the GBT on June 1 and loses to it on September 1. A seed spread of ±0.002 made the June result look solid; the second date says the ranking of the simple models is a coin that flips by month. The churn signal in this file is *how much* a customer is still doing, which the static row already carries. Marcus's transformer doesn't ship, the GBT stays, and none of it needed a GPU to find out.
 
 ## Ship / don't ship
 
 !!! success "Ship / don't ship"
 
-    **Ship** an architecture change when it beats the model in production by more than its seed spread, *and* beats a control that isolates what it added, on the same backtest and the same brief. **Don't ship** a model because its architecture is newer, because one seed looked good, or because a benchmark left out the control.
+    **Ship** an architecture change when it beats the model in production by more than its seed spread, on more than one backtest date, *and* beats a control that isolates what it added — the bag, if it claims order — on the same brief. **Don't ship** a model because its architecture is newer, because one seed or one month looked good, or because a benchmark compared it with a control that differs in three things at once.
 
 ## ✍️ Exercise
 
@@ -117,5 +126,5 @@ Then one experiment for *why*: scramble each test customer's real events into a 
 ## 🤔 Reflection
 
 1. What would the event log need — longer histories, different event types, a different question — before order could plausibly matter?
-2. The MLP edged the GBT here. Would you replace the GBT in production on that result? What would you check first?
+2. The MLP beat the GBT on June 1 and lost on September 1. How many dates would you want before replacing the GBT — and what else would you check first?
 3. Which scenario-bank brief is most sensitive to a small PR-AUC difference, and which barely notices it?

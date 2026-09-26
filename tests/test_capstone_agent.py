@@ -24,6 +24,23 @@ def test_retrieve_answers_known_questions_and_refuses_the_open_incident():
     assert retrieve("My export keeps timing out around 150k rows (CW-1847). Why?") == []
 
 
+def test_one_shared_word_is_not_a_hit():
+    # "failed" appears in the password runbook ("Five failed logins"); that is not an answer to a payment question.
+    assert retrieve("How do I fix a failed payment?") == []
+
+
+def test_the_ledger_is_a_file_a_new_process_can_reopen(tmp_path: Path):
+    path = tmp_path / "ledger.sqlite"
+    first = Ledger(path)
+    first.crash_after_next_write()
+    with pytest.raises(ProcessDied):
+        first.credit("t1:CW-1847:credit", "user_041906", 2900)
+    first.close()  # the process is gone
+    second = Ledger(path)
+    assert second.credit("t1:CW-1847:credit", "user_041906", 2900)["replayed"]
+    assert second.total_cents("user_041906") == 2900 and second.calls == 2
+
+
 def test_ledger_is_idempotent_even_across_a_crash():
     ledger = Ledger()
     ledger.crash_after_next_write()
@@ -77,3 +94,22 @@ def test_decisions_and_crash_drills():
     assert crash["last_log"] == "replayed" and crash["ledger_calls"] == 2
     assert crash["credited_cents"] == solution.CREDIT_CENTS
     assert SCORES  # fixture present
+
+
+def test_golden_gate_catches_a_model_that_ignores_its_context():
+    solution = _solution()  # skips when the framework stack isn't installed
+    from capstone_agent.golden import evaluate
+    from langchain_core.language_models import FakeListChatModel
+
+    canned = FakeListChatModel(responses=["Per the runbook: Settings > API Keys, then Generate."])
+    rows = evaluate(lambda ledger, scores: solution.build_agent(ledger, scores, model=canned))
+    failed = {r["id"] for r in rows if not r["ok"]}
+    assert "g8" in failed  # it cited password-reset and answered about API keys
+
+
+def test_a_paused_refund_survives_a_restart_and_pays_once(tmp_path: Path):
+    pytest.importorskip("langgraph.checkpoint.sqlite")
+    restart = _solution().drill_restart(tmp_path)
+    assert restart["waiting_after_restart"] == ("issue_credit",)
+    assert restart["last_log"] == "replayed" and restart["ledger_calls"] == 2
+    assert restart["credited_cents"] == 2900

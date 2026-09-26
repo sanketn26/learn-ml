@@ -4,8 +4,10 @@ Run from the repo root:
 
     python solutions/ml/capstone-sequence/solution.py
 
-CPU, about a minute. Every network sees the event sequence *and* the same
-static row the GBT sees, so the only thing a network can add is order.
+CPU, a few minutes. Two controls isolate what the sequence adds:
+StaticOnly (no events at all) and BagOfEvents (the same events and recency,
+no order). Encoder − bag is what *order* added; bag − static is what the
+events themselves added. The bake-off runs on two backtest dates.
 """
 
 from __future__ import annotations
@@ -20,7 +22,7 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
 from capstone_sequence.data import MAX_LEN, PAD, VOCAB_SIZE, bakeoff_data
-from capstone_sequence.harness import bakeoff
+from capstone_sequence.harness import bakeoff, bakeoff_dates
 
 D = 16
 
@@ -57,6 +59,24 @@ class StaticOnly(nn.Module):
 
     def forward(self, tokens, recency, mask, static):
         return self.head(static)
+
+
+class BagOfEvents(nn.Module):
+    """The second control: the same events (types + recency) and the same Steps, pooled as a bag.
+
+    A masked mean has no positions, so it can't tell A-then-B from B-then-A. An encoder that beats
+    StaticOnly but not this has found *which* events and *how recent* — information, not order.
+    """
+
+    def __init__(self, n_static: int) -> None:
+        super().__init__()
+        self.steps = Steps()
+        self.head = Head(D + n_static)
+
+    def forward(self, tokens, recency, mask, static):
+        h = self.steps(tokens, recency)
+        pooled = (h * mask.unsqueeze(-1)).sum(1) / mask.sum(1, keepdim=True).clamp(min=1)
+        return self.head(pooled, static)
 
 
 class ConvEncoder(nn.Module):
@@ -108,23 +128,27 @@ class AttentionEncoder(nn.Module):
 
 ENCODERS = {
     "mlp, static only": StaticOnly,
+    "bag of events + static": BagOfEvents,
     "cnn + static": ConvEncoder,
     "gru + static": GRUEncoder,
     "transformer + static": AttentionEncoder,
 }
 
 
-def run(seeds: tuple[int, ...] = (0, 1, 2), epochs: int = 20, n_train: int = 8000):
-    train, test = bakeoff_data(n_train=n_train)
-    return bakeoff(ENCODERS, train, test, seeds=seeds, epochs=epochs)
+def run(seeds: tuple[int, ...] = (0, 1, 2), epochs: int = 20, n_train: int = 8000,
+        dates: tuple[str, ...] = ("2024-06-01", "2024-09-01")):
+    return bakeoff_dates(ENCODERS, dates, seeds=seeds, epochs=epochs, n_train=n_train)
 
 
 def main() -> None:
     table = run()
     print(table.to_string())
-    best_net = table.drop(index="gbt (week 13)")["pr_auc"].idxmax()
-    print(f"\nbest network: {best_net}; GBT PR-AUC {table.loc['gbt (week 13)', 'pr_auc']:.4f} "
-          f"vs {table.loc[best_net, 'pr_auc']:.4f}")
+    for as_of, block in table.groupby(level=0, sort=False):
+        block = block.droplevel(0)
+        static, bag = block.loc["mlp, static only", "auc"], block.loc["bag of events + static", "auc"]
+        best = block.drop(index=["gbt (week 13)", "mlp, static only", "bag of events + static"])["auc"].idxmax()
+        print(f"{as_of}: events added {bag - static:+.4f} AUC (bag − static); "
+              f"order added {block.loc[best, 'auc'] - bag:+.4f} ({best} − bag)")
 
 
 if __name__ == "__main__":

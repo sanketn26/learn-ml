@@ -4,9 +4,10 @@ Run from the repo root, in the framework venv:
 
     .venv-framework/bin/python solutions/ml/capstone-agent/solution.py
 
-No API key: the only model is FakeListChatModel, and it never routes. Routing is
-a keyword firewall; money moves only after a human approves; the credit
-write is keyed so a resume cannot pay twice.
+No API key: the only model is an extractive stand-in that can only repeat the
+retrieved runbook, and it never routes. Routing is a keyword firewall; money
+moves only after a human approves; the credit write is keyed so a resume
+cannot pay twice; and with `open_store`, a paused refund survives a restart.
 """
 
 from __future__ import annotations
@@ -19,7 +20,6 @@ from typing import Annotated, TypedDict
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from langchain_core.language_models import FakeListChatModel
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableConfig
@@ -28,6 +28,8 @@ from langgraph.graph import END, START, StateGraph
 
 from capstone_agent.golden import CW_1847_CUSTOMER, SCORES, evaluate
 from capstone_agent.ledger import Ledger, ProcessDied
+from capstone_agent.model import extractive_model
+from capstone_agent.storage import close_store, open_store
 from capstone_agent.runbooks import retrieve
 from eval.router import allowed_tools
 
@@ -49,13 +51,12 @@ class Ticket(TypedDict, total=False):
     log: Annotated[list[str], operator.add]
 
 
-def build_agent(ledger: Ledger, scores: dict, checkpointer=None, approval_gate: bool = True):
-    llm = FakeListChatModel(responses=["Per the runbook: Settings > API Keys, then Generate. Send it as a Bearer token."])
+def build_agent(ledger: Ledger, scores: dict, checkpointer=None, approval_gate: bool = True, model=None):
     answer_chain = (
         ChatPromptTemplate.from_template(
             "Answer ONLY from these CloudWave runbooks, or say you don't know.\n{context}\n\nQ: {question}"
         )
-        | llm
+        | (model or extractive_model())  # a different model only for the test's negative control
         | StrOutputParser()
     )
 
@@ -147,6 +148,31 @@ def drill_crash_after_write() -> dict:
             "credited_cents": ledger.total_cents(CW_1847_CUSTOMER)}
 
 
+def drill_restart(directory: Path) -> dict:
+    """LangGraph Week 3, for real: pause a refund, lose the process, approve it from a new one."""
+    config = {"configurable": {"thread_id": "drill-restart"}}
+    saver, ledger = open_store(directory)
+    build_agent(ledger, SCORES, checkpointer=saver).invoke(REFUND, config)
+    close_store(saver, ledger)  # the deploy: every object in memory is gone
+
+    saver, ledger = open_store(directory)  # a new process, the same files
+    app = build_agent(ledger, SCORES, checkpointer=saver)
+    waiting = app.get_state(config).next
+    app.update_state(config, {"decision": "approve"})
+    ledger.crash_after_next_write()
+    try:
+        app.invoke(None, config)
+    except ProcessDied:
+        close_store(saver, ledger)  # and it dies again, after billing said 200
+
+    saver, ledger = open_store(directory)
+    resumed = build_agent(ledger, SCORES, checkpointer=saver).invoke(None, config)
+    out = {"waiting_after_restart": waiting, "last_log": resumed["log"][-1], "ledger_calls": ledger.calls,
+           "credited_cents": ledger.total_cents(CW_1847_CUSTOMER)}
+    close_store(saver, ledger)
+    return out
+
+
 def main() -> None:
     rows = evaluate(build_agent)
     for row in rows:
@@ -154,6 +180,10 @@ def main() -> None:
     print("golden failures:", sum(not r["ok"] for r in rows))
     print("decisions:", drill_decisions())
     print("crash after write:", drill_crash_after_write())
+    import tempfile
+
+    with tempfile.TemporaryDirectory() as tmp:
+        print("restart:", drill_restart(Path(tmp)))
 
 
 if __name__ == "__main__":

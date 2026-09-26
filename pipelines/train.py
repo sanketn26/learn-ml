@@ -22,26 +22,31 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from pipelines.features import AS_OF_DEFAULT, CATEGORICAL, FEATURE_COLS, NUMERIC
+from pipelines.ranking import precision_at_k, top_k
 from pipelines.split import BACKTEST_HORIZON_DAYS, snapshot_split
 
 BUDGET = 80
 
 
-def _threshold_for_budget(y: np.ndarray, scores: np.ndarray, budget: int) -> float:
+def _threshold_for_budget(scores: np.ndarray, user_ids: np.ndarray, budget: int) -> float:
+    """The score of the last name on a capacity-sized list."""
     if len(scores) == 0:
         return 1.0
-    k = min(budget, len(scores))
-    return float(np.partition(scores, -k)[-k])
+    return float(scores[top_k(scores, user_ids, budget)[-1]])
 
 
-def _precision_ci(y: np.ndarray, scores: np.ndarray, budget: int, n_boot: int = 500, rng: int = 0) -> list[float]:
-    """95% bootstrap interval on precision@budget. One backtest is one draw."""
+def _precision_ci(y: np.ndarray, scores: np.ndarray, user_ids: np.ndarray, budget: int,
+                  n_boot: int = 500, rng: int = 0) -> list[float]:
+    """95% bootstrap interval on precision@budget. One backtest is one draw.
+
+    Each resample ranks with the same tie-break as the shipped list; a bare argsort
+    would pick an arbitrary slice of the tie plateau in every draw.
+    """
     gen = np.random.default_rng(rng)
-    k = min(budget, len(scores))
     draws = []
     for _ in range(n_boot):
         i = gen.integers(0, len(y), len(y))
-        draws.append(y[i][np.argsort(-scores[i])[:k]].mean())
+        draws.append(precision_at_k(y[i], scores[i], user_ids[i], budget))
     return [round(float(q), 4) for q in np.percentile(draws, [2.5, 97.5])]
 
 
@@ -104,17 +109,19 @@ def train(as_of: str, out_dir: Path, n: int | None = None, horizon_days: int = B
     dummy_ap = average_precision_score(y_test, np.full(len(y_test), dummy))
     ap = average_precision_score(y_test, scores)
     auc = roc_auc_score(y_test, scores)
-    threshold = _threshold_for_budget(y_test.to_numpy(), scores, BUDGET)
+    ids, y_np = test_df["user_id"].to_numpy(), y_test.to_numpy()
+    threshold = _threshold_for_budget(scores, ids, BUDGET)
     flagged = scores >= threshold
-    # Same order the desk list uses: score, then user_id to break ties.
-    order = np.lexsort((test_df["user_id"].to_numpy(), -scores))
-    precision_at_budget = float(y_test.to_numpy()[order[:BUDGET]].mean()) if len(y_test) else 0.0
+    precision_at_budget = precision_at_k(y_np, scores, ids, BUDGET)  # the desk's list: score, then user_id
 
     version = as_of_ts.strftime("%Y%m%d")
     meta = {
         "model_version": version,
         "as_of": str(as_of_ts.date()),
         "train_as_of": str((as_of_ts - pd.Timedelta(days=horizon_days)).date()),
+        # Every number below was graded on churn up to this date. Scoring earlier than it would mean
+        # this model's evaluation used labels that don't exist yet on the scoring morning.
+        "labels_known_by": str((as_of_ts + pd.Timedelta(days=horizon_days)).date()),
         "label": f"churn within {horizon_days} days",
         "horizon_days": horizon_days,
         "trained_at": datetime.now(timezone.utc).isoformat(),
@@ -126,7 +133,7 @@ def train(as_of: str, out_dir: Path, n: int | None = None, horizon_days: int = B
         "dummy_pr_auc": round(float(dummy_ap), 4),
         "threshold": round(threshold, 4),
         "precision_at_80": round(precision_at_budget, 4),
-        "precision_at_80_ci95": _precision_ci(y_test.to_numpy(), scores, BUDGET),
+        "precision_at_80_ci95": _precision_ci(y_np, scores, ids, BUDGET),
         "flag_rate": round(float(flagged.mean()), 4),
         # Customers sharing the 80th score. If this is large, `score >= threshold`
         # flags far more than the budget — rank and cut, do not threshold.

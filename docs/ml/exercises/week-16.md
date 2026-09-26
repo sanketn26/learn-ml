@@ -36,7 +36,7 @@ Full pipeline (after you trust the starter):
 ```bash
 python -m pipelines.train --as-of 2024-06-01
 python -m pipelines.promote --candidate artifacts/20240601
-python -m pipelines.score_batch --as-of 2024-06-01 --artifact artifacts/prod --out tonight.csv
+python -m pipelines.score_batch --as-of 2024-07-01 --artifact artifacts/prod --out tonight.csv
 head tonight.csv
 ```
 
@@ -122,15 +122,15 @@ head tonight.csv
     Four commands, and each one should stop the next from running if it fails. What shell option gives you that for free?
 
 ??? tip "Hint 2 — the approach"
-    `set -euo pipefail` on line one, then the four commands from the top of this page in order. A refused promote exits non-zero — that should stop the score step from running on a stale model? Decide, and write the answer as a comment.
+    `set -euo pipefail` on line one, then the four commands from the top of this page in order. Two dates, not one: train as of today − 30 days (the latest backtest whose labels have matured), score today — `score_batch` refuses a model whose labels aren't known yet. A refused promote exits non-zero — should that stop the score step from running on the old prod? Decide, and write the answer as a comment. (`python -m pipelines.job --score-date <today>` is the same four steps in one command, once you've written them out by hand.)
 
 ??? example "Hint 3 — a skeleton"
     ```bash
     set -euo pipefail
     python -m pytest tests/
-    python -m pipelines.train --as-of "<date>"
-    python -m pipelines.promote --candidate "artifacts/<version>"
-    python -m pipelines.score_batch --as-of "<date>" --artifact artifacts/prod --out tonight.csv
+    python -m pipelines.train --as-of "<today − 30 days>"        # labels matured by today
+    python -m pipelines.promote --candidate "artifacts/<version>"  # gate re-scores prod on the same holdout
+    python -m pipelines.score_batch --as-of "<today>" --artifact artifacts/prod --out tonight.csv
     ```
 
 ## Success criteria

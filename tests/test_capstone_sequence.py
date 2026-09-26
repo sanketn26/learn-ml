@@ -72,3 +72,24 @@ def test_reference_bakeoff_runs_every_encoder_against_the_gbt(splits):
     assert list(table.index) == ["gbt (week 13)", *solution.ENCODERS]
     assert np.isfinite(table[["auc", "pr_auc"]].to_numpy()).all()
     assert table.loc["gbt (week 13)", "pr_lift"] > 1          # the bar is above chance
+
+
+def test_the_bag_control_cannot_see_order(splits):
+    import torch
+
+    solution = _solution()
+    _, test = splits
+    rows = slice(0, 256)
+    tokens, recency = test.tokens[rows].copy(), test.recency[rows].copy()
+    mask, static = test.mask[rows], test.static[rows]
+    rng = np.random.default_rng(0)
+    shuffled_t, shuffled_r = tokens.copy(), recency.copy()
+    for i in range(len(tokens)):
+        real = np.flatnonzero(mask[i])
+        order = rng.permutation(real)
+        shuffled_t[i, real], shuffled_r[i, real] = tokens[i, order], recency[i, order]
+    torch.manual_seed(0)
+    bag = solution.BagOfEvents(static.shape[1]).eval()
+    as_tensors = lambda t, r: (torch.from_numpy(t), torch.from_numpy(r), torch.from_numpy(mask), torch.from_numpy(static))
+    with torch.no_grad():
+        assert torch.allclose(bag(*as_tensors(tokens, recency)), bag(*as_tensors(shuffled_t, shuffled_r)), atol=1e-6)

@@ -1,0 +1,14 @@
+command: compare_nights
+purpose: Compare each feature column's mean, zero share and p95 between last week and tonight.
+use_when: The grain is fine but the list still moved. Normal week-over-week movement is a few percent; a unit change or a doubled count is not.
+not_when: You have not checked the grain yet, or the ticket is a contract error.
+args:
+  columns: {type: "list[feature_column]", required: true}
+  ref_as_of: {type: date, required: true}
+  as_of: {type: date, required: true, after: ref_as_of}
+returns: "{shifts: [{column, mean_ratio, ref_zero_share, zero_share, p95_ratio}], example_user_id}"
+next: [inspect_customer, slice_column, escalate]
+terminal: false
+side_effects: none
+examples:
+  - "check_grain passed, but tonight's list shares almost nobody with last week's."

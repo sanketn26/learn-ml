@@ -15,7 +15,6 @@ import json
 import sys
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -26,13 +25,15 @@ from capstone_ship.incident import column_shift, diagnose, incident_frame
 from pipelines.contract import load_artifact, predict, validate
 from pipelines.features import FEATURE_COLS, NUMERIC, build_features
 from pipelines.promote import gate, promote
+from pipelines.ranking import top_k
 from pipelines.score_batch import _payload, score_batch
 from pipelines.split import snapshot_split
 from pipelines.train import train
 
-AS_OF = pd.Timestamp("2024-06-01")
+AS_OF = pd.Timestamp("2024-06-01")         # the backtest: graded on churn in (AS_OF, AS_OF + HORIZON]
 HORIZON = 30
-INCIDENT_NIGHT = AS_OF + pd.Timedelta(days=14)
+SCORE_DATE = AS_OF + pd.Timedelta(days=HORIZON)  # the first Monday those labels exist: the job's real morning
+INCIDENT_NIGHT = SCORE_DATE + pd.Timedelta(days=14)
 
 
 def step1_features(as_of: pd.Timestamp = AS_OF) -> pd.DataFrame:
@@ -90,19 +91,19 @@ def step5_contract(candidate: Path, test_df: pd.DataFrame) -> dict:
     return response
 
 
-def step6_promote_and_score(candidate: Path, prod: Path, as_of: pd.Timestamp = AS_OF,
+def step6_promote_and_score(candidate: Path, prod: Path, score_date: pd.Timestamp = SCORE_DATE,
                             brief: Brief = RETENTION_DESK) -> pd.DataFrame:
     promote(candidate, prod)
-    tonight = score_batch(str(as_of.date()), prod, limit=brief.capacity)
+    # Score the morning the backtest's labels became known — never the backtest date itself.
+    tonight = score_batch(str(score_date.date()), prod, limit=brief.capacity)
     tonight.to_csv(prod.parent / "tonight.csv", index=False)
     return tonight
 
 
 CRON = """set -euo pipefail
 python -m pytest tests/
-python -m pipelines.train --as-of "$AS_OF"
-python -m pipelines.promote --candidate "artifacts/${AS_OF//-/}"
-python -m pipelines.score_batch --as-of "$AS_OF" --artifact artifacts/prod --limit 80 --out tonight.csv
+# trains as of (today - 30d) on matured labels, gates on the same holdout, scores today
+python -m pipelines.job --score-date "$(date +%F)" --horizon-days 30 --limit 80 --csv tonight.csv
 """
 
 
@@ -120,7 +121,7 @@ def step7_incident(prod: Path, seed: int, night: pd.Timestamp = INCIDENT_NIGHT,
 
     def top(frame: pd.DataFrame) -> set:
         scores = art["pipeline"].predict_proba(frame[FEATURE_COLS])[:, 1]
-        return set(frame["user_id"].to_numpy()[np.argsort(-scores)[:RETENTION_DESK.capacity]])
+        return set(frame["user_id"].to_numpy()[top_k(scores, frame["user_id"], RETENTION_DESK.capacity)])
 
     return {
         "suspects": suspects,

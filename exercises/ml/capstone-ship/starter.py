@@ -29,9 +29,10 @@ from pipelines.split import snapshot_split  # noqa: F401
 from pipelines.train import train  # noqa: F401
 
 WORKDIR = ROOT / "artifacts" / "capstone-ship"
-AS_OF = pd.Timestamp("2024-06-01")
+AS_OF = pd.Timestamp("2024-06-01")  # the backtest date
 HORIZON = 30  # TODO (step 2): justify this number in your write-up
-INCIDENT_NIGHT = AS_OF + pd.Timedelta(days=14)
+SCORE_DATE = AS_OF + pd.Timedelta(days=HORIZON)  # the first morning the backtest's labels exist
+INCIDENT_NIGHT = SCORE_DATE + pd.Timedelta(days=14)
 SEED = 0  # your incident; any integer
 
 
@@ -61,9 +62,9 @@ def step5_contract(candidate: Path, test_df: pd.DataFrame) -> dict:
     raise NotImplementedError("step 5: predict + three validate() rejections")
 
 
-def step6_promote_and_score(candidate: Path, prod: Path, as_of: pd.Timestamp = AS_OF,
+def step6_promote_and_score(candidate: Path, prod: Path, score_date: pd.Timestamp = SCORE_DATE,
                             brief: Brief = RETENTION_DESK) -> pd.DataFrame:
-    """Promote through the gate, then score tonight's list at the brief's capacity."""
+    """Promote through the gate, then score the SCORE_DATE list at the brief's capacity."""
     raise NotImplementedError("step 6: promote + score_batch")
 
 

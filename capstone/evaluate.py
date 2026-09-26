@@ -1,82 +1,104 @@
-"""Phase 5 — evaluate. Same shape as eval/router.py's golden-file check:
-deterministic, no API key, a failure count you can wire into `pytest`.
+"""Phase 5 — the ablation: is the gain in the weights or in the harness?
 
-Out of the box `specialist_call` is a placeholder that returns the golden
-answer — it stands in for "a fine-tuned model that has fully converged" so
-you can run the harness before you've trained anything. Once Phase 3 (Colab
-fine-tune, see docs/ml/capstone.md) is done, point SPECIALIST_CALL at real
-local inference (llama.cpp / GGUF) and rerun — the gap between this
-placeholder ceiling and your real model's score is your specialization gap.
+Every policy runs the same cases twice: `loop` (sees each result, gets its
+rejections back) and `one_shot` (plans from the ticket alone). Results are
+broken down by horizon — how many steps the teacher needed — because a
+policy that solves two-step tickets and fails six-step ones has not learned
+to investigate.
+
+    python -m capstone.evaluate                      # teacher, rules: loop and one-shot
+    python -m capstone.evaluate --ollama qwen2.5:3b  # add a local model, both modes
+    python -m capstone.evaluate --nights 2 --split val
+
+Offline, out of the box, the rows are the teacher (a ceiling, not a model)
+and the rules baseline. Your model rows come from --ollama or
+finetune/evaluate_adapter.py — there is no placeholder number.
 """
 
 from __future__ import annotations
 
-from typing import Callable
+import argparse
+from collections import Counter
 
-from capstone.baseline import general_model_call
-from capstone.reliability import RejectedCall, validate_call
-from capstone.scenarios import SCENARIOS, Scenario
-from capstone.teacher import golden_call
-
-ModelCall = Callable[[Scenario], dict | str | None]
+from capstone.cases import DEFAULT_NIGHTS, Case, all_cases
+from capstone.harness import run_loop, run_one_shot
+from capstone.policies import llm_planner, llm_policy, ollama_generate, rules_planner, rules_policy, teacher_policy
 
 
-def specialist_call(scenario: Scenario) -> dict | None:
-    return golden_call(scenario)
+def horizons(cases: list[Case]) -> dict[str, int]:
+    """Steps the teacher needs per case — the task's length, independent of who is being graded."""
+    return {c.id: run_loop(teacher_policy(c), c)["accepted"] for c in cases}
 
 
-def score_one(scenario: Scenario, call: dict | str | None) -> dict:
-    result = {"id": scenario.id, "expect_tool": scenario.expect_tool, "outcome": None}
-
-    if scenario.expect_tool == "none":
-        result["outcome"] = "correct" if call is None else "hallucinated_call"
-        return result
-    if call is None:
-        result["outcome"] = "missing_call"
-        return result
-    if isinstance(call, str):
-        result["outcome"] = "unstructured_output"
-        return result
-    if call.get("name") not in {"review_diff", "find_potential_bugs", "suggest_fix",
-                                 "explain_error", "check_style_or_conventions"}:
-        result["outcome"] = "hallucinated_tool"
-        return result
-    try:
-        validate_call(call)
-    except RejectedCall:
-        result["outcome"] = "invalid_schema"
-        return result
-    result["outcome"] = "correct" if call["name"] == scenario.expect_tool else "wrong_tool"
-    return result
+def run_suite(cases: list[Case], policy=None, planner=None, case_policy=None) -> list[dict]:
+    """Exactly one of: `policy` (loop), `planner` (one-shot), `case_policy` (a policy built per case — the teacher)."""
+    if case_policy is not None:
+        return [run_loop(case_policy(c), c) for c in cases]
+    if policy is not None:
+        return [run_loop(policy, c) for c in cases]
+    return [run_one_shot(planner, c) for c in cases]
 
 
-def run(model_call: ModelCall, scenarios: list[Scenario] = SCENARIOS) -> list[dict]:
-    return [score_one(s, model_call(s)) for s in scenarios]
-
-
-def summarize(results: list[dict]) -> dict:
-    n = len(results)
-    correct = sum(r["outcome"] == "correct" for r in results)
+def summarize(runs: list[dict], horizon: dict[str, int]) -> dict:
+    n = len(runs)
+    attempts = sum(r["attempts"] for r in runs)
+    rejections = sum(r["rejections"] for r in runs)
+    by_h: dict[int, list[bool]] = {}
+    for r in runs:
+        by_h.setdefault(horizon[r["id"]], []).append(r["outcome"] == "solved")
     return {
         "n": n,
-        "accuracy": round(correct / n, 3) if n else 0.0,
-        "by_outcome": {
-            outcome: sum(r["outcome"] == outcome for r in results)
-            for outcome in sorted({r["outcome"] for r in results})
-        },
+        "solved": round(sum(r["outcome"] == "solved" for r in runs) / n, 3) if n else 0.0,
+        "by_outcome": dict(Counter(r["outcome"] for r in runs)),
+        "rejection_rate": round(rejections / attempts, 3) if attempts else 0.0,
+        "recovery_rate": round(sum(r["recovered"] for r in runs) / rejections, 3) if rejections else None,
+        "by_horizon": {h: round(sum(v) / len(v), 3) for h, v in sorted(by_h.items())},
     }
 
 
-def compare() -> tuple[dict, dict]:
-    specialist = summarize(run(specialist_call))
-    baseline = summarize(run(lambda s: general_model_call(s, seed=0)))
-    return specialist, baseline
+def ablation(cases: list[Case], entries: dict[str, dict]) -> dict[str, dict]:
+    """entries: {name: {"policy" | "planner" | "case_policy": ...}} → {name: summary}."""
+    horizon = horizons(cases)
+    return {name: summarize(run_suite(cases, **entry), horizon) for name, entry in entries.items()}
+
+
+def table(summaries: dict[str, dict]) -> str:
+    hs = sorted({h for s in summaries.values() for h in s["by_horizon"]})
+    head = f"{'policy':<24}{'solved':>8}{'reject':>8}{'recover':>9}  " + "".join(f"{'h' + str(h):>6}" for h in hs)
+    lines = [head, "-" * len(head)]
+    for name, s in summaries.items():
+        recover = "—" if s["recovery_rate"] is None else f"{s['recovery_rate']:.2f}"
+        cells = "".join(f"{s['by_horizon'].get(h, float('nan')):>6.2f}" for h in hs)
+        lines.append(f"{name:<24}{s['solved']:>8.2f}{s['rejection_rate']:>8.2f}{recover:>9}  {cells}")
+    return "\n".join(lines)
+
+
+def default_entries() -> dict[str, dict]:
+    return {
+        "teacher (ceiling)": {"case_policy": teacher_policy},
+        "rules + loop": {"policy": rules_policy},
+        "rules, one-shot": {"planner": rules_planner},
+    }
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Harness vs weights, by horizon.")
+    parser.add_argument("--split", default="train,test", help="comma-separated: train (familiar wording), val, test (new wording)")
+    parser.add_argument("--nights", type=int, default=2, help="use the first N incident nights (max %d)" % len(DEFAULT_NIGHTS))
+    parser.add_argument("--ollama", action="append", default=[], help="a local model name; repeatable")
+    args = parser.parse_args()
+
+    entries = default_entries()
+    for model in args.ollama:
+        generate = ollama_generate(model)
+        entries[f"{model} + loop"] = {"policy": llm_policy(generate)}
+        entries[f"{model}, one-shot"] = {"planner": llm_planner(generate)}
+
+    for split in args.split.split(","):
+        cases = all_cases(DEFAULT_NIGHTS[: args.nights], split=split)
+        print(f"\n{split}: {len(cases)} cases {dict(Counter(c.kind for c in cases))}\n")
+        print(table(ablation(cases, entries)))
 
 
 if __name__ == "__main__":
-    specialist, baseline = compare()
-    print("specialist (placeholder ceiling):", specialist)
-    print("baseline   (unspecialized model):", baseline)
-    print()
-    print(f"specialization gain (placeholder): "
-          f"{specialist['accuracy'] - baseline['accuracy']:+.0%} accuracy")
+    main()

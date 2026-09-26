@@ -1,0 +1,13 @@
+command: check_threshold
+purpose: Score one night with the production model and count the customers tied at a capacity's cut.
+use_when: The list is the wrong size, flags far more than capacity, or changes between runs of the same model on the same data.
+not_when: The list is the right size but the people on it are wrong — that is an incident.
+args:
+  capacity: {type: int, min: 1, max: 5000, required: true}
+  as_of: {type: date, required: true}
+returns: "{capacity, threshold, strictly_above, ties_at_threshold, flagged_at_threshold}"
+next: [conclude, escalate]
+terminal: false
+side_effects: none
+examples:
+  - "flag_for_cs is true for 2,200 customers but Priya can only call 80."

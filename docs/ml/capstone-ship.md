@@ -29,10 +29,12 @@ Quarter-end. Helen wants one line in the board pack: *we have a churn score, and
 
 ```
  as_of ──► 1 features ──► 2 label ──► 3 train ──► 4 threshold ──► 5 contract ──► 6 promote + score ──► tonight.csv
-           (Week 3/6)     (Week 8)    (Week 15)   (Week 11)       (Week 15)      (Week 16)                │
+ 06-01     (Week 3/6)     (Week 8)    (Week 15)   (Week 11)       (Week 15)      (Week 16)   07-01        │
                                                                                                            ▼
                                                                     two weeks later: 7 incident (Week 17) ── Priya: "who are these people?"
 ```
+
+Two dates, on purpose. The backtest is **as of June 1**: learn on May 2's customers, grade on who of June 1's customers left by July 1. So **July 1** is the first morning that model could exist, and the first list it scores.
 
 Steps 1–6 are the job. Step 7 is why you built it that way.
 
@@ -54,7 +56,7 @@ scores = load_artifact(candidate)["pipeline"].predict_proba(test_df[FEATURE_COLS
 picked = select(test_df, scores, RETENTION_DESK)                                          # 4
 print(judge(picked, test_df, y_test), "threshold", round(threshold_for(picked), 4))
 promote(candidate, Path("artifacts/demo/prod"))                                            # 6 (gate inside)
-print(score_batch("2024-06-01", Path("artifacts/demo/prod")).head(3))                     # 5 validates every row
+print(score_batch("2024-07-01", Path("artifacts/demo/prod")).head(3))                     # 5 validates every row
 ```
 
 Nine calls, no new modelling code. If any step needs more than a few lines, it's re-deriving something a week already owns.
@@ -90,7 +92,7 @@ Then read `flag_rate` in that file. It says about 8% of customers clear the thre
 
 ### What the list is worth
 
-Be honest about this one. With 532 churners among 27,935 at-risk customers, a *random* 80 reaches about 1.5 of them. The model's 80 reach about twelve — an eight-fold lift. `metrics.json` also carries `precision_at_80_ci95`: roughly 5% to 20%. On a given Monday that is anywhere from four to sixteen real churners, and [Week 11](week-11.md) showed the list is not reliably better than "sort by low usage" on a single week.
+Be honest about this one. With 532 churners among 27,935 at-risk customers, a *random* 80 reaches about 1.5 of them. The model's 80 reach about twelve — an eight-fold lift. `metrics.json` also carries `precision_at_80_ci95`: roughly 6% to 24%. On a given Monday that is anywhere from five to nineteen real churners, and [Week 11](week-11.md) showed the list is not reliably better than "sort by low usage" on a single week.
 
 !!! math "Math, translated"
 
@@ -104,7 +106,11 @@ One real `predict()` call returning exactly `{churn_score, flag_for_cs, model_ve
 
 ## 6 — Promote, score, schedule
 
-`promote()` runs the gate before it writes `artifacts/prod`. `score_batch(as_of, prod, limit=80)` writes the list. The cron is [Week 16](week-16.md)'s five lines with your horizon and capacity. After this step, nobody runs anything by hand.
+`promote()` runs the gate before it writes `artifacts/prod` — and the gate re-scores prod on the candidate's own holdout, so the two models are compared on the same customers. `score_batch(score_date, prod, limit=80)` writes the list, and refuses a score date earlier than the model's `labels_known_by`. The cron is one line of [`pipelines.job`](week-16.md): train as of today − 30 days, gate, promote, score today. After this step, nobody runs anything by hand.
+
+!!! warning "Watch out — a job that trains and scores on the same date only works looking back"
+
+    `train("2024-06-01")` is graded on churn between June 1 and July 1. Run that on the morning of June 1 and the labels don't exist yet — the backtest is reading next month. On a live Monday, train as of *Monday − horizon* (the latest snapshot whose outcomes you've seen), then score Monday. `metrics.json` records `labels_known_by`; `score_batch` checks it.
 
 ## 7 — The incident
 
@@ -136,6 +142,6 @@ Two weeks later, Priya: *half of Monday's list are people I've never heard of.* 
 
 ## 🤔 Reflection
 
-1. Your list reaches about one churner in 80 calls. What would you need to know to tell Helen whether that's worth a CS salary?
+1. Your list reaches about twelve churners in 80 calls, where a random 80 would reach one or two. What would you need to know to tell Helen whether that's worth a CS salary?
 2. Which step-7 defect would a range check on each column catch, and which needs a check on a *slice*?
 3. You chose the 30-day horizon over the 90-day one with more positives. Where in the artifact does that choice stay visible after you've moved on — and what breaks if next quarter's retrain quietly uses 90?
