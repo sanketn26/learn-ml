@@ -36,7 +36,7 @@ RAG is not a smarter model. It is **retrieval + generation**: find passages, the
           ▼                       ▼
    RETRIEVAL (you)          GENERATION (model)
    chunk docs               prompt + context
-   score overlap            FakeListLLM / real LLM
+   score overlap            FakeListChatModel / real LLM
    top-k or []              "I don't know" if []
           │                       │
           └───────────┬───────────┘
@@ -95,10 +95,10 @@ def retrieve(question: str, k: int = 2) -> list[tuple[float, Document]]:
 
 ## Generation uses LCEL, not `llm.predict(context=...)`
 
-`FakeListLLM.predict(context=..., question=...)` is the wrong call. Build a chain and `invoke` a dict.
+Old tutorials call `llm.predict(context=..., question=...)`. That method is gone in LangChain 1.x. Build a chain and `invoke` a dict.
 
 ```python
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
@@ -112,7 +112,7 @@ QUESTION: {question}
 
 ANSWER:"""
 )
-llm = FakeListLLM(responses=[
+llm = FakeListChatModel(responses=[
     "Settings > API Keys, then Generate. Send it as Bearer. Rotate every 90 days.",
     "I don't have that information in the retrieved docs.",
 ])
@@ -172,13 +172,77 @@ for case_id, query, gold in CASES:
 
 q4 is a retrieval failure. q5 is a **generation** failure mode: the index might return `plans`, and the model might still fabricate a discount. Your test should flag the fabrication even when retrieval “succeeded.”
 
+## Retrieval is a ranked list — measure it like one
+
+Retrieval is ML Week 11 again: a query in, a ranked list of chunks out, and the only question is whether the right one is near the top. So score it with the same tools:
+
+```
+recall@k   of the labeled queries, how often the gold source is in the top k
+MRR        mean of 1 / (rank of the gold source) — 1.0 if it is always first, 0.5 if always second
+```
+
+Two lexical retrievers, the lesson's word overlap and a TF-IDF index (scikit-learn, no downloads), on ten labeled questions written the way customers write — not the way the runbook does:
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+vectorizer = TfidfVectorizer(ngram_range=(1, 2), sublinear_tf=True, stop_words="english")
+matrix = vectorizer.fit_transform([d.page_content for d in chunks])
+
+
+def retrieve_tfidf(question: str, k: int = 2) -> list[tuple[float, Document]]:
+    sims = cosine_similarity(vectorizer.transform([question]), matrix)[0]
+    return [(float(sims[i]), chunks[i]) for i in sims.argsort()[::-1][:k] if sims[i] > 0]
+
+
+LABELED = [
+    ("How do I get an API key?", "api-keys"),
+    ("How do I authenticate calls to your API?", "api-keys"),
+    ("How often should keys be rotated?", "api-keys"),
+    ("I forgot my password", "password-reset"),
+    ("I can't sign in and now it says I'm locked out", "password-reset"),
+    ("What are the rules for a new password?", "password-reset"),
+    ("What does Pro cost per month?", "plans"),
+    ("How do I stop my subscription?", "plans"),
+    ("Where can I download last month's bill?", "plans"),
+    ("Is there a limit on how many calls I can make each day?", "plans"),
+]
+
+
+def rank_of(retriever, question: str, gold: str, k: int = 3) -> int | None:
+    sources = [d.metadata["source"] for _, d in retriever(question, k=k)]
+    return sources.index(gold) + 1 if gold in sources else None
+
+
+for name, retriever in [("overlap", retrieve), ("tf-idf", retrieve_tfidf)]:
+    ranks = [rank_of(retriever, q, gold) for q, gold in LABELED]
+    misses = [q for (q, _), r in zip(LABELED, ranks) if r is None]
+    print(f"{name:<8} recall@1={sum(r == 1 for r in ranks) / len(ranks):.2f}  "
+          f"MRR={sum(1 / r for r in ranks if r) / len(ranks):.2f}  missed: {misses}")
+```
+
+Both miss the same two questions: “locked out” (the runbook says *lock the account*) and “stop my subscription” (the runbook says *cancel*). Neither retriever knows those mean the same thing, because both only match words. That is the job of an **embedding model**: text becomes a vector, and paraphrases land close together. Swapping one in changes one function, and the table above tells you whether it paid for itself:
+
+```python
+# Integration demo — downloads a ~90 MB model; not run here.
+# from langchain_huggingface import HuggingFaceEmbeddings        # pip install langchain-huggingface
+# from langchain_core.vectorstores import InMemoryVectorStore
+# store = InMemoryVectorStore.from_documents(chunks, HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2"))
+# store.similarity_search_with_score("How do I stop my subscription?", k=2)
+```
+
+!!! warning "Watch out — ten questions is a smoke test, not a benchmark"
+
+    One miss moves recall by 10 points. Grow the labeled set from real support tickets (the questions customers actually typed), and put an interval on the number before you claim one retriever beats another — ML Week 11's bootstrap works unchanged. Sometimes the cheapest fix is not a model at all: add the customers' words (“locked out”, “stop”) to the runbook.
+
 !!! success "Ship / don’t ship"
 
-    **Ship** RAG when you can show a labeled query set, a score threshold, and an “I don’t know” path. **Don’t ship** hash embeddings as semantic search, `llm.predict(context=..., question=...)`, or “zero hallucinations because we used RAG.” Search quality first.
+    **Ship** RAG when you can show a labeled query set with recall@k and MRR, a score threshold, and an “I don’t know” path. **Don’t ship** hash embeddings as semantic search, `llm.predict(context=..., question=...)`, or “zero hallucinations because we used RAG.” Search quality first.
 
 ## What this week is not
 
-- Not a vector database tutorial. Overlap retrieval is enough to prove the split.
+- Not a vector database tutorial. Overlap and TF-IDF are enough to prove the split — and to measure the thing a vector database is supposed to improve.
 - Not fine-tuning. Updating a runbook is an index rebuild, not a training job.
 - Not week 7’s allowlist. A retrieved sentence that says “issue a refund” is still not a tool.
 
@@ -190,13 +254,13 @@ q4 is a retrieval failure. q5 is a **generation** failure mode: the index might 
 
 1. For q4, should you generate a helpful guess or refuse? Who gets paged if you guess?
 2. Why is “Pro is $99/month” a generation check, not only a retrieval check?
-3. When would you replace overlap with a real embedding model, and what would you re-measure first?
+3. You swap in an embedding model and recall@1 goes from 0.80 to 0.90 on ten questions. Ship it? What would you measure before you believe it?
 
 ## 🔗 Next week
 
 Eval: a golden set with pass/fail. Latency is not relevance.
 
-## 📚 Docs (this pin)
+## 📚 Docs (this pin: LangChain 1.x)
 
-- [RAG (0.2)](https://python.langchain.com/v0.2/docs/tutorials/rag/)
-- [Text splitters](https://python.langchain.com/v0.2/docs/how_to/recursive_text_splitter/)
+- [Retrieval](https://docs.langchain.com/oss/python/langchain/retrieval) — loaders, splitters, embeddings, vector stores
+- [Structured output](https://docs.langchain.com/oss/python/langchain/structured-output) — for the `{answer, doc_ids, refuse}` contract

@@ -76,6 +76,7 @@ A dense layer on a 12-week series would learn a different rule for “week 1” 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import average_precision_score
 
 from lib.course_data import find_data_dir, load_weekly_usage_grid
 
@@ -132,8 +133,8 @@ print("hits", np.round(hits, 2))
 Each user becomes a length-T vector of weekly usage. The CNN’s job: “does this *shape* look like someone about to churn?” — not “what is their total.”
 
 ```python
-X, y = load_weekly_usage_grid(DATA)  # ~3k users × 12 weeks, CPU-friendly
-# y is lifetime is_churned — a sequence *toy*. Not the Week 8 horizon label.
+X, y = load_weekly_usage_grid(DATA)  # ~28k at-risk users × the 12 weeks before 2024-06-01
+# y is Week 8's label: cancelled within 30 days of as_of. ~2% positive.
 print(f"users={len(X):,}  timesteps={X.shape[1]}  churn={y.mean():.3f}")
 
 rng = np.random.default_rng(0)
@@ -175,9 +176,9 @@ def run_epoch(model, xb, yb, opt=None):
         loss.backward()
         opt.step()
     with torch.no_grad():
-        pred = (logits.sigmoid() > 0.5).float()
-        acc = float((pred == yb).float().mean())
-    return float(loss), acc
+        # Accuracy would read ~98% for a net that predicts "nobody churns" (Week 8).
+        pr_auc = average_precision_score(yb.numpy(), logits.numpy())
+    return float(loss), pr_auc
 
 model = UsageCNN()
 opt = torch.optim.Adam(model.parameters(), lr=1e-2)
@@ -185,20 +186,21 @@ print(model)
 print("weights:", sum(p.numel() for p in model.parameters()))
 
 hist = []
-for epoch in range(12):
-    tr_loss, tr_acc = run_epoch(model, Xtr, ytr, opt)
-    te_loss, te_acc = run_epoch(model, Xte, yte, opt=None)
-    hist.append((tr_loss, te_loss, tr_acc, te_acc))
+for epoch in range(60):
+    tr_loss, tr_pr = run_epoch(model, Xtr, ytr, opt)
+    te_loss, te_pr = run_epoch(model, Xte, yte, opt=None)
+    hist.append((tr_loss, te_loss, tr_pr, te_pr))
 
 hist = np.array(hist)
 fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
 axes[0].plot(hist[:, 0], label="train"); axes[0].plot(hist[:, 1], label="test")
 axes[0].set_title("loss"); axes[0].legend()
 axes[1].plot(hist[:, 2], label="train"); axes[1].plot(hist[:, 3], label="test")
-axes[1].set_title("accuracy"); axes[1].legend()
+axes[1].axhline(yte.mean(), color="#94a3b8", ls="--", label="base rate")
+axes[1].set_title("PR-AUC"); axes[1].legend()
 plt.tight_layout()
 plt.show()
-print(f"final test acc={hist[-1, 3]:.3f}  (majority baseline ~{1 - yte.mean():.3f})")
+print(f"final test PR-AUC={hist[-1, 3]:.3f}  (base rate {yte.mean():.3f}; lift {hist[-1, 3] / yte.mean():.1f}×)")
 ```
 
 ## 2-D picture (so “CNN” in papers makes sense)

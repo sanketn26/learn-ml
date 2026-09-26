@@ -56,7 +56,7 @@ def main() -> None:
     tonight = ROOT / "tonight.csv"
     if not (prod / "model.joblib").exists():
         print("  artifacts/prod missing — train + promote from Week 16 first.")
-        print("  python -m pipelines.train --as-of 2024-06-01 --n 8000 --label eventual")
+        print("  python -m pipelines.train --as-of 2024-06-01")
         print("  python -m pipelines.promote --candidate artifacts/20240601")
     else:
         uid = "user_041906"

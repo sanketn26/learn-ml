@@ -74,15 +74,18 @@ That is the whole mystery. The library does the calculus (backprop). You pick th
     No GPU. Aimed at ~8 GB RAM. Training uses a few thousand sampled customers (or short sequences) so this week should finish in a **few minutes on CPU**. The ideas are the same if you later set `n=None` and train on all ~49k rows.
 
 ```python
+import copy
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import average_precision_score, roc_auc_score
+from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
 from pipelines.features import AS_OF_DEFAULT, FEATURE_COLS, build_features, make_preprocessor
-from pipelines.labels import drop_unlabelled, label_eventual_churn
+from pipelines.split import snapshot_split
 ```
 
 ## Why activations exist — a 30-second proof
@@ -120,12 +123,7 @@ print("That number should be ~0. Activations are what make depth real.")
 `MLPClassifier` is the sklearn stand-in. Real dropout lives in PyTorch (`nn.Dropout`) below. sklearn’s `alpha` is **L2**, not dropout.
 
 ```python
-df = build_features(as_of=AS_OF_DEFAULT, n=None, at_risk_only=True)
-y = label_eventual_churn(df, AS_OF_DEFAULT)
-df, y = drop_unlabelled(df, y)
-cut = df["signup_date"].quantile(0.80)
-train, test = df[df["signup_date"] <= cut], df[df["signup_date"] > cut]
-y_train, y_test = y.loc[train.index], y.loc[test.index]
+train, y_train, test, y_test = snapshot_split(AS_OF_DEFAULT, horizon_days=30)  # the backtest from Week 11
 prep = make_preprocessor()
 X_train_t = prep.fit_transform(train[FEATURE_COLS])
 X_test_t = prep.transform(test[FEATURE_COLS])
@@ -148,23 +146,28 @@ for name, model in [
 If train loss keeps falling and val loss turns up, you are memorizing. **Early stopping** = take the checkpoint when val was best. sklearn’s MLP gives you `loss_curve_` (log-loss). Do not plot it against `1 − accuracy` — different units, different story. **Dropout** is “randomly break mixers”; it is the `nn.Dropout` layer in the PyTorch net below, not `alpha`.
 
 ```python
-mlp = MLPClassifier(hidden_layer_sizes=(24, 12), activation="relu",
-                    max_iter=25, random_state=42, early_stopping=True,
-                    validation_fraction=0.2, n_iter_no_change=5)
-mlp.fit(X_train_t, y_train)
+for early in [True, False]:
+    mlp = MLPClassifier(hidden_layer_sizes=(24, 12), activation="relu",
+                        max_iter=25, random_state=42, early_stopping=early,
+                        validation_fraction=0.2, n_iter_no_change=5)
+    mlp.fit(X_train_t, y_train)
+    auc = roc_auc_score(y_test, mlp.predict_proba(X_test_t)[:, 1])
+    print(f"early_stopping={early!s:<5}  epochs run={mlp.n_iter_:>2}  test AUC={auc:.3f}")
 
 fig, ax = plt.subplots(figsize=(8, 3.4))
 ax.plot(mlp.loss_curve_, label="train log-loss", color="#1d4ed8")
 ax.set_xlabel("epoch (one pass over the data)")
-ax.set_title("Learning curve — stop when this stops helping (early_stopping=True already did)")
+ax.set_title("Learning curve — the thing early stopping is supposed to watch")
 ax.legend()
 plt.tight_layout()
 plt.show()
-
-print("Test AUC (early-stopped MLP):",
-      f"{roc_auc_score(y_test, mlp.predict_proba(X_test_t)[:, 1]):.3f}")
-print("On this table, GBT is usually equal or better. That is the lesson.")
 ```
+
+The `early_stopping=True` run quits after a handful of epochs and scores *below a coin flip*. It is not a bad net — it is a net that never trained. sklearn's early stopping watches **validation accuracy**, and on a label that is 98% zeros, accuracy is flat from the first epoch (“predict nobody churns” is already 98% right). Flat looks like “stopped improving,” so it stops. It is the Week 8 accuracy trap, hiding inside a convenience flag.
+
+!!! warning "Watch out — early stopping is only as good as the number it watches"
+
+    Stop on a metric that moves when the model gets better at *your* job: validation log-loss or PR-AUC, not accuracy. If the library only offers accuracy, write the loop yourself — the PyTorch loop below is twelve lines.
 
 ## PyTorch — NumPy with a tape recorder
 
@@ -200,10 +203,15 @@ print("x      ", x.tolist())
 print("y      ", float(y))
 print("x.grad ", x.grad.tolist(), "  ← d(x1²+x2²)/dx = 2x")
 
-# Same CloudWave table, now as tensors
-Xt = torch.tensor(np.asarray(X_train_t, dtype=np.float32))
-yt = torch.tensor(y_train.to_numpy(), dtype=torch.float32).unsqueeze(1)
-Xv = torch.tensor(np.asarray(X_test_t, dtype=np.float32))
+# Same CloudWave table, now as tensors. Carve a validation slice out of the
+# TRAIN snapshot: we pick the best epoch on it, and open the test set once (Week 13).
+X_fit, X_val, y_fit, y_val = train_test_split(
+    np.asarray(X_train_t, dtype=np.float32), y_train.to_numpy(),
+    test_size=0.2, stratify=y_train, random_state=0,
+)
+Xt = torch.tensor(X_fit)
+yt = torch.tensor(y_fit, dtype=torch.float32).unsqueeze(1)
+Xv = torch.tensor(X_val)
 
 net = nn.Sequential(
     nn.Linear(Xt.shape[1], 16),
@@ -214,30 +222,38 @@ net = nn.Sequential(
 opt = torch.optim.Adam(net.parameters(), lr=1e-2)
 loss_fn = nn.BCEWithLogitsLoss()
 
-train_losses, val_aucs = [], []
-for epoch in range(12):
+train_losses, val_prs = [], []
+best_pr, best_state = -1.0, None
+for epoch in range(300):
     net.train()
     opt.zero_grad()
-    logits = net(Xt)
-    loss = loss_fn(logits, yt)
+    loss = loss_fn(net(Xt), yt)
     loss.backward()
     opt.step()
     train_losses.append(float(loss))
     net.eval()
     with torch.no_grad():
-        scores = torch.sigmoid(net(Xv)).numpy().ravel()
-        val_aucs.append(roc_auc_score(y_test, scores))
+        pr = average_precision_score(y_val, net(Xv).numpy().ravel())
+    val_prs.append(pr)
+    if pr > best_pr:                                   # early stopping, by hand:
+        best_pr, best_state = pr, copy.deepcopy(net.state_dict())  # keep the best checkpoint
 
 fig, axes = plt.subplots(1, 2, figsize=(10, 3.4))
 axes[0].plot(train_losses, color="#1d4ed8")
 axes[0].set_title("PyTorch train loss")
 axes[0].set_xlabel("epoch")
-axes[1].plot(val_aucs, color="#0f766e")
-axes[1].set_title("Holdout AUC while we train")
+axes[1].plot(val_prs, color="#0f766e")
+axes[1].set_title("Validation PR-AUC — pick the checkpoint here")
 axes[1].set_xlabel("epoch")
 plt.tight_layout()
 plt.show()
-print(f"Final holdout AUC: {val_aucs[-1]:.3f}")
+
+net.load_state_dict(best_state)
+net.eval()
+with torch.no_grad():
+    test_scores = net(torch.tensor(np.asarray(X_test_t, dtype=np.float32))).numpy().ravel()
+print(f"best epoch {int(np.argmax(val_prs))}   test AUC {roc_auc_score(y_test, test_scores):.3f}   "
+      f"test PR-AUC {average_precision_score(y_test, test_scores):.3f}")
 print("Remember the four calls: zero_grad → forward → backward → step.")
 ```
 

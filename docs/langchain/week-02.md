@@ -48,10 +48,10 @@ Cross-session leak = shipping tenant A’s ticket history in tenant B’s prompt
 `HumanMessage` lives in `langchain_core.messages`. The store is ordinary Python.
 
 ```python
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.messages import AIMessage, HumanMessage
 
-llm = FakeListLLM(responses=[
+llm = FakeListChatModel(responses=[
     "Can you share the row count on that export?",
     "150k rows is past the known threshold — escalating to CW-1847.",
     "Settings > API Keys > Rotate. Old key stays valid for 24h.",
@@ -62,7 +62,7 @@ sessions: dict[str, list] = {}
 def chat(session_id: str, text: str) -> str:
     history = sessions.setdefault(session_id, [])
     history.append(HumanMessage(content=text))
-    reply = llm.invoke(text)
+    reply = llm.invoke(text).content   # a chat model returns an AIMessage; .content is the text
     history.append(AIMessage(content=reply))
     return reply
 
@@ -77,12 +77,12 @@ assert "tenant_492" in sessions and "tenant_118" in sessions
 
 That dict-of-lists **is** the product. Swap the dict for Redis later; keep the key.
 
-### InMemoryChatMessageHistory / RunnableWithMessageHistory (0.2)
+### InMemoryChatMessageHistory / RunnableWithMessageHistory
 
-LangChain 0.2 wraps the same idea. Concept demo — still no API key.
+The library wraps the same idea for a plain chain. Concept demo — still no API key.
 
 ```python
-from langchain_community.chat_message_histories import InMemoryChatMessageHistory
+from langchain_core.chat_history import InMemoryChatMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables.history import RunnableWithMessageHistory
@@ -112,19 +112,29 @@ with_history.invoke(
 assert len(store["tenant_492"].messages) >= 2
 ```
 
-## Legacy note: ConversationBufferMemory
+### In an agent: a checkpointer keyed by `thread_id`
 
-You will still see this in older tutorials:
+LangChain 1.x agents (`create_agent`, next week) keep conversation memory in a **LangGraph checkpointer**, and the session key is called `thread_id`. Same idea, new spelling:
 
-```python
-from langchain.memory import ConversationBufferMemory
-
-memory = ConversationBufferMemory(return_messages=True, memory_key="history")
-memory.save_context({"input": "export timing out"}, {"output": "What row count?"})
-# load_memory_variables({})["history"]  →  list of messages
+```
+agent = create_agent(model, tools, checkpointer=InMemorySaver())
+agent.invoke({"messages": [...]}, config={"configurable": {"thread_id": "tenant_492"}})
 ```
 
-It is a bag of messages with extra methods. It is **not** keyed by `session_id` unless *you* put one instance per session. Prefer the dict / `InMemoryChatMessageHistory` pattern above. Window and summary variants (`ConversationBufferWindowMemory`, `ConversationSummaryMemory`) are the same idea with a trim or an extra LLM call — they still need a session key.
+Different `thread_id`, different history — exactly the dict above. [LangGraph week 3](../langgraph/week-03.md) opens the checkpointer up.
+
+## Legacy note: ConversationBufferMemory
+
+You will still see this in older tutorials. It was **removed from `langchain` in 1.0** (it survives only in the `langchain-classic` package), so this block is for recognition, not for running:
+
+```python
+# LangChain ≤ 0.3 only — ImportError on 1.x:
+# from langchain.memory import ConversationBufferMemory
+# memory = ConversationBufferMemory(return_messages=True, memory_key="history")
+# memory.save_context({"input": "export timing out"}, {"output": "What row count?"})
+```
+
+It was a bag of messages with extra methods, **not** keyed by `session_id` unless *you* kept one instance per session. That is the bug it invited, and why it went away. Window and summary variants were the same idea with a trim or an extra LLM call; in 1.x the equivalents are a trim function (below) or `SummarizationMiddleware` on an agent.
 
 ## Bound the list
 
@@ -140,11 +150,11 @@ Facts that must survive a trim (account tier, open ticket id, “Enterprise”) 
 
 !!! warning "Watch out — one global Memory instance"
 
-    A module-level `memory = ConversationBufferMemory()` is a shared inbox. Two FastAPI workers, two users, one list: you have a data leak. Key by `session_id`. Encrypt at rest if you persist. Do not send card numbers back into the next prompt.
+    A module-level `history = InMemoryChatMessageHistory()` (or the old `ConversationBufferMemory()`) is a shared inbox. Two FastAPI workers, two users, one list: you have a data leak. Key by `session_id`. Encrypt at rest if you persist. Do not send card numbers back into the next prompt.
 
 !!! success "Ship / don’t ship"
 
-    **Ship** a store keyed by `session_id` with a trim policy and a test that tenant A cannot see tenant B. **Don’t ship** unbounded `ConversationBufferMemory` as “the chatbot remembers everything,” and don’t treat few-shot examples inside the system prompt as a substitute for a session (that is week 1). Don’t ship this session store *as* tenant authorization — it isolates memory, not access. Hypothetical CloudWave tenants here are two dict keys, not two real customers.
+    **Ship** a store keyed by `session_id` with a trim policy and a test that tenant A cannot see tenant B. **Don’t ship** an unbounded history as “the chatbot remembers everything,” and don’t treat few-shot examples inside the system prompt as a substitute for a session (that is week 1). Don’t ship this session store *as* tenant authorization — it isolates memory, not access. Hypothetical CloudWave tenants here are two dict keys, not two real customers.
 
 ## What this week is not
 
@@ -160,13 +170,14 @@ Facts that must survive a trim (account tier, open ticket id, “Enterprise”) 
 
 1. Where does `session_id` come from in your API (cookie, JWT, header)?
 2. After a trim of `k=4`, which CloudWave facts would you store *outside* the message list?
-3. Why is a global `ConversationBufferMemory` a privacy bug?
+3. Why is one global history object — whatever the library calls it — a privacy bug?
 
 ## 🔗 Next week
 
 Agents: a loop that picks tools. ReAct is not autonomy.
 
-## 📚 Docs (this pin)
+## 📚 Docs (this pin: LangChain 1.x)
 
-- [Message history (0.2)](https://python.langchain.com/v0.2/docs/how_to/message_history/)
-- [Messages](https://python.langchain.com/v0.2/docs/concepts/#messages)
+- [Short-term memory](https://docs.langchain.com/oss/python/langchain/short-term-memory) — checkpointers and `thread_id`
+- [Messages](https://docs.langchain.com/oss/python/langchain/messages)
+- [Middleware](https://docs.langchain.com/oss/python/langchain/middleware) — `SummarizationMiddleware` replaces the summary-memory classes

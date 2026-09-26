@@ -8,10 +8,10 @@ All datasets are included in the repository and available for download in multip
 
 | Dataset | Records | Size | Format | Download |
 |---------|---------|------|--------|----------|
-| `subscriptions.csv` | 48,991 | 8 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/subscriptions.csv) |
-| `user_events.csv` | 220,000 | 15 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/user_events.csv) |
-| `feature_usage.csv` | 160,000 | 12 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feature_usage.csv) |
-| `feedback.json` | 10,000 | 3 MB | JSON | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feedback.json) |
+| `subscriptions.csv` | 48,991 | 2 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/subscriptions.csv) |
+| `user_events.csv` | 431,828 | 28 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/user_events.csv) |
+| `feature_usage.csv` | 269,647 | 10 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feature_usage.csv) |
+| `feedback.json` | 10,000 | 2 MB | JSON | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feedback.json) |
 | `product_catalog.csv` | 300 | <1 MB | CSV | [Download](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/product_catalog.csv) |
 
 ### Dataset Descriptions
@@ -43,7 +43,7 @@ All datasets are included in the repository and available for download in multip
 - `event_type` — e.g. `login`, `page_view`, `click`, `feature_use`, `payment`, `support_message`, `upgrade`, `downgrade`, `cancel`
 - `timestamp` — Event timestamp
 - `device` — `web`, `ios`, or `android`
-- `region` — `NA`, `EMEA`, `APAC`, or `LATAM`
+- `region` — `NAMER`, `EMEA`, `APAC`, or `LATAM` (not `NA`: pandas reads that string as missing)
 - `session_duration` — Duration in seconds
 
 **Use Cases:**
@@ -73,6 +73,7 @@ All datasets are included in the repository and available for download in multip
 
 **Fields per entry:**
 - `user_id` — Customer providing feedback
+- `created_at` — Date the comment was written (cut feedback at `as_of` like any other feature)
 - `category` — e.g. `billing`, `bug`, `praise`
 - `sentiment_score` — Numeric sentiment (negative → positive)
 - `feedback_text` — Free-text comment
@@ -125,7 +126,7 @@ customers = load_customer_360()
 ### Data Characteristics
 
 - **Total Records:** 440,000+
-- **Total Size:** 29 MB
+- **Total Size:** 42 MB
 - **Synthetic Data:** All datasets are synthetically generated
 - **Realistic Patterns:** Generated with real-world SaaS business patterns
 - **Time Period:** Covers 1 year of simulated activity

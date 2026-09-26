@@ -1,0 +1,12 @@
+command: check_leakage
+purpose: Say whether a column may be a model input — does it exist at noon on as_of, and is it a key or a label?
+use_when: A diff adds a column to FEATURE_COLS, or someone asks to train on a column.
+not_when: The column is already in FEATURE_COLS and the ticket is about tonight's values — that is an incident.
+args:
+  column: {type: column, required: true}
+returns: "{column, in_feature_cols, forbidden, available_at_as_of, reason}"
+next: [conclude, escalate]
+terminal: false
+side_effects: none
+examples:
+  - "+    'mrr', 'log_usage', 'features_adopted', 'tenure_days'"

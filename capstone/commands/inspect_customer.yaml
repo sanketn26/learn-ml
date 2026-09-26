@@ -1,0 +1,14 @@
+command: inspect_customer
+purpose: Show one customer's features on both nights, with the ratio per column.
+use_when: compare_nights shows a column's mean ratio far from 1. One typical customer tells a unit change (×100) from a fan-out (about ×2).
+not_when: You would have to invent a user_id. Use the example_user_id a previous result gave you.
+args:
+  user_id: {type: user_id, required: true}
+  ref_as_of: {type: date, required: true}
+  as_of: {type: date, required: true, after: ref_as_of}
+returns: "{user_id, rows: [{column, ref, tonight, ratio}]}"
+next: [slice_column, conclude]
+terminal: false
+side_effects: none
+examples:
+  - "mrr mean ratio 100.2 tonight; example_user_id user_012345."

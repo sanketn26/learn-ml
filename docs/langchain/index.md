@@ -23,6 +23,7 @@ The model is a dependency. LangChain is middleware. If you cannot redraw a chain
 | [5 — Eval](week-05.md) | You cannot ship what you cannot score. | A golden set produces repeatable pass/fail results. |
 | [6 — Production](week-06.md) | Timeouts, fallbacks, tracing—the operational shape. | One request exposes a trace, timeout, fallback, and cost record. |
 | [7 — Ticket bot](week-07.md) | Golden file, allowlist, “I don’t know”, cost line. | The supplied golden-file checks pass. |
+| [Capstone — Support agent](../ml/capstone-agent.md) | After LangGraph 5: the ticket bot, with checkpoints, approval, and a keyed write. | Six golden tickets pass, including the injection that names a churn phrase. |
 
 !!! think "Think of it like… Express / FastAPI middleware"
     The LLM is the slow, flaky downstream service. Your job is the same as always: validate input, bound the work, parse output, log enough to debug the next incident.

@@ -1,0 +1,12 @@
+command: check_grain
+purpose: Count rows and duplicate customers in one night's feature frame.
+use_when: A list or a score looks wrong and you have not ruled out a row-level join fan-out yet. It is the first step of every incident.
+not_when: The ticket quotes a validate() error, a diff, or a list-size question — those have their own first command.
+args:
+  as_of: {type: date, required: true}
+returns: "{as_of, rows, duplicate_user_ids, signups_after_as_of, grain_ok}"
+next: [compare_nights]
+terminal: false
+side_effects: none
+examples:
+  - "Half of Monday's list are people Priya has never heard of. The model file hasn't changed."

@@ -26,13 +26,15 @@ CloudWave is a fictional B2B SaaS company invented for this course. Its only rea
 
 **Real, from `data/subscriptions.csv` (48,991 rows, as of 2024-11-30):**
 
-- Plans: `free` (24,400 customers, 9.0% churn), `starter` (14,622, 3.8%), `pro` (7,420, 3.6%), `enterprise` (2,549, 3.8%)
-- Lifetime churn across all customers: **6.4%** (3,122 of 48,991)
+- Plans: `free` (24,400 customers, 38.2% ever churned), `starter` (14,622, 23.5%), `pro` (7,420, 14.2%), `enterprise` (2,549, 6.8%)
+- **About 2% of active customers cancel each month** (593 of 27,898 in June 2024). That is the number the story quotes.
+- Lifetime churn across all customers: 28.5% (13,985 of 48,991) — a cumulative count over up to three years, not a rate; do not quote it as "churn"
+- Signups grow about 2% a month (964 in Jan 2022 → 1,958 in Oct 2024)
 - Columns: `user_id, plan_type, mrr, signup_date, churn_date, is_churned, tenure_days`
 
 **What CloudWave is not** — do not let a lesson drift into:
 
-- **Premium / Standard** plan tiers (Week 5 used to; the real tiers are `free/starter/pro/enterprise` above — starter and pro churn at nearly identical rates, so don't invent a 16%-vs-20% gap between real tiers; keep illustrative small-sample scenarios clearly hypothetical, not a real plan comparison)
+- **Premium / Standard** plan tiers (Week 5 used to; the real tiers are `free/starter/pro/enterprise` above; keep illustrative small-sample scenarios clearly hypothetical, not a real plan comparison)
 - A laptop or running-shoe retailer (a LangChain memory demo used to)
 - A bank running KYC or credit-limit checks (a LangGraph demo used to)
 - A Reddit-moderation or generic spam filter (a LangGraph demo used to)
@@ -46,7 +48,7 @@ One line of "hypothetical CloudWave, not a vendor case study" belongs on each tr
 
 | Beat | Week | Scene |
 |---|---|---|
-| First day, glue language | 0–1 | You cannot loop 160k rows by hand |
+| First day, glue language | 0–1 | You cannot loop 270k usage rows by hand |
 | Four systems, one customer | 2–3 | Helen's MRR dashboard doubles overnight — a join fanned out |
 | Chart for a decision | 4 | Helen wants one page: is churn getting worse, which plan leaks, do engaged customers stay |
 | Is the gap real? | 5 | Marcus wants to declare an early rollout a win off 50 and 60 customers |
@@ -57,6 +59,7 @@ One line of "hypothetical CloudWave, not a vendor case study" belongs on each tr
 | Artifact | 15 | A pickle on your laptop is not production |
 | Job | 16 | Ana won't let anything ship that loses to the dummy; the pipeline gets a gate |
 | **Payoff** | 17 | You're on-call. Three incidents you already lived come back: the join that doubled Helen's MRR, the leak Ana caught, and a silent NaN that slipped past both |
+| **Capstone: ship** | after 17 | Quarter-end. Helen wants "it runs every week" in the board pack; Priya wants her 80 every Monday; Ana wants a holiday. You ship the job. Two weeks later (2024-06-15) Priya says Monday's list "looks like strangers" — one seeded upstream defect (dollars→cents, an events fan-out, or a stalled usage extract) that passed every contract check |
 
 ## The one framework-track incident: `CW-1847`
 
@@ -65,7 +68,8 @@ A single support ticket carries the LangChain, LangGraph, and (optionally) CrewA
 1. **`CW-1847` opens** — a customer's data export times out around 150k rows (LangChain weeks 1, 4; CrewAI week 2 background)
 2. **Refund requested** — the customer asks for a refund while the export is broken (LangChain weeks 3, 7; LangGraph week 4 — a human must approve the money)
 3. **Resume, don't double-charge** — LangGraph week 3's `issue_credit` node crashes mid-retry on the `CW-1847` thread, establishing that resume is at-least-once, not exactly-once. Week 5 then shows the idempotency-key fix for that failure mode on a **different** write — a payment capture, `charge(invoice_id=...)`, on a different customer's invoice — because a refund payout and a charge capture are different operations and forcing them into one demo would misrepresent one as the other. Both need the pattern; only one is dramatized end-to-end.
-4. **Optional: the changelog that missed it** — if the CrewAI track stays in a course run, its researcher/writer/QA crew triages `CW-1847` instead of an unrelated changelog product
+4. **Capstone: the agent that has to survive it** — the LangChain + LangGraph capstone ([`capstone-agent`](ml/capstone-agent.md)) closes the thread: one graph that refuses the `t2`-style injection, says "I don't know" about the export (no runbook exists for CW-1847), pauses `user_041906`'s refund for Ana's approval, and credits it once across a crash.
+5. **Optional: the changelog that missed it** — if the CrewAI track stays in a course run, its researcher/writer/QA crew triages `CW-1847` instead of an unrelated changelog product
 
 `user_041906` is `CW-1847`'s customer, and the same ID used in ML Week 17 and the LangChain golden-ticket fixture `t3` ("is `user_041906` about to cancel?"). `t2` (the prompt-injection refund attempt) carries **no customer ID** — do not describe it as `user_041906`'s ticket. LangGraph week 5's `charge()` demo deliberately uses a different, unnamed invoice, not `user_041906`'s — see point 3. Same on-call engineer throughout: **Ana**.
 
@@ -92,10 +96,20 @@ Keep this list current as lessons change. It is the fast way to check "does this
 | Fact | Value | Source |
 |---|---|---|
 | Total customers | 48,991 | `data/subscriptions.csv` |
-| Lifetime churn rate | 6.4% (3,122) | `data/subscriptions.csv` |
-| Plan churn rates | free 9.0%, starter 3.8%, pro 3.6%, enterprise 3.8% | `data/subscriptions.csv` |
+| Monthly churn (active base) | ~2% (593 of 27,898 in June 2024) | `data/subscriptions.csv` |
+| Ever churned (cumulative) | 28.5% (13,985) | `data/subscriptions.csv` |
+| Ever churned by plan | free 38.2%, starter 23.5%, pro 14.2%, enterprise 6.8% | `data/subscriptions.csv` |
 | Priya's weekly call budget | 80 | Week 11, Week 17 |
 | Week 7 exercise test-set budget | 100 | `exercises/ml/week-07/starter.py` |
 | Framework incident ID | `CW-1847` | proposed, this page |
 | Continuity customer | `user_041906` | Week 17, LC golden tickets |
 | On-call engineer | Ana | Week 16, Week 17 |
+| Job-path capstone ship date / incident night | 2024-06-01 / 2024-06-15 | `docs/ml/capstone-ship.md` |
+| Label everywhere | churn within 30 days of `as_of` (`HORIZON_DAYS`) | `pipelines/labels.py` |
+| Churners at risk on 2024-06-01, 30-day horizon | 532 of 27,935 (1.9%) | `snapshot_split` |
+| Desk list worth (30-day horizon) | ~12 churners per 80 calls (95% CI ≈ 6–24%, resampled with the list's user_id tie-break), ~8× a random 80 | `metrics.json` `precision_at_80_ci95` |
+| Ties at the 80th score | ~2,175 new free accounts share it | `metrics.json` `ties_at_threshold` |
+| Events per at-risk customer (2024-06-01) | median 5, max 760; 205 with none | `capstone_sequence/data.py` |
+| `cancel` events | one per churn inside the log window (11,692), on the churn date | `data/user_events.csv` vs `subscriptions.csv` |
+| How the data is made | seeded simulation; hidden engagement + friction drive churn and activity | `scripts/generate_cloudwave_data.py` |
+| Scenario-bank budgets | Helen $3,000 discounts (20% × 3 mo); Marcus 50 pitches; Ana 30 senior slots; onboarding 40 sessions (first 45 days) | `capstone_ship/briefs.py` |

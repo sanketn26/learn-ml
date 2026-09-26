@@ -1,0 +1,21 @@
+command: conclude
+purpose: Close the investigation with the cause, the corrupted columns, the steps that prove it, and the check that would have caught it.
+use_when: Your accepted steps already show the cause. Name every cause if more than one thing broke.
+not_when: Nothing you ran shows a defect — escalate instead of guessing.
+args:
+  causes:
+    type: "list[enum]"
+    values: [unit_change, join_fanout, stale_extract, leakage, contract_violation, threshold_ties]
+    required: true
+  columns: {type: "list[column]", required: true, allow_empty: true}
+  evidence: {type: steps, required: true}
+  checks_to_add:
+    type: "list[enum]"
+    values: [mean_ratio_vs_last_week, zero_share_by_cohort, assert_no_forbidden, contract_test_on_caller, tie_break_by_user_id]
+    required: true
+returns: "{closed: true}"
+next: []
+terminal: true
+side_effects: none
+examples:
+  - "mrr ×100 on every row and on user_012345 → causes [unit_change], columns [mrr]."

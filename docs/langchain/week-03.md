@@ -38,12 +38,12 @@ Your backend                     Agent
 handler registry                 tools = [fn, fn, fn]
 JSON schema for args             tool docstring + args schema
 try / catch per client           tool error → back into the loop
-max retries                      max_iterations
-logs of which handler ran        intermediate steps / tracing
+max retries                      ModelCallLimitMiddleware (a hard cap on loop turns)
+logs of which handler ran        the returned message list / tracing
 ```
 
 !!! warning "Watch out — unbounded loops"
-    An agent will happily call the same broken tool forever. Set `max_iterations`. Treat a tool failure as a *value* the model can read (“the billing API returned 503”), not an exception that kills the process — unless the exception is “we should not be doing this at all.”
+    An agent will happily call the same broken tool forever. Cap the loop — in LangChain 1.x, `ModelCallLimitMiddleware(run_limit=...)`. Treat a tool failure as a *value* the model can read (“the billing API returned 503”), not an exception that kills the process — unless the exception is “we should not be doing this at all.”
 
 ## 🏢 Scenario
 
@@ -94,7 +94,7 @@ def get_billing_date(user_id: str) -> str:
 
 ## The loop, without the framework fog
 
-```python
+```text
 # pseudocode — the library does this; you should be able to draw it
 messages = [system, user_question]
 for step in range(MAX_STEPS):
@@ -108,14 +108,60 @@ raise RuntimeError("agent hit MAX_STEPS")
 
 If you cannot write that loop on a whiteboard, do not debug “the agent is being weird” by tweaking the persona paragraph. Debug which tool was chosen, with which args, and what it returned.
 
-Library spelling (optional — same loop, more ceremony). Concept demo; do not expect a fake LLM to drive a real ReAct trace:
+### The same loop, in LangChain 1.x: `create_agent`
+
+The library spelling is `langchain.agents.create_agent(model, tools, ...)`. It builds exactly the loop above as a small LangGraph graph (model node → tool node → back to model). Older tutorials use `AgentExecutor` or LangGraph's `create_react_agent`; both are superseded by `create_agent` in 1.x.
+
+A real model needs an API key, so this concept demo drives the loop with a **scripted** model: it replays tool calls we wrote down. That is not a toy — it is how you unit-test an agent's wiring without paying for tokens.
 
 ```python
-# from langgraph.prebuilt import create_react_agent
-# agent = create_react_agent(model, tools=[get_account_balance, get_billing_date])
+from langchain.agents import create_agent
+from langchain.agents.middleware import ModelCallLimitMiddleware
+from langchain_core.language_models import FakeMessagesListChatModel
+from langchain_core.messages import AIMessage
+
+
+class ScriptedToolModel(FakeMessagesListChatModel):
+    """Replays AIMessages we wrote, tool calls included. Real models implement bind_tools."""
+
+    def bind_tools(self, tools, **kwargs):
+        return self
+
+
+def call(name, i, **args):
+    return {"name": name, "args": args, "id": f"call_{i}"}
+
+
+model = ScriptedToolModel(responses=[
+    AIMessage(content="", tool_calls=[call("get_account_balance", 1, user_id="user_0001"),
+                                      call("get_billing_date", 2, user_id="user_0001")]),
+    AIMessage(content="Your balance is $128.40. Next bill is 1 September 2026."),
+])
+agent = create_agent(
+    model,
+    tools=[get_account_balance, get_billing_date],
+    system_prompt="You are CloudWave billing support. Use tools; never guess numbers.",
+    middleware=[ModelCallLimitMiddleware(run_limit=5)],       # the loop cap, as code
+)
+result = agent.invoke({"messages": [{"role": "user", "content": "What's my balance and next bill date?"}]})
+for m in result["messages"]:
+    print(f"{type(m).__name__:<13} {m.content or m.tool_calls}")
+assert "128.40" in result["messages"][-1].content
 ```
 
-The import is LangGraph’s prebuilt helper. This week still owns the loop, `max_iterations`, and the tool contract.
+The printout *is* the ReAct trace from the next section, as data: the model's tool calls, each tool's return value as a `ToolMessage`, then the answer. Now the failure this week warned about — a model that keeps asking for the same tool:
+
+```python
+stuck = ScriptedToolModel(responses=[
+    AIMessage(content="", tool_calls=[call("get_account_balance", i, user_id="user_0001")]) for i in range(10)
+])
+runaway = create_agent(stuck, tools=[get_account_balance],
+                       middleware=[ModelCallLimitMiddleware(run_limit=3, exit_behavior="end")])
+out = runaway.invoke({"messages": [{"role": "user", "content": "balance?"}]})
+print(out["messages"][-1].content)   # the cap fired; the process did not spin
+```
+
+Without the middleware this runs until the graph's `recursion_limit` raises. With it, the run ends with a readable message you can log and alert on. Other 1.x middleware you will reach for: `ToolCallLimitMiddleware` (cap one expensive tool), `ToolRetryMiddleware` (retry flaky tools), and `HumanInTheLoopMiddleware` (pause before a side-effecting tool — the LangGraph week 4 idea, packaged).
 
 ## ReAct is a prompt pattern, not autonomy
 
@@ -135,7 +181,7 @@ Final Answer: Your balance is $128.40. Next bill is 1 September 2026.
 That is a trace, not a mind. Log it. When the agent goes off the rails, the trace is the stack.
 
 !!! success "Ship / don’t ship"
-    **Ship** an agent when the user phrasing is messy and the tool set is small (≤ 8) and each tool is side-effect light or idempotent. **Don’t ship** an agent that can refund, delete, or email until those tools require a human confirmation node (see LangGraph week 4). A chain with two explicit retrieval calls is better than an agent that sometimes invents a third.
+    **Ship** an agent when the user phrasing is messy and the tool set is small (≤ 8) and each tool is side-effect light or idempotent — with a loop cap and a test that drives it with a scripted model. **Don’t ship** an agent that can refund, delete, or email until those tools require a human confirmation (`HumanInTheLoopMiddleware`, or the graph in LangGraph week 4). A chain with two explicit retrieval calls is better than an agent that sometimes invents a third.
 
 ## Errors are observations
 
@@ -163,7 +209,7 @@ Return a string the model can read. Do not raise out of the tool unless you *wan
 
 1. For the billing question above, would you actually use an agent, or two tool calls in a chain? Why?
 2. Which of your production tools would you *refuse* to hang on an agent without a human in the loop?
-3. If the trace shows the model calling `get_account_balance` three times with the same id, what do you change first — the prompt, the docstring, or `max_iterations`?
+3. If the trace shows the model calling `get_account_balance` three times with the same id, what do you change first — the prompt, the docstring, or the loop cap?
 
 ## 🔗 Next week
 

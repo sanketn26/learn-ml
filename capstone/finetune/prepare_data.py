@@ -1,11 +1,12 @@
-"""Format teacher trajectories for LoRA SFT.
+"""Format teacher examples for LoRA SFT.
 
-Reads capstone/data/*.jsonl, or regenerates them with the synthetic teacher
-if they are missing. Every tool_call is checked against capstone.tools and
-reliability.validate_call.
+Reads capstone/data/*.jsonl, or regenerates them with the teacher if they
+are missing. Every target command is re-validated against its spec *and*
+the state it was chosen in — a row that fails its own contract never
+reaches the trainer.
 
-    python capstone/finetune/prepare_data.py --dry-run
-    python capstone/finetune/prepare_data.py
+    python capstone/finetune/prepare_data.py --dry-run     # one night: fast pipeline check
+    python capstone/finetune/prepare_data.py               # the full bank
 """
 
 from __future__ import annotations
@@ -19,117 +20,80 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from capstone.reliability import RejectedCall, validate_call
+from capstone.cases import DEFAULT_NIGHTS
+from capstone.prompt import messages_for, parse_call
+from capstone.reliability import validate_call
 from capstone.teacher import write_splits
-from capstone.tools import TOOLS
 
 DATA_DIR = ROOT / "capstone" / "data"
 OUT_DIR = ROOT / "capstone" / "finetune" / "artifacts"
-
-SYSTEM = (
-    "You are CloudWave's coding specialist. Call exactly one of the five tools "
-    "when the input matches, otherwise refuse with NO_TOOL. Never invent a tool name."
-)
+QUICK_NIGHTS = DEFAULT_NIGHTS[:1]
 
 
 def _load_jsonl(path: Path) -> list[dict]:
     if not path.exists():
         return []
-    rows = []
-    for line in path.read_text().splitlines():
-        line = line.strip()
-        if line:
-            rows.append(json.loads(line))
-    return rows
+    return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
 
 
-def _ensure_raw_splits(data_dir: Path) -> dict[str, int]:
+def _ensure_raw_splits(data_dir: Path, nights=DEFAULT_NIGHTS) -> dict[str, int]:
     needed = [data_dir / f"{name}.jsonl" for name in ("train", "val", "test")]
     if all(p.exists() and p.stat().st_size > 0 for p in needed):
         return {p.stem: len(_load_jsonl(p)) for p in needed}
-    data_dir.mkdir(parents=True, exist_ok=True)
-    return write_splits(data_dir)
-
-
-def _output_text(tool_call: dict | None) -> str:
-    if tool_call is None:
-        return "NO_TOOL"
-    return json.dumps({"name": tool_call["name"], "arguments": tool_call["arguments"]})
+    return write_splits(data_dir, nights=nights)
 
 
 def format_row(row: dict) -> dict:
-    """Chat-style example. Assistant content is a tool call or NO_TOOL."""
-    call = row.get("tool_call")
-    if call is not None:
-        validate_call(call)
-        if call["name"] not in TOOLS:
-            raise RejectedCall(f"unknown tool {call['name']!r}")
-    user = row.get("input") or ""
-    if row.get("context"):
-        user = f"{row['context']}\n\n{user}"
+    """Chat-style example: system (instructions + command catalog), user (the state), assistant (one command)."""
+    validate_call(row["call"], row["state"])
     return {
-        "id": row.get("id"),
-        "messages": [
-            {"role": "system", "content": SYSTEM},
-            {"role": "user", "content": user},
-            {"role": "assistant", "content": _output_text(call)},
-        ],
-        "tool_call": call,
+        "id": row["id"],
+        "messages": messages_for(row["state"]) + [{"role": "assistant", "content": json.dumps(row["call"])}],
+        "state": row["state"],
     }
 
 
 def validate_formatted(rows: list[dict]) -> None:
     if not rows:
-        raise ValueError("no trajectories to format")
+        raise ValueError("no examples to format")
     for row in rows:
-        msgs = row["messages"]
-        if len(msgs) != 3 or [m["role"] for m in msgs] != ["system", "user", "assistant"]:
-            raise ValueError(f"{row.get('id')}: expected system/user/assistant")
-        assistant = msgs[2]["content"]
-        if assistant == "NO_TOOL":
-            continue
-        call = json.loads(assistant)
-        validate_call(call)
+        roles = [m["role"] for m in row["messages"]]
+        if roles != ["system", "user", "assistant"]:
+            raise ValueError(f"{row.get('id')}: expected system/user/assistant, got {roles}")
+        call = parse_call(row["messages"][2]["content"])
+        validate_call(call, row["state"])
 
 
 def write_formatted(out_dir: Path, split: str, rows: list[dict]) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     path = out_dir / f"{split}.formatted.jsonl"
-    path.write_text("\n".join(json.dumps(r) for r in rows) + ("\n" if rows else ""))
+    path.write_text("".join(json.dumps(r) + "\n" for r in rows))
     return path
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Format capstone trajectories for LoRA.")
+    parser = argparse.ArgumentParser(description="Format capstone examples for LoRA.")
     parser.add_argument("--data-dir", default=str(DATA_DIR))
     parser.add_argument("--out-dir", default=str(OUT_DIR))
-    parser.add_argument("--dry-run", action="store_true", help="validate only; still writes formatted files")
+    parser.add_argument("--dry-run", action="store_true", help="one night into a scratch data dir; checks the pipeline, not the bank")
     args = parser.parse_args()
 
-    data_dir = Path(args.data_dir)
-    out_dir = Path(args.out_dir)
-    raw_counts = _ensure_raw_splits(data_dir)
-    print("raw splits:", raw_counts)
-
-    written = {}
-    for split in ("train", "val", "test"):
-        raw = _load_jsonl(data_dir / f"{split}.jsonl")
-        formatted = [format_row(row) for row in raw]
-        validate_formatted(formatted) if formatted else None
-        path = write_formatted(out_dir, split, formatted)
-        written[split] = {"n": len(formatted), "path": str(path)}
-        print(f"  {split}: {len(formatted)} examples → {path}")
-
-    n_tools = sum(
-        1
-        for split in ("train", "val", "test")
-        for row in _load_jsonl(data_dir / f"{split}.jsonl")
-        if row.get("tool_call")
-    )
-    print(f"tool-call rows (all splits): {n_tools}  surface={list(TOOLS)}")
+    data_dir, out_dir = Path(args.data_dir), Path(args.out_dir)
     if args.dry_run:
-        print("dry-run: schema ok, no model download")
-    print("done", written)
+        data_dir, out_dir = out_dir / "dry-run-data", out_dir / "dry-run"
+        for stale in data_dir.glob("*.jsonl"):
+            stale.unlink()
+    raw_counts = _ensure_raw_splits(data_dir, QUICK_NIGHTS if args.dry_run else DEFAULT_NIGHTS)
+    print("raw examples:", raw_counts)
+
+    for split in ("train", "val", "test"):
+        formatted = [format_row(row) for row in _load_jsonl(data_dir / f"{split}.jsonl")]
+        validate_formatted(formatted)
+        path = write_formatted(out_dir, split, formatted)
+        recovery = sum(r["id"].endswith("r") for r in formatted)
+        print(f"  {split}: {len(formatted)} examples ({recovery} recover from a rejection) → {path}")
+    if args.dry_run:
+        print("dry-run: every example passed its spec, no model download")
 
 
 if __name__ == "__main__":

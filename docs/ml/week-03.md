@@ -176,4 +176,4 @@ Try one [self-check](self-checks.md#week-3-as_of) (Predict / Diagnose / Choose /
 ## 🔗 Next
 
 Ana's question now has an answer: a query, with a date bound, that you can rerun. If you came from Week 2: [Week 4](week-04.md) turns it into the one page Helen reads before Monday's board meeting.  
-If you already finished classification: Week 8 is labels, delay, and why ~6.4% churn is not “just use AUC.”
+If you already finished classification: Week 8 is labels, delay, and why a ~2%-a-month event is not “just use AUC.”

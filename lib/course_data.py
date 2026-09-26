@@ -5,7 +5,6 @@ from __future__ import annotations
 from pathlib import Path
 
 LAPTOP_N = 8_000
-LAPTOP_SEQ_N = 3_000
 
 
 def find_data_dir() -> Path:
@@ -89,38 +88,46 @@ def load_customer_360(data=None, n: int | None = LAPTOP_N, random_state: int = 4
     return df
 
 
-def load_weekly_usage_grid(data=None, n_users: int = LAPTOP_SEQ_N, n_weeks: int = 12, random_state: int = 0):
-    """Users × last-N-weeks usage matrix + lifetime churn flags.
+def load_weekly_usage_grid(
+    data=None,
+    n_users: int | None = None,
+    n_weeks: int = 12,
+    random_state: int = 0,
+    as_of: str = "2024-06-01",
+    horizon_days: int = 30,
+):
+    """Customers at risk on `as_of` × the `n_weeks` weeks before it, plus the horizon label.
 
-    Teaching toy for CNNs/RNNs (shape of a sequence). Not an as_of label.
+    Row i, column -1 is the week ending on `as_of`. y is "cancelled within
+    `horizon_days` after `as_of`" — the same question as Week 8, so nothing
+    after the morning leaks into X. `n_users` samples rows for a faster demo;
+    the default keeps every at-risk customer (the rare class needs them).
     """
     import numpy as np
     import pandas as pd
 
+    from pipelines.labels import drop_unlabelled, label_churn_in_horizon
+
     data = Path(data) if data is not None else find_data_dir()
-    usage = pd.read_csv(
-        data / "feature_usage.csv",
-        usecols=["user_id", "usage_count", "date"],
-        parse_dates=["date"],
-    )
-    labels = pd.read_csv(data / "subscriptions.csv", usecols=["user_id", "is_churned"]).set_index("user_id")[
-        "is_churned"
-    ]
-    usage["week"] = usage["date"].dt.to_period("W").dt.start_time
-    weekly = usage.groupby(["user_id", "week"], sort=False)["usage_count"].sum().reset_index()
-    weeks = sorted(weekly["week"].unique())[-n_weeks:]
+    as_of = pd.Timestamp(as_of)
+    subs = pd.read_csv(data / "subscriptions.csv", usecols=["user_id", "signup_date", "churn_date"],
+                       parse_dates=["signup_date", "churn_date"])
+    at_risk = subs[(subs["signup_date"] <= as_of) & ~(subs["churn_date"] <= as_of)]
+    at_risk, y = drop_unlabelled(at_risk, label_churn_in_horizon(at_risk, as_of, horizon_days))
+
+    usage = pd.read_csv(data / "feature_usage.csv", usecols=["user_id", "usage_count", "date"],
+                        parse_dates=["date"])
+    start = as_of - pd.Timedelta(days=7 * n_weeks)
+    usage = usage[(usage["date"] > start) & (usage["date"] <= as_of)]
+    col = n_weeks - 1 - ((as_of - usage["date"]).dt.days // 7)
     grid = (
-        weekly[weekly["week"].isin(weeks)]
-        .pivot_table(index="user_id", columns="week", values="usage_count", fill_value=0)
-        .reindex(columns=weeks, fill_value=0)
+        usage.assign(col=col)
+        .pivot_table(index="user_id", columns="col", values="usage_count", aggfunc="sum", fill_value=0)
+        .reindex(index=at_risk["user_id"], columns=range(n_weeks), fill_value=0)
     )
-    common = grid.index.intersection(labels.index)
-    grid = grid.loc[common]
-    y = labels.loc[common].to_numpy(dtype=np.int64)
-    if n_users is not None and len(grid) > n_users:
-        rng = np.random.default_rng(random_state)
-        take = rng.choice(len(grid), size=n_users, replace=False)
-        grid = grid.iloc[take]
-        y = y[take]
     X = np.log1p(grid.to_numpy(dtype=np.float32))
+    y = y.to_numpy(dtype=np.int64)
+    if n_users is not None and len(X) > n_users:
+        take = np.random.default_rng(random_state).choice(len(X), size=n_users, replace=False)
+        X, y = X[take], y[take]
     return X, y

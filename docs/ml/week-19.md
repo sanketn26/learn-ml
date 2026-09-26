@@ -118,7 +118,7 @@ plt.show()
 
 ```python
 X, y = load_weekly_usage_grid(DATA, random_state=1)
-# y is lifetime is_churned — sequence toy, not the Week 8 horizon.
+# y is Week 8's label: cancelled within 30 days of 2024-06-01.
 rng = np.random.default_rng(1)
 idx = rng.permutation(len(X))
 cut = int(0.8 * len(X))

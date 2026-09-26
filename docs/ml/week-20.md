@@ -19,6 +19,7 @@ Weeks 18 and 19 gave Marcus's usage-shape question two optional pictures — a s
 - See why we add **position** (the model has no loop, so it cannot “know” order otherwise)
 - Build a tiny self-attention block in PyTorch and watch weights light up
 - Classify CloudWave **feedback text** with a small Transformer encoder
+- Beat a **TF-IDF + logistic regression** baseline first — or admit it wins
 - Know encoder vs decoder vs “the API you will actually call”
 
 !!! think "Think of it like… a database lookup where every row is a candidate, and the score is “how related are you to my question?”"
@@ -282,6 +283,31 @@ ax.set_title("Toy Transformer on feedback text")
 ax.legend(); plt.tight_layout(); plt.show()
 print("majority acc", 1 - yte.mean())
 ```
+
+### The ten-line baseline it has to beat
+
+Every other week, a model had to beat the dumb `ORDER BY` first. Text gets the same rule. The dumb baseline for text is **TF-IDF + logistic regression**: count words, down-weight the ones every comment uses ("the", "is"), fit a weighted sum. No GPU, no training loop, no position encodings — and it is what a senior engineer tries first.
+
+```python
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import roc_auc_score
+
+texts = feedback["feedback_text"].to_numpy()
+tfidf = TfidfVectorizer(ngram_range=(1, 2), min_df=2)
+X_words_tr = tfidf.fit_transform(texts[idx[:cut]])       # same split as the transformer
+X_words_te = tfidf.transform(texts[idx[cut:]])
+bow = LogisticRegression(max_iter=1000).fit(X_words_tr, ytr)
+bow_scores = bow.predict_proba(X_words_te)[:, 1]
+print(f"TF-IDF + logreg: acc {((bow_scores > 0.5) == yte).mean():.3f}  AUC {roc_auc_score(yte, bow_scores):.3f}")
+with torch.no_grad():
+    tiny_scores = torch.sigmoid(model(torch.tensor(Xte))).numpy()
+print(f"TinyTransformer: acc {((tiny_scores > 0.5) == yte).mean():.3f}  AUC {roc_auc_score(yte, tiny_scores):.3f}")
+words = np.array(tfidf.get_feature_names_out())
+print("words that shout 'praise':", list(words[np.argsort(-bow.coef_[0])[:6]]))
+```
+
+The baseline matches the transformer, trains in a blink, and its weights are a readable list of words. That is the honest result on short, formulaic support comments. Attention earns its cost when *word order and context* change the meaning — "not great", "great, except export crashes" — and when you have far more text than this. For CloudWave's feedback, ship the ten lines; for anything longer, start from a pretrained encoder (an embeddings API or a small open model), not from a transformer you train from scratch.
 
 ## Encoder vs decoder vs the API
 

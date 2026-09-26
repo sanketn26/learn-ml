@@ -200,19 +200,20 @@ Same data. One lies with a truncated axis.
 ```python
 fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
 churn_plan.plot(kind="bar", ax=axes[0], color="#ef4444", rot=0)
-axes[0].set_ylim(0.03, 0.10)
-axes[0].set_title("❌ Dishonest: axis starts at 3%")
+axes[0].set_ylim(0.06, 0.40)
+axes[0].set_title("❌ Dishonest: axis starts at 6%")
 axes[0].set_ylabel("churn rate")
 
 churn_plan.plot(kind="bar", ax=axes[1], color="#22c55e", rot=0)
-axes[1].set_ylim(0, 0.15)
+axes[1].set_ylim(0, 0.45)
 axes[1].set_title("✅ Honest: axis starts at 0")
 axes[1].set_ylabel("churn rate")
 plt.tight_layout()
 plt.show()
 
-print("The left chart makes starter vs pro look like a crisis.")
-print("The right chart says: all paid plans are similar; free is different.")
+print("Left: enterprise looks churn-proof and starter looks ~20× worse.")
+ratio = churn_plan["starter"] / churn_plan["enterprise"]
+print(f"Right: starter churns {ratio:.1f}× enterprise — real, but not 20×. The axis did the rest.")
 ```
 
 !!! success "Ship / don’t ship"

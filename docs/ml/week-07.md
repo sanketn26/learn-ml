@@ -4,7 +4,7 @@ description: Understand classification as a score plus a threshold, comparing ba
 
 # Week 7 — Classification: A Score, Then a Threshold
 
-Priya has 80 calling slots this week and a spreadsheet of 44,000 customers. She needs 80 names, ranked by risk. You have a `plan_type`, `mrr`, and a churn flag. Time to turn that into a score.
+Priya has 80 calling slots this week and a spreadsheet of about 28,000 active customers. She needs 80 names, ranked by risk. You have a `plan_type`, `mrr`, and a churn flag. Time to turn that into a score.
 
 ??? note "Course details"
 
@@ -265,12 +265,14 @@ plt.show()
 
     - 0.5 is not a sacred threshold. It is sklearn’s default because someone had to pick a number.
 
+    - Every number on this page is one draw from one random split. Rerun with another `random_state` and precision moves; [Week 11](week-11.md) puts an interval on it.
+
 
 !!! success "Ship / don’t ship"
 
     Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
 
-    CloudWave’s lifetime churn is ~6.4%. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
+    About 9% of today's active customers ever cancel in this file — and only ~2% in the next 30 days. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
 
 ## Overfitting, bias, and variance — the three words on every ML interview
 
@@ -338,7 +340,7 @@ When you can explain the week out loud, do the [exercises](exercises/week-07.md)
 
 ## 🤔 Reflection
 
-1. Why can accuracy be ~94% while the model is useless? (Hint: ~6.4% of users churn.)
+1. Why can accuracy be ~91% while the model is useless? (Hint: ~9% of these customers ever churn.)
 2. Marcus wants “both high precision and high recall.” What resource does he need to give you?
 3. Would you rather explain a depth-3 tree or a 150-tree forest to legal?
 

@@ -1,5 +1,5 @@
 ---
-description: Explore unsupervised learning with K-Means clustering, elbow and silhouette scores, and why unscaled features skew customer segments.
+description: Explore unsupervised learning with K-Means clustering, elbow and silhouette scores, and how feature scale interacts with distance in customer segments.
 ---
 
 # Week 10 — Clustering: Sorting Without Labels

@@ -31,8 +31,9 @@ Exercise: [docs/ml/exercises/week-16.md](../../../docs/ml/exercises/week-16.md)
     - Running train twice with the same `--as-of` *should* overwrite the
       candidate dir. Prod must stay put until promote.
     - If `artifacts/prod` is missing, gate still requires beating the dummy.
-    - Horizon labels can starve the train set — this course defaults to
-      `label=eventual` and says so in metrics.
+    - The horizon is part of the model's meaning: `train` writes
+      `horizon_days` into metrics, and the gate refuses to compare a candidate
+      with a prod model trained on a different horizon.
     - Auto-promote on a worse PR-AUC is `main` pushing to prod on red CI.
 
 ## Reference solution

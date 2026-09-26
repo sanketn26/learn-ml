@@ -49,12 +49,12 @@ This is the ticket-bot shape from weeks 1–5, served locally. Not a cloud vendo
 import time
 from fastapi import FastAPI
 from pydantic import BaseModel
-from langchain_community.llms import FakeListLLM
+from langchain_core.language_models import FakeListChatModel
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 app = FastAPI()
-llm = FakeListLLM(responses=["Try Settings > Security > Change Password."])
+llm = FakeListChatModel(responses=["Try Settings > Security > Change Password."])
 chain = ChatPromptTemplate.from_template("{message}") | llm | StrOutputParser()
 
 
@@ -89,7 +89,7 @@ async def chat(request: ChatRequest):
     )
 ```
 
-Timeout: wrap `ainvoke` in `asyncio.wait_for(..., timeout=2.0)` and treat `TimeoutError` like the `except` path. Concept demo — `FakeListLLM` is instant; the `wait_for` is the contract you are proving.
+Timeout: wrap `ainvoke` in `asyncio.wait_for(..., timeout=2.0)` and treat `TimeoutError` like the `except` path. Concept demo — `FakeListChatModel` is instant; the `wait_for` is the contract you are proving.
 
 ## FIFO cache (not LRU)
 

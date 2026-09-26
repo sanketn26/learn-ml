@@ -118,7 +118,7 @@ Two inputs, two paths. `labels` is a list reducer: `classify` writes `["refund"]
 
 - Not persistence (week 3), not a human gate (week 4), not idempotency (week 5).
 - Not moderation, not spam filtering. Hypothetical CloudWave: inbound support tickets.
-- Not `FakeListLLM`. Keyword `if`s prove the machine. Add a model later at `classify` if you want — import `from langchain_community.llms import FakeListLLM`, not `langchain.llms.fake`.
+- Not `FakeListChatModel`. Keyword `if`s prove the machine. Add a model later at `classify` if you want — import `from langchain_core.language_models import FakeListChatModel` (the old `langchain_community` fakes are being sunset).
 
 ## ✍️ Exercise
 

@@ -4,14 +4,14 @@ description: Learn NumPy vectorization and broadcasting to replace slow Python f
 
 # Week 1 — NumPy: Fast Math on Whole Columns
 
-Ana's warning turns out to be literal. `feature_usage.csv` is 160,000 rows, and Helen wants a daily pulse — busiest features, top 10% power users, anything that looks "weird" — before end of day. The `for` loop you'd reach for out of habit will be the slowest line in the job.
+Ana's warning turns out to be literal. `feature_usage.csv` is 270,000 rows, and Helen wants a daily pulse — busiest features, top 10% power users, anything that looks "weird" — before end of day. The `for` loop you'd reach for out of habit will be the slowest line in the job.
 
 ??? note "Course details"
 
     **Course:** Applied ML Foundations for SaaS Analytics
     **Who this is for:** Software engineers. You do not need calculus or linear algebra.
 
-You already have Python (Week 0). This week is not “become a numerical analyst.” It is: **stop writing Python `for` loops over 160,000 usage events.**
+You already have Python (Week 0). This week is not “become a numerical analyst.” It is: **stop writing Python `for` loops over 270,000 usage events.**
 
 ---
 
@@ -54,7 +54,7 @@ You are on the growth team at **CloudWave**. Helen wants a daily pulse:
 - Who are the top 10% power users?
 - Which usage numbers look “weird” enough to investigate?
 
-The raw file `feature_usage.csv` has **160,000 rows**. A Python loop will work. It will also be the slowest part of your job.
+The raw file `feature_usage.csv` has **270,000 rows**. A Python loop will work. It will also be the slowest part of your job.
 
 !!! think "Think of it like… SIMD, SQL, or Excel — not “math class.”"
 
@@ -62,12 +62,12 @@ The raw file `feature_usage.csv` has **160,000 rows**. A Python loop will work. 
 
 ## If you already write software
 
-A Python `for` loop over 160,000 usage events is the same smell as an N+1 query. It works in staging. It becomes the slowest line in the job.
+A Python `for` loop over 270,000 usage events is the same smell as an N+1 query. It works in staging. It becomes the slowest line in the job.
 
 NumPy is not “math class.” It is:
 
 - a **columnar store** in RAM (one type, one contiguous buffer)
-- a **SIMD / vectorized** API (`usage * 2` is one CPU instruction stream, not 160k Python bytecode loops)
+- a **SIMD / vectorized** API (`usage * 2` is one CPU instruction stream, not 270k Python bytecode loops)
 - the thing Pandas, scikit-learn, and PyTorch all sit on
 
 ```

@@ -7,24 +7,21 @@ from __future__ import annotations
 
 import ast
 import py_compile
+import textwrap
 from pathlib import Path
 
 import pytest
 
 ROOT = Path(__file__).resolve().parent.parent
 
-ML_EXERCISE_DIRS = [ROOT / "exercises" / "ml" / f"week-{i:02d}" for i in range(0, 21)] + [
-    ROOT / "exercises" / "ml" / "capstone"
-]
-ML_DOCS = [ROOT / "docs" / "ml" / "exercises" / f"week-{i:02d}.md" for i in range(0, 21)] + [
-    ROOT / "docs" / "ml" / "exercises" / "capstone.md"
-]
+# Every exercise page, and a starter folder for each — weeks and capstones alike.
+ML_DOCS = sorted((ROOT / "docs" / "ml" / "exercises").glob("*.md"))
+ML_EXERCISE_DIRS = [ROOT / "exercises" / "ml" / page.stem for page in ML_DOCS]
 ML_SECTIONS = (
     "What you are building",
     "Predict before you run",
     "Task",
     "Success criteria",
-    "Debugging clues",
     "After you run",
     "Lesson link",
 )
@@ -59,6 +56,32 @@ def test_ml_exercise_readmes_have_standard_sections():
     assert not missing, missing
 
 
+def test_ml_exercise_pages_use_staged_hints():
+    """Hints are opt-in collapsibles per task, never an always-visible spoiler list."""
+    bad = []
+    for path in ML_DOCS:
+        text = path.read_text()
+        if "## Debugging clues" in text:
+            bad.append(f"{path.name}: visible 'Debugging clues' section")
+        for stage in ('"Hint 1 — a nudge"', '"Hint 2 — the approach"', '"Hint 3 — '):
+            if stage not in text:
+                bad.append(f"{path.name}: no {stage} block")
+    assert not bad, bad
+
+
+def test_ml_exercise_readmes_match_docs_pages():
+    """READMEs are generated from docs pages — edit the page, then run the sync script."""
+    import subprocess
+    import sys
+
+    proc = subprocess.run(
+        [sys.executable, str(ROOT / "scripts" / "sync_exercise_readmes.py"), "--check"],
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, "run python scripts/sync_exercise_readmes.py\n" + proc.stdout
+
+
 def test_framework_exercise_pages_exist():
     missing = [p for p in LC + LG + CA if not p.exists()]
     assert not missing, f"missing exercise pages: {missing}"
@@ -72,6 +95,23 @@ def test_framework_exercise_pages_have_recovery_sections():
             if heading not in text:
                 missing.append(f"{path.name}: {heading}")
     assert not missing, missing
+
+
+def test_framework_exercise_pages_predict_first_and_stage_hints():
+    """Predict sits above the tasks; hints and the expected observation start closed."""
+    bad = []
+    for path in LC + LG + CA:
+        text = path.read_text()
+        name = f"{path.parent.parent.name}/{path.name}"
+        if text.index("## Predict before you run") > text.index("## 1."):
+            bad.append(f"{name}: Predict comes after the first task")
+        for stage in ('"Hint 1 — a nudge"', '"Hint 2 — the approach"', '"Hint 3 — '):
+            if stage not in text:
+                bad.append(f"{name}: no {stage} block")
+        observed = text.split("## Expected observation", 1)[1].lstrip()
+        if not observed.startswith("??? "):
+            bad.append(f"{name}: Expected observation is not collapsed")
+    assert not bad, bad
 
 
 @pytest.mark.parametrize(
@@ -115,7 +155,7 @@ def test_fenced_python_in_framework_exercises_parses_or_is_sketch():
             lang = header.strip().split()[0].lower() if header.strip() else ""
             if lang not in {"python", "py"}:
                 continue
-            src = body.strip()
+            src = textwrap.dedent(body).strip()  # fences inside ??? hints are indented
             if not src or src.startswith("#") and "TODO" in src:
                 continue
             try:

@@ -22,6 +22,7 @@ We will **not** memorize a zoo of tests. We will make one decision carefully, th
 - Draw a confidence interval as “a range of plausible true rates”
 - Know which test matches your column types
 - Refuse to ship on p &lt; 0.05 alone
+- Size an experiment **before** running it: how many customers it takes to see the effect you care about (power)
 
 !!! think "Think of it like… a code review, or a courtroom."
 
@@ -79,7 +80,7 @@ Two weeks of early data, both groups of new signups:
 
 Wait — that's backwards from what Marcus is claiming. He remembered the headline number, not the table. That is itself the week's first lesson: **check the data before you check the p-value.** An engineer asks a second question anyway: **with this few customers, how often would a 4-point gap this size appear by coin-flip, in either direction?**
 
-These 50/60 customers are a small, hypothetical early slice — not CloudWave's full `starter`/`pro` populations, which run within half a point of each other at n in the thousands (see the full-table test below). Don't read this toy example as "CloudWave's real plans differ by 4 points."
+These 50/60 customers are a small, hypothetical early slice — not CloudWave's plans. The real plans differ by *much* more than 4 points, and at n in the thousands their intervals do not even touch (see the full-table test below). Small n hides a real gap as easily as it invents a fake one.
 
 !!! engineer "Engineer mental model"
 
@@ -129,6 +130,37 @@ print("Expected counts if the groups were equal:\n", expected.round(1))
 print("\nVerdict: p is large. We do NOT have enough evidence to tell Marcus the checklist worked.")
 print("Ship decision: keep collecting data. Do not tell Helen this is proven on 110 customers.")
 ```
+
+## How many customers would it take?
+
+"Keep collecting data" is not a plan until it has a number. Flip the question around: **if the checklist really did cut churn from 18% to 14%, how often would an experiment this size notice?** That probability is called **power**. Same fake-worlds trick as before, except this time the worlds *do* have a real effect:
+
+```python
+def detects(n_per_group, p_old=0.18, p_new=0.14, runs=2000):
+    """Share of honest experiments of this size that reach p < 0.05."""
+    old = rng.binomial(n_per_group, p_old, runs)
+    new = rng.binomial(n_per_group, p_new, runs)
+    hits = 0
+    for o, w in zip(old, new):
+        _, p_val, _, _ = stats.chi2_contingency([[o, n_per_group - o], [w, n_per_group - w]])
+        hits += p_val < 0.05
+    return hits / runs
+
+for n in [55, 500, 1000, 1500]:
+    print(f"{n:>5} customers per group → detects a real 4-point drop {detects(n):.0%} of the time")
+```
+
+At 55 per group the answer is roughly *never*: a real 4-point improvement would come back "not significant" about 95 times in 100. Marcus's experiment could not have succeeded — which also means its failure told you almost nothing. You need about **1,300 customers per group** to catch that drop four times out of five.
+
+!!! math "Math, translated"
+
+    The standard formula gives the same answer without a loop: `n per group ≈ (1.96 + 0.84)² × [p₁(1−p₁) + p₂(1−p₂)] / (p₁ − p₂)²`. The 1.96 is "p < 0.05, two-sided"; the 0.84 is "80% power." Read it as a cost curve: **halve the effect you want to detect and you need four times the customers.** `statsmodels.stats.power` has it as a function.
+
+Do this *before* the experiment, not after. It turns "is it significant?" into a budget conversation Helen can actually have: "detecting a 4-point drop takes about 2,600 new signups — roughly six weeks at our signup rate. Detecting a 2-point drop takes about six months. Which one do we care about?"
+
+!!! warning "Watch out — an underpowered test that fails is not evidence of no effect"
+
+    "We tried it on 50 people and nothing happened" usually means the test could not have seen anything. Compute the power first; if it is below ~80% for the smallest effect worth shipping, the experiment is not worth running at that size.
 
 ## Now the full CloudWave table
 
@@ -226,6 +258,7 @@ When you can explain the week out loud, do the [exercises](exercises/week-05.md)
 1. Explain a p-value to Marcus in one sentence without the word “significant.”
 2. Why did 8/50 vs 12/60 fail, while the full table’s plan comparison did not?
 3. You ran 12 ad-hoc tests on one Friday. How many “wins” do you expect by luck at α = 0.05?
+4. Marcus's next experiment will have 300 customers per arm. Before it runs, what is the smallest churn drop it can reliably detect?
 
 ## Before you leave
 

@@ -102,8 +102,8 @@ The ML course uses one fake SaaS company. Same customers all the way through.
 | File | Grain | Rows |
 |---|---|---|
 | `subscriptions.csv` | one customer | ~49k |
-| `user_events.csv` | one event | 220k |
-| `feature_usage.csv` | one user × feature × day | 160k |
+| `user_events.csv` | one event | 432k |
+| `feature_usage.csv` | one user × feature × day | 270k |
 | `feedback.json` | one comment (JSON Lines) | 10k |
 | `product_catalog.csv` | one feature/product | 300 |
 

@@ -1,89 +1,143 @@
-"""Capstone reference — Phases 1–2 and 4–5. No trained weights.
+"""Capstone reference — tasks 1–5, offline. No trained weights.
 
 Run from the repo root:
 
     python solutions/ml/capstone/solution.py
 
-Phase 3: capstone/finetune/ (dry-run on CPU; real train on Colab/GPU).
+Task 6 (fine-tune): capstone/finetune/ — dry-run on CPU, train on Colab.
 """
 
 from __future__ import annotations
 
+import re
 import sys
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
 
-from capstone.evaluate import compare, score_one
+from capstone.cases import DEFAULT_NIGHTS, all_cases, incident_cases
+from capstone.evaluate import ablation, default_entries, table
+from capstone.harness import run_loop
+from capstone.policies import rules_first, rules_policy, teacher_policy
+from capstone.prompt import render_state
 from capstone.reliability import RejectedCall, validate_call
-from capstone.scenarios import SCENARIOS, Scenario
-from capstone.teacher import build_trajectory, golden_call, write_splits
-from capstone.tools import TOOLS, tool_schema
+from capstone.runbook import accepted, next_call
+from capstone.teacher import corrupt
+
+NIGHT = "2024-07-06"
+WINDOW = {"ref_as_of": "2024-06-29", "as_of": NIGHT}
 
 
-def extra_scenario() -> Scenario:
-    """Exercise 2 — a seventh scenario, local to this script (do not widen TOOLS)."""
-    return Scenario(
-        id="s7_style_init",
-        expect_tool="check_style_or_conventions",
-        context="Another PEP-8 nit: __init__ named as a factory.",
-        input_text="def InitModel(cfg):\n    return GradientBoostingClassifier(**cfg)\n",
-    )
+def task1_break_the_spec() -> list[str]:
+    state = {
+        "ticket": "Tonight's list barely overlaps last week's.",
+        "context": {**WINDOW, "capacity": 80},
+        "steps": [
+            {"n": 1, "command": "check_grain", "args": {"as_of": NIGHT}, "result": {"grain_ok": True}},
+            {"n": 2, "call": {"command": "check_grain", "args": {"as_of": "tonight"}}, "rejected": "not a date"},
+        ],
+    }
+    broken = [
+        # feature_column: sounds like a feature, is the leaked lifetime label (Week 8).
+        {"command": "compare_nights", "args": {"columns": ["tenure_days"], **WINDOW}},
+        # user_id: must appear in an earlier result — the model can't invent a fixture customer.
+        {"command": "inspect_customer", "args": {"user_id": "user_000417", **WINDOW}},
+        # steps: evidence must be accepted steps; step 2 was rejected.
+        {"command": "conclude", "args": {"causes": ["join_fanout"], "columns": ["total_events"], "evidence": [2],
+                                         "checks_to_add": ["mean_ratio_vs_last_week"]}},
+    ]
+    messages = []
+    for call in broken:
+        try:
+            validate_call(call, state)
+        except RejectedCall as exc:
+            messages.append(str(exc))
+    return messages
+
+
+def _three_defect_night():
+    three = [c for c in incident_cases((NIGHT,)) if len(c.defects) == 3]
+    return next(c for c in three if c.split == "train"), next(c for c in three if c.split == "test")
+
+
+def task2_walk_one_investigation() -> dict:
+    familiar, unseen = _three_defect_night()
+    run = run_loop(teacher_policy(familiar), familiar)
+    print(render_state(run["state"]))
+    rules = run_loop(rules_policy, unseen)
+    return {"teacher_steps": run["accepted"], "rules_outcome": rules["outcome"],
+            "rules_first_step": rules["state"]["steps"][0].get("command")}
+
+
+def task3_what_a_rejection_costs() -> dict:
+    def sloppy(case):
+        teacher = teacher_policy(case)
+        return lambda state: corrupt(teacher(state)) if not state["steps"] else teacher(state)
+
+    cases = [c for c in incident_cases((NIGHT,)) if c.split == "train" and c.defects]
+    horizon = {c.id: run_loop(teacher_policy(c), c)["accepted"] for c in cases}
+    out = {}
+    for label, budget in (("budget_8", lambda c: 8), ("no_slack", lambda c: horizon[c.id])):
+        runs = [run_loop(sloppy(c), c, budget=budget(c)) for c in cases]
+        out[label] = {"solved": sum(r["outcome"] == "solved" for r in runs) / len(runs),
+                      "outcomes": dict(Counter(r["outcome"] for r in runs))}
+    return out
+
+
+def task4_overfit_the_baseline() -> dict:
+    peeked = re.compile(r"call sheet|stranger|address book", re.I)  # read off the test ticket: that's the problem
+
+    def patched_first(state):
+        if peeked.search(state["ticket"]):
+            return {"command": "check_grain", "args": {"as_of": state["context"]["as_of"]}}
+        return rules_first(state)
+
+    patched = lambda s: next_call(s) if accepted(s) else patched_first(s)
+    out = {}
+    for split in ("test", "val"):
+        cases = [c for c in incident_cases((NIGHT,)) if c.split == split]
+        for name, policy in (("rules", rules_policy), ("patched", patched)):
+            out[f"{split}_{name}"] = sum(run_loop(policy, c)["outcome"] == "solved" for c in cases) / len(cases)
+    return out
+
+
+def task5_ablation() -> str:
+    parts = []
+    for split in ("train", "test"):
+        cases = all_cases(DEFAULT_NIGHTS[:2], split=split)
+        parts.append(f"{split}: {len(cases)} cases\n{table(ablation(cases, default_entries()))}")
+    return "\n\n".join(parts)
 
 
 def main() -> None:
-    print("Phase 1 — tool contract")
-    print("  tools:", [t["name"] for t in tool_schema()])
-    print("  required example:", {name: spec["required"] for name, spec in TOOLS.items()})
+    print("Task 1 — three hallucinations a string schema lets through")
+    for message in task1_break_the_spec():
+        print("  ", message)
 
-    print("\nExercise 1 — break the contract on purpose")
-    for call in (
-        {"name": "delete_repo", "arguments": {}},
-        {"name": "explain_error", "arguments": {}},
-    ):
-        try:
-            validate_call(call)
-        except RejectedCall as exc:
-            print(f"  {call['name']!r}: {exc}")
+    print("\nTask 2 — one six-step investigation")
+    print(task2_walk_one_investigation())
 
-    print("\nPhase 2 — teacher trajectories (correct by construction)")
-    counts = write_splits(ROOT / "capstone" / "data")
-    print("  splits:", counts)
-    for scenario in SCENARIOS:
-        row = build_trajectory(scenario)
-        assert row["tool_call"] is None or row["tool_call"]["name"] in TOOLS
+    print("\nTask 3 — a rejection costs a step")
+    print(task3_what_a_rejection_costs())
+    print("  The budget stops a policy that keeps getting rejected from running forever. A model with a 10%\n"
+          "  per-call rejection rate needs ~0.6 extra steps on a six-step ticket — the budget must have that slack.")
 
-    print("\nExercise 2 — seventh scenario, locally")
-    s7 = extra_scenario()
-    traj = build_trajectory(s7)
-    print("  golden:", traj["tool_call"])
-    print("  score_one:", score_one(s7, golden_call(s7)))
-    print("  placeholder specialist stays at 1.0 because validate_call runs inside build_trajectory")
+    print("\nTask 4 — overfitting the test split")
+    print(task4_overfit_the_baseline())
+    print("  The keywords came from the test tickets, so the test score now measures what I read, not what the\n"
+          "  baseline can do. Val was already solved, so it can't show the damage either. A model trained only on\n"
+          "  train wording and scored on test wording is the comparison that still means something.")
 
-    print("\nExercise 3 — ship / don't ship vs a 0.75 real model")
-    specialist, baseline = compare()
-    print("  specialist (placeholder ceiling):", specialist)
-    print("  baseline:", baseline)
-    print(
-        "  If a *real* adapter landed at 0.75 accuracy: beat the general baseline, but "
-        "do not ship destructive tools, and do not treat 0.75 as the placeholder ceiling. "
-        "Ship only on narrow, repeated coding tasks behind validate_call(); otherwise route out."
-    )
+    print("\nTask 5 — harness vs weights")
+    print(task5_ablation())
+    print("  Verdict: the harness is worth 0.54 → 0.99 on familiar wording (one-shot is 0 at h3, h5, h6).\n"
+          "  The gap a model must close is 0.99 → 0.23: reading tickets it has never seen.")
 
-    print("\nExercise 4 — base-model memo")
-    print(
-        "  Start Phase 3 with FunctionGemma only as a formatting baseline, then rerun the same\n"
-        "  recipe on a small Qwen/Phi coding variant. Mind-changer: tool-selection accuracy and\n"
-        "  hallucination rate on capstone/scenarios.py (Phase 5), not loss curves. If FunctionGemma\n"
-        "  emits well-formed JSON around a wrong diagnosis, pick the larger coder."
-    )
-
-    print("\nPhase 3 — not in this file")
-    print("  python capstone/finetune/prepare_data.py --dry-run")
-    print("  python capstone/finetune/train_lora.py --dry-run")
-    print("  python capstone/finetune/evaluate_adapter.py --dry-run")
-    print("  Real train: GPU (Colab T4/L4). See capstone/finetune/README.md")
+    print("\nTask 6 — fine-tune (not in this file)")
+    print("  python capstone/finetune/prepare_data.py --dry-run   # laptop")
+    print("  Colab: prepare_data.py → train_lora.py → evaluate_adapter.py --adapter ... --base ...")
 
 
 if __name__ == "__main__":

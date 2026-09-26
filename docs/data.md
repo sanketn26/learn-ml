@@ -6,11 +6,13 @@ description: Reference for the synthetic CloudWave SaaS datasets used across the
 
 Synthetic SaaS data, checked into `data/`. One company all the way through the ML course.
 
+The files come from one seeded simulation, [`scripts/generate_cloudwave_data.py`](https://github.com/sanketn26/learn-ml/blob/main/scripts/generate_cloudwave_data.py): signups grow about 2% a month, about 2% of active customers cancel each month, and activity only happens between a customer's signup and churn. Customers who are about to leave fade out and file more support tickets first — the signal a churn model is supposed to find.
+
 | Dataset | Records | Grain | Format |
 |---|---|---|---|
 | [`subscriptions.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/subscriptions.csv) | 48,991 | one row per customer | CSV |
-| [`user_events.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/user_events.csv) | 220,000 | one row per event | CSV |
-| [`feature_usage.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feature_usage.csv) | 160,000 | one row per user × feature × day | CSV |
+| [`user_events.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/user_events.csv) | 431,828 | one row per event | CSV |
+| [`feature_usage.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feature_usage.csv) | 269,647 | one row per user × feature × day | CSV |
 | [`feedback.json`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/feedback.json) | 10,000 | one object per comment | JSON Lines |
 | [`product_catalog.csv`](https://raw.githubusercontent.com/sanketn26/learn-ml/main/data/product_catalog.csv) | 300 | one row per product/feature | CSV |
 
@@ -21,7 +23,7 @@ Customer lifecycle.
 - `user_id` — unique customer
 - `plan_type` — `free`, `starter`, `pro`, `enterprise`
 - `mrr` — monthly recurring revenue in dollars (`0` for free)
-- `signup_date` / `churn_date` — `churn_date` empty if still active
+- `signup_date` / `churn_date` — `churn_date` empty if still active (signups run 2022-01 → 2024-11)
 - `is_churned` — `1` or `0`
 - `tenure_days` — signup → churn, or signup → **2024-11-30** if still active. That date is the observation end of this fixture.
 
@@ -31,7 +33,8 @@ Telemetry.
 
 - `event_id`, `user_id`, `event_type` (`login`, `page_view`, `click`, `feature_use`, `payment`, `support_message`, `signup`, `upgrade`, `downgrade`, `cancel`), `timestamp`
 - `device` — `web`, `ios`, `android`
-- `region` — `NA`, `EMEA`, `APAC`, `LATAM`
+- `region` — `NAMER`, `EMEA`, `APAC`, `LATAM` — one home region per customer, with a little travel noise. Not `NA`: pandas reads that string as missing.
+- Events are logged from **2023-01-01**; a `signup` event marks each signup after that date and a `cancel` event marks each churn
 - `session_duration` — seconds
 
 ## feature_usage.csv
@@ -49,7 +52,8 @@ import pandas as pd
 feedback = pd.read_json("data/feedback.json", lines=True)
 ```
 
-- `user_id`, `category`, `sentiment_score`, `feedback_text`
+- `user_id`, `created_at`, `category`, `sentiment_score`, `feedback_text`
+- `category` is one of `praise`, `bug`, `billing`, `feature_request`, `other`; the text is written from ~30 templates, so a text classifier has real work to do
 
 ## How lessons load it
 

@@ -21,17 +21,33 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from pipelines.features import AS_OF_DEFAULT, CATEGORICAL, FEATURE_COLS, NUMERIC, build_features
-from pipelines.labels import HORIZON_DAYS, drop_unlabelled, label_churn_in_horizon, label_eventual_churn
+from pipelines.features import AS_OF_DEFAULT, CATEGORICAL, FEATURE_COLS, NUMERIC
+from pipelines.ranking import precision_at_k, top_k
+from pipelines.split import BACKTEST_HORIZON_DAYS, snapshot_split
 
 BUDGET = 80
 
 
-def _threshold_for_budget(y: np.ndarray, scores: np.ndarray, budget: int) -> float:
+def _threshold_for_budget(scores: np.ndarray, user_ids: np.ndarray, budget: int) -> float:
+    """The score of the last name on a capacity-sized list."""
     if len(scores) == 0:
         return 1.0
-    k = min(budget, len(scores))
-    return float(np.partition(scores, -k)[-k])
+    return float(scores[top_k(scores, user_ids, budget)[-1]])
+
+
+def _precision_ci(y: np.ndarray, scores: np.ndarray, user_ids: np.ndarray, budget: int,
+                  n_boot: int = 500, rng: int = 0) -> list[float]:
+    """95% bootstrap interval on precision@budget. One backtest is one draw.
+
+    Each resample ranks with the same tie-break as the shipped list; a bare argsort
+    would pick an arbitrary slice of the tie plateau in every draw.
+    """
+    gen = np.random.default_rng(rng)
+    draws = []
+    for _ in range(n_boot):
+        i = gen.integers(0, len(y), len(y))
+        draws.append(precision_at_k(y[i], scores[i], user_ids[i], budget))
+    return [round(float(q), 4) for q in np.percentile(draws, [2.5, 97.5])]
 
 
 def _keep_all_positives(frame: pd.DataFrame, y: pd.Series, n: int, rng: int = 42) -> tuple[pd.DataFrame, pd.Series]:
@@ -47,29 +63,20 @@ def _keep_all_positives(frame: pd.DataFrame, y: pd.Series, n: int, rng: int = 42
     return out, y.loc[out.index]
 
 
-def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventual") -> dict:
+def train(as_of: str, out_dir: Path, n: int | None = None, horizon_days: int = BACKTEST_HORIZON_DAYS) -> dict:
     as_of_ts = pd.Timestamp(as_of)
-    raw = build_features(as_of=as_of_ts, n=None, at_risk_only=True)
-    if label == "horizon":
-        y_all = label_churn_in_horizon(raw, as_of_ts)
-        frame, y = drop_unlabelled(raw, y_all)
-    elif label == "eventual":
-        y_all = label_eventual_churn(raw, as_of_ts)
-        frame, y = drop_unlabelled(raw, y_all)
-    else:
-        raise ValueError("label must be 'eventual' or 'horizon'")
-
-    cutoff = frame["signup_date"].quantile(0.80)
-    train_df = frame[frame["signup_date"] <= cutoff]
-    test_df = frame[frame["signup_date"] > cutoff]
-    y_train = y.loc[train_df.index]
-    y_test = y.loc[test_df.index]
+    # Backtest, not a signup_date cut — a signup cut is a tenure cut (see pipelines/split.py).
+    train_df, y_train, test_df, y_test = snapshot_split(as_of_ts, horizon_days=horizon_days, n=None)
+    # Optional: downsample negatives for a faster run. The full train snapshot
+    # (~27k rows) fits in seconds, and downsampling makes the top of the list
+    # depend on which negatives survived — so the default keeps them all.
+    # Never the test set: every metric below is quoted as "what the desk will
+    # see," so it runs on the real mix.
     train_df, y_train = _keep_all_positives(train_df, y_train, n)
-    test_df, y_test = _keep_all_positives(test_df, y_test, None if n is None else max(n // 4, 400))
     if y_train.nunique() < 2:
         raise RuntimeError(
             f"train set has one class (rate={float(y_train.mean())}). "
-            "Use a larger --n or a different --as-of."
+            "Use a larger --n, a longer --horizon-days, or a different --as-of."
         )
 
     pipe = Pipeline(
@@ -86,7 +93,12 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventua
             (
                 "model",
                 GradientBoostingClassifier(
-                    n_estimators=40, learning_rate=0.1, max_depth=2, random_state=42
+                    n_estimators=40, learning_rate=0.1, max_depth=2,
+                    # No leaf smaller than 50 customers. Without it the trees carve
+                    # out slivers like "pro, MRR $101.14–$101.32" around three
+                    # training churners and put them at the top of the list (Week 15).
+                    min_samples_leaf=50,
+                    random_state=42,
                 ),
             ),
         ]
@@ -97,16 +109,21 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventua
     dummy_ap = average_precision_score(y_test, np.full(len(y_test), dummy))
     ap = average_precision_score(y_test, scores)
     auc = roc_auc_score(y_test, scores)
-    threshold = _threshold_for_budget(y_test.to_numpy(), scores, BUDGET)
+    ids, y_np = test_df["user_id"].to_numpy(), y_test.to_numpy()
+    threshold = _threshold_for_budget(scores, ids, BUDGET)
     flagged = scores >= threshold
-    precision_at_budget = float(y_test.to_numpy()[np.argsort(-scores)[:BUDGET]].mean()) if len(y_test) else 0.0
+    precision_at_budget = precision_at_k(y_np, scores, ids, BUDGET)  # the desk's list: score, then user_id
 
     version = as_of_ts.strftime("%Y%m%d")
     meta = {
         "model_version": version,
         "as_of": str(as_of_ts.date()),
-        "label": label,
-        "horizon_days": HORIZON_DAYS if label == "horizon" else None,
+        "train_as_of": str((as_of_ts - pd.Timedelta(days=horizon_days)).date()),
+        # Every number below was graded on churn up to this date. Scoring earlier than it would mean
+        # this model's evaluation used labels that don't exist yet on the scoring morning.
+        "labels_known_by": str((as_of_ts + pd.Timedelta(days=horizon_days)).date()),
+        "label": f"churn within {horizon_days} days",
+        "horizon_days": horizon_days,
         "trained_at": datetime.now(timezone.utc).isoformat(),
         "n_train": int(len(train_df)),
         "n_test": int(len(test_df)),
@@ -116,7 +133,11 @@ def train(as_of: str, out_dir: Path, n: int | None = 8000, label: str = "eventua
         "dummy_pr_auc": round(float(dummy_ap), 4),
         "threshold": round(threshold, 4),
         "precision_at_80": round(precision_at_budget, 4),
+        "precision_at_80_ci95": _precision_ci(y_np, scores, ids, BUDGET),
         "flag_rate": round(float(flagged.mean()), 4),
+        # Customers sharing the 80th score. If this is large, `score >= threshold`
+        # flags far more than the budget — rank and cut, do not threshold.
+        "ties_at_threshold": int((scores == threshold).sum()),
         "features": FEATURE_COLS,
     }
 
@@ -131,10 +152,10 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Train CloudWave churn as of a day.")
     parser.add_argument("--as-of", default=str(AS_OF_DEFAULT.date()))
     parser.add_argument("--out", default=str(ROOT / "artifacts"))
-    parser.add_argument("--n", type=int, default=8000)
-    parser.add_argument("--label", choices=("eventual", "horizon"), default="eventual")
+    parser.add_argument("--n", type=int, default=None, help="downsample train negatives to this many rows (default: keep all)")
+    parser.add_argument("--horizon-days", type=int, default=BACKTEST_HORIZON_DAYS)
     args = parser.parse_args()
-    meta = train(args.as_of, Path(args.out), n=args.n, label=args.label)
+    meta = train(args.as_of, Path(args.out), n=args.n, horizon_days=args.horizon_days)
     print(json.dumps(meta, indent=2))
 
 

@@ -17,5 +17,8 @@ cairosvg
 # Warehouse-shaped SQL on the CSVs (week 3, reused in week 16)
 duckdb>=1.0
 
+# Command specs for the on-call specialist capstone (capstone/commands/*.yaml)
+pyyaml>=6.0
+
 # Dev
 pytest>=7.4

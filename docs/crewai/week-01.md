@@ -13,7 +13,7 @@ description: Learn CrewAI's Agent abstraction as role, goal, backstory, and tool
 
 CrewAI is **jobs + tickets + a sprint team**. An agent is a worker with a system prompt (role, goal, backstory), tools (IAM), and a task (a ticket). It is ceremony when one function would do.
 
-This environment pins `crewai==0.80.0` with **no LangChain** and **no crewai-tools**. Concept demos construct objects and assert fields. They do not `kickoff()` a ReAct loop against a fake LangChain LLM.
+This environment pins `crewai==1.15.22` (CrewAI 1.x) with **no LangChain** and **no crewai-tools**. Concept demos construct objects and assert fields. They do not `kickoff()` a ReAct loop against a fake LangChain LLM.
 
 ---
 
@@ -100,7 +100,7 @@ assert lookup_plan("user_0001") == "Enterprise"
 assert lookup_plan("nope") == "unknown"
 ```
 
-Library spelling if your 0.80 install exposes it (optional):
+Library spelling (`crewai.tools.tool`, CrewAI 1.x):
 
 ```python
 from crewai.tools import tool
@@ -115,7 +115,7 @@ Attach tools only if you can do it without importing `langchain` or `crewai_tool
 
 !!! warning "Watch out — kickoff is a ReAct loop"
 
-    `crew.kickoff()` will prompt a model, possibly call tools, possibly loop. A `FakeListLLM` from LangChain is **out of this venv**. Do not `!pip install` in a notebook. Do not add a second agent to “improve quality” before you have an output contract.
+    `crew.kickoff()` will prompt a model, possibly call tools, possibly loop. A `FakeListChatModel` from LangChain is **out of this venv**. Do not `!pip install` in a notebook. Do not add a second agent to “improve quality” before you have an output contract.
 
 !!! success "Ship / don’t ship"
 

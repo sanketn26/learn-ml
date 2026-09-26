@@ -67,16 +67,24 @@ assert t2.context == [t1]
 
 ## Hierarchical sketch
 
-`Process.hierarchical` expects a manager (in 0.80, a `manager_llm` or a manager agent — see the pin’s constructor). You can **construct** the crew and assert the process without `kickoff()`.
+`Process.hierarchical` needs a manager: a `manager_llm`, or a `manager_agent` you write yourself. CrewAI 1.x checks this when you **construct** the crew, not when you `kickoff()` — a hierarchical crew with no manager is now a `ValidationError`, which is the right place to fail. A manager *agent* lets you write the manager's job down, so use that:
 
 ```python
+manager = Agent(
+    role="release manager",
+    goal="Assign each ticket to the right worker and check it is done. Do not rewrite their output.",
+    backstory="Owns the order of work, not the words.",
+    allow_delegation=True,   # delegating is the whole job
+    verbose=False,
+)
 hier = Crew(
-    agents=[researcher, writer],
+    agents=[researcher, writer],     # the manager is NOT in this list
     tasks=[t1, t2],
     process=Process.hierarchical,
-    # manager_llm=...  # required to *run*; omit rather than pass a LangChain fake
+    manager_agent=manager,
 )
 assert hier.process == Process.hierarchical
+assert hier.manager_agent.role == "release manager"
 ```
 
 Who owns the final string? The manager’s last message, not `t2`’s, if the manager rewrites. That is extra tokens and a second chance to drop `risks`. Sequential is the default until you can say what the manager decides that `context=` does not.
