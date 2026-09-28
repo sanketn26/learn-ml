@@ -4,7 +4,7 @@ description: Four-week CrewAI multi-agent workflow track covering roles, tasks, 
 
 # CrewAI
 
-Four weeks on multi-agent setups as **staffing**: a role is a job description, a tool is an IAM policy, a task is a ticket, a crew is the sprint team.
+4 weeks on multi-agent setups as **staffing**: a role is a job description, a tool is an IAM policy, a task is a ticket, a crew is the sprint team.
 
 This is an optional framework track for engineers who already understand LLM calls, tool contracts, orchestration, and the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material). It is not a starting point for programming or AI.
 

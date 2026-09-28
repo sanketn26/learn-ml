@@ -4,7 +4,7 @@ description: A five-week LangGraph track on treating LLM work as a state machine
 
 # LangGraph
 
-Five weeks on LLM work as a **state machine**: nodes are functions, edges are control flow, state is the request-scoped object you already thread through a saga.
+5 weeks on LLM work as a **state machine**: nodes are functions, edges are control flow, state is the request-scoped object you already thread through a saga.
 
 Start this track only if state machines, retries, persistence, idempotency, and the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) are familiar.
 

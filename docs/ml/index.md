@@ -1,5 +1,5 @@
 ---
-description: A 20-week applied ML course for engineers, using a fake SaaS company's churn data to teach classification, regression, clustering, and deep learning.
+description: Weeks 0–20 (21 sessions) of applied ML for engineers. Job path 0–17. A fake SaaS company's churn data teaches classification, regression, clustering, and deep learning.
 ---
 
 # Applied ML Foundations for SaaS Analytics
@@ -8,7 +8,7 @@ CloudWave loses about 2% of its customers every month — roughly 550 people. Pr
 
 ??? note "Course details — who this is for, prerequisites"
 
-    Written for working engineers. You do not need calculus, linear algebra, or a stats degree, but you do need programming fluency. This is an introduction to ML, not an introduction to coding. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.
+    Written for working engineers. You must already program; you do not need to already program in Python. You do not need calculus, linear algebra, or a stats degree. This is an introduction to ML, not an introduction to coding. Weeks 0–20 (21 sessions). Job path 0–17. Check the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) before Week 0.
 
     CloudWave is a fake B2B SaaS company. You will use the same customers from "what is a Python dataclass" through a nightly scoring job — then, if you want, the pictures behind CNNs and Transformers. Full cast, numbers, and story continuity: [CloudWave story bible](../cloudwave.md).
 

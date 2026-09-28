@@ -172,7 +172,7 @@ def evaluate(path=Path("eval/golden_tickets.jsonl")) -> int:
     return failures
 ```
 
-This router is deliberately dumb. The point is the **file** and the **fail-the-build** shape. LangChain week 3–5 replace `allowed_tools` with a real loop. They do not replace the golden file.
+This router is deliberately dumb. The point is the **file** and the **fail-the-build** shape. LangChain week 3–5 replace `allowed_tools` with a real loop. They do not replace the golden file. The [LangGraph support-agent capstone](capstone-agent.md) and the [AI Engineering triage service](https://sanketn26.github.io/AIEngineering/core/capstone/) are this bot with a real tool loop.
 
 !!! warning "Watch out — prompt injection"
 

@@ -1,5 +1,5 @@
 ---
-description: Applied machine learning and AI-agent framework courses for software engineers, covering ML fundamentals, CrewAI, LangChain, and LangGraph with no GPU required.
+description: Applied ML and AI-framework courses for software engineers — analogies first, then pictures, then code.
 hide:
   - toc
 ---
@@ -8,13 +8,13 @@ hide:
   <div class="course-hero__content">
     <span class="course-eyebrow">Analogy · visual · math · predict · run · compare · explain</span>
     <h1>Ship ML and LLM systems<br><span>without a math degree.</span></h1>
-    <p class="course-hero__lead">Courses for working software engineers. Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No GPU. No Jupyter.</p>
+    <p class="course-hero__lead">Courses for working software engineers. Every idea starts as something you already know — a SQL join, an API contract, a code review, a flaky test — then a picture, then a small piece of Python you can run on a laptop. No Jupyter. No GPU for weeks 0–17. Optional DL capstone needs a GPU.</p>
     <div class="course-actions">
       <a class="course-button course-button--primary" href="ml/week-00/">Start week 0 <span aria-hidden="true">→</span></a>
       <a class="course-button course-button--secondary" href="getting-started/">How to run the exercises</a>
       <a class="course-button course-button--coffee" href="https://buymeacoffee.com/sanketn">☕ Support this course</a>
     </div>
-    <p class="course-hero__note">21 weeks of ML fundamentals · 16 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows</p>
+    <p class="course-hero__note">Weeks 0–20 (21 sessions). Job path 0–17. · 16 weeks across LangChain/LangGraph/CrewAI · Laptop-friendly, samples ~8k rows</p>
   </div>
   <div class="course-terminal" aria-label="Course roadmap">
     <div class="course-terminal__bar"><i></i><i></i><i></i><span>learn-ml / roadmap</span></div>
@@ -43,7 +43,7 @@ hide:
 
     ---
 
-    21 weeks (0–20). The job is 0–17. Deep learning 18–20 is optional.
+    Weeks 0–20 (21 sessions). Job path 0–17. Deep learning 18–20 is optional.
 
     Analogies first. Formulas only as “math, translated.”
 

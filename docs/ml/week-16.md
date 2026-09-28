@@ -232,7 +232,7 @@ print("precision@80", float(knowable["y"].mean()) if len(knowable) else "still c
 
 !!! success "Ship / don’t ship"
 
-    Ship a cron, a candidate directory, a gate, and a CSV. Do not ship Kubeflow so you can say “we have a platform.” Do not let `train.py` overwrite `prod`. Do not add Airflow until a cron file is boring.
+    Ship a cron, a candidate directory, a gate, and a CSV. Do not ship Kubeflow so you can say “we have a platform.” Do not let `train.py` overwrite `prod`. Do not add Airflow until a cron file is boring. [Data Engineering Phase 5](https://sanketn26.github.io/data-engineering/airflow/) starts from the other side: once dependent jobs outgrow a crontab, Airflow is the system of record for which task ran, on which interval, with which outcome. This week stops while the cron file is still the whole system.
 
 ## ✍️ Exercise
 

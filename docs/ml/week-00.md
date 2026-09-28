@@ -9,7 +9,7 @@ Monday, 9 a.m., first day. Ana pings you on Slack: "welcome — `feature_usage.c
 ??? note "Course details"
 
     **Course:** Applied ML Foundations for SaaS Analytics
-    **Who this is for:** Developers who already write code (Java, TypeScript, Go, …) and need Python to be *the* language they think in for AI work. You do not need prior Python.
+    **Who this is for:** Developers who already write code (Java, TypeScript, Go, …) and need Python to be *the* language they think in for AI work. You must already program; you do not need to already program in Python.
 
 Python is not “the AI.” It is the **glue**. NumPy, Pandas, and PyTorch are the engines. If the glue is sloppy, the engines leak.
 

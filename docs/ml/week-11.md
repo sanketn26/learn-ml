@@ -37,6 +37,8 @@ NDCG / MAP                  search-quality cousins; you do not need them to ship
 A/B after ship              new list vs old list, same k, look at actual cancels
 ```
 
+The same recall@k is how [LangChain week 4](../langchain/week-04.md) scores a ranked list of documents: was the right chunk in the top k.
+
 ### Picture the queue
 
 ```

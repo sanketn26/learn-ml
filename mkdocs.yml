@@ -5,7 +5,7 @@ site_url: https://sanketn26.github.io/learn-ml/
 repo_url: https://github.com/sanketn26/learn-ml
 repo_name: sanketn26/learn-ml
 edit_uri: edit/main/docs/
-copyright: CloudWave synthetic SaaS data · no GPU required
+copyright: CloudWave synthetic SaaS data · no GPU for weeks 0–17
 
 theme:
   name: material
@@ -70,39 +70,58 @@ markdown_extensions:
 
 nav:
   - Home: index.md
-  - Getting started: getting-started.md
-  - Framework track guide: framework-tracks.md
-  - Datasets: data.md
-  - CloudWave story bible: cloudwave.md
-  - ML Fundamentals:
-      - Overview: ml/index.md
-      - Self-checks: ml/self-checks.md
-      - Week 0 — Strong Python: ml/week-00.md
-      - Week 1 — NumPy: ml/week-01.md
-      - Week 2 — Pandas: ml/week-02.md
-      - Week 3 — SQL / as_of: ml/week-03.md
-      - Week 4 — Charts: ml/week-04.md
-      - Week 5 — Signal vs noise: ml/week-05.md
-      - Week 6 — Features as API: ml/week-06.md
-      - Week 7 — Classification: ml/week-07.md
-      - Week 8 — Labels lie: ml/week-08.md
-      - Week 9 — Regression: ml/week-09.md
-      - Week 10 — Clustering: ml/week-10.md
-      - Week 11 — Rank a list: ml/week-11.md
-      - Week 12 — PCA: ml/week-12.md
-      - Week 13 — Ensembles: ml/week-13.md
-      - Week 14 — Neural nets: ml/week-14.md
-      - Week 15 — The pickle: ml/week-15.md
-      - Week 16 — Job pipeline: ml/week-16.md
-      - Week 17 — On-call: ml/week-17.md
-      - Capstone — Ship the churn score: ml/capstone-ship.md
-      - Capstone — Scenario bank: ml/capstone-scenarios.md
-      - Week 18 — CNNs (optional): ml/week-18.md
-      - Week 19 — RNNs (optional): ml/week-19.md
-      - Week 20 — Transformers (optional): ml/week-20.md
-      - Capstone — Order vs the row (optional, CPU): ml/capstone-sequence.md
-      - Capstone — On-call specialist (optional, GPU): ml/capstone.md
-      - Exercises:
+  - Start Here:
+      - Getting started: getting-started.md
+      - Framework track guide: framework-tracks.md
+  - Learn:
+      - ML Fundamentals:
+          - Overview: ml/index.md
+          - Self-checks: ml/self-checks.md
+          - Week 0 — Strong Python: ml/week-00.md
+          - Week 1 — NumPy: ml/week-01.md
+          - Week 2 — Pandas: ml/week-02.md
+          - Week 3 — SQL / as_of: ml/week-03.md
+          - Week 4 — Charts: ml/week-04.md
+          - Week 5 — Signal vs noise: ml/week-05.md
+          - Week 6 — Features as API: ml/week-06.md
+          - Week 7 — Classification: ml/week-07.md
+          - Week 8 — Labels lie: ml/week-08.md
+          - Week 9 — Regression: ml/week-09.md
+          - Week 10 — Clustering: ml/week-10.md
+          - Week 11 — Rank a list: ml/week-11.md
+          - Week 12 — PCA: ml/week-12.md
+          - Week 13 — Ensembles: ml/week-13.md
+          - Week 14 — Neural nets: ml/week-14.md
+          - Week 15 — The pickle: ml/week-15.md
+          - Week 16 — Job pipeline: ml/week-16.md
+          - Week 17 — On-call: ml/week-17.md
+          - Week 18 — CNNs (optional): ml/week-18.md
+          - Week 19 — RNNs (optional): ml/week-19.md
+          - Week 20 — Transformers (optional): ml/week-20.md
+      - LangChain:
+          - Overview: langchain/index.md
+          - Week 1 — Chains: langchain/week-01.md
+          - Week 2 — Memory: langchain/week-02.md
+          - Week 3 — Agents: langchain/week-03.md
+          - Week 4 — RAG: langchain/week-04.md
+          - Week 5 — Eval: langchain/week-05.md
+          - Week 6 — Production: langchain/week-06.md
+          - Week 7 — Ticket bot: langchain/week-07.md
+      - LangGraph:
+          - Overview: langgraph/index.md
+          - Week 1 — Graphs: langgraph/week-01.md
+          - Week 2 — Workflows: langgraph/week-02.md
+          - Week 3 — Persistence: langgraph/week-03.md
+          - Week 4 — Human in the loop: langgraph/week-04.md
+          - Week 5 — Don’t charge twice: langgraph/week-05.md
+      - CrewAI:
+          - Overview: crewai/index.md
+          - Week 1 — Agents: crewai/week-01.md
+          - Week 2 — Tasks: crewai/week-02.md
+          - Week 3 — Teams: crewai/week-03.md
+          - Week 4 — Scale: crewai/week-04.md
+  - Practice:
+      - ML Fundamentals:
           - Week 0: ml/exercises/week-00.md
           - Week 1: ml/exercises/week-01.md
           - Week 2: ml/exercises/week-02.md
@@ -121,22 +140,17 @@ nav:
           - Week 15: ml/exercises/week-15.md
           - Week 16: ml/exercises/week-16.md
           - Week 17: ml/exercises/week-17.md
-          - Capstone — Ship: ml/exercises/capstone-ship.md
           - Week 18: ml/exercises/week-18.md
           - Week 19: ml/exercises/week-19.md
           - Week 20: ml/exercises/week-20.md
-          - Capstone — Sequences: ml/exercises/capstone-sequence.md
-          - Capstone: ml/exercises/capstone.md
-  - LangChain:
-      - Overview: langchain/index.md
-      - Week 1 — Chains: langchain/week-01.md
-      - Week 2 — Memory: langchain/week-02.md
-      - Week 3 — Agents: langchain/week-03.md
-      - Week 4 — RAG: langchain/week-04.md
-      - Week 5 — Eval: langchain/week-05.md
-      - Week 6 — Production: langchain/week-06.md
-      - Week 7 — Ticket bot: langchain/week-07.md
-      - Exercises:
+          - Capstone — Ship the churn score: ml/capstone-ship.md
+          - Capstone — Scenario bank: ml/capstone-scenarios.md
+          - Capstone — Order vs the row (optional, CPU): ml/capstone-sequence.md
+          - Capstone — On-call specialist (optional, GPU): ml/capstone.md
+          - Exercise — Ship: ml/exercises/capstone-ship.md
+          - Exercise — Sequences: ml/exercises/capstone-sequence.md
+          - Exercise — On-call specialist: ml/exercises/capstone.md
+      - LangChain:
           - Week 1: langchain/exercises/week-01.md
           - Week 2: langchain/exercises/week-02.md
           - Week 3: langchain/exercises/week-03.md
@@ -144,32 +158,22 @@ nav:
           - Week 5: langchain/exercises/week-05.md
           - Week 6: langchain/exercises/week-06.md
           - Week 7: langchain/exercises/week-07.md
-  - LangGraph:
-      - Overview: langgraph/index.md
-      - Week 1 — Graphs: langgraph/week-01.md
-      - Week 2 — Workflows: langgraph/week-02.md
-      - Week 3 — Persistence: langgraph/week-03.md
-      - Week 4 — Human in the loop: langgraph/week-04.md
-      - Week 5 — Don’t charge twice: langgraph/week-05.md
-      - Capstone — Support agent: ml/capstone-agent.md
-      - Exercises:
+      - LangGraph:
           - Week 1: langgraph/exercises/week-01.md
           - Week 2: langgraph/exercises/week-02.md
           - Week 3: langgraph/exercises/week-03.md
           - Week 4: langgraph/exercises/week-04.md
           - Week 5: langgraph/exercises/week-05.md
-          - Capstone — Support agent: ml/exercises/capstone-agent.md
-  - CrewAI:
-      - Overview: crewai/index.md
-      - Week 1 — Agents: crewai/week-01.md
-      - Week 2 — Tasks: crewai/week-02.md
-      - Week 3 — Teams: crewai/week-03.md
-      - Week 4 — Scale: crewai/week-04.md
-      - Exercises:
+          - Capstone — Support agent: ml/capstone-agent.md
+          - Exercise — Support agent: ml/exercises/capstone-agent.md
+      - CrewAI:
           - Week 1: crewai/exercises/week-01.md
           - Week 2: crewai/exercises/week-02.md
           - Week 3: crewai/exercises/week-03.md
           - Week 4: crewai/exercises/week-04.md
+  - Reference:
+      - Datasets: data.md
+      - CloudWave story bible: cloudwave.md
 
 plugins:
   - search

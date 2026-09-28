@@ -148,6 +148,8 @@ Build and run locally if you want. Pushing to a registry is out of scope. There 
 
     **Ship** a local handler with timeout, fallback, FIFO cache on idempotent questions, and a golden-file test. **Don’t ship** “we Dockerized it” as production evidence. A golden file beats a Dockerfile. Don’t quote 1000 RPS / 99.9% as if this week measured them.
 
+    Timeouts, a trace, and a cost line are the shape of a local handler. Operating an LLM system on real traffic continues in [AI Engineering — Module 13, Production](https://sanketn26.github.io/AIEngineering/core/13-production/).
+
 ## What this week is not
 
 - Not AWS/GCP/Azure. Those are employer-specific.

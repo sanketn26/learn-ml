@@ -118,6 +118,8 @@ Resume is at-least-once: if the process dies after billing accepted the credit b
 
     **Ship** when routing is code the customer's text can't reorder, a retrieval miss is a refusal, golden tickets check what answers *say*, every write sits behind an interrupt whose checkpoint is on disk, every write carries a key that a rerun reproduces, and the golden tickets and the restart drill run in CI. **Don't ship** an agent whose only defence is its system prompt, or whose approval queue lives in a process that can restart.
 
+    This capstone is the Week 17 bot with a real tool loop. Production LLM operation — traces on real traffic, budgets, incidents — continues in [AI Engineering](https://sanketn26.github.io/AIEngineering/core/13-production/).
+
 ## ✍️ Exercise
 
 [Agent capstone exercises](exercises/capstone-agent.md) — build `build_agent` in `exercises/ml/capstone-agent/starter.py`, pass the eight golden tickets, run the approval, crash, and restart drills, then add a ticket your agent fails.
