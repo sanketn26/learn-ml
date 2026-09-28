@@ -7,7 +7,7 @@ the only code path — a new brief is data, not a new pipeline.
 
 The default is Priya's retention desk: 80 calls a week, ranked by risk,
 judged by how many of those calls reach someone who was about to leave.
-The other briefs are the scenario bank (docs/ml/capstone-scenarios.md):
+The other briefs are on the briefs page (docs/ml/capstone-scenarios.md):
 the same scores, four other business definitions of success.
 """
 

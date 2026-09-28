@@ -42,13 +42,14 @@ CloudWave loses about 2% of its customers every month — roughly 550 people. Pr
 | 14 | Nets as mixers + switches. Why a tree still wins here. |
 | 15 | A pickle is not production. Time split, `predict()`, drift. |
 | 16 | The job pipeline. Gate. Prod dir. Tonight’s CSV. |
-| 17 | On-call. Score as a tool. Golden tickets. |
-| Capstone: ship | Closes the job path. Weeks 3–17 as one gated weekly job, then diagnose an incident you didn't cause. CPU-only. |
+| 17 | On-call. The night the list breaks. Score as a tool. Golden tickets. |
+| Capstone: ship | Closes the job path. Weeks 3, 6, 8, 11, and 15–17 as one weekly job, then the false alarms, the postmortem, and two briefs. CPU-only. |
+| Briefs | Same scores, five definitions of shipped. Hangs off ship step 4. |
 | 18 | Optional: CNNs as a sliding detector. |
 | 19 | Optional: RNNs as a clipboard that walks. |
 | 20 | Optional: Transformers as a soft join. |
 | Capstone: sequences | Optional, CPU: CNN, RNN, and transformer over event sequences vs the Week-13 GBT, with a control and seeds. |
-| Capstone: on-call specialist | Optional, needs a GPU for one phase: spec'd read-only commands, a harness for long investigations, and an ablation of harness vs fine-tuned weights. |
+| Capstone: on-call specialist | Optional, after ship. Read-only assistant for the Week 17 runbook. One phase needs a GPU. The support agent is a different bot. |
 
 ### What depends on what
 
@@ -69,11 +70,14 @@ The weeks are numbered, but not every week needs the one before it. The **spine*
                                                                        16 Job ══▶ 17 On-call
                                                                                       ║
                                                                                       ▼
-                                                                             Capstone: ship
+                                                                             Capstone: ship ── briefs
+                                                                                      ║
+                                                                                      ▼
+                                                              specialist (optional, GPU, read-only)
   after 14:  18 CNN ──▶ 19 RNN ──▶ 20 Transformer ──▶ Capstone: sequences
 ```
 
-Required job path is **0–17**, closed by the [job-path capstone](capstone-ship.md) — ship the churn score end to end, then survive its first incident. Weeks **18–20** are pictures, not how CloudWave ships churn. The [coding-specialist capstone](capstone.md) is further still — the only page in this course that needs a GPU.
+Required job path is **0–17**, closed by the [job-path capstone](capstone-ship.md) — ship the churn score end to end, then survive its first incident. The tasks use weeks 3, 6, 8, 11, and 15–17. The [briefs](capstone-scenarios.md) hang off step 4 of that job: same scores, five definitions of shipped. Weeks **18–20** are pictures, not how CloudWave ships churn. The [on-call specialist](capstone.md) comes after ship and is the only page in this course that needs a GPU. It is a read-only assistant for the Week 17 runbook. The support agent, which can move money, lives on the [LangGraph track](../langgraph/index.md).
 
 !!! warning "Weeks 18–20 are a boundary, not a research lab"
 

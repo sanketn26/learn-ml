@@ -346,7 +346,7 @@ The list:      at <precision> vs base rate <r>, I would <ship / not ship> the de
 
 </details>
 
-**9. Re-skin it.** Run two briefs from the [scenario bank](../../../docs/ml/capstone-scenarios.md) through your step 4 — at least one of `discount-targeting` or `onboarding-activation` — and write a ship / don't-ship for each in its stakeholder's units.
+**9. Re-skin it.** Run two briefs from the [briefs page](../../../docs/ml/capstone-scenarios.md) through your step 4 — at least one of `discount-targeting` or `onboarding-activation` — and write a ship / don't-ship for each in its stakeholder's units.
 
 <details>
 <summary>Hint 1 — a nudge</summary>

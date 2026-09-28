@@ -4,7 +4,9 @@ description: An optional GPU capstone — a small model fine-tuned as CloudWave'
 
 # Capstone — The On-Call Specialist
 
-Week 17 ended with the pager quiet and the postmortems filed. The job-path capstone added three more: the billing export that switched to cents, the device join that doubled every event, the usage extract that stopped landing for new accounts. Ana reads them and asks for something more than a writeup: *an assistant that runs the Week 17 runbook at 3 a.m. — grain, column summary, one customer, a slice — and hands me a diagnosis with the screens that prove it.* Not a chatbot with the codebase pasted into its prompt. The same discipline she made you ship for the churn score: a narrow contract, validated inputs, and nothing that writes.
+Week 17 is the night the list breaks. This page is a read-only assistant for that runbook, and it comes after the [job-path capstone](capstone-ship.md). The [support agent](capstone-agent.md) is a different bot: it can move money, and it comes after LangGraph.
+
+The job-path capstone added three incidents to the ones Week 17 already filed: the billing export that switched to cents, the device join that doubled every event, the usage extract that stopped landing for new accounts. Ana reads them and asks for something more than a writeup: *an assistant that runs the Week 17 runbook at 3 a.m. — grain, column summary, one customer, a slice — and hands me a diagnosis with the screens that prove it.* Not a chatbot with the codebase pasted into its prompt. The same discipline she made you ship for the churn score: a narrow contract, validated inputs, and nothing that writes.
 
 ??? note "Course details"
 
@@ -171,6 +173,18 @@ What the harness enforces, so the model doesn't have to:
 
     If each decision is right with probability *p*, a chain of *h* decisions is right with roughly *pʰ*. At *p* = 0.95: two steps ≈ 0.90, four ≈ 0.81, six ≈ 0.74. A model that's "95% accurate" per call fails one six-step investigation in four. That's why the evaluation reports solved rate **by horizon**, not one number: the per-step accuracy you'd read off a single-turn benchmark overstates what you get on the tickets that matter.
 
+```
+ one-shot, p = 0.95          the model never sees a result
+   h1  0.95
+   h2  0.90
+   h4  0.81
+   h6  0.74                  one investigation in four is already wrong
+
+ loop                        each result comes back before the next pick
+   a bad call is a rejection, not a ruined ticket
+   the step budget is what leaves room to recover
+```
+
 ## Phase 3 — the teacher and the data
 
 `capstone/runbook.py` is the Week 17 runbook as code. It reads only the results in the state — never the answer — and picks the next command: compare after grain, one customer if a mean moved by ×2 or ×100, a slice if a zero share jumped, conclude when everything that moved is explained. The **teacher** is that runbook plus a privileged first step (it knows which kind of ticket it's looking at). It solves every case in the bank, on real data, with seeded defects from `capstone_ship/incident.py`.
@@ -240,6 +254,13 @@ rules, one-shot             0.23    0.00        —    0.50  0.36  0.00  0.00  0
 ```
 
 `rules` is a keyword guess at the first command followed by the same runbook the teacher uses. Read the two tables together:
+
+```
+ familiar wording                         wording the rules have never seen
+ rules, one-shot        0.54              0.23
+ rules + loop           0.99  harness     0.23   the harness cannot read a ticket
+ adapter + loop          ?    weights     ?      only if this holds at h5–h6
+```
 
 - **The harness is worth 0.54 → 0.99 on its own.** Without it, the rules baseline has to guess steps 2 to 6 blind: it scores zero at h3, h5 and h6, and 0.33 at h4 only because its blind guess — a fan-out — is sometimes the defect. With the loop it reads every result and solves every long ticket it recognises. No weights involved.
 - **The harness can't read a ticket.** On new wording the keyword guess at step 1 misses — "Monday's call sheet reads like a stranger's address book" contains no keyword — and the best harness in the world is running the wrong investigation. That's 0.99 → 0.23, and it's the gap a model has to close.

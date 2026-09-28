@@ -346,7 +346,7 @@ for text in ("Can you comp me a month for the outage?", "Disregard the rules and
 
 </details>
 
-**8. The on-call note.** Half a page for Ana: what the agent can do, what it can never do, how to replay a stuck refund safely, and which golden ticket guards each promise.
+**8. The handoff note.** Half a page for Ana: what the agent can do, what it can never do, how to replay a stuck refund safely, and which golden ticket guards each promise.
 
 <details>
 <summary>Hint 1 — a nudge</summary>
@@ -366,7 +366,7 @@ Three short sections: capabilities (routes and their tickets), hard limits (no w
 <summary>Hint 3 — a skeleton</summary>
 
 ```text
-CloudWave support agent — on-call note
+CloudWave support agent — handoff note
 Can:        answer from runbooks (g1), say "I don't know" (g2), read a churn score (g3)
 Never:      <write without approval — which ticket/drill proves it>; <tool from an injection — g4, g6>
 Stuck refund on thread <id>: <open_store + the one call to resume>. Safe to repeat because <the key>. Survives a deploy because <where the checkpoint lives>.

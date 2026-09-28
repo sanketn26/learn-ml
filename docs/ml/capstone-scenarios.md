@@ -1,8 +1,8 @@
 ---
-description: A bank of CloudWave business briefs — discount targeting, expansion ranking, support deflection, onboarding activation — that judge the same churn score by different definitions of success.
+description: Briefs for the churn score — discount targeting, expansion ranking, support deflection, and onboarding activation — each a different definition of shipped on the same model.
 ---
 
-# Capstone scenario bank — same model, five definitions of "shipped"
+# Briefs — same score, five jobs
 
 Priya's desk is one customer of the churn score. By the end of the job-path capstone, three more people have asked for it. Helen wants to spend a discount budget. Marcus wants an upsell list that doesn't pitch anyone halfway out the door. Ana wants the angriest tickets from the riskiest customers in front of senior agents. And Priya's onboarding team wants to know which brand-new accounts to call first. Nobody is asking for a new model. They are each asking a different question of the one you shipped.
 
@@ -87,6 +87,19 @@ One loop, five lists, five thresholds. `capstone_ship/briefs.py` holds each brie
 - **Shipped means:** precision *inside the new-account slice*, against that slice's base rate — not the whole population's.
 - **Write-up question:** what did this model mostly learn, and how much of it is left once every candidate is new?
 
+```
+ everyone                         tenure varies          the score has a feature to sort on
+ ┌─────────┬─────────┬─────────┐
+ │  new    │   mid   │   old   │
+ └─────────┴─────────┴─────────┘
+
+ onboarding brief keeps the first 45 days only
+ ┌─────────┐
+ │  new    │                     tenure is almost constant
+ └─────────┘                     the feature the model leaned on is gone
+                                 judge against THIS slice's base rate
+```
+
 !!! warning "Watch out — a brief can remove the model's best feature"
 
     The churn score leans hardest on `tenure_so_far`: new accounts churn. The onboarding brief keeps *only* new accounts, so inside its pool the strongest signal is nearly constant. A model can have excellent overall AUC and nothing useful to say inside a slice. Always judge a brief against **its own slice's** base rate, and check whether the list beats a random pick from that slice before anyone staffs sessions against it.
@@ -95,7 +108,7 @@ One loop, five lists, five thresholds. `capstone_ship/briefs.py` holds each brie
 
 Every brief takes a frame, a score per row, and backtest labels. Any capstone that produces a churn score can be judged by any brief:
 
-- **Job-path capstone** — [step 4](capstone-ship.md#4-the-threshold-is-a-headcount) takes a `brief` argument. Swap `RETENTION_DESK` for any entry in `BRIEFS`; the threshold in `metrics.json` and the write-up change, nothing else does.
+- **Job-path capstone** — [step 4](capstone-ship.md#4-the-threshold-is-a-headcount) takes a `brief` argument. Swap `RETENTION_DESK` for any entry in `BRIEFS`; the threshold in `metrics.json` and the write-up change, nothing else does. The exercise asks for two of these after the desk list is built.
 - **Any later model** — score the same `test_df` with it and pass the scores to `select`. A model that wins on AUC and loses on the brief your stakeholder cares about has not won.
 
 ## Ship / don't ship

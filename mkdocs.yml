@@ -144,7 +144,7 @@ nav:
           - Week 19: ml/exercises/week-19.md
           - Week 20: ml/exercises/week-20.md
           - Capstone — Ship the churn score: ml/capstone-ship.md
-          - Capstone — Scenario bank: ml/capstone-scenarios.md
+          - Briefs — same score, five jobs: ml/capstone-scenarios.md
           - Capstone — Order vs the row (optional, CPU): ml/capstone-sequence.md
           - Capstone — On-call specialist (optional, GPU): ml/capstone.md
           - Exercise — Ship: ml/exercises/capstone-ship.md

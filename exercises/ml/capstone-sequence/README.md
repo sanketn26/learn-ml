@@ -265,7 +265,7 @@ What the gap — or its absence — means is yours to write.
 
 </details>
 
-**6. The verdict.** Four sentences for Marcus, who read a blog post about transformers: what you compared, what won, what the sequence added, and what data would change your answer. Then judge your best network and the GBT through one brief from the [scenario bank](../../../docs/ml/capstone-scenarios.md).
+**6. The verdict.** Four sentences for Marcus, who read a blog post about transformers: what you compared, what won, what the sequence added, and what data would change your answer. Then judge your best network and the GBT through one brief from the [briefs page](../../../docs/ml/capstone-scenarios.md).
 
 <details>
 <summary>Hint 1 — a nudge</summary>

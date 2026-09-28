@@ -194,6 +194,10 @@ This router is deliberately dumb. The point is the **file** and the **fail-the-b
 
 ## 🔗 After this course
 
-- Weeks 18–20 if you want the pictures behind CNNs / RNNs / attention.
-- LangChain 3–7 if you want the bot to retrieve docs, not just route tools.
-- LangGraph 5 if the bot must pause for a human before anything that writes.
+This night splits into three pages. They are not one project.
+
+- [Ship the churn score](capstone-ship.md) is this list, running every week, until a Monday Priya does not recognize.
+- [On-call specialist](capstone.md) is a read-only assistant for the runbook above. It comes after that capstone. One phase needs a GPU.
+- [Support agent](capstone-agent.md) is this bot with a real tool loop, and it can move money. It comes after LangGraph.
+
+Weeks 18–20 are the pictures behind CNNs, RNNs, and attention, if you want them. Production LLM operation continues in [AI Engineering](https://sanketn26.github.io/AIEngineering/core/13-production/).

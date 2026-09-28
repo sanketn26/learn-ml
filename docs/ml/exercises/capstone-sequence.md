@@ -217,7 +217,7 @@ pytest tests/test_capstone_sequence.py
     ```
     What the gap — or its absence — means is yours to write.
 
-**6. The verdict.** Four sentences for Marcus, who read a blog post about transformers: what you compared, what won, what the sequence added, and what data would change your answer. Then judge your best network and the GBT through one brief from the [scenario bank](../capstone-scenarios.md).
+**6. The verdict.** Four sentences for Marcus, who read a blog post about transformers: what you compared, what won, what the sequence added, and what data would change your answer. Then judge your best network and the GBT through one brief from the [briefs page](../capstone-scenarios.md).
 
 ??? tip "Hint 1 — a nudge"
     The honest verdict can be "the row wins." That's a result, not a failure — as long as the table and the seed spread back it up.
