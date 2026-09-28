@@ -4,7 +4,7 @@ description: A five-week LangGraph track on treating LLM work as a state machine
 
 # LangGraph
 
-Five weeks on LLM work as a **state machine**: nodes are functions, edges are control flow, state is the request-scoped object you already thread through a saga.
+5 weeks on LLM work as a **state machine**: nodes are functions, edges are control flow, state is the request-scoped object you already thread through a saga.
 
 Start this track only if state machines, retries, persistence, idempotency, and the [course prerequisites](../getting-started.md#this-is-not-beginner-study-material) are familiar.
 
@@ -20,6 +20,15 @@ Use a graph when you need branches, retries, pause-for-a-human, or replay. Three
 | [4 — Human in the loop](week-04.md) | Interrupt, resume, the approval node. | Approve, reject, and needs-info follow distinct tested paths. |
 | [5 — Don’t charge twice](week-05.md) | Resume is at-least-once. Keys make effects once. | Replaying the side-effect node produces one charge. |
 | [Capstone — Support agent](../ml/capstone-agent.md) | LangChain 4/5/7 + LangGraph 3/4/5 in one graph. | Six golden tickets pass, and the gate fails an agent without the approval interrupt. |
+
+```
+ 1 Graphs ──▶ 2 Workflows ──▶ 3 Checkpoints ──▶ 4 Approval ──▶ 5 One charge
+                                                                    │
+                                                                    ▼
+                                          Support agent  (also LangChain 4, 5, and 7)
+```
+
+The [support agent](../ml/capstone-agent.md) is the ticket bot that can move money. Week 17 is the night the churn list breaks. The ML [on-call specialist](../ml/capstone.md) is a read-only assistant for that runbook, and it comes after the job-path capstone.
 
 !!! think "Think of it like… CI, Redux, or a workflow engine"
     The runtime owns the state so you can stop in the middle and start again. That is the product feature. Pretty diagrams are a side effect.

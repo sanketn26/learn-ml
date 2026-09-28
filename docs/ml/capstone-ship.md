@@ -28,15 +28,22 @@ Quarter-end. Helen wants one line in the board pack: *we have a churn score, and
 ## The picture
 
 ```
- as_of ──► 1 features ──► 2 label ──► 3 train ──► 4 threshold ──► 5 contract ──► 6 promote + score ──► tonight.csv
- 06-01     (Week 3/6)     (Week 8)    (Week 15)   (Week 11)       (Week 15)      (Week 16)   07-01        │
-                                                                                                           ▼
-                                                                    two weeks later: 7 incident (Week 17) ── Priya: "who are these people?"
+ as_of ──► 1 features ──► 2 label ──► 3 train ──► 4 threshold ──► 4b read the misses
+ 06-01     Week 3/6       Week 8      Week 15     Week 11          false alarms, and the churners you will never call
+                                        │                              │
+                                        │                              ├── briefs: same scores, five jobs
+                                        │                              │
+                                        ▼                              ▼
+                              5 contract ──► 6 promote + score ──► tonight.csv
+                              Week 15        Week 16      07-01         │
+                                                                        ▼
+                              7 incident (Week 17) ──► 8 postmortem
+                              Priya: "who are these people?"
 ```
 
 Two dates, on purpose. The backtest is **as of June 1**: learn on May 2's customers, grade on who of June 1's customers left by July 1. So **July 1** is the first morning that model could exist, and the first list it scores.
 
-Steps 1–6 are the job. Step 7 is why you built it that way.
+Steps 1–6 are the job. Step 4b and the [briefs](capstone-scenarios.md) are the decision about whether that job is worth staffing. Step 7 is why you built the gates, and step 8 is the note Ana reads next time.
 
 ```python
 from pathlib import Path
@@ -86,6 +93,17 @@ Priya can call 80. The threshold is whatever score the 80th name has; it falls o
 
 Then read `flag_rate` in that file. It says about 8% of customers clear the threshold — some 2,200 people, not 80. Look at `ties_at_threshold`: roughly 2,175 customers share the 80th score *exactly*. They are brand-new free accounts that signed up, logged one event, and never came back. The trees see no difference between them, so they all get the same score, and the 80th slot lands in the middle of that plateau.
 
+```
+ score
+  0.91   user_A          ← call 1
+  ...
+  0.41   user_80   ┐
+  0.41   user_81   │  ~2,175 free accounts, one shared score
+  0.41   ...       │  score ≥ 0.41 flags ~2,200 people, not 80
+  0.41   user_2254 ┘     which 80 is sort order, then user_id
+  0.40   user_2255       ← below the cut
+```
+
 !!! warning "Watch out — ties at the cut"
 
     A threshold only reproduces a list when scores are distinct around the cut. When thousands tie, `score >= threshold` flags thousands, and *which* 80 of them make the list is decided by sort order — unstable sorts give a different list, and a different precision, on every run. Rank and cut with an explicit tie-break (`select` and `score_batch` sort by score, then `user_id`), and treat `flag_for_cs` as "at least this risky," not "on the list."
@@ -98,7 +116,7 @@ Be honest about this one. With 532 churners among 27,935 at-risk customers, a *r
 
     **Lift** = precision of your list ÷ base rate. `0.15 / 0.019 ≈ 8`. Lift says the model is working. It does not say the list is worth 80 calls. That depends on what a call costs, what a saved customer is worth, and whether a call saves anyone at all — which only a randomized holdout can tell you ([Week 11](week-11.md)).
 
-Whether to ship the desk list at that rate is a business call. The model is the same either way; the *brief* is what changes — the [scenario bank](capstone-scenarios.md) judges the same scores four other ways.
+Whether to ship the desk list at that rate is a business call. The model is the same either way; the *brief* is what changes — the [briefs](capstone-scenarios.md) judge the same scores four other ways.
 
 ## 5 — The contract, tested
 

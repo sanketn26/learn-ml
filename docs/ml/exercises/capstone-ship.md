@@ -244,7 +244,7 @@ pytest tests/test_capstone_ship.py
     The list:      at <precision> vs base rate <r>, I would <ship / not ship> the desk list because <…>
     ```
 
-**9. Re-skin it.** Run two briefs from the [scenario bank](../capstone-scenarios.md) through your step 4 — at least one of `discount-targeting` or `onboarding-activation` — and write a ship / don't-ship for each in its stakeholder's units.
+**9. Re-skin it.** Run two briefs from the [briefs page](../capstone-scenarios.md) through your step 4 — at least one of `discount-targeting` or `onboarding-activation` — and write a ship / don't-ship for each in its stakeholder's units.
 
 ??? tip "Hint 1 — a nudge"
     Your step 4 already takes a `brief` argument. What *else* has to change to answer Helen instead of Priya — the model, the scores, or just the brief?

@@ -90,6 +90,15 @@ Each encoder is `(tokens, recency, mask, static) -> logit`, built from a shared 
 
 Then one experiment for *why*: scramble each test customer's real events into a random order, tokens and recency together. The bag can't notice — it never saw order. A model that uses order should get worse.
 
+```
+ as-is       login → page_view → export
+ scrambled   export → login → page_view
+
+ bag            same set either way          events and recency, no order
+ GRU / CNN /    can change                   they were allowed to read order
+ transformer
+```
+
 !!! warning "Watch out — an event name is not a label"
 
     The event log has a `cancel` type, logged on the day a customer churns. It looks like the perfect feature. Check where it can appear: a customer at risk on `as_of` has, by definition, not churned yet — so no at-risk sequence ever contains `cancel`. If one does, your `as_of` cut is broken and the model is reading the answer key. The label comes from `churn_date` in `subscriptions.csv`, what finance booked; an event name is what an instrumentation engineer typed, and it only means what the cut lets it mean.
@@ -127,4 +136,4 @@ Then one experiment for *why*: scramble each test customer's real events into a 
 
 1. What would the event log need — longer histories, different event types, a different question — before order could plausibly matter?
 2. The MLP beat the GBT on June 1 and lost on September 1. How many dates would you want before replacing the GBT — and what else would you check first?
-3. Which scenario-bank brief is most sensitive to a small PR-AUC difference, and which barely notices it?
+3. Which brief is most sensitive to a small PR-AUC difference, and which barely notices it?

@@ -6,6 +6,12 @@ description: How to approach the LangChain, LangGraph, and CrewAI tracks as engi
 
 LangChain, LangGraph, and CrewAI are **engineering introductions**, not certifications, exhaustive API references, or promises of production readiness. Each track gives an experienced engineer enough intuition to understand the library, build one representative workflow, and continue independently from the official documentation.
 
+| Track | Weeks |
+|---|---|
+| [LangChain](langchain/index.md) | 7 |
+| [LangGraph](langgraph/index.md) | 5 |
+| [CrewAI](crewai/index.md) | 4 |
+
 Framework APIs change faster than the ideas. Learn the mental model here; use the library's official documentation for the current spelling of an import or constructor.
 
 ## Two kinds of example

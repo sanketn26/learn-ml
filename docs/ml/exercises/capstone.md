@@ -19,6 +19,7 @@ Three hallucinated calls the validator catches by meaning, one long investigatio
 
 ## Before you start
 
+- Finish the [job-path capstone](../capstone-ship.md) first. This page reuses its seeded incidents.
 - Run from the repo root in the main venv. The first `check_threshold` trains the production model once into `artifacts/capstone-commands/` (gitignored); after that everything is cached.
 - `capstone/runbook.py` and `capstone/cases.py` are the answer key for which command comes next. Read the specs in `capstone/commands/` first — that's what a model sees.
 - Do not `import unsloth` (or `peft`, `trl`, `bitsandbytes`) on the laptop. Those are Task 6 only, in Colab.

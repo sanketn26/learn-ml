@@ -1,5 +1,5 @@
 ---
-description: Python fundamentals exercises: a churn report from a CSV, a JSON-serializable dataclass, a fit/predict baseline class, and a mutable-default experiment.
+description: "Python fundamentals exercises: a churn report from a CSV, a JSON-serializable dataclass, a fit/predict baseline class, and a mutable-default experiment."
 ---
 
 # Exercises — Week 0 — Strong Python for AI Engineers

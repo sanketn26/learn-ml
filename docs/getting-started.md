@@ -4,11 +4,13 @@ description: Prerequisites and readiness check for this ML course, covering the 
 
 # Getting started
 
-You do not need Jupyter. You do not need a GPU.
+Weeks 0–20 (21 sessions). Job path 0–17.
+
+You do not need Jupyter. No GPU for weeks 0–17. Optional DL capstone needs a GPU.
 
 ## This is not beginner study material
 
-This course is beginner-friendly **about machine learning**, not beginner-friendly **about software engineering**. It teaches ML ideas by comparing them with functions, APIs, SQL joins, tests, CI, batch jobs, state machines, and on-call incidents. Those comparisons only help if the software concepts are already familiar.
+This course is beginner-friendly **about machine learning**, not beginner-friendly **about software engineering**. You must already program; you do not need to already program in Python. It teaches ML ideas by comparing them with functions, APIs, SQL joins, tests, CI, batch jobs, state machines, and on-call incidents. Those comparisons only help if the software concepts are already familiar.
 
 It is also not a complete reference or exam-preparation text. The lessons deliberately trade formal proofs and exhaustive theory for engineering intuition, runnable examples, failure modes, and shipping decisions. If you need a first programming course, a mathematical ML textbook, or a framework API reference, use one before or alongside this course.
 
@@ -33,7 +35,7 @@ You are ready if you can create a script that reads a CSV, groups rows by a key,
 
 If every noun in that sentence is new, stop here and take introductory Python, terminal/Git, and SQL courses first. Skipping that preparation will not make this course faster. You will spend the course fighting the tools while the ML reasoning passes by.
 
-You do **not** need prior ML, calculus, linear algebra, a statistics degree, Jupyter, or a GPU.
+You do **not** need prior ML, calculus, linear algebra, a statistics degree, or Jupyter. You do **not** need a GPU for weeks 0–17. The optional deep-learning capstone does.
 
 ## Read the lessons
 
@@ -180,4 +182,4 @@ Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
 
 ## Laptop budget
 
-No GPU. Models use a sample of ~8,000 customers (sequences: ~3,000 users) so each week finishes in a few minutes on an 8 GB machine. Pass `n=None` to `load_customer_360` only if you want the full ~49k.
+No GPU for weeks 0–17. Optional DL capstone needs a GPU. Models use a sample of ~8,000 customers (sequences: ~3,000 users) so each week finishes in a few minutes on an 8 GB machine. Pass `n=None` to `load_customer_360` only if you want the full ~49k.

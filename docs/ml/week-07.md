@@ -270,7 +270,7 @@ plt.show()
 
 !!! success "Ship / don’t ship"
 
-    Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone.
+    **Provisional — Week 8 replaces the label and the metric.** Ship a classifier when it beats the dummy on AUC *and* you have picked a threshold from a capacity number (“CS can call 50/week”). AUC alone does not page anyone. The label on this page is lifetime `is_churned`. Week 8 swaps that for a horizon label and PR-AUC.
 
     About 9% of today's active customers ever cancel in this file — and only ~2% in the next 30 days. Accuracy is a trap and a 0.7 score is not “70% chance.” [Week 8](week-08.md) is labels, PR-AUC, and calibration. [Week 11](week-11.md) is the list CS actually uses.
 

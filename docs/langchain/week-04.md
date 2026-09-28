@@ -181,6 +181,8 @@ recall@k   of the labeled queries, how often the gold source is in the top k
 MRR        mean of 1 / (rank of the gold source) — 1.0 if it is always first, 0.5 if always second
 ```
 
+With one gold document, recall@k and Hit@k are the same measurement: was the gold in the top k. This week says recall@k. [AI Engineering 07](https://sanketn26.github.io/AIEngineering/core/07-tools-and-rag/) and [09](https://sanketn26.github.io/AIEngineering/core/09-advanced-rag/) say Hit@k. MRR is the same name in both.
+
 Two lexical retrievers, the lesson's word overlap and a TF-IDF index (scikit-learn, no downloads), on ten labeled questions written the way customers write — not the way the runbook does:
 
 ```python

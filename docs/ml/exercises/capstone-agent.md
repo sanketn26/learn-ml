@@ -271,7 +271,7 @@ Work in `starter.py`. Run from the repo root:
     # print([r for r in evaluate(build_agent, GOLDEN + [case]) if not r["ok"]])
     ```
 
-**8. The on-call note.** Half a page for Ana: what the agent can do, what it can never do, how to replay a stuck refund safely, and which golden ticket guards each promise.
+**8. The handoff note.** Half a page for Ana: what the agent can do, what it can never do, how to replay a stuck refund safely, and which golden ticket guards each promise.
 
 ??? tip "Hint 1 — a nudge"
     Every promise in the note should point at a golden ticket or a drill. A promise with no test is a hope.
@@ -281,7 +281,7 @@ Work in `starter.py`. Run from the repo root:
 
 ??? example "Hint 3 — a skeleton"
     ```text
-    CloudWave support agent — on-call note
+    CloudWave support agent — handoff note
     Can:        answer from runbooks (g1), say "I don't know" (g2), read a churn score (g3)
     Never:      <write without approval — which ticket/drill proves it>; <tool from an injection — g4, g6>
     Stuck refund on thread <id>: <open_store + the one call to resume>. Safe to repeat because <the key>. Survives a deploy because <where the checkpoint lives>.

@@ -43,11 +43,11 @@ Each ML week is `exercises/ml/week-XX/starter.py`. Run from the repo root.
 
 Python fighting you, or prefer an isolated environment? `docker build -t learn-ml . && docker run --rm -it -p 8000:8000 learn-ml` gets you a shell with the course, labs, and data already baked in — no `pip install` needed. Or open the repo in VS Code and **Reopen in Container**. See [docs/getting-started.md](docs/getting-started.md#optional-run-it-in-docker-instead).
 
-No GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM. The billing table has ~49k customers (observation end 2024-11-30).
+No GPU for weeks 0–17. Optional DL capstone needs a GPU. Default loaders sample ~8k customers so a week finishes in a few minutes on 8 GB RAM. The billing table has ~49k customers (observation end 2024-11-30). Weeks 0–20 (21 sessions). Job path 0–17.
 
 ## Before you start
 
-You should already be able to write and debug a small program, use a terminal, install dependencies in a virtual environment, read a stack trace, work with Git, and understand basic data ideas such as rows, columns, types, joins, and APIs. Prior Python, ML, calculus, and linear algebra are not required; programming fluency is.
+You must already program; you do not need to already program in Python. You should already be able to write and debug a small program, use a terminal, install dependencies in a virtual environment, read a stack trace, work with Git, and understand basic data ideas such as rows, columns, types, joins, and APIs. Prior ML, calculus, and linear algebra are not required.
 
 Read the candid [readiness checklist](docs/getting-started.md#this-is-not-beginner-study-material) before committing to the course. If the checklist is unfamiliar, learn those foundations first. Otherwise you will spend your time fighting Python, SQL, Git, and the shell instead of learning ML.
 

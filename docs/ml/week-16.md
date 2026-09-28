@@ -187,7 +187,7 @@ for col in ["plan_type", "tenure_band"]:
     print(pd.DataFrame(rows).round(3).to_string(index=False), "\n")
 ```
 
-On this model the list is about 85% `free` and over 90% customers younger than 90 days. No `pro` or `enterprise` account makes it, and inside `enterprise` the model barely ranks at all (AUC near 0.55). None of that is a bug — free, new accounts really do churn most. But it is a *product decision hiding inside a model*: Priya's team will spend every call on accounts worth $0 of MRR, and nobody will ever call a wobbling enterprise customer. That is Helen's call to make, with this table in front of her, not a default the model makes for her. (The [scenario bank](capstone-scenarios.md) shows briefs that make it explicitly.)
+On this model the list is about 85% `free` and over 90% customers younger than 90 days. No `pro` or `enterprise` account makes it, and inside `enterprise` the model barely ranks at all (AUC near 0.55). None of that is a bug — free, new accounts really do churn most. But it is a *product decision hiding inside a model*: Priya's team will spend every call on accounts worth $0 of MRR, and nobody will ever call a wobbling enterprise customer. That is Helen's call to make, with this table in front of her, not a default the model makes for her. (The [briefs](capstone-scenarios.md) make that call explicit.)
 
 !!! warning "Watch out — this table is also your fairness audit"
 
@@ -232,7 +232,7 @@ print("precision@80", float(knowable["y"].mean()) if len(knowable) else "still c
 
 !!! success "Ship / don’t ship"
 
-    Ship a cron, a candidate directory, a gate, and a CSV. Do not ship Kubeflow so you can say “we have a platform.” Do not let `train.py` overwrite `prod`. Do not add Airflow until a cron file is boring.
+    Ship a cron, a candidate directory, a gate, and a CSV. Do not ship Kubeflow so you can say “we have a platform.” Do not let `train.py` overwrite `prod`. Do not add Airflow until a cron file is boring. [Data Engineering Phase 5](https://sanketn26.github.io/data-engineering/airflow/) starts from the other side: once dependent jobs outgrow a crontab, Airflow is the system of record for which task ran, on which interval, with which outcome. This week stops while the cron file is still the whole system.
 
 ## ✍️ Exercise
 
